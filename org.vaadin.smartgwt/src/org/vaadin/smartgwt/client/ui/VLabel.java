@@ -26,9 +26,6 @@ public class VLabel extends Label implements Paintable
 			setPosition(Positioning.ABSOLUTE);
 		
 		PainterHelper.updateSmartGWTComponent(this, uidl);
-		
-		if (uidl.hasAttribute("contents"))
-			setContents(uidl.getStringAttribute("contents"));
 	}
 
 }

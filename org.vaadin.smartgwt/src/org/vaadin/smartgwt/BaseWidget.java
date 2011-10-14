@@ -7,45 +7,15 @@ import java.util.Map;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractComponentContainer;
 
-public class BaseWidget extends AbstractComponent implements Serializable
+public abstract class BaseWidget extends AbstractComponent implements Serializable
 {
-	private Map<String, Object> attributes = new HashMap<String, Object>();
-	protected PartialPaintChecker paintChecker = new PartialPaintChecker(this);
+	protected Map<String, Object> attributes = new HashMap<String, Object>();
 
 	boolean isCreated()
 	{
 		return false;
-	}
-
-	@Override
-	public void requestRepaint()
-	{
-		paintChecker.checkBeforeRequestRepaint();
-		super.requestRepaint();
-	}
-
-	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
-		super.paintContent(target);
-
-		if (paintChecker.isFullRepaint())
-		{
-			for (Map.Entry<String, Object> entry : attributes.entrySet())
-			{
-				target.addAttribute("*" + entry.getKey(), entry.getValue().toString());
-			}
-		}
-		else
-		{
-			for (String attribute : paintChecker.getFlagged())
-			{
-				target.addAttribute("*" + attribute, getAttributeAsString(attribute));
-			}
-		}
-
-		paintChecker.paintContentPerformed();
 	}
 
 	protected void setAttribute(String attribute, Object value, boolean allowPostCreate)
@@ -56,6 +26,11 @@ public class BaseWidget extends AbstractComponent implements Serializable
 		 * if (!isCreated()) { JSOHelper.setAttribute(config, attribute, value); } else if (allowPostCreate) { setProperty(attribute, value); } else {
 		 * error(attribute, value); }
 		 */
+	}
+
+	protected void setAttribute(String attribute, Object value)
+	{
+		setAttribute(attribute, value, false);
 	}
 
 	protected String getAttributeAsString(String attribute)
@@ -92,4 +67,26 @@ public class BaseWidget extends AbstractComponent implements Serializable
 		else
 			return Boolean.valueOf(value.toString());
 	}
+
+	protected String[] getAttributeAsStringArray(String attribute)
+	{
+		Object value = attributes.get(attribute);
+
+		if (value == null)
+			return null;
+		else
+			return (String[]) value;
+	}
+	
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		super.paintContent(target);
+
+		for (Map.Entry<String, Object> entry : attributes.entrySet())
+		{
+			target.addAttribute(entry.getKey(), entry.getValue().toString());
+		}
+	}
+
 }

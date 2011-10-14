@@ -34,9 +34,6 @@ public class VDynamicForm extends DynamicForm implements Paintable
 
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
-		if (uidl.hasAttribute("numCols"))
-			setNumCols(uidl.getIntAttribute("numCols"));
-
 		addFormItems(uidl, client);
 
 		if (getPosition() != Positioning.ABSOLUTE)

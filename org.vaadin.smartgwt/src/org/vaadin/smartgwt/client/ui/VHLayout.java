@@ -19,25 +19,19 @@ public class VHLayout extends HLayout implements Paintable
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		if (client.updateComponent(this, uidl, true))
-		{
-			return;
-		}
+		// SmartGWT Components work using absolute positioning
+		if (getPosition() != Positioning.ABSOLUTE)
+			setPosition(Positioning.ABSOLUTE);
 
 		this.client = client;
 		paintableId = uidl.getId();
-
+		
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
 		for (Widget widget : PainterHelper.paintChildren(uidl, client))
 		{
 			addMember(widget);
 		}
-
-		reflowNow();
-
-		if (getPosition() != Positioning.ABSOLUTE)
-			setPosition(Positioning.ABSOLUTE);
 
 	}
 

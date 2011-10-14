@@ -37,6 +37,8 @@ public class VTab extends Label implements Paintable, TabWrapper
 		this.client = client;
 		paintableId = uidl.getId();
 
+		PainterHelper.updateSmartGWTComponent(this, uidl);
+
 		List<Widget> widgets = PainterHelper.paintChildren(uidl, client);
 
 		// Tabs should only have ONE child...
@@ -49,10 +51,9 @@ public class VTab extends Label implements Paintable, TabWrapper
 		{
 			tab.setPane((Canvas) pane);
 		}
-
-		if (uidl.hasAttribute("title"))
-			tab.setTitle(uidl.getStringAttribute("title"));
-
+		
+		if (uidl.hasAttribute("*title"))
+			tab.setTitle(uidl.getStringAttribute("*title"));
 	}
 
 	@Override

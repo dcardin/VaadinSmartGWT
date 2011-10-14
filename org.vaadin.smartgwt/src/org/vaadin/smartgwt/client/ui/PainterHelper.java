@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
@@ -35,22 +36,45 @@ public class PainterHelper
 
 	public static void updateSmartGWTComponent(Widget component, UIDL uidl)
 	{
-		if (uidl.hasAttribute("s-height"))
-			component.setHeight(uidl.getStringAttribute("s-height"));
+		for (String att : uidl.getAttributeNames())
+		{
+			if (!att.startsWith("*") && (!att.equalsIgnoreCase("id")))
+			{
+				String value = uidl.getStringAttribute(att);
+				setWidgetProperty(component, att, value);
+			}
+		}
 
-		if (uidl.hasAttribute("s-width"))
-			component.setWidth(uidl.getStringAttribute("s-width"));
+	}
+
+	public static void updateSmartGWTComponentNoDimension(Widget component, UIDL uidl)
+	{
+		for (String att : uidl.getAttributeNames())
+		{
+			if (!att.startsWith("*") && (!att.equals("width")) && (!att.equals("height")) && (!att.equalsIgnoreCase("id")))
+			{
+				String value = uidl.getStringAttribute(att);
+				setWidgetProperty(component, att, value);
+			}
+		}
 
 	}
 
 	public static void updateFormItem(FormItem formItem, UIDL uidl)
 	{
-		if (uidl.hasAttribute("s-height"))
-			formItem.setHeight(uidl.getStringAttribute("s-height"));
-
-		if (uidl.hasAttribute("s-width"))
-			formItem.setWidth(uidl.getStringAttribute("s-width"));
-
+		for (String att : uidl.getAttributeNames())
+		{
+			if (!att.startsWith("*") && (!att.equalsIgnoreCase("id")))
+			{
+				String value = uidl.getStringAttribute(att);
+	            JSOHelper.setAttribute(formItem.getJsObj(), att, value);
+			}
+		}
 	}
+
+	public static native void setWidgetProperty(Object obj, String property, String value)/*-{
+		var widget = obj.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+		widget.setProperty(property, value);
+	}-*/;
 
 }

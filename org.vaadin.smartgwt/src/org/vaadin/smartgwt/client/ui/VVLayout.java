@@ -19,19 +19,13 @@ public class VVLayout extends VLayout implements Paintable
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-//		if (client.updateComponent(this, uidl, true))
-//		{
-//			return;
-//		}
-
 		// SmartGWT Components work using absolute positioning
 		if (getPosition() != Positioning.ABSOLUTE)
 			setPosition(Positioning.ABSOLUTE);
 
-		setPosition(Positioning.RELATIVE);
 		this.client = client;
 		paintableId = uidl.getId();
-
+		
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
 		for (Widget widget : PainterHelper.paintChildren(uidl, client))

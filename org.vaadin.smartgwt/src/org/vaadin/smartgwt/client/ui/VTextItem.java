@@ -73,7 +73,6 @@ public class VTextItem extends Label implements Paintable, FormItemWrapper
 		this.client = client;
 		paintableId = uidl.getId();
 
-		PainterHelper.updateFormItem(ti, uidl);
 
 		if (uidl.hasAttribute("value"))
 		{
@@ -81,14 +80,12 @@ public class VTextItem extends Label implements Paintable, FormItemWrapper
 
 			if (!newValue.equals(ti.getValueAsString()))
 			{
-				ti.setValue(newValue);
+				//ti.setValue(newValue);
 				savedValue = newValue;
 			}
 		}
-
-		if (uidl.hasAttribute("title"))
-			ti.setTitle(uidl.getStringAttribute("title"));
-
+		
+		PainterHelper.updateFormItem(ti, uidl);
 	}
 
 	@Override

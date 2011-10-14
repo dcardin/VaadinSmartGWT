@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
@@ -22,8 +23,9 @@ public class VIButton extends Canvas implements Paintable
 	public VIButton()
 	{
 		super();
-		setAutoWidth();
-		setAutoHeight();
+		button.setWidth100();
+		button.setHeight100();
+		setBackgroundColor("yellow");
 		addChild(button);
 
 		addClickHandler(new ClickHandler()
@@ -39,35 +41,27 @@ public class VIButton extends Canvas implements Paintable
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		if (client.updateComponent(this, uidl, true))
-		{
-			return;
-		}
+//		if (client.updateComponent(this, uidl, true))
+//		{
+//			return;
+//		}
 
 		this.client = client;
 		paintableId = uidl.getId();
 
-		for (String att : uidl.getAttributeNames())
-		{
-			if (att.startsWith("*"))
-			{
-				String name = att.substring(1);
-				setProperty(button, name, uidl.getStringAttribute(att));
-			}
-		}
-
 		// SmartGWT Components work using absolute positioning
 		if (getPosition() != Positioning.ABSOLUTE)
 			setPosition(Positioning.ABSOLUTE);
+		
+		if (uidl.hasAttribute("height"))
+			setHeight(uidl.getStringAttribute("height"));
+
+		if (uidl.hasAttribute("width"))
+			setWidth(uidl.getStringAttribute("width"));
 
 		button.setPosition(Positioning.ABSOLUTE);
 
-		//PainterHelper.updateSmartGWTComponent(button, uidl);
+		PainterHelper.updateSmartGWTComponentNoDimension(button, uidl);
 
 	}
-
-    public native void setProperty(Object obj, String property, String value)/*-{
-    	var widget = obj.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-    	widget.setProperty(property, value);
-	}-*/;
 }
