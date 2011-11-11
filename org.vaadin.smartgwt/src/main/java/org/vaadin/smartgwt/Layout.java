@@ -1034,7 +1034,7 @@ public class Layout extends Canvas implements ComponentContainer
 	{
 		addMember(c, true);
 	}
-	
+
 	/**
 	 * Add a canvas to the layout, optionally at a specific position.
 	 * 
@@ -1072,7 +1072,7 @@ public class Layout extends Canvas implements ComponentContainer
 
 		c.setParent(this);
 		// fireComponentAttachEvent(c);
-		
+
 		if (immediateUpdate)
 			requestRepaint();
 	}
@@ -1096,6 +1096,7 @@ public class Layout extends Canvas implements ComponentContainer
 	{
 		addMember(component, position, true);
 	}
+
 	/**
 	 * Add a canvas to the layout, optionally at a specific position.
 	 * 
@@ -1134,7 +1135,7 @@ public class Layout extends Canvas implements ComponentContainer
 
 		component.setParent(this);
 		// fireComponentAttachEvent(c);
-		
+
 	}
 
 	/**
@@ -1323,7 +1324,7 @@ public class Layout extends Canvas implements ComponentContainer
 
 		int index = components.indexOf(oldComponent);
 		components.remove(index);
-		
+
 		addMember(newComponent, index, false);
 	}
 

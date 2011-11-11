@@ -14,25 +14,24 @@ public class Container extends AbstractComponentContainer
 	protected List<Component> components = new LinkedList<Component>();
 	private String height = null;
 	private String width = null;
-	
+
 	@Override
 	public void setSizeFull()
 	{
 		setWidth("100%");
 		setHeight("100%");
 	}
-	
+
 	public void setHeight(String height)
 	{
 		this.height = height;
 	}
-	
+
 	public void setWidth(String width)
 	{
 		this.width = width;
 	}
 
-	
 	@Override
 	public void addComponent(Component c)
 	{
@@ -64,7 +63,7 @@ public class Container extends AbstractComponentContainer
 
 		if (width != null)
 			target.addAttribute("s-width", width);
-		
+
 		if (height != null)
 			target.addAttribute("s-height", height);
 

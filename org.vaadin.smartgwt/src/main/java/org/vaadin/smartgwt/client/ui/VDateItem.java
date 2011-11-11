@@ -61,7 +61,6 @@ public class VDateItem extends Label implements Paintable, FormItemWrapper
 	{
 		Date newValue = di.getValueAsDate();
 
-		
 		if ((newValue == null && savedValue != null) || (newValue != null && !newValue.equals(savedValue)))
 		{
 			client.updateVariable(paintableId, "value", newValue.toString(), true);
@@ -81,28 +80,27 @@ public class VDateItem extends Label implements Paintable, FormItemWrapper
 		this.client = client;
 		paintableId = uidl.getId();
 
-
 		if (uidl.hasAttribute("value"))
 		{
-//			DateFormat df = new SimpleDateFormat();
-//			Date newValue = null;
-//			try
-//			{
-//				newValue = df.parse(uidl.getStringAttribute("value"));
-//			}
-//			catch (ParseException e)
-//			{
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//
-//			if (newValue != null && newValue.equals(di.getValueAsDate()))
-//			{
-//				//ti.setValue(newValue);
-//				savedValue = newValue;
-//			}
+			// DateFormat df = new SimpleDateFormat();
+			// Date newValue = null;
+			// try
+			// {
+			// newValue = df.parse(uidl.getStringAttribute("value"));
+			// }
+			// catch (ParseException e)
+			// {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			//
+			// if (newValue != null && newValue.equals(di.getValueAsDate()))
+			// {
+			// //ti.setValue(newValue);
+			// savedValue = newValue;
+			// }
 		}
-		
+
 		PainterHelper.updateFormItem(di, uidl);
 	}
 

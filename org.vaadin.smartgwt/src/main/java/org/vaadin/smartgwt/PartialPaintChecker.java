@@ -30,16 +30,17 @@ public class PartialPaintChecker implements Serializable
 	{
 		forcedFullRepaint = true;
 	}
-	
+
 	public static void resetFullRepaint()
 	{
 		forcedFullRepaint = false;
 	}
-	
+
 	public Set<String> getFlagged()
 	{
 		return flags.keySet();
 	}
+
 	/**
 	 * <p>
 	 * Construct the checker only for this paintable.

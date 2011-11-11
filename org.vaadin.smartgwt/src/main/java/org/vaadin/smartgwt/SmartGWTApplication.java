@@ -10,56 +10,57 @@ import com.vaadin.Application;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Window;
 
-public class SmartGWTApplication extends Application 
+public class SmartGWTApplication extends Application
 {
 	public void init()
 	{
-//		FormContainer fc = new FormContainer("daniel");
-//		try {
-//			fc.addStream(SmartGWTApplication.class.getResourceAsStream("/daniel.xml"), "daniel.xml");
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		DefaultFormBuilder fb = new DefaultFormBuilder(new ComponentFactoryImpl(), new LayoutFactoryImpl(), new BorderFactoryImpl(), fc, new LocalizedResourceBundle("temp"), null, 
-//				newElementStack(null));
-//		
-//		Container container = AdapterHelper.unwrap(fb.getDocumentForm());
+		// FormContainer fc = new FormContainer("daniel");
+		// try {
+		// fc.addStream(SmartGWTApplication.class.getResourceAsStream("/daniel.xml"), "daniel.xml");
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		//
+		// DefaultFormBuilder fb = new DefaultFormBuilder(new ComponentFactoryImpl(), new LayoutFactoryImpl(), new BorderFactoryImpl(), fc, new
+		// LocalizedResourceBundle("temp"), null,
+		// newElementStack(null));
+		//
+		// Container container = AdapterHelper.unwrap(fb.getDocumentForm());
 		Class<? extends Object> a = String.class;
-		
+
 		Window mainWindow = new Window("BorderLayout Test");
 		mainWindow.setSizeFull();
 		mainWindow.setBorder(Window.BORDER_NONE);
 		mainWindow.setStyleName(null);
-		
+
 		mainWindow.setContent((ComponentContainer) getMainPanel());
 		setMainWindow(mainWindow);
 	}
-	
-//	private static SecuredElementStack newElementStack(String formSecurityKey)
-//	{
-//		final PermissionManagerFactory permissionManagerFactory = new PermissionManagerFactory();
-//		final PathBuilder securityKeyBuilder = new PathBuilder(formSecurityKey);
-//		final PermissionManager permissionManager;
-//
-//		if (formSecurityKey != null)
-//		{
-//			permissionManager = permissionManagerFactory.getPermissionManager(formSecurityKey);
-//		}
-//		else
-//		{
-//			permissionManager = permissionManagerFactory.getDefaultPermissionManager();
-//		}
-//
-//		return new SecuredElementStackImpl(securityKeyBuilder, permissionManager);
-//	}
-	
+
+	// private static SecuredElementStack newElementStack(String formSecurityKey)
+	// {
+	// final PermissionManagerFactory permissionManagerFactory = new PermissionManagerFactory();
+	// final PathBuilder securityKeyBuilder = new PathBuilder(formSecurityKey);
+	// final PermissionManager permissionManager;
+	//
+	// if (formSecurityKey != null)
+	// {
+	// permissionManager = permissionManagerFactory.getPermissionManager(formSecurityKey);
+	// }
+	// else
+	// {
+	// permissionManager = permissionManagerFactory.getDefaultPermissionManager();
+	// }
+	//
+	// return new SecuredElementStackImpl(securityKeyBuilder, permissionManager);
+	// }
+
 	private BaseWidget complexLayout(boolean subPanel)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setSizeFull();
-		
+
 		HLayout north = new HLayout();
 		Button button = new Button("north");
 		north.addMember(button);
@@ -72,34 +73,35 @@ public class SmartGWTApplication extends Application
 		Label east = new Label("east");
 		east.setBackgroundColor("green");
 		east.setHeight("50");
-	
+
 		layout.addComponent(north, BorderLayout.Constraint.NORTH);
 		if (subPanel)
 			layout.addComponent(getMainPanel(), BorderLayout.Constraint.CENTER);
 		layout.addComponent(south, BorderLayout.Constraint.SOUTH);
 		layout.addComponent(west, BorderLayout.Constraint.WEST);
 		layout.addComponent(east, BorderLayout.Constraint.EAST);
-		
+
 		return layout;
 	}
+
 	private BaseWidget getButtonLayout()
 	{
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
 		layout.setBackgroundColor("green");
-		
-		for (int i=0; i < 10; i++) 
+
+		for (int i = 0; i < 10; i++)
 		{
 			Button button = new Button("Button " + i);
-			
+
 			button.setHeight("*");
 			button.setWidth("100 px");
 			layout.addMember(button);
 		}
 		return layout;
 	}
-	
+
 	private BaseWidget getMainPanel()
 	{
 		TabSet tabset = new TabSet();
@@ -124,14 +126,13 @@ public class SmartGWTApplication extends Application
 		filler.setWidth100();
 		vl.addMember(filler);
 		tab5.setPane(complexLayout(false));
-		
-		
+
 		tab3.setPane(vl);
 		tab4.setPane(getSpecial());
 
 		tabset.setTabs(tab, tab2, tab3, tab4, tab5);
 		return tabset;
-		
+
 	}
 
 	private ComponentContainer getMainPanel2()
@@ -139,38 +140,37 @@ public class SmartGWTApplication extends Application
 		BorderLayout layout = new BorderLayout();
 		return layout;
 	}
-	
+
 	private ComponentContainer getVertical()
 	{
 		final HLayout layout = new HLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		
-		for (int i=0; i < 10; i++) 
+
+		for (int i = 0; i < 10; i++)
 		{
 			Button button = new Button("Button " + i)
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
 				{
-					if (new Random().nextBoolean() == true)
+					@Override
+					public void changeVariables(Object source, Map<String, Object> variables)
 					{
-						layout.removeMember(layout.getMembers()[0]);
-						layout.requestRepaint();
+						if (new Random().nextBoolean() == true)
+						{
+							layout.removeMember(layout.getMembers()[0]);
+							layout.requestRepaint();
+						}
+						else
+						{
+							layout.replaceComponent(this, new Button("unclickable button"));
+							layout.requestRepaint();
+						}
 					}
-					else
-					{
-						layout.replaceComponent(this, new Button("unclickable button"));
-						layout.requestRepaint();
-					}
-				}
-			};
+				};
 			layout.addComponent(button);
 		}
-		
+
 		return layout;
 	}
-	
 
 	public VLayout getSpecial()
 	{

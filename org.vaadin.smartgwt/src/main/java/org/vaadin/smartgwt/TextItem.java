@@ -12,7 +12,7 @@ public class TextItem extends FormItem
 	{
 		super("");
 	}
-	
+
 	public TextItem(String name)
 	{
 		super(name);

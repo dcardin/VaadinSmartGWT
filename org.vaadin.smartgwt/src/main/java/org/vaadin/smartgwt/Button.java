@@ -13,8 +13,8 @@ import com.vaadin.ui.Button.ClickListener;
 public class Button extends StatefulCanvas
 {
 	private static final Method BUTTON_CLICK_METHOD;
-	int i=0;
-	
+	int i = 0;
+
 	static
 	{
 		try

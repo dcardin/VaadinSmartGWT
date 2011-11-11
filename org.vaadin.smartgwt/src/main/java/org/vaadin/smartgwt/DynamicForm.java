@@ -1,7 +1,5 @@
 package org.vaadin.smartgwt;
 
-
-
 /**
  * Server side component for the VDynamicForm widget.
  */
@@ -12,7 +10,6 @@ public class DynamicForm extends Layout
 	{
 		return getAttributeAsInt("numCols");
 	}
-
 
 	public void setNumCols(int numCols)
 	{

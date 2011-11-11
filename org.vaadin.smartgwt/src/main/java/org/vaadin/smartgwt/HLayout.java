@@ -1,7 +1,5 @@
 package org.vaadin.smartgwt;
 
-
-
 /**
  * Server side component for the VHLayout widget.
  */

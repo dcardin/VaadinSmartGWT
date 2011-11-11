@@ -67,14 +67,14 @@ public class PainterHelper
 			if (!att.startsWith("*") && (!att.equalsIgnoreCase("id")))
 			{
 				String value = uidl.getStringAttribute(att);
-	            JSOHelper.setAttribute(formItem.getJsObj(), att, value);
+				JSOHelper.setAttribute(formItem.getJsObj(), att, value);
 			}
 		}
 	}
 
 	public static native void setWidgetProperty(Object obj, String property, String value)/*-{
-		var widget = obj.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-		widget.setProperty(property, value);
-	}-*/;
+																							var widget = obj.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+																							widget.setProperty(property, value);
+																							}-*/;
 
 }

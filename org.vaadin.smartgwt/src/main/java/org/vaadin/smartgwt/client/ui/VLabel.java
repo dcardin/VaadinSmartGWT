@@ -24,7 +24,7 @@ public class VLabel extends Label implements Paintable
 		// SmartGWT Components work using absolute positioning
 		if (getPosition() != Positioning.ABSOLUTE)
 			setPosition(Positioning.ABSOLUTE);
-		
+
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 	}
 

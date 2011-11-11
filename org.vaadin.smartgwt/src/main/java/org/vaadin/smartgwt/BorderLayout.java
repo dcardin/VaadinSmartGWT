@@ -37,16 +37,16 @@ public class BorderLayout extends VLayout
 		south.setVisible(false);
 		east.setVisible(false);
 		west.setVisible(false);
-		
+
 		center.setWidth("*");
 
 		centerLayout = new HLayout();
 		centerLayout.setSizeFull();
-		
+
 		centerLayout.addComponent(west);
 		centerLayout.addComponent(center);
 		centerLayout.addComponent(east);
-		
+
 		addMember(north);
 		addMember(centerLayout);
 		addMember(south);
@@ -54,11 +54,11 @@ public class BorderLayout extends VLayout
 
 	private void resizingtemp()
 	{
-//		setDefaultResizeBars(LayoutResizeBarPolicy.MARKED);
-//		((Label) north).setShowResizeBar(true);
-//		((Label) west).setShowResizeBar(true);
-//		((Label) center).setShowResizeBar(true);
-//		((Label) center).setResizeBarTarget("next");
+		// setDefaultResizeBars(LayoutResizeBarPolicy.MARKED);
+		// ((Label) north).setShowResizeBar(true);
+		// ((Label) west).setShowResizeBar(true);
+		// ((Label) center).setShowResizeBar(true);
+		// ((Label) center).setResizeBarTarget("next");
 		centerLayout.setDefaultResizeBars(LayoutResizeBarPolicy.MARKED);
 		centerLayout.setShowResizeBar(true);
 		centerLayout.setResizeBarTarget("next");
@@ -84,44 +84,44 @@ public class BorderLayout extends VLayout
 		{
 			replaceComponent(north, c);
 			north = c;
-//			if (north.getHeight() < 0 || north.getHeightUnits() == UNITS_PERCENTAGE)
-//			{
-//				north.setHeight(minimumNorthHeight);
-//			}
+			// if (north.getHeight() < 0 || north.getHeightUnits() == UNITS_PERCENTAGE)
+			// {
+			// north.setHeight(minimumNorthHeight);
+			// }
 		}
 		else if (constraint == Constraint.WEST)
 		{
 			centerLayout.replaceComponent(west, c);
 			west = c;
-//			if (west.getWidth() < 0 || west.getWidthUnits() == UNITS_PERCENTAGE)
-//			{
-//				west.setWidth(minimumWestWidth);
-//			}
+			// if (west.getWidth() < 0 || west.getWidthUnits() == UNITS_PERCENTAGE)
+			// {
+			// west.setWidth(minimumWestWidth);
+			// }
 		}
 		else if (constraint == Constraint.CENTER)
 		{
 			centerLayout.replaceComponent(center, c);
 			center = c;
-			center.setHeight("100%"); //centerLayout.getHeight(), centerLayout.getHeightUnits());
+			center.setHeight("100%"); // centerLayout.getHeight(), centerLayout.getHeightUnits());
 			center.setWidth("100%");
 		}
 		else if (constraint == Constraint.EAST)
 		{
 			centerLayout.replaceComponent(east, c);
 			east = c;
-//			if (east.getWidth() < 0 || east.getWidthUnits() == UNITS_PERCENTAGE)
-//			{
-//				east.setWidth(minimumEastWidth);
-//			}
+			// if (east.getWidth() < 0 || east.getWidthUnits() == UNITS_PERCENTAGE)
+			// {
+			// east.setWidth(minimumEastWidth);
+			// }
 		}
 		else if (constraint == Constraint.SOUTH)
 		{
 			replaceComponent(south, c);
 			south = c;
-//			if (south.getHeight() < 0 || south.getHeightUnits() == UNITS_PERCENTAGE)
-//			{
-//				south.setHeight(minimumSouthHeight);
-//			}
+			// if (south.getHeight() < 0 || south.getHeightUnits() == UNITS_PERCENTAGE)
+			// {
+			// south.setHeight(minimumSouthHeight);
+			// }
 		}
 		else
 		{
@@ -147,22 +147,22 @@ public class BorderLayout extends VLayout
 		else if (oldComponent == west)
 		{
 			centerLayout.replaceComponent(west, newComponent);
-			west = (BaseWidget)newComponent;
+			west = (BaseWidget) newComponent;
 		}
 		else if (oldComponent == center)
 		{
 			centerLayout.replaceComponent(center, newComponent);
-			center = (BaseWidget)newComponent;
+			center = (BaseWidget) newComponent;
 		}
 		else if (oldComponent == east)
 		{
 			centerLayout.replaceComponent(east, newComponent);
-			east = (BaseWidget)newComponent;
+			east = (BaseWidget) newComponent;
 		}
 		else if (oldComponent == south)
 		{
 			super.replaceComponent(south, newComponent);
-			south =(BaseWidget) newComponent;
+			south = (BaseWidget) newComponent;
 		}
 		requestRepaint();
 	}

@@ -23,8 +23,8 @@ public class VIButton extends IButton implements Paintable
 	public VIButton()
 	{
 		super();
-//		addChild(button);
-//		setBackgroundColor("blue");
+		// addChild(button);
+		// setBackgroundColor("blue");
 
 		addClickHandler(new ClickHandler()
 			{
@@ -39,10 +39,10 @@ public class VIButton extends IButton implements Paintable
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-//		if (client.updateComponent(this, uidl, true))
-//		{
-//			return;
-//		}
+		// if (client.updateComponent(this, uidl, true))
+		// {
+		// return;
+		// }
 
 		this.client = client;
 		paintableId = uidl.getId();
@@ -50,13 +50,13 @@ public class VIButton extends IButton implements Paintable
 		// SmartGWT Components work using absolute positioning
 		if (getPosition() != Positioning.ABSOLUTE)
 			setPosition(Positioning.ABSOLUTE);
-		
-//		button.setPosition(Positioning.ABSOLUTE);
+
+		// button.setPosition(Positioning.ABSOLUTE);
 
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
-//		setHeight(button.getHeight());
-//		setWidth(button.getWidth());
-		
+		// setHeight(button.getHeight());
+		// setWidth(button.getWidth());
+
 	}
 }

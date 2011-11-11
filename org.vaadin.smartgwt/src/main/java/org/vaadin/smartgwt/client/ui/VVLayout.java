@@ -49,10 +49,10 @@ public class VVLayout extends VLayout implements Paintable
 			if (uidl.hasAttribute("replaced"))
 			{
 				String[] replaced = uidl.getStringArrayAttribute("replaced");
-				for (int i=0; i<replaced.length; i+=2)
+				for (int i = 0; i < replaced.length; i += 2)
 				{
 					Canvas removed = (Canvas) client.getPaintable(replaced[i]);
-					Canvas added = (Canvas) client.getPaintable(replaced[i+1]);
+					Canvas added = (Canvas) client.getPaintable(replaced[i + 1]);
 					int pos = getMemberNumber(removed);
 					removeMember(removed);
 					addMember(added, pos);

@@ -799,7 +799,6 @@ public class StatefulCanvas extends Canvas
 		return EnumUtil.getEnum(VerticalAlignment.values(), getAttribute("valign"));
 	}
 
-
 	public void setTitleStyle(String titleStyle)
 	{
 		setAttribute("titleStyle", titleStyle, true);

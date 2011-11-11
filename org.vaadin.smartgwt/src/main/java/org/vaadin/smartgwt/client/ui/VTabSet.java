@@ -35,11 +35,10 @@ public class VTabSet extends TabSet implements Paintable
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
 		addTabs(uidl, client);
-		
+
 		if (getPosition() != Positioning.ABSOLUTE)
 			setPosition(Positioning.ABSOLUTE);
 	}
-
 
 	private void addTabs(UIDL uidl, ApplicationConnection client)
 	{
@@ -55,16 +54,16 @@ public class VTabSet extends TabSet implements Paintable
 				{
 					Tab tab = ((TabWrapper) widget).getTab();
 
-					if (tab != null) 
+					if (tab != null)
 						tabs.add(tab);
 				}
 			}
-			
+
 			if (tabs.size() > 0)
 			{
 				Tab[] tabsArr = new Tab[0];
 				tabsArr = tabs.toArray(tabsArr);
-				
+
 				setTabs(tabsArr);
 			}
 		}

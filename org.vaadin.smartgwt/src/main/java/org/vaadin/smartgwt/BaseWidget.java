@@ -70,7 +70,7 @@ public abstract class BaseWidget extends AbstractComponent implements Serializab
 		else
 			return Boolean.valueOf(value.toString());
 	}
-	
+
 	public Date getAttributeAsDate(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -82,17 +82,16 @@ public abstract class BaseWidget extends AbstractComponent implements Serializab
 			DateFormat df = new SimpleDateFormat();
 			try
 			{
-				Date d =  df.parse(value.toString());
+				Date d = df.parse(value.toString());
 				return d;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
-
 
 	public String[] getAttributeAsStringArray(String attribute)
 	{

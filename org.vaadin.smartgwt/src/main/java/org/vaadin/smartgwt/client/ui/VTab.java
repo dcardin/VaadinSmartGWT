@@ -51,7 +51,7 @@ public class VTab extends Label implements Paintable, TabWrapper
 		{
 			tab.setPane((Canvas) pane);
 		}
-		
+
 		if (uidl.hasAttribute("*title"))
 			tab.setTitle(uidl.getStringAttribute("*title"));
 	}
