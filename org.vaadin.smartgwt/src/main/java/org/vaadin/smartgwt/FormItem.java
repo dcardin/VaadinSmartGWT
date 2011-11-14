@@ -1,6 +1,8 @@
 package org.vaadin.smartgwt;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.smartgwt.client.data.Criteria;
@@ -23,15 +25,19 @@ import com.smartgwt.client.widgets.form.FormItemValueFormatter;
 import com.smartgwt.client.widgets.form.FormItemValueParser;
 import com.smartgwt.client.widgets.form.ValueIconMapper;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.validator.Validator;
 
 public class FormItem extends BaseWidget
 {
+	@Override
 	public void setHeight(String height)
 	{
 		setAttribute("height", height, true);
 	}
 
+	@Override
 	public void setWidth(String width)
 	{
 		if (width.equals("100%"))
@@ -4089,4 +4095,19 @@ public class FormItem extends BaseWidget
 		setDisabled(true);
 	}
 
+	// TODO -- Make handlers generic like in SmartGWT
+	List<ChangedHandler> handlers = new ArrayList<ChangedHandler>();
+
+	public void addChangedHandler(com.smartgwt.client.widgets.form.fields.events.ChangedHandler handler)
+	{
+		handlers.add(handler);
+	}
+
+	public void fireChangedHandler(ChangedEvent event)
+	{
+		for (ChangedHandler handler : handlers)
+		{
+			handler.onChanged(event);
+		}
+	}
 }

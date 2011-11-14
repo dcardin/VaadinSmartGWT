@@ -2,6 +2,8 @@ package org.vaadin.smartgwt;
 
 import java.util.Map;
 
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+
 /**
  * Server side component for the VTextItem widget.
  */
@@ -24,13 +26,24 @@ public class TextItem extends FormItem
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void changeVariables(Object source, Map<String, Object> variables)
+	public void changeVariables(final Object source, final Map<String, Object> variables)
 	{
 		super.changeVariables(source, variables);
 
 		if (variables.containsKey("value"))
-			setAttribute("value", variables.get("value"));
+		{
+			ChangedEvent event = new ChangedEvent(null)
+				{
+					@Override
+					public Object getValue()
+					{
+						return variables.get("value");
+					}
+				};
 
+			fireChangedHandler(event);
+			setAttribute("value", variables.get("value"));
+		}
 	}
 
 }
