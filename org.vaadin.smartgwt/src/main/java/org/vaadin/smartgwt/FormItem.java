@@ -4104,6 +4104,11 @@ public class FormItem extends BaseWidget
 		handlers.add(handler);
 	}
 
+	public void removeChangedHandler(com.smartgwt.client.widgets.form.fields.events.ChangedHandler handler)
+	{
+		handlers.remove(handler);
+	}
+
 	public void fireChangedHandler(ChangedEvent event)
 	{
 		for (ChangedHandler handler : handlers)
