@@ -83,9 +83,10 @@
 					<runTarget>org.vaadin.smartgwt</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<port>8080</port>
+					<noServer>true</noServer>
 					<logLevel>WARN</logLevel>
 				</configuration>
-				
+
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>

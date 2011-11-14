@@ -1,6 +1,7 @@
 package org.vaadin.smartgwt.client.ui;
 
 import org.vaadin.smartgwt.client.ui.wrapper.FormItemWrapper;
+
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -17,7 +18,7 @@ public class VTextItem extends Label implements Paintable, FormItemWrapper
 	protected String paintableId;
 	protected ApplicationConnection client;
 
-	private TextItem ti;
+	private final TextItem ti;
 	private String savedValue = null;
 
 	public VTextItem()
@@ -63,6 +64,7 @@ public class VTextItem extends Label implements Paintable, FormItemWrapper
 	/**
 	 * Called whenever an update is received from the server
 	 */
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		if (client.updateComponent(this, uidl, true))
@@ -79,7 +81,7 @@ public class VTextItem extends Label implements Paintable, FormItemWrapper
 
 			if (!newValue.equals(ti.getValueAsString()))
 			{
-				// ti.setValue(newValue);
+				ti.setValue(newValue);
 				savedValue = newValue;
 			}
 		}

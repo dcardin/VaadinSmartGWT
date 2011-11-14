@@ -3715,6 +3715,7 @@ public class FormItem extends BaseWidget
 	public void setValue(Object value)
 	{
 		setAttribute("value", value);
+		requestRepaint();
 	}
 
 	/**

@@ -32,6 +32,8 @@ public class TextItem extends FormItem
 
 		if (variables.containsKey("value"))
 		{
+			setAttribute("value", variables.get("value"));
+
 			ChangedEvent event = new ChangedEvent(null)
 				{
 					@Override
@@ -42,7 +44,6 @@ public class TextItem extends FormItem
 				};
 
 			fireChangedHandler(event);
-			setAttribute("value", variables.get("value"));
 		}
 	}
 
