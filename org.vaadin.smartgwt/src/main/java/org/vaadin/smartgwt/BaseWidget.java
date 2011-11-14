@@ -110,7 +110,7 @@ public abstract class BaseWidget extends AbstractComponent implements Serializab
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
-			target.addAttribute(entry.getKey(), entry.getValue().toString());
+			target.addAttribute(entry.getKey(), entry.getValue() == null ? "null" : entry.getValue().toString());
 		}
 
 		// Since the paint is finished, set the created attribute
