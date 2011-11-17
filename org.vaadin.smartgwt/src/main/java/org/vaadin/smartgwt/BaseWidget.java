@@ -106,15 +106,41 @@ public abstract class BaseWidget extends AbstractComponent implements Serializab
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		super.paintContent(target);
-
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
-			target.addAttribute(entry.getKey(), entry.getValue() == null ? "null" : entry.getValue().toString());
+			Object value = entry.getValue();
+			String name = entry.getKey();
+
+			if (value == null)
+				target.addAttribute(name, "null");
+
+			else if (value instanceof Boolean)
+			{
+				target.addAttribute(name, "b" + String.valueOf(value));
+			}
+			else if (value instanceof Integer)
+			{
+				target.addAttribute(name, "i" + String.valueOf(value));
+			}
+			else if (value instanceof Float)
+			{
+				target.addAttribute(name, "f" + String.valueOf(value));
+			}
+			else if (value instanceof Long)
+			{
+				target.addAttribute(name, "l" + String.valueOf(value));
+			}
+			else if (value instanceof Double)
+			{
+				target.addAttribute(name, "d" + String.valueOf(value));
+			}
+			else if (value instanceof String)
+			{
+				target.addAttribute(name, "s" + String.valueOf(value));
+			}
 		}
 
 		// Since the paint is finished, set the created attribute
 		isCreated = true;
 	}
-
 }

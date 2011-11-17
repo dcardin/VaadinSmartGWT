@@ -3,56 +3,70 @@ package org.vaadin.smartgwt.client.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.Widget;
+import org.vaadin.smartgwt.client.ui.PainterHelper.WidgetInfo;
 import org.vaadin.smartgwt.client.ui.wrapper.TabWrapper;
-import com.smartgwt.client.types.Positioning;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VTabSet extends TabSet implements Paintable
+public class VTabSet extends TabSet implements Paintable, VaadinManagement
 {
 	protected String paintableId;
 	private ApplicationConnection client;
+	private List<WidgetInfo> widgetInfos;
+	private Element dummyDiv = null;
 
-	public VTabSet()
+	@Override
+	public Element getElement()
 	{
-		super();
+		if (dummyDiv == null)
+		{
+			dummyDiv = DOM.createDiv();
+			DOMUtil.setID(dummyDiv, getID() + "_dummy");
+			RootPanel.getBodyElement().appendChild(dummyDiv);
+		}
+		return dummyDiv;
 	}
 
+	@Override
+	public void unregister()
+	{
+		client.unregisterPaintable(this);
+		RootPanel.getBodyElement().removeChild(dummyDiv);
+		dummyDiv = null;
+	}
+
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		if (client.updateComponent(this, uidl, true))
-		{
-			return;
-		}
-
 		this.client = client;
 		paintableId = uidl.getId();
 
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 
 		addTabs(uidl, client);
-
-		if (getPosition() != Positioning.ABSOLUTE)
-			setPosition(Positioning.ABSOLUTE);
 	}
 
 	private void addTabs(UIDL uidl, ApplicationConnection client)
 	{
-		List<Widget> widgets = PainterHelper.paintChildren(uidl, client);
+		widgetInfos = PainterHelper.paintChildren(uidl, client);
 
-		if (widgets.size() > 0)
+		if (widgetInfos.size() > 0)
 		{
 			List<Tab> tabs = new ArrayList<Tab>();
 
-			for (Widget widget : widgets)
+			for (WidgetInfo widgetInfo : widgetInfos)
 			{
-				if (widget instanceof TabWrapper)
+				if (widgetInfo.getWidget() instanceof TabWrapper)
 				{
-					Tab tab = ((TabWrapper) widget).getTab();
+					Tab tab = ((TabWrapper) widgetInfo.getWidget()).getTab();
 
 					if (tab != null)
 						tabs.add(tab);

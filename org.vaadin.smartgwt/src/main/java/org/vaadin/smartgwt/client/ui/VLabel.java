@@ -1,30 +1,46 @@
 package org.vaadin.smartgwt.client.ui;
 
-import com.smartgwt.client.types.Positioning;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.Label;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VLabel extends Label implements Paintable
+public class VLabel extends Label implements Paintable, VaadinManagement
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
+	private Element dummyDiv = null;
 
-	public VLabel()
+	@Override
+	public Element getElement()
 	{
-		super();
+		if (dummyDiv == null)
+		{
+			dummyDiv = DOM.createDiv();
+			DOMUtil.setID(dummyDiv, getID() + "_dummy");
+			RootPanel.getBodyElement().appendChild(dummyDiv);
+		}
+		return dummyDiv;
+	}
+
+	@Override
+	public void unregister()
+	{
+		client.unregisterPaintable(this);
+		RootPanel.getBodyElement().removeChild(dummyDiv);
+		dummyDiv = null;
 	}
 
 	/**
 	 * Called whenever an update is received from the server
 	 */
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		// SmartGWT Components work using absolute positioning
-		if (getPosition() != Positioning.ABSOLUTE)
-			setPosition(Positioning.ABSOLUTE);
-
 		PainterHelper.updateSmartGWTComponent(this, uidl);
 	}
 

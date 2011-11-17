@@ -79,11 +79,11 @@
 				<version>2.4.0</version>
 				<configuration>
 					<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<extraJvmArgs>-Xmx512M -Xss1024k -XX:MaxPermSize=128m </extraJvmArgs>
 					<runTarget>org.vaadin.smartgwt</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<port>8080</port>
-					<noServer>true</noServer>
+					<noServer>true</noServer>>true
 					<logLevel>WARN</logLevel>
 				</configuration>
 

@@ -1,13 +1,13 @@
 package org.vaadin.smartgwt.client.ui;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.vaadin.smartgwt.client.ui.wrapper.FormItemWrapper;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -19,13 +19,34 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VDateItem extends Label implements Paintable, FormItemWrapper
+public class VDateItem extends Label implements Paintable, FormItemWrapper, VaadinManagement
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
 
-	private DateItem di;
-	private Date savedValue = null;
+	private final DateItem di;
+	private final Date savedValue = null;
+	private Element dummyDiv = null;
+
+	@Override
+	public Element getElement()
+	{
+		if (dummyDiv == null)
+		{
+			dummyDiv = DOM.createDiv();
+			DOMUtil.setID(dummyDiv, getID() + "_dummy");
+			RootPanel.getBodyElement().appendChild(dummyDiv);
+		}
+		return dummyDiv;
+	}
+
+	@Override
+	public void unregister()
+	{
+		client.unregisterPaintable(this);
+		RootPanel.getBodyElement().removeChild(dummyDiv);
+		dummyDiv = null;
+	}
 
 	public VDateItem()
 	{
@@ -70,13 +91,9 @@ public class VDateItem extends Label implements Paintable, FormItemWrapper
 	/**
 	 * Called whenever an update is received from the server
 	 */
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		if (client.updateComponent(this, uidl, true))
-		{
-			return;
-		}
-
 		this.client = client;
 		paintableId = uidl.getId();
 

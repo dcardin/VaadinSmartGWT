@@ -1,14 +1,13 @@
 package org.vaadin.smartgwt;
 
 import com.vaadin.Application;
-import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
 public class BorderLayoutApplication extends Application
 {
 	private BorderLayout bl;
-	private String[] texts = { "NORTH", "SOUTH", "CENTER", "EAST", "WEST" };
+	private final String[] texts = { "NORTH", "SOUTH", "CENTER", "EAST", "WEST" };
 
 	@Override
 	public void init()
@@ -24,7 +23,7 @@ public class BorderLayoutApplication extends Application
 		bl.addComponent(new IButton("east"), BorderLayout.Constraint.EAST);
 		bl.addComponent(new IButton("west"), BorderLayout.Constraint.WEST);
 
-		mainWindow.setContent(bl);
+		// mainWindow.setContent(bl);
 		setMainWindow(mainWindow);
 	}
 

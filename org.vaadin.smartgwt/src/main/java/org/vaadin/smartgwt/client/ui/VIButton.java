@@ -1,30 +1,46 @@
 package org.vaadin.smartgwt.client.ui;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.smartgwt.client.types.Positioning;
-import com.smartgwt.client.widgets.Canvas;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VIButton extends IButton implements Paintable
+public class VIButton extends IButton implements Paintable, VaadinManagement
 {
 	public static final String CLICK_EVENT_IDENTIFIER = "click";
 
 	protected String paintableId;
 	protected ApplicationConnection client;
-	private IButton button = new IButton();
+	private Element dummyDiv = null;
+
+	@Override
+	public Element getElement()
+	{
+		if (dummyDiv == null)
+		{
+			dummyDiv = DOM.createDiv();
+			DOMUtil.setID(dummyDiv, getID() + "_dummy");
+			RootPanel.getBodyElement().appendChild(dummyDiv);
+		}
+		return dummyDiv;
+	}
+
+	@Override
+	public void unregister()
+	{
+		client.unregisterPaintable(this);
+		RootPanel.getBodyElement().removeChild(dummyDiv);
+		dummyDiv = null;
+	}
 
 	public VIButton()
 	{
 		super();
-		// addChild(button);
-		// setBackgroundColor("blue");
 
 		addClickHandler(new ClickHandler()
 			{
@@ -37,26 +53,12 @@ public class VIButton extends IButton implements Paintable
 			});
 	}
 
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		// if (client.updateComponent(this, uidl, true))
-		// {
-		// return;
-		// }
-
 		this.client = client;
 		paintableId = uidl.getId();
 
-		// SmartGWT Components work using absolute positioning
-		if (getPosition() != Positioning.ABSOLUTE)
-			setPosition(Positioning.ABSOLUTE);
-
-		// button.setPosition(Positioning.ABSOLUTE);
-
 		PainterHelper.updateSmartGWTComponent(this, uidl);
-
-		// setHeight(button.getHeight());
-		// setWidth(button.getWidth());
-
 	}
 }

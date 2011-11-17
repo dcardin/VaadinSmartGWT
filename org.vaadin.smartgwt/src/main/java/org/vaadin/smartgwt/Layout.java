@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.LayoutPolicy;
@@ -644,6 +643,7 @@ public class Layout extends Canvas implements ComponentContainer
 	 * @throws IllegalStateException
 	 *             this property cannot be changed after the component has been created
 	 */
+	@Override
 	public void setOverflow(Overflow overflow) throws IllegalStateException
 	{
 		setAttribute("overflow", overflow.getValue(), false);
@@ -656,6 +656,7 @@ public class Layout extends Canvas implements ComponentContainer
 	 * 
 	 * @return Overflow
 	 */
+	@Override
 	public Overflow getOverflow()
 	{
 		return EnumUtil.getEnum(Overflow.values(), getAttribute("overflow"));
@@ -1077,11 +1078,13 @@ public class Layout extends Canvas implements ComponentContainer
 			requestRepaint();
 	}
 
+	@Override
 	public void addComponent(Component component)
 	{
 		addMember(component);
 	}
 
+	@Override
 	public void removeAllComponents()
 	{
 		addedComponents.clear();
@@ -1215,6 +1218,7 @@ public class Layout extends Canvas implements ComponentContainer
 	 * @param alignment
 	 *            alignment Default value is null
 	 */
+	@Override
 	public void setAlign(Alignment alignment)
 	{
 		setAttribute("align", alignment.getValue(), true);
@@ -1251,8 +1255,6 @@ public class Layout extends Canvas implements ComponentContainer
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-
-		//
 		JsonPaintTarget jpt = (JsonPaintTarget) target;
 
 		if (addedComponents.size() == 0 && replacedComponents.size() == 0 && removedComponents.size() == 0)
@@ -1263,7 +1265,7 @@ public class Layout extends Canvas implements ComponentContainer
 			{
 				c.paint(target);
 			}
-			target.addAttribute("children-painted", "");
+			target.addAttribute("*children-painted", "");
 		}
 		else
 		{
@@ -1277,7 +1279,7 @@ public class Layout extends Canvas implements ComponentContainer
 					references.add(jpt.getPaintIdentifier(c));
 				}
 
-				target.addAttribute("added", references.toArray());
+				target.addAttribute("*added", references.toArray());
 				addedComponents.clear();
 			}
 
@@ -1290,7 +1292,7 @@ public class Layout extends Canvas implements ComponentContainer
 					references.add(jpt.getPaintIdentifier(c));
 				}
 
-				target.addAttribute("removed", references.toArray());
+				target.addAttribute("*removed", references.toArray());
 				removedComponents.clear();
 			}
 
@@ -1304,7 +1306,7 @@ public class Layout extends Canvas implements ComponentContainer
 					references.add(jpt.getPaintIdentifier(c[1]));
 					c[1].paint(target);
 				}
-				target.addAttribute("replaced", references.toArray());
+				target.addAttribute("*replaced", references.toArray());
 				replacedComponents.clear();
 			}
 		}
@@ -1422,5 +1424,12 @@ public class Layout extends Canvas implements ComponentContainer
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void setSizeFull()
+	{
+		setWidth("100%");
+		setHeight("100%");
 	}
 }
