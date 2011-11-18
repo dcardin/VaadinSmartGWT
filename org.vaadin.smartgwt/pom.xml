@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vaadin</groupId>
 	<artifactId>org.vaadin.smartgwt</artifactId>
@@ -43,8 +42,7 @@
 						<index>true</index>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<!-- Implementation-Title and Implementation-Version come from the 
-								POM by default -->
+							<!-- Implementation-Title and Implementation-Version come from the POM by default -->
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<manifestEntries>
@@ -53,8 +51,7 @@
 
 							<!-- Add-on specific fields to update -->
 
-							<!-- Implementation-Title and Implementation-Version come from the 
-								POM by default -->
+							<!-- Implementation-Title and Implementation-Version come from the POM by default -->
 							<!-- <Implementation-Title>${pom.name}</Implementation-Title> <Implementation-Version>${pom.version}</Implementation-Version> -->
 
 							<!-- Comma-separated list of widgetsets in the package -->
@@ -70,8 +67,7 @@
 				<version>1.0.2</version>
 			</plugin>
 
-			<!-- Compile custom GWT components or widget dependencies with the GWT 
-				compiler -->
+			<!-- Compile custom GWT components or widget dependencies with the GWT compiler -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -132,8 +128,7 @@
 
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -185,12 +180,9 @@
 		</repository>
 	</repositories>
 
-	<!-- <pluginRepositories> <pluginRepository> <id>codehaus-snapshots</id> 
-		<url>http://nexus.codehaus.org/snapshots</url> <snapshots> <enabled>true</enabled> 
-		</snapshots> <releases> <enabled>false</enabled> </releases> </pluginRepository> 
-		<pluginRepository> <id>vaadin-snapshots</id> <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url> 
-		<snapshots> <enabled>true</enabled> </snapshots> <releases> <enabled>false</enabled> 
-		</releases> </pluginRepository> </pluginRepositories> -->
+	<!-- <pluginRepositories> <pluginRepository> <id>codehaus-snapshots</id> <url>http://nexus.codehaus.org/snapshots</url> <snapshots> <enabled>true</enabled> </snapshots> 
+		<releases> <enabled>false</enabled> </releases> </pluginRepository> <pluginRepository> <id>vaadin-snapshots</id> <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url> 
+		<snapshots> <enabled>true</enabled> </snapshots> <releases> <enabled>false</enabled> </releases> </pluginRepository> </pluginRepositories> -->
 
 	<dependencies>
 		<dependency>
@@ -202,16 +194,21 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 			<classifier>sources</classifier>
+			<scope>provided</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
