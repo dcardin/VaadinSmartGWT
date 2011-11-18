@@ -34,7 +34,7 @@
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
-						<Export-Package>!org.vaadin.smartgwt.client.*;org.vaadin.smartgwt.*</Export-Package>
+						<Export-Package>org.vaadin.smartgwt.server.*</Export-Package>
 						<Import-Package>!com.google.gwt.*,!com.smartgwt.client.*,*</Import-Package>
 					</instructions>
 				</configuration>
