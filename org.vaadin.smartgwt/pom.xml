@@ -12,8 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>6.7.1</vaadin.version>
 		<gwt.version>2.4.0</gwt.version>
-		<gwt.plugin.version>2.2.0</gwt.plugin.version>
-		<browser>/usr/bin/firefox</browser>
+		<gwt.plugin.version>2.4.0</gwt.plugin.version>
 	</properties>
 
 	<build>
@@ -76,14 +75,14 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>${gwt.plugin.version}</version>
 				<configuration>
 					<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
 					<extraJvmArgs>-Xmx512M -Xss1024k -XX:MaxPermSize=128m </extraJvmArgs>
 					<runTarget>org.vaadin.smartgwt</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<port>8080</port>
-					<noServer>true</noServer>>true
+					<noServer>true</noServer>
 					<logLevel>WARN</logLevel>
 				</configuration>
 
@@ -203,6 +202,7 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -216,6 +216,15 @@
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
 			<version>2.5</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<classifier>sources</classifier>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

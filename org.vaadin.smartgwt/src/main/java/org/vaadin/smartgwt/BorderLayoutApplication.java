@@ -1,5 +1,9 @@
 package org.vaadin.smartgwt;
 
+import org.vaadin.smartgwt.server.IButton;
+import org.vaadin.smartgwt.server.layout.BorderLayout;
+import org.vaadin.smartgwt.server.layout.VLayout;
+
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 

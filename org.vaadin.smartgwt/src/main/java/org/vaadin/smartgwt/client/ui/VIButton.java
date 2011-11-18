@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.client.ui;
 
+import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
+
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;

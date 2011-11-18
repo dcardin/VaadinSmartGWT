@@ -5,6 +5,23 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
+import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.server.Button;
+import org.vaadin.smartgwt.server.IButton;
+import org.vaadin.smartgwt.server.Label;
+import org.vaadin.smartgwt.server.form.DynamicForm;
+import org.vaadin.smartgwt.server.form.fields.DateItem;
+import org.vaadin.smartgwt.server.form.fields.FormItem;
+import org.vaadin.smartgwt.server.form.fields.SelectItem;
+import org.vaadin.smartgwt.server.form.fields.TextItem;
+import org.vaadin.smartgwt.server.layout.BorderLayout;
+import org.vaadin.smartgwt.server.layout.HLayout;
+import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.server.layout.VLayout;
+import org.vaadin.smartgwt.server.tab.Tab;
+import org.vaadin.smartgwt.server.tab.TabSet;
+
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;

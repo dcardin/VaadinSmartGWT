@@ -6,6 +6,4 @@
 	<script src="startup.js"/> 
 	<inherits name="com.smartgwt.SmartGwt" />
 
-	<set-property name="user.agent" value="gecko1_8" />
-
 </module>
