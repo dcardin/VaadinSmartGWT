@@ -1,10 +1,10 @@
 package org.vaadin.smartgwt.server;
 
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.SelectionType;
-import com.smartgwt.client.types.State;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.EnumUtil;
+import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.SelectionType;
+import org.vaadin.smartgwt.server.types.State;
+import org.vaadin.smartgwt.server.types.VerticalAlignment;
+import org.vaadin.smartgwt.server.util.EnumUtil;
 
 public class StatefulCanvas extends Canvas
 {
@@ -756,6 +756,7 @@ public class StatefulCanvas extends Canvas
 	 *            new title. Default value is varies
 	 * @see com.smartgwt.client.docs.Basics Basics overview and related methods
 	 */
+	@Override
 	public void setTitle(String title)
 	{
 		setAttribute("title", title, true);
@@ -770,6 +771,7 @@ public class StatefulCanvas extends Canvas
 	 *         Default is to simply return this.title.
 	 * @see com.smartgwt.client.docs.Basics Basics overview and related methods
 	 */
+	@Override
 	public String getTitle()
 	{
 		return getAttributeAsString("title");

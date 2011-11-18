@@ -8,5 +8,4 @@ public class Label extends StatefulCanvas
 		super();
 		setContents(contents);
 	}
-
 }

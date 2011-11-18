@@ -7,14 +7,15 @@ import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
 
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.LayoutPolicy;
-import com.smartgwt.client.types.LayoutResizeBarPolicy;
-import com.smartgwt.client.types.LocatorStrategy;
-import com.smartgwt.client.types.LocatorTypeStrategy;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.EnumUtil;
+import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.LayoutPolicy;
+import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
+import org.vaadin.smartgwt.server.types.LocatorStrategy;
+import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
+import org.vaadin.smartgwt.server.types.Overflow;
+import org.vaadin.smartgwt.server.types.VerticalAlignment;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;

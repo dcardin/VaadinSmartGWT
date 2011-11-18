@@ -1,21 +1,22 @@
 package org.vaadin.smartgwt.server;
 
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.AnimationAcceleration;
-import com.smartgwt.client.types.AnimationEffect;
-import com.smartgwt.client.types.BkgndRepeat;
-import com.smartgwt.client.types.Cursor;
-import com.smartgwt.client.types.DragAppearance;
-import com.smartgwt.client.types.DragIntersectStyle;
-import com.smartgwt.client.types.DrawPosition;
-import com.smartgwt.client.types.LocatorStrategy;
-import com.smartgwt.client.types.LocatorTypeStrategy;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.PercentBoxModel;
-import com.smartgwt.client.types.Positioning;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.types.Visibility;
-import com.smartgwt.client.util.EnumUtil;
+import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.AnimationAcceleration;
+import org.vaadin.smartgwt.server.types.AnimationEffect;
+import org.vaadin.smartgwt.server.types.BkgndRepeat;
+import org.vaadin.smartgwt.server.types.Cursor;
+import org.vaadin.smartgwt.server.types.DragAppearance;
+import org.vaadin.smartgwt.server.types.DragIntersectStyle;
+import org.vaadin.smartgwt.server.types.DrawPosition;
+import org.vaadin.smartgwt.server.types.LocatorStrategy;
+import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
+import org.vaadin.smartgwt.server.types.Overflow;
+import org.vaadin.smartgwt.server.types.PercentBoxModel;
+import org.vaadin.smartgwt.server.types.Positioning;
+import org.vaadin.smartgwt.server.types.VerticalAlignment;
+import org.vaadin.smartgwt.server.types.Visibility;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
 import com.smartgwt.client.widgets.form.ValuesManager;
 import com.smartgwt.client.widgets.form.fields.CanvasItem;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -4016,6 +4017,7 @@ public abstract class Canvas extends BaseWidget
 	 * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
 	 * @see <a href="http://www.smartclient.com/smartgwt/showcase/#effects_lf_css" target="examples">CSS styles Example</a>
 	 */
+	@Override
 	public void setStyleName(String styleName)
 	{
 		setAttribute("styleName", styleName, true);
@@ -4029,6 +4031,7 @@ public abstract class Canvas extends BaseWidget
 	 * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
 	 * @see <a href="http://www.smartclient.com/smartgwt/showcase/#effects_lf_css" target="examples">CSS styles Example</a>
 	 */
+	@Override
 	public String getStyleName()
 	{
 		return getAttributeAsString("styleName");
@@ -4194,6 +4197,7 @@ public abstract class Canvas extends BaseWidget
 		return EnumUtil.getEnum(Visibility.values(), getAttribute("visibility"));
 	}
 
+	@Override
 	public void setVisible(boolean visible)
 	{
 		setVisibility(visible ? Visibility.INHERIT : Visibility.HIDDEN);
@@ -4238,6 +4242,7 @@ public abstract class Canvas extends BaseWidget
 		setWidth("100%");
 	}
 
+	@Override
 	public void setHeight(String height)
 	{
 		setAttribute("height", height, true);
@@ -4358,6 +4363,7 @@ public abstract class Canvas extends BaseWidget
 	 * @param width
 	 *            new width. Default value is null
 	 */
+	@Override
 	public void setWidth(String width)
 	{
 		setAttribute("width", width, true);

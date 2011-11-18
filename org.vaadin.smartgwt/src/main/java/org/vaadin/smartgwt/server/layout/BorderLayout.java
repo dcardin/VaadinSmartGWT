@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Label;
 
-import com.smartgwt.client.types.LayoutResizeBarPolicy;
+import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
 import com.vaadin.ui.Component;
 
 public class BorderLayout extends VLayout
@@ -17,7 +17,7 @@ public class BorderLayout extends VLayout
 
 	public static final String DEFAULT_MINIMUM_HEIGHT = "50px";
 
-	private HLayout centerLayout;
+	private final HLayout centerLayout;
 
 	private String minimumNorthHeight = DEFAULT_MINIMUM_HEIGHT;
 	private String minimumSouthHeight = DEFAULT_MINIMUM_HEIGHT;
@@ -301,11 +301,13 @@ public class BorderLayout extends VLayout
 			this.centerLayoutIter = centerLayoutIter;
 		}
 
+		@Override
 		public boolean hasNext()
 		{
 			return (mainLayoutIter.hasNext() || centerLayoutIter.hasNext());
 		}
 
+		@Override
 		public Component next()
 		{
 			if (mainLayoutIter.hasNext())
@@ -318,6 +320,7 @@ public class BorderLayout extends VLayout
 			}
 		}
 
+		@Override
 		public void remove()
 		{
 			if (mainLayoutIter.hasNext())

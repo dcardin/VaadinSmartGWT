@@ -4,7 +4,7 @@
 	<groupId>org.vaadin</groupId>
 	<artifactId>org.vaadin.smartgwt</artifactId>
 	<version>0.6-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
 	<name>Vaadin SmartGWT Integration</name>
 
 	<properties>
@@ -31,6 +31,13 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.3.5</version>
 				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<instructions>
+						<Export-Package>!org.vaadin.smartgwt.client.*;org.vaadin.smartgwt.*</Export-Package>
+						<Import-Package>!com.google.gwt.*,!com.smartgwt.client.*,*</Import-Package>
+					</instructions>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -213,15 +220,7 @@
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt</artifactId>
 			<version>2.5</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
-			<classifier>sources</classifier>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
