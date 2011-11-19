@@ -9,11 +9,13 @@ import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.IButton;
 import org.vaadin.smartgwt.server.Label;
+import org.vaadin.smartgwt.server.data.ListGridField;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
+import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
@@ -24,7 +26,6 @@ import org.vaadin.smartgwt.server.tab.TabSet;
 
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.SelectionType;
-
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.vaadin.Application;
@@ -32,6 +33,11 @@ import com.vaadin.ui.Window;
 
 public class SmartGWTApplication extends Application
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void init()
 	{
@@ -41,11 +47,37 @@ public class SmartGWTApplication extends Application
 		mainWindow.setSizeFull();
 
 		MasterContainer layout = new MasterContainer();
-		layout.addMember(getMainPanel());
+		layout.addMember(getEricLayout());
 
 		mainWindow.setContent(layout);
 	}
-
+	
+	public static void main(String[] args)
+	{
+		new SmartGWTApplication().getListGrid();
+	}
+	private void getListGrid()
+	{
+        final ListGrid countryGrid = new ListGrid();  
+        countryGrid.setWidth(500);  
+        countryGrid.setHeight(224);  
+        countryGrid.setShowAllRecords(true);  
+  
+        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
+        countryCodeField.setAlign(Alignment.CENTER);  
+        countryCodeField.setType(ListGridFieldType.IMAGE);  
+        countryCodeField.setImageURLPrefix("flags/16/");  
+        countryCodeField.setImageURLSuffix(".png");  
+  
+        ListGridField nameField = new ListGridField("countryName", "Country");  
+        ListGridField capitalField = new ListGridField("capital", "Capital");  
+        ListGridField continentField = new ListGridField("continent", "Continent");  
+        
+        countryGrid.setFields(countryCodeField, nameField, capitalField, continentField);  
+        countryGrid.setCanResizeFields(true);  
+        countryGrid.setData(CountryData.getRecords());  
+	}
+	
 	private Layout paintBorderLayout()
 	{
 		final VLayout outerLayout = new VLayout();
@@ -149,6 +181,11 @@ public class SmartGWTApplication extends Application
 
 	class BlueBox extends Label
 	{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public BlueBox(String contents)
 		{
@@ -261,6 +298,11 @@ public class SmartGWTApplication extends Application
 		{
 			Button button = new Button("Button " + i)
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
 					@Override
 					public void changeVariables(Object source, Map<String, Object> variables)
 					{

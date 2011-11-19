@@ -18,6 +18,11 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VSelectItem.class)
 public class SelectItem extends FormItem
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public SelectItem()
 	{
 		super("");

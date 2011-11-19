@@ -11,6 +11,11 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VTextItem.class)
 public class TextItem extends FormItem
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TextItem()
 	{
 		super("");

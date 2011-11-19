@@ -12,6 +12,10 @@ import com.vaadin.ui.Component;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTab.class)
 public class Tab extends Layout
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TabSet tabSet;
 
 	public TabSet getTabSet()

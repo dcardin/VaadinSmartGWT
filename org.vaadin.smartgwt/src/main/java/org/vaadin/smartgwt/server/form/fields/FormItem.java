@@ -33,6 +33,11 @@ import com.smartgwt.client.widgets.form.validator.Validator;
 
 public class FormItem extends BaseWidget
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void setHeight(String height)
 	{

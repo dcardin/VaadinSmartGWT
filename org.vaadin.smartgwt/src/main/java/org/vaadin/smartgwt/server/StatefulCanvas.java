@@ -9,6 +9,11 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 public class StatefulCanvas extends Canvas
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Behavior on state changes -- BUTTON, RADIO or CHECKBOX
 	 * 
 	 * <br>

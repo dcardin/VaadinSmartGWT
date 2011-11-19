@@ -7,6 +7,11 @@ import com.google.gwt.core.client.JavaScriptObject;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTabSet.class)
 public class TabSet extends Layout
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public void setTabs(Tab... tabs)
 	{
 		for (Tab tab : tabs)

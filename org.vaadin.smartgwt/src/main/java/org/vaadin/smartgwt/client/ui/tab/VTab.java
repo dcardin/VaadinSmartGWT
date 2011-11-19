@@ -24,7 +24,6 @@ public class VTab extends Label implements Paintable, TabWrapper, VaadinManageme
 	protected String paintableId;
 	protected ApplicationConnection client;
 	private final Tab tab;
-	private List<WidgetInfo> widgetInfos;
 	private Element dummyDiv = null;
 
 	@Override

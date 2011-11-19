@@ -10,6 +10,11 @@ import com.vaadin.ui.Component;
 
 public class BorderLayout extends VLayout
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public enum Constraint
 	{
 		NORTH, WEST, CENTER, EAST, SOUTH;

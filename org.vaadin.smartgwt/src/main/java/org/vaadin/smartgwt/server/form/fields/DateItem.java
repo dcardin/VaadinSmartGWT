@@ -18,6 +18,11 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 public class DateItem extends FormItem
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DateItem()
 	{
 		super("");

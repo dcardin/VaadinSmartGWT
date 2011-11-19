@@ -12,6 +12,10 @@ import com.vaadin.ui.Button.ClickListener;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.VButton.class)
 public class Button extends StatefulCanvas
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final Method BUTTON_CLICK_METHOD;
 	int i = 0;
 

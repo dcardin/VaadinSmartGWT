@@ -20,6 +20,10 @@ import com.vaadin.terminal.Paintable;
  **/
 public class PartialPaintChecker implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HashMap<String, Boolean> flags = new HashMap<String, Boolean>();
 	private boolean partialRepaint = true;
 	private boolean fullRepaint = true;
