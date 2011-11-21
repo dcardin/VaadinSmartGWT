@@ -23,9 +23,10 @@ import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
-
 import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.SelectionType;
+
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.vaadin.Application;
