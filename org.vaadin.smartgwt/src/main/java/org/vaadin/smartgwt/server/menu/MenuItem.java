@@ -200,9 +200,9 @@ public class MenuItem extends ListGridRecord  implements com.smartgwt.client.wid
      * @return String
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_appearance_category" target="examples">Appearance Example</a>
      */
-    public String getIcon()  {
-        return getAttributeAsString("icon");
-    }
+//    public String getIcon()  {
+//        return getAttributeAsString("icon");
+//    }
 
     /**
      * The height applied to this item's icon.  The default of <code>16</code> can be changed for all MenuItems by overriding

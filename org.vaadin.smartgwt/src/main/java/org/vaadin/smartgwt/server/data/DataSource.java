@@ -2,35 +2,36 @@ package org.vaadin.smartgwt.server.data;
 
 import java.util.Map;
 
-import org.vaadin.smartgwt.server.core.BaseClass;
+import org.vaadin.smartgwt.client.data.VDataSource;
+import org.vaadin.smartgwt.server.core.DataClass;
+import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.server.types.CriteriaPolicy;
+import org.vaadin.smartgwt.server.types.DSDataFormat;
+import org.vaadin.smartgwt.server.types.DSProtocol;
+import org.vaadin.smartgwt.server.types.EnumTranslateStrategy;
+import org.vaadin.smartgwt.server.types.FieldType;
+import org.vaadin.smartgwt.server.types.OperatorId;
+import org.vaadin.smartgwt.server.types.RPCTransport;
+import org.vaadin.smartgwt.server.types.TextMatchStyle;
+import org.vaadin.smartgwt.server.util.EnumUtil;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.core.DataClass;
 import com.smartgwt.client.core.Function;
-import com.smartgwt.client.core.RefDataClass;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
-import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.OperationBinding;
 import com.smartgwt.client.data.RequestTransformer;
 import com.smartgwt.client.data.ResponseTransformer;
 import com.smartgwt.client.data.SerializationContext;
-import com.smartgwt.client.data.XSDLoadCallback;
 import com.smartgwt.client.data.XmlNamespaces;
-import com.smartgwt.client.types.CriteriaPolicy;
-import com.smartgwt.client.types.DSDataFormat;
-import com.smartgwt.client.types.DSProtocol;
-import com.smartgwt.client.types.EnumTranslateStrategy;
-import com.smartgwt.client.types.FieldType;
-import com.smartgwt.client.types.OperatorId;
-import com.smartgwt.client.types.RPCTransport;
-import com.smartgwt.client.types.TextMatchStyle;
-import com.smartgwt.client.util.EnumUtil;
-import com.smartgwt.client.util.IDManager;
 import com.smartgwt.client.util.JSOHelper;
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+import com.vaadin.ui.ClientWidget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -47,7 +48,8 @@ import com.smartgwt.client.util.JSOHelper;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
+
+// @formatter:off
 /**
  * A DataSource is data-provider-independent description of a set of objects that will be loaded, edited and saved within
  * the user interface of your application. <P> Each DataSource consists of a list of {@link
@@ -89,7 +91,8 @@ import com.smartgwt.client.util.JSOHelper;
  * Example</a> custom databinding-capable components.
  * @see com.smartgwt.client.widgets.DataBoundComponent
  */
-public class DataSource extends BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
+@ClientWidget(value=VDataSource.class)
+public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
 
 //    public static DataSource getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -2079,22 +2082,22 @@ public class DataSource extends BaseClass  implements com.smartgwt.client.data.e
 
     }-*/;
     
-    // override setID() - if this.addGlobalID is false, don't register the ID with the IDManager
-    // Note: this is called directly from BaseClass init method so this.scClassName may not yet have
-    // been set. Catch this case and avoid calling 'getAddGlobalID' as that ultimately relies on this
-    // property being set correctly
-    public void setID(String id) {
-        // Default behavior at the SmartClient level is to add global IDs
-        if (scClassName == null || this.getAddGlobalId()) {
-            if (this.id != null) {
-                IDManager.unregisterID(this.id);
-            }
-            
-            IDManager.registerID(id);
-        }
-        setAttribute("ID", id, false);
-        this.id = id;
-    }
+//    // override setID() - if this.addGlobalID is false, don't register the ID with the IDManager
+//    // Note: this is called directly from BaseClass init method so this.scClassName may not yet have
+//    // been set. Catch this case and avoid calling 'getAddGlobalID' as that ultimately relies on this
+//    // property being set correctly
+//    public void setID(String id) {
+//        // Default behavior at the SmartClient level is to add global IDs
+//        if (scClassName == null || this.getAddGlobalId()) {
+//            if (this.id != null) {
+//                IDManager.unregisterID(this.id);
+//            }
+//            
+//            IDManager.registerID(id);
+//        }
+//        setAttribute("ID", id, false);
+//        this.id = id;
+//    }
     
 
     /**
@@ -2104,14 +2107,14 @@ public class DataSource extends BaseClass  implements com.smartgwt.client.data.e
      * @param addGlobalId addGlobalId Default value is true
      * @throws IllegalStateException this property cannot be changed after the underlying component has been created
      */
-    public void setAddGlobalId(Boolean addGlobalId)  throws IllegalStateException {
-        setAttribute("addGlobalId", addGlobalId, false);
-        if (addGlobalId) {
-            IDManager.registerID(id);
-        } else {
-            IDManager.unregisterID(id);
-        }
-    }
+//    public void setAddGlobalId(Boolean addGlobalId)  throws IllegalStateException {
+//        setAttribute("addGlobalId", addGlobalId, false);
+//        if (addGlobalId) {
+//            IDManager.registerID(id);
+//        } else {
+//            IDManager.unregisterID(id);
+//        }
+//    }
 
     /**
      * Whether to make this DataSource available as a global variable for convenience.
@@ -2433,11 +2436,11 @@ public class DataSource extends BaseClass  implements com.smartgwt.client.data.e
         return @com.smartgwt.client.data.DSResponse::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
     }-*/;
 
-    public native boolean isCreated()/*-{
-        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
-        var obj = $wnd.isc.DataSource.getDataSource(id);
-        return id != null && obj != null && obj !== undefined;
-    }-*/;
+//    public native boolean isCreated()/*-{
+//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
+//        var obj = $wnd.isc.DataSource.getDataSource(id);
+//        return id != null && obj != null && obj !== undefined;
+//    }-*/;
 
     public native JavaScriptObject getJsObj()/*-{
         var id = this.@com.smartgwt.client.core.BaseClass::getID()();
@@ -2498,13 +2501,13 @@ public class DataSource extends BaseClass  implements com.smartgwt.client.data.e
      * @param field the datasource field
      * @throws IllegalStateException this property cannot be changed after the underlying component has been created
      */
-    public void addField(DataSourceField field) throws IllegalStateException {
-        if(isCreated()) {
-            error("Fields cannot be added to a DataSource after the underlying component has been created.");
-        }
-        JavaScriptObject fieldJS = field.getJsObj();
-        addFieldPreCreate(fieldJS);
-    }
+//    public void addField(DataSourceField field) throws IllegalStateException {
+//        if(isCreated()) {
+//            error("Fields cannot be added to a DataSource after the underlying component has been created.");
+//        }
+//        JavaScriptObject fieldJS = field.getJsObj();
+//        addFieldPreCreate(fieldJS);
+//    }
 
     private native void addFieldPreCreate(JavaScriptObject fieldJS) /*-{
 		var config = this.@com.smartgwt.client.core.BaseClass::config;
@@ -2563,26 +2566,26 @@ public class DataSource extends BaseClass  implements com.smartgwt.client.data.e
      *
      * @return the test data
      */
-    public DataClass[] getTestData() {
-        return convertToTabArray(getAttributeAsJavaScriptObject("testData"));
-    }
+//    public DataClass[] getTestData() {
+//        return convertToTabArray(getAttributeAsJavaScriptObject("testData"));
+//    }
 
-    private static DataClass[] convertToTabArray(JavaScriptObject nativeArray) {
-        if (nativeArray == null) {
-            return new DataClass[]{};
-        }
-        JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
-        DataClass[] objects = new DataClass[componentsj.length];
-        for (int i = 0; i < componentsj.length; i++) {
-            JavaScriptObject componentJS = componentsj[i];
-            DataClass obj = RefDataClass.getRef(componentJS);
-            if (obj == null) {
-                obj = new DataClass(componentJS);
-            }
-            objects[i] = obj;
-        }
-        return objects;
-    }
+//    private static DataClass[] convertToTabArray(JavaScriptObject nativeArray) {
+//        if (nativeArray == null) {
+//            return new DataClass[]{};
+//        }
+//        JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
+//        DataClass[] objects = new DataClass[componentsj.length];
+//        for (int i = 0; i < componentsj.length; i++) {
+//            JavaScriptObject componentJS = componentsj[i];
+//            DataClass obj = RefDataClass.getRef(componentJS);
+//            if (obj == null) {
+//                obj = new DataClass(componentJS);
+//            }
+//            objects[i] = obj;
+//        }
+//        return objects;
+//    }
 
     /**
      * See {@link com.smartgwt.client.data.OperationBinding#getRecordName recordName}.  <code>recordName</code> can be
@@ -3380,11 +3383,42 @@ nent has been created
         return @com.smartgwt.client.data.Criteria::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
     }-*/;
 
-    
+    // @formatter:on
 
+	// Vaadin Integration
+
+	/**
+	 * Add a field to the DataSource
+	 * 
+	 * @param field
+	 *            the datasource field
+	 * @throws IllegalStateException
+	 *             this property cannot be changed after the underlying component has been created
+	 */
+	public void addField(DataSourceField field) throws IllegalStateException
+	{
+		if (isCreated())
+		{
+			error("Fields cannot be added to a DataSource after the underlying component has been created.");
+		}
+		field.setParent(this);
+		addMember(field);
+	}
+
+	// override setID() - if this.addGlobalID is false, don't register the ID with the IDManager
+	// Note: this is called directly from BaseClass init method so this.scClassName may not yet have
+	// been set. Catch this case and avoid calling 'getAddGlobalID' as that ultimately relies on this
+	// property being set correctly
+	public void setID(String id)
+	{
+		setAttribute("ID", id, false);
+		MasterContainer.addGlobalDatasource(this);
+		// this.id = id;
+	}
+
+	public void setAddGlobalId(Boolean addGlobalId) throws IllegalStateException
+	{
+		setAttribute("addGlobalId", addGlobalId, false);
+	}
+	
 }
-
-
-
-
-

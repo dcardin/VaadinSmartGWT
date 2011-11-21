@@ -1,6 +1,6 @@
 package org.vaadin.smartgwt.server.menu;
 
-import org.vaadin.smartgwt.client.data.Record;
+import org.vaadin.smartgwt.client.data.VRecord;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -656,7 +656,7 @@ public class Menu extends ListGrid  implements com.smartgwt.client.widgets.menu.
      * @param data array of Record objects.
      * @see #setData(MenuItem[])
      */
-    public void setData(Record[] data) {
+    public void setData(VRecord[] data) {
         setAttribute("data", data, true);
     }
     

@@ -15,53 +15,56 @@ package org.vaadin.smartgwt.server.grid;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
+
 import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.data.DataSource;
+import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.server.menu.MenuItem;
+import org.vaadin.smartgwt.server.types.AnimationAcceleration;
+import org.vaadin.smartgwt.server.types.AutoFitEvent;
+import org.vaadin.smartgwt.server.types.AutoFitIconFieldType;
+import org.vaadin.smartgwt.server.types.AutoFitWidthApproach;
+import org.vaadin.smartgwt.server.types.Autofit;
+import org.vaadin.smartgwt.server.types.ChartType;
+import org.vaadin.smartgwt.server.types.DateDisplayFormat;
+import org.vaadin.smartgwt.server.types.DragDataAction;
+import org.vaadin.smartgwt.server.types.DragTrackerMode;
+import org.vaadin.smartgwt.server.types.EmbeddedPosition;
+import org.vaadin.smartgwt.server.types.EnterKeyEditAction;
+import org.vaadin.smartgwt.server.types.EscapeKeyEditAction;
+import org.vaadin.smartgwt.server.types.ExpansionMode;
+import org.vaadin.smartgwt.server.types.FetchMode;
+import org.vaadin.smartgwt.server.types.GroupStartOpen;
+import org.vaadin.smartgwt.server.types.HoverMode;
+import org.vaadin.smartgwt.server.types.ListGridEditEvent;
+import org.vaadin.smartgwt.server.types.Overflow;
+import org.vaadin.smartgwt.server.types.RecordComponentPoolingMode;
+import org.vaadin.smartgwt.server.types.RowEndEditAction;
+import org.vaadin.smartgwt.server.types.SelectionAppearance;
+import org.vaadin.smartgwt.server.types.SelectionStyle;
+import org.vaadin.smartgwt.server.types.SortArrow;
+import org.vaadin.smartgwt.server.types.SortDirection;
+import org.vaadin.smartgwt.server.types.TextMatchStyle;
+import org.vaadin.smartgwt.server.util.EnumUtil;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.smartgwt.client.core.Function;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Hilite;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.data.ResultSet;
 import com.smartgwt.client.data.SortSpecifier;
-import com.smartgwt.client.types.AnimationAcceleration;
-import com.smartgwt.client.types.AutoFitEvent;
-import com.smartgwt.client.types.AutoFitIconFieldType;
-import com.smartgwt.client.types.AutoFitWidthApproach;
-import com.smartgwt.client.types.Autofit;
-import com.smartgwt.client.types.ChartType;
-import com.smartgwt.client.types.DateDisplayFormat;
-import com.smartgwt.client.types.DragDataAction;
-import com.smartgwt.client.types.DragTrackerMode;
-import com.smartgwt.client.types.EmbeddedPosition;
-import com.smartgwt.client.types.EnterKeyEditAction;
-import com.smartgwt.client.types.EscapeKeyEditAction;
-import com.smartgwt.client.types.ExpansionMode;
-import com.smartgwt.client.types.FetchMode;
-import com.smartgwt.client.types.GroupStartOpen;
-import com.smartgwt.client.types.HoverMode;
-import com.smartgwt.client.types.ListGridEditEvent;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.RecordComponentPoolingMode;
-import com.smartgwt.client.types.RowEndEditAction;
-import com.smartgwt.client.types.SelectionAppearance;
-import com.smartgwt.client.types.SelectionStyle;
-import com.smartgwt.client.types.SortArrow;
-import com.smartgwt.client.types.SortDirection;
-import com.smartgwt.client.types.TextMatchStyle;
-import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.DataBoundComponent;
@@ -69,8 +72,6 @@ import com.smartgwt.client.widgets.ImgProperties;
 import com.smartgwt.client.widgets.chart.FacetChart;
 import com.smartgwt.client.widgets.events.FetchDataEvent;
 import com.smartgwt.client.widgets.events.FetchDataHandler;
-import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.GridRenderer;
 import com.smartgwt.client.widgets.grid.HeaderSpan;
 import com.smartgwt.client.widgets.grid.HoverCustomizer;
@@ -78,7 +79,6 @@ import com.smartgwt.client.widgets.grid.ListGridEditorCustomizer;
 import com.smartgwt.client.widgets.grid.events.EditFailedHandler;
 import com.smartgwt.client.widgets.grid.events.EditorExitHandler;
 import com.smartgwt.client.widgets.grid.events.RowEditorExitHandler;
-import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.tree.Tree;
 
 //@formatter:off
@@ -12413,11 +12413,11 @@ public class ListGrid extends Layout  {
      *
      * @return   edit value for the field in question
      */
-    public Record getEditValueAsRecord(int rowNum, String fieldName) {
-        JavaScriptObject val = getEditValueAsJSObj(rowNum, fieldName);
-        if (val == null) return null;
-        return Record.getOrCreateRef(val);
-    }
+//    public Record getEditValueAsRecord(int rowNum, String fieldName) {
+//        JavaScriptObject val = getEditValueAsJSObj(rowNum, fieldName);
+//        if (val == null) return null;
+//        return Record.getOrCreateRef(val);
+//    }
 
     /**
      * Returns the current temporary locally stored edit value for some field within a record being edited.
@@ -14090,13 +14090,13 @@ public class ListGrid extends Layout  {
         return getAttributeAsString("titleField");
     }
 
-    public void setDataSource(DataSource dataSource) {
-        setAttribute("dataSource", dataSource.getOrCreateJsObj(), true);
-    }
+//    public void setDataSource(DataSource dataSource) {
+//        setAttribute("dataSource", dataSource.getOrCreateJsObj(), true);
+//    }
 
-    public DataSource getDataSource() {
-        return DataSource.getOrCreateRef(getAttributeAsJavaScriptObject("dataSource"));
-    }
+//    public DataSource getDataSource() {
+//        return DataSource.getOrCreateRef(getAttributeAsJavaScriptObject("dataSource"));
+//    }
 
     public void setAutoFetchData(Boolean autoFetchData) throws IllegalStateException {
         setAttribute("autoFetchData", autoFetchData, false);
@@ -14313,17 +14313,25 @@ public class ListGrid extends Layout  {
     }-*/;
 
     // @formatter:on
-    // Vaaddin integration
-    
-    public void setFields(ListGridField... fields) {
-        setAttribute("*fields", fields, true);
-        for (ListGridField field : fields)
-        {
-        }
-    }
+	// Vaaddin integration
+
+	public void setFields(ListGridField... fields)
+	{
+		setAttribute("*fields", fields, true);
+		for (ListGridField field : fields)
+		{
+			field.setParent(this);
+		}
+	}
+
+	public DataSource getDataSource()
+	{
+		return getAttributeAsObject("dataSource");
+	}
+
+	public void setDataSource(DataSource dataSource)
+	{
+		setAttribute("*dataSource", dataSource);
+	}
 
 }
-
-
-
-

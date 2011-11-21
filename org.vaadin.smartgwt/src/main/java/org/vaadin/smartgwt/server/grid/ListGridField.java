@@ -44,7 +44,6 @@ import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.validator.Validator;
 import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
 import com.smartgwt.client.widgets.grid.CellEditValueParser;
-import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.EditorValueMapFunction;
 import com.smartgwt.client.widgets.grid.GroupNode;
 import com.smartgwt.client.widgets.grid.GroupTitleRenderer;

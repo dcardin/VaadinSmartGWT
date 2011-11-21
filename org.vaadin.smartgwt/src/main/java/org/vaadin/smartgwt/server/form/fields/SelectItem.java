@@ -2,15 +2,17 @@ package org.vaadin.smartgwt.server.form.fields;
 
 import java.util.Map;
 
+import org.vaadin.smartgwt.server.data.DataSource;
+import org.vaadin.smartgwt.server.grid.ListGridField;
+import org.vaadin.smartgwt.server.grid.ListGridRecord;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
 
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSRequest;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.MultipleAppearance;
 import com.smartgwt.client.types.TextMatchStyle;
 import com.smartgwt.client.util.EnumUtil;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.vaadin.ui.Component;
 
 /**
  * Server side component for the VTextItem widget.
@@ -820,10 +822,10 @@ public class SelectItem extends FormItem
 	 * @param pickListFields
 	 *            pickListFields Default value is null
 	 */
-	public void setPickListFields(ListGridField... pickListFields)
-	{
-		setAttribute("pickListFields", pickListFields);
-	}
+//	public void setPickListFields(ListGridField... pickListFields)
+//	{
+//		setAttribute("pickListFields", pickListFields);
+//	}
 
 	/**
 	 * Maximum height to show the pick list before it starts to scroll. Note that by default the pickList will be sized to the height required by its content so
@@ -1227,10 +1229,10 @@ public class SelectItem extends FormItem
 	 * @param optionDataSource
 	 *            optionDataSource Default value is null
 	 */
-	public void setOptionDataSource(DataSource dataSource)
-	{
-		setAttribute("optionDataSource", dataSource);
-	}
+//	public void setOptionDataSource(DataSource dataSource)
+//	{
+//		setAttribute("optionDataSource", dataSource);
+//	}
 
 	// public DataSource getOptionDataSource() {
 	// return DataSource.getOrCreateRef(getAttributeAsJavaScriptObject("optionDataSource"));
@@ -1289,5 +1291,53 @@ public class SelectItem extends FormItem
 			setAttribute("value", variables.get("value"));
 
 	}
-
+	
+	public void setPickListFields(ListGridField... pickListFields)
+	{
+		setAttribute("*pickListFields", pickListFields);
+		for (ListGridField field : pickListFields)
+			field.setParent(this);
+	}
+	
+	/**
+	 * If set, this FormItem will derive data to show in the PickList by fetching records from the specified <code>optionDataSource</code>. The fetched data
+	 * will be used as a {@link com.smartgwt.client.widgets.form.fields.FormItem#getValueMap valueMap} by extracting the
+	 * {@link com.smartgwt.client.widgets.form.fields.FormItem#getValueField valueField} and
+	 * {@link com.smartgwt.client.widgets.form.fields.FormItem#getDisplayField displayField} in the loaded records, to derive one valueMap entry per record
+	 * loaded from the optionDataSource. Multiple fields from the fetched data may be shown in the pickList by setting
+	 * {@link com.smartgwt.client.widgets.form.fields.SelectItem#getPickListFields pickListFields}.
+	 * <P>
+	 * The data will be retrieved via a "fetch" operation on the DataSource, passing the
+	 * {@link com.smartgwt.client.widgets.form.fields.PickList#getPickListCriteria pickListCriteria} (if set) as criteria, and passing
+	 * {@link com.smartgwt.client.widgets.form.fields.SelectItem#getOptionFilterContext optionFilterContext} (if set) as DSRequest properties.
+	 * <P>
+	 * The fetch will be triggered when the pickList is first shown, or, you can set {@link com.smartgwt.client.widgets.form.fields.SelectItem#getAutoFetchData
+	 * autoFetchData} to fetch when the FormItem is first drawn. You can also call {@link com.smartgwt.client.widgets.form.fields.PickList#fetchData} at any
+	 * time to manually trigger a fetch.
+	 * <P>
+	 * Data paging is automatically enabled if the optionDataSource supports it. As the pickList is scrolled by the user, requests for additional data will be
+	 * automatically issued.
+	 * <P>
+	 * For a pickList attached to a ComboBoxItem, new fetches are issued as the user types, with criteria set as described under
+	 * {@link com.smartgwt.client.widgets.form.fields.ComboBoxItem#getPickListFilterCriteria}. If your dataSource is not capable of filtering results by search
+	 * criteria (eg the dataSource is backed by an XML flat file), you can set {@link com.smartgwt.client.widgets.form.fields.SelectItem#getFilterLocally
+	 * filterLocally} to have the entire dataset loaded up front and filtering performed in the browser. This disables data paging.
+	 * <P>
+	 * Setting optionDataSource also enables the basic {@link com.smartgwt.client.widgets.form.fields.FormItem#getOptionDataSource optionDataSource} behaviors,
+	 * eg, fetching individual display values before the pickList is shown.
+	 * <P>
+	 * Note that if a normal, static {@link com.smartgwt.client.widgets.form.fields.FormItem#getValueMap valueMap} is <b>also</b> specified for the field
+	 * (either directly in the form item or as part of the field definition in the dataSource), it will be preferred to the data derived from the
+	 * optionDataSource for whatever mappings are present.
+	 * <p>
+	 * <b>Note : </b> This is an advanced setting
+	 * </p>
+	 * 
+	 * @param optionDataSource
+	 *            optionDataSource Default value is null
+	 */
+	public void setOptionDataSource(DataSource dataSource)
+	{
+		setAttribute("*optionDataSource", dataSource);
+	}
 }

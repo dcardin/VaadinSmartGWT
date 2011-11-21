@@ -1574,7 +1574,7 @@ public class Layout extends Canvas implements ComponentContainer {
 		members.add(index, newComponent);
 
 		newComponent.setParent(this);
-		
+
 		if (isCreated())
 		{
 			membersReplaced.add(new Canvas[] { oldComponent, newComponent });
@@ -1607,10 +1607,13 @@ public class Layout extends Canvas implements ComponentContainer {
 
 			for (Canvas c : members)
 			{
-				c.paint(target);
+				if (jspt.needsToBePainted(c))
+					c.paint(target);
 				references.add(jspt.getPaintIdentifier(c));
 			}
-			target.addAttribute("*members", references.toArray());
+			
+			if (references.size() > 0)
+				target.addAttribute("*members", references.toArray());
 		}
 		else
 		{
@@ -1620,7 +1623,8 @@ public class Layout extends Canvas implements ComponentContainer {
 
 				for (Canvas c : membersAdded)
 				{
-					c.paint(target);
+					if (jspt.needsToBePainted(c))
+						c.paint(target);
 					references.add(jspt.getPaintIdentifier(c));
 				}
 
@@ -1648,7 +1652,8 @@ public class Layout extends Canvas implements ComponentContainer {
 				{
 					references.add(jspt.getPaintIdentifier(c[0]));
 					references.add(jspt.getPaintIdentifier(c[1]));
-					c[1].paint(target);
+					if (jspt.needsToBePainted(c[1]))
+						c[1].paint(target);
 				}
 				target.addAttribute("*membersReplaced", references.toArray());
 				membersReplaced.clear();

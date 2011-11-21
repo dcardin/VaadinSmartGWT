@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.vaadin.smartgwt.server.BaseWidget;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -28,7 +30,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Lesser General Public License for more details.
  */
 
-public class DataClass { //extends JsObject {
+public class DataClass extends BaseWidget { //extends JsObject {
 
     public DataClass() {
 //        super(JSOHelper.createObject());FormItem
@@ -240,39 +242,40 @@ public class DataClass { //extends JsObject {
 //    }
 
     //event handling code
-    private HandlerManager manager = null;
+//    private HandlerManager manager = null;
+//
+//    public void fireEvent(GwtEvent<?> event) {
+//        if (manager != null) {
+//            manager.fireEvent(event);
+//        }
+//    }
 
-    public void fireEvent(GwtEvent<?> event) {
-        if (manager != null) {
-            manager.fireEvent(event);
-        }
-    }
-
-    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
-           final H handler, GwtEvent.Type<H> type) {
-        return ensureHandlers().addHandler(type, handler);
-    }
+//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
+//           final H handler, GwtEvent.Type<H> type) {
+//        return ensureHandlers().addHandler(type, handler);
+//    }
 
     /**
      * Ensures the existence of the handler manager.
      *
      * @return the handler manager
      **/
-    HandlerManager ensureHandlers() {
-        return manager == null ? manager = new HandlerManager(this)
-        : manager;
-    }
+//    HandlerManager ensureHandlers() {
+//        return manager == null ? manager = new HandlerManager(this)
+//        : manager;
+//    }
 
-    HandlerManager getManager() {
-        return manager;
-    }
+//    HandlerManager getManager() {
+//        return manager;
+//    }
 
-    public int getHandlerCount(GwtEvent.Type<?> type) {
-        return manager == null? 0 : manager.getHandlerCount(type);
-    }
-    
+//    public int getHandlerCount(GwtEvent.Type<?> type) {
+//        return manager == null? 0 : manager.getHandlerCount(type);
+//    }
+//    
+    // @formatter:on
     // Vaadin integration
-	protected Map<String, Object> attributes = new HashMap<String, Object>();
+/*	protected Map<String, Object> attributes = new HashMap<String, Object>();
 
 	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
 	{
@@ -401,6 +404,6 @@ public class DataClass { //extends JsObject {
 	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
 	{
 		throw new IllegalStateException();
-	}
-
+	} 
+*/
 }

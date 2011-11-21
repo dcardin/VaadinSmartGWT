@@ -3,7 +3,9 @@ package org.vaadin.smartgwt.client.ui.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
+import com.smartgwt.client.core.BaseClass;
 import com.smartgwt.client.core.DataClass;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.BaseWidget;
@@ -98,8 +100,28 @@ public class PainterHelper
 						Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
 						if (paintable instanceof Canvas)
 						{
-							widget.setProperty(att.substring(1), ((Canvas) paintable).getOrCreateJsObj());
+							Object obj = null;
+
+							if (paintable instanceof Wrapper)
+							{
+								obj = ((Wrapper) paintable).unwrap();
+							}
+
+							if (obj instanceof Canvas)
+							{
+								widget.setProperty(att.substring(1), ((Canvas) obj).getOrCreateJsObj());
+							}
+							else if (obj instanceof BaseClass)
+							{
+								JavaScriptObject jso = ((BaseClass) obj).getOrCreateJsObj();
+								widget.setProperty(att.substring(1), jso);
+							}
 						}
+					}
+					else if (att.startsWith("!"))
+					{
+						String[] value = uidl.getStringArrayAttribute(att);
+						widget.setProperty(att.substring(1), JSOHelper.convertToJavaScriptArray(value));
 					}
 					else
 					{
@@ -122,6 +144,72 @@ public class PainterHelper
 			}
 		}
 
+	}
+
+	private static void setBaseClassProperty(BaseClass data, String att, String sValue)
+	{
+		switch (sValue.charAt(0))
+		{
+			case 's':
+			{
+				String value = sValue.substring(1);
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+
+			case 'i':
+			{
+				Integer value = Integer.valueOf(sValue.substring(1));
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+
+			case 'f':
+			{
+				Float value = Float.valueOf(sValue.substring(1));
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+
+			case 'l':
+			{
+				Long value = Long.valueOf(sValue.substring(1));
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+
+			case 'd':
+			{
+				Double value = Double.valueOf(sValue.substring(1));
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+
+			case 'b':
+			{
+				Boolean value = Boolean.valueOf(sValue.substring(1));
+				if (!data.isCreated())
+					JSOHelper.setAttribute(data.getConfig(), att, value);
+				else
+					data.setProperty(att, value);
+			}
+				break;
+		}
 	}
 
 	private static void setDataProperty(DataClass data, String att, String sValue)
@@ -223,6 +311,51 @@ public class PainterHelper
 		}
 	}
 
+	public static void updateBaseClass(ApplicationConnection client, BaseClass dataObject, UIDL uidl)
+	{
+		for (String att : uidl.getAttributeNames())
+		{
+			if (att.startsWith("["))
+			{
+				String[] refs = uidl.getStringArrayAttribute(att);
+				List<Canvas> paintables = new ArrayList<Canvas>();
+
+				for (String c : refs)
+				{
+					Paintable p = client.getPaintable(c);
+					if (p instanceof Wrapper)
+					{
+						Canvas canvas = ((Wrapper) p).unwrap();
+						paintables.add(canvas);
+					}
+				}
+
+				Canvas[] toSet = new Canvas[0];
+				toSet = paintables.toArray(toSet);
+				// dataObject.setAttribute(att.substring(1), toSet);
+			}
+			else if (att.startsWith("#"))
+			{
+				Paintable p = client.getPaintable(uidl.getStringAttribute(att));
+				if (p instanceof BaseWidget)
+				{
+					BaseWidget bw = (BaseWidget) p;
+					dataObject.setAttribute(att.substring(1), bw.getOrCreateJsObj(), true);
+				}
+			}
+			else if (att.startsWith("!"))
+			{
+				String[] value = uidl.getStringArrayAttribute(att);
+				dataObject.setAttribute(att.substring(1), value, true);
+			}
+			else if (!att.startsWith("*") && !att.equals("id"))
+			{
+				String sValue = uidl.getStringAttribute(att);
+				setBaseClassProperty(dataObject, att, sValue);
+			}
+		}
+	}
+
 	public static void updateDataObject(ApplicationConnection client, DataClass dataObject, UIDL uidl)
 	{
 		for (String att : uidl.getAttributeNames())
@@ -244,16 +377,35 @@ public class PainterHelper
 
 				Canvas[] toSet = new Canvas[0];
 				toSet = paintables.toArray(toSet);
-				dataObject.setAttribute(att.substring(1), toSet);
+				// dataObject.setAttribute(att.substring(1), toSet);
 			}
 			else if (att.startsWith("#"))
 			{
-				Paintable p = client.getPaintable(uidl.getStringAttribute(att));
-				if (p instanceof BaseWidget)
+				Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
+				if (paintable instanceof Canvas)
 				{
-					BaseWidget bw = (BaseWidget) p;
-					dataObject.setAttribute(att.substring(1), bw.getOrCreateJsObj());
+					Object obj = paintable;
+
+					if (paintable instanceof Wrapper)
+					{
+						obj = ((Wrapper) paintable).unwrap();
+					}
+
+					if (obj instanceof Canvas)
+					{
+						dataObject.setAttribute(att.substring(1), ((Canvas) obj).getOrCreateJsObj());
+					}
+					else if (obj instanceof BaseClass)
+					{
+						JavaScriptObject jso = ((BaseClass) obj).getOrCreateJsObj();
+						dataObject.setAttribute(att.substring(1), jso);
+					}
 				}
+			}
+			else if (att.startsWith("!"))
+			{
+				String[] value = uidl.getStringArrayAttribute(att);
+				dataObject.setAttribute(att.substring(1), value);
 			}
 			else if (!att.startsWith("*") && !att.equals("id"))
 			{
@@ -262,5 +414,4 @@ public class PainterHelper
 			}
 		}
 	}
-
 }

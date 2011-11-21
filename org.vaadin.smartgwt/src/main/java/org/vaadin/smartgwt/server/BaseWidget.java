@@ -39,7 +39,7 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        $wnd.isc.setAutoDraw(false);               
 //    }-*/;
 
-//	protected String id;
+	protected String id;
     protected JavaScriptObject config = null; // JSOHelper.createObject();
 //    protected boolean isElementSet = false;
     protected String scClassName;
@@ -299,9 +299,9 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //    }-*/;
 
 
-//    public String getID() {
-//        return id;
-//    }
+    public String getID() {
+        return id;
+    }
 //
 //    public void setID(String id) {
 //        if (this.id != null) {
@@ -1023,7 +1023,7 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		JsonPaintTarget jpt = (JsonPaintTarget) target;
+		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
@@ -1057,14 +1057,20 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			{
 				target.addAttribute(name, "s" + String.valueOf(value));
 			}
+			else if (value instanceof String[])
+			{
+				target.addAttribute("!" + name, (String[]) value);
+			}
 			else if (value instanceof Paintable[])
 			{
 				List<String> references = new ArrayList<String>();
 
 				for (Paintable p : (Paintable[]) value)
 				{
-					p.paint(target);
-					references.add(jpt.getPaintIdentifier(p));
+					if (jspt.needsToBePainted(p))
+						p.paint(target);
+					
+					references.add(jspt.getPaintIdentifier(p));
 				}
 				
 				if (name.charAt(0) != '*')
@@ -1074,8 +1080,10 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			}
 			else if (value instanceof Paintable)
 			{
-				String ref = jpt.getPaintIdentifier( (Paintable) value);
-				((Paintable)value).paint(target);
+				String ref = jspt.getPaintIdentifier( (Paintable) value);
+
+				if (jspt.needsToBePainted((Paintable) value))
+					((Paintable)value).paint(target);
 
 				if (name.charAt(0) != '*')
 					name = "#" + name;

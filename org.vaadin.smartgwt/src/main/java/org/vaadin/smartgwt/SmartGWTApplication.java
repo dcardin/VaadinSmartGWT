@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
+import org.vaadin.smartgwt.client.ui.VLabel;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -14,8 +15,10 @@ import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
+import org.vaadin.smartgwt.server.grid.CellFormatter;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
+import org.vaadin.smartgwt.server.grid.ListGridRecord;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
@@ -24,12 +27,15 @@ import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
 import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.ListGridEditEvent;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.SelectionType;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.vaadin.Application;
+import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Window;
 
 public class SmartGWTApplication extends Application
@@ -46,9 +52,11 @@ public class SmartGWTApplication extends Application
 		setMainWindow(mainWindow);
 		mainWindow.setStyleName(null);
 		mainWindow.setSizeFull();
+		
+		CountryXmlDS.reset();
 
 		MasterContainer layout = new MasterContainer();
-		layout.addMember(getMainPanel());
+		layout.setPane(getMainPanel());
 
 		mainWindow.setContent(layout);
 	}
@@ -78,8 +86,67 @@ public class SmartGWTApplication extends Application
 		countryGrid.setFields(countryCodeField, nameField, capitalField, continentField);
 		countryGrid.setCanResizeFields(true);
 		countryGrid.setData(CountryData.getRecords());
-		
+
 		return countryGrid;
+	}
+
+	private Canvas getEditableListGrid()
+	{
+		HLayout layout = new HLayout();
+		layout.setSizeFull();
+		
+        final ListGrid countryGrid = new ListGrid();  
+        countryGrid.setWidth(550);  
+        countryGrid.setHeight(224);  
+        countryGrid.setShowAllRecords(true);  
+        countryGrid.setCellHeight(22);  
+        // use server-side dataSource so edits are retained across page transitions  
+        countryGrid.setDataSource(CountryXmlDS.getInstance());  
+  
+        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
+        countryCodeField.setAlign(Alignment.CENTER);  
+        countryCodeField.setType(ListGridFieldType.IMAGE);  
+        countryCodeField.setImageURLPrefix("flags/16/");  
+        countryCodeField.setImageURLSuffix(".png");  
+        countryCodeField.setCanEdit(false);  
+  
+        ListGridField nameField = new ListGridField("countryName", "Pays");  
+        ListGridField continentField = new ListGridField("continent", "Continent");  
+        ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");  
+        ListGridField populationField = new ListGridField("population", "Population");  
+        populationField.setType(ListGridFieldType.INTEGER);  
+//        populationField.setCellFormatter(new  NumericFormatter());
+        ListGridField independenceField = new ListGridField("independence", "Independence");  
+        countryGrid.setFields(countryCodeField, nameField,continentField, memberG8Field, populationField, independenceField);  
+  
+        countryGrid.setAutoFetchData(true);  
+        countryGrid.setCanEdit(true);  
+        countryGrid.setEditEvent(ListGridEditEvent.CLICK);  
+        countryGrid.setEditByCell(true);  
+        
+        layout.addMember(countryGrid);
+        
+        return layout;
+	}
+
+	@ClientWidget(value=VLabel.class)
+	private static class NumericFormatter implements CellFormatter
+	{
+		public String format(Object value, ListGridRecord record, int rowNum, int colNum)
+		{
+			if (value == null)
+				return null;
+			try
+			{
+				NumberFormat nf = NumberFormat.getFormat("0,000");
+				return nf.format(((Number) value).longValue());
+			}
+			catch (Exception e)
+			{
+				return value.toString();
+			}
+		}
+
 	}
 
 	private Layout paintBorderLayout()
@@ -257,7 +324,7 @@ public class SmartGWTApplication extends Application
 		Tab tab7 = new Tab("Fake border");
 
 		tab.setPane(createForm(4));
-		tab2.setPane(getListGrid());
+		tab2.setPane(getEditableListGrid());
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
 		vl.addMember(new Button("Press me 1!"));
@@ -387,56 +454,73 @@ public class SmartGWTApplication extends Application
 		SelectItem si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
+		
+        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
+        countryCodeField.setAlign(Alignment.CENTER);  
+        countryCodeField.setType(ListGridFieldType.IMAGE);  
+        countryCodeField.setImageURLPrefix("flags/16/");  
+        countryCodeField.setImageURLSuffix(".png");  
+        countryCodeField.setCanEdit(false);  
+  
+        ListGridField nameField = new ListGridField("countryName", "Pays");  
+        ListGridField continentField = new ListGridField("continent", "Continent");  
+        ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");  
+        ListGridField populationField = new ListGridField("population", "Population");  
+        populationField.setType(ListGridFieldType.INTEGER);  
+//        populationField.setCellFormatter(new  NumericFormatter());
+        ListGridField independenceField = new ListGridField("independence", "Independence");  
+        si.setPickListFields(countryCodeField, nameField,continentField, memberG8Field, populationField, independenceField);  
+        si.setOptionDataSource(CountryXmlDS.getInstance()); 
 		form.addField(si);
 
-		si = new SelectItem("blah"+i);
+		si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
 		form.addField(si);
 
-		si = new SelectItem("blah"+i);
+		si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
 		form.addField(si);
 
-		si = new SelectItem("blah"+i);
+		si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
 		form.addField(si);
 
-		DateItem di = new DateItem("blah" +i);
+		DateItem di = new DateItem("blah" + i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		di.setUseTextField(true);
 		form.addField(di);
 
-		di = new DateItem("blah"+i);
+		di = new DateItem("blah" + i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		form.addField(di);
 
-		di = new DateItem("blah"+i);
+		di = new DateItem("blah" + i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		di.setUseTextField(true);
 		form.addField(di);
 
-		di = new DateItem("blah"+i);
+		di = new DateItem("blah" + i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		form.addField(di);
 
-		di = new DateItem("blah"+i);
+		di = new DateItem("blah" + i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		form.addField(di);
 
-		ti = new TextItem("blah"+i);
+		ti = new TextItem("blah" + i);
 		ti.setWidth("100%");
 		ti.setTitle("Edit Field " + i++);
 		form.addField(ti);
 
-		ti = new TextItem("blah"+i);
+		ti = new TextItem("blah" + i);
 		ti.setWidth("100%");
 		ti.setTitle("Edit Field " + i++);
 		form.addField(ti);

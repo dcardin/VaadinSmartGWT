@@ -39,7 +39,7 @@ public abstract class BaseClass extends AbstractComponent {
 
 //    public BaseClass() {
 //        String id = SC.generateID(getClass().getName());
-//        setID(id);
+//        setID(id);`
 //    }
 
 //    protected BaseClass(JavaScriptObject jsObj) {
@@ -513,6 +513,10 @@ public abstract class BaseClass extends AbstractComponent {
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
 	private boolean isCreated = false;
 
+	public Object getOrCreateJsObj() {
+		return this;
+	}
+		
 	protected boolean isCreated()
 	{
 		return isCreated;

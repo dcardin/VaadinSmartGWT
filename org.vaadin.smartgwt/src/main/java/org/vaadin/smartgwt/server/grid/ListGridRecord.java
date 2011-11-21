@@ -17,7 +17,8 @@ import org.vaadin.smartgwt.server.data.Record;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
+
+// @formatter:off
 /**
  * A ListGridRecord is a JavaScript Object whose properties contain values for each
  * {@link com.smartgwt.client.widgets.grid.ListGridField}.  A ListGridRecord may have additional properties which affect

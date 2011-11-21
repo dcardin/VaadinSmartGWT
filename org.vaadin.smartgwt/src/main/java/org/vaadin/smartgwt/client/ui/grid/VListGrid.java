@@ -8,6 +8,7 @@ import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.user.client.Element;
+import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -31,10 +32,20 @@ public class VListGrid extends ListGrid implements Paintable
 		this.client = client;
 		paintableId = uidl.getId();
 
-		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 		PainterHelper.paintChildren(uidl, client);
-		
+
+		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
+		if (uidl.hasAttribute("*dataSource"))
+		{
+			String ref = uidl.getStringAttribute("*dataSource");
+
+			DataSource ds = ((Wrapper) client.getPaintable(ref)).unwrap();
+			setDataSource(ds);
+		}
+
 		addListFields(uidl, client);
+
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 	}
 
 	private void addListFields(UIDL uidl, ApplicationConnection client)
