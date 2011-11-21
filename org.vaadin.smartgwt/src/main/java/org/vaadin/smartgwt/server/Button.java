@@ -51,7 +51,10 @@ public class Button extends StatefulCanvas
 	@Override
 	public void changeVariables(Object source, Map<String, Object> variables)
 	{
+		System.out.println("change vars called");
 		super.changeVariables(source, variables);
+		setTitle("weird");
+		requestRepaint();
 	}
 
 }

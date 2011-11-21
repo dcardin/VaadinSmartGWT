@@ -38,6 +38,10 @@ public class FormItem extends BaseWidget
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public FormItem()
+	{
+		
+	}
 	@Override
 	public void setHeight(String height)
 	{

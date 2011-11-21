@@ -1,46 +1,23 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import java.util.List;
-
-import org.vaadin.smartgwt.client.ui.VaadinManagement;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper.WidgetInfo;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VVLayout extends VLayout implements Paintable, VaadinManagement
+public class VVLayout extends VLayout implements Paintable
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
-	private List<WidgetInfo> widgetInfos;
-	private Element dummyDiv = null;
 
 	@Override
 	public Element getElement()
 	{
-		if (dummyDiv == null)
-		{
-			dummyDiv = DOM.createDiv();
-			DOMUtil.setID(dummyDiv, getID() + "_dummy");
-			RootPanel.getBodyElement().appendChild(dummyDiv);
-		}
-		return dummyDiv;
-	}
-
-	@Override
-	public void unregister()
-	{
-		client.unregisterPaintable(this);
-		RootPanel.getBodyElement().removeChild(dummyDiv);
-		dummyDiv = null;
+		return VMasterContainer.getDummy();
 	}
 
 	@Override
@@ -49,58 +26,57 @@ public class VVLayout extends VLayout implements Paintable, VaadinManagement
 		this.client = client;
 		paintableId = uidl.getId();
 
-		PainterHelper.updateSmartGWTComponent(this, uidl);
-		widgetInfos = PainterHelper.paintChildren(uidl, client);
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
+		PainterHelper.paintChildren(uidl, client);
 
-		if (uidl.hasAttribute("*children-painted"))
+		if (uidl.hasAttribute("*members"))
 		{
-			removeMembers(getMembers());
-
-			for (WidgetInfo widgetInfo : widgetInfos)
+			// remove and unregister all members
+			for (Canvas member : getMembers())
 			{
-				addMember(widgetInfo.getWidget());
+				removeMember(member);
+			}
+
+			String[] members = uidl.getStringArrayAttribute("*members");
+
+			for (String c : members)
+			{
+				addMember((Canvas) client.getPaintable(c));
 			}
 		}
 		else
 		{
-			if (uidl.hasAttribute("*replaced"))
+			if (uidl.hasAttribute("*membersReplaced"))
 			{
-				String[] replaced = uidl.getStringArrayAttribute("*replaced");
+				String[] replaced = uidl.getStringArrayAttribute("*membersReplaced");
+
 				for (int i = 0; i < replaced.length; i += 2)
 				{
 					Canvas removed = (Canvas) client.getPaintable(replaced[i]);
 					Canvas added = (Canvas) client.getPaintable(replaced[i + 1]);
+
 					int pos = getMemberNumber(removed);
 					removeMember(removed);
-
-					if (removed instanceof VaadinManagement)
-					{
-						((VaadinManagement) removed).unregister();
-					}
-
 					addMember(added, pos);
 				}
 			}
-			if (uidl.hasAttribute("*removed"))
+			if (uidl.hasAttribute("*membersRemoved"))
 			{
-				String[] removed = uidl.getStringArrayAttribute("*removed");
+				String[] removed = uidl.getStringArrayAttribute("*membersRemoved");
+
 				for (String c : removed)
 				{
 					Canvas removedCanvas = (Canvas) client.getPaintable(c);
 					removeMember(removedCanvas);
-					if (removedCanvas instanceof VaadinManagement)
-					{
-						((VaadinManagement) removedCanvas).unregister();
-					}
-
 				}
 			}
-			if (uidl.hasAttribute("*added"))
+			if (uidl.hasAttribute("*membersAdded"))
 			{
-				String[] added = uidl.getStringArrayAttribute("*added");
+				String[] added = uidl.getStringArrayAttribute("*membersAdded");
+
 				for (String c : added)
 				{
-					addMember((Canvas) client.getPaintable(c));
+					addMember((Canvas) client.getPaintable(c), 0);
 				}
 			}
 		}

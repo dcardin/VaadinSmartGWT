@@ -51,13 +51,13 @@ public class BorderLayout extends VLayout
 		centerLayout = new HLayout();
 		centerLayout.setSizeFull();
 
-		centerLayout.addComponent(west);
-		centerLayout.addComponent(center);
-		centerLayout.addComponent(east);
-
-		addMember(north);
-		addMember(centerLayout);
-		addMember(south);
+//		centerLayout.addMember(west);
+//		centerLayout.addComponent(center);
+//		centerLayout.addComponent(east);
+//
+//		addMember(north);
+//		addMember(centerLayout);
+//		addMember(south);
 	}
 
 	private void resizingtemp()
@@ -72,11 +72,11 @@ public class BorderLayout extends VLayout
 		centerLayout.setResizeBarTarget("next");
 	}
 
-	@Override
-	public void removeComponent(Component c)
-	{
-		replaceComponent(c, new Label(""));
-	}
+//	@Override
+//	public void removeComponent(Component c)
+//	{
+//		replaceComponent(c, new Label(""));
+//	}
 
 	/**
 	 * Add component into borderlayout
@@ -90,7 +90,7 @@ public class BorderLayout extends VLayout
 	{
 		if (constraint == Constraint.NORTH)
 		{
-			replaceComponent(north, c);
+//			replaceComponent(north, c);
 			north = c;
 			// if (north.getHeight() < 0 || north.getHeightUnits() == UNITS_PERCENTAGE)
 			// {
@@ -99,7 +99,7 @@ public class BorderLayout extends VLayout
 		}
 		else if (constraint == Constraint.WEST)
 		{
-			centerLayout.replaceComponent(west, c);
+//			centerLayout.replaceComponent(west, c);
 			west = c;
 			// if (west.getWidth() < 0 || west.getWidthUnits() == UNITS_PERCENTAGE)
 			// {
@@ -108,14 +108,14 @@ public class BorderLayout extends VLayout
 		}
 		else if (constraint == Constraint.CENTER)
 		{
-			centerLayout.replaceComponent(center, c);
+//			centerLayout.replaceComponent(center, c);
 			center = c;
 			center.setHeight("100%"); // centerLayout.getHeight(), centerLayout.getHeightUnits());
 			center.setWidth("100%");
 		}
 		else if (constraint == Constraint.EAST)
 		{
-			centerLayout.replaceComponent(east, c);
+//			centerLayout.replaceComponent(east, c);
 			east = c;
 			// if (east.getWidth() < 0 || east.getWidthUnits() == UNITS_PERCENTAGE)
 			// {
@@ -124,7 +124,7 @@ public class BorderLayout extends VLayout
 		}
 		else if (constraint == Constraint.SOUTH)
 		{
-			replaceComponent(south, c);
+//			replaceComponent(south, c);
 			south = c;
 			// if (south.getHeight() < 0 || south.getHeightUnits() == UNITS_PERCENTAGE)
 			// {
@@ -138,42 +138,42 @@ public class BorderLayout extends VLayout
 		requestRepaint();
 	}
 
-	@Override
-	public void addComponent(Component c)
-	{
-		throw new IllegalArgumentException("Component constraint have to be specified");
-	}
-
-	@Override
-	public void replaceComponent(Component oldComponent, Component newComponent)
-	{
-		if (oldComponent == north)
-		{
-			super.replaceComponent(north, newComponent);
-			north = (BaseWidget) newComponent;
-		}
-		else if (oldComponent == west)
-		{
-			centerLayout.replaceComponent(west, newComponent);
-			west = (BaseWidget) newComponent;
-		}
-		else if (oldComponent == center)
-		{
-			centerLayout.replaceComponent(center, newComponent);
-			center = (BaseWidget) newComponent;
-		}
-		else if (oldComponent == east)
-		{
-			centerLayout.replaceComponent(east, newComponent);
-			east = (BaseWidget) newComponent;
-		}
-		else if (oldComponent == south)
-		{
-			super.replaceComponent(south, newComponent);
-			south = (BaseWidget) newComponent;
-		}
-		requestRepaint();
-	}
+//	@Override
+//	public void addComponent(Component c)
+//	{
+//		throw new IllegalArgumentException("Component constraint have to be specified");
+//	}
+//
+//	@Override
+//	public void replaceComponent(Component oldComponent, Component newComponent)
+//	{
+//		if (oldComponent == north)
+//		{
+//			super.replaceComponent(north, newComponent);
+//			north = (BaseWidget) newComponent;
+//		}
+//		else if (oldComponent == west)
+//		{
+//			centerLayout.replaceComponent(west, newComponent);
+//			west = (BaseWidget) newComponent;
+//		}
+//		else if (oldComponent == center)
+//		{
+//			centerLayout.replaceComponent(center, newComponent);
+//			center = (BaseWidget) newComponent;
+//		}
+//		else if (oldComponent == east)
+//		{
+//			centerLayout.replaceComponent(east, newComponent);
+//			east = (BaseWidget) newComponent;
+//		}
+//		else if (oldComponent == south)
+//		{
+//			super.replaceComponent(south, newComponent);
+//			south = (BaseWidget) newComponent;
+//		}
+//		requestRepaint();
+//	}
 
 	/**
 	 * Set minimum height of the component in the BorderLayout.NORTH
@@ -283,7 +283,7 @@ public class BorderLayout extends VLayout
 
 	public BorderLayoutIterator<Component> getBorderLayoutComponentIterator()
 	{
-		return new BorderLayoutIterator<Component>(getComponentIterator(), centerLayout.getComponentIterator());
+		return null; //new BorderLayoutIterator<Component>(getComponentIterator(), centerLayout.getComponentIterator());
 	}
 
 	/**

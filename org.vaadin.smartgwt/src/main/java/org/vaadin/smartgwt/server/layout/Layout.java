@@ -23,6 +23,7 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Table;
 
+// @formatter:off
 public class Layout extends Canvas implements ComponentContainer {
 
 //    public static Layout getOrCreateRef(JavaScriptObject jsObj) {
@@ -1263,13 +1264,13 @@ public class Layout extends Canvas implements ComponentContainer {
      * @param member   Member to show
      * @param callback action to fire when the member has been shown
      */
-    public native void showMember(Canvas member, Function callback) /*-{
-        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-        self.showMember(memberJS, $entry(function() {
-            callback.@com.smartgwt.client.core.Function::execute()();
-        }));
-    }-*/;
+//    public native void showMember(Canvas member, Function callback) /*-{
+//        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//        self.showMember(memberJS, $entry(function() {
+//            callback.@com.smartgwt.client.core.Function::execute()();
+//        }));
+//    }-*/;
 
 
 
@@ -1280,11 +1281,11 @@ public class Layout extends Canvas implements ComponentContainer {
      *
      * @param member Member to hide
      */
-    public native void hideMember(Canvas member) /*-{
-        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-        self.hideMember(memberJS);
-    }-*/;
+//    public native void hideMember(Canvas member) /*-{
+//        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//        self.hideMember(memberJS);
+//    }-*/;
 
     /**
      * Hide the specified member, firing the specified callback when the hide is complete. <P> Members can always be
@@ -1295,13 +1296,13 @@ public class Layout extends Canvas implements ComponentContainer {
      * @param callback callback to fire when the member is hidden.
      */
 
-    public native void hideMember(Canvas member, Function callback) /*-{
-        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-        self.hideMember(memberJS, $entry(function() {
-            callback.@com.smartgwt.client.core.Function::execute()();
-        }));
-    }-*/;
+//    public native void hideMember(Canvas member, Function callback) /*-{
+//        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//        self.hideMember(memberJS, $entry(function() {
+//            callback.@com.smartgwt.client.core.Function::execute()();
+//        }));
+//    }-*/;
 
     /**
      * Given a numerical index or a member ID, return a pointer to the appropriate member. <p> If passed a member
@@ -1323,11 +1324,11 @@ public class Layout extends Canvas implements ComponentContainer {
      * @param memberID identifier for the required member
      * @return member widget
      */
-    public native Canvas getMember(String memberID) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret = self.getMember(memberID);
-        return ret == null ? null : @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-    }-*/;
+//    public native Canvas getMember(String memberID) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret = self.getMember(memberID);
+//        return ret == null ? null : @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//    }-*/;
 
     /**
      * Given a member Canvas or member ID, return the index of that member within this layout's members array <p> If
@@ -1355,220 +1356,26 @@ public class Layout extends Canvas implements ComponentContainer {
 //    }-*/;
 
 	
-
+    // @formatter:on
 	// ********************* Vaadin Integration ***********************
 	private static final long serialVersionUID = 1L;
-	
 
-    /**
-     * Returns true if the layout includes the specified canvas.
-     * @param canvas the canvas to check for
-     *
-     * @return true if the layout includes the specified canvas
-     */
-//    public native Boolean hasMember(Canvas canvas) /*-{
-//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        var retVal =self.hasMember(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-//        if(retVal == null || retVal === undefined) {
-//            return null;
-//        } else {
-//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-//        }
-//    }-*/;
+	private List<Canvas> members = new ArrayList<Canvas>();
+	private List<Canvas> membersAdded = new ArrayList<Canvas>();
+	private List<Canvas> membersRemoved = new ArrayList<Canvas>();
+	private List<Canvas[]> membersReplaced = new ArrayList<Canvas[]>();
 
-    /**
-     * Removes the specified member from the layout. If it has a resize bar, the bar will be destroyed.
-     * @param member the canvas to be removed from the layout
-     */
-//    public native void removeMember(Canvas member) /*-{
-//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.removeMember(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-//    }-*/;
-            
-    /**
-     * Shift a member of the layout to a new position
-     * @param memberNum current position of the member to move to a new position
-     * @param newPosition new position to move the member to
-     */
-//    public native void reorderMember(int memberNum, int newPosition) /*-{
-//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.reorderMember(memberNum, newPosition);
-//    }-*/;
-            
-    /**
-     * Move a range of members to a new position
-     * @param start beginning of range of members to move
-     * @param end end of range of members to move, non-inclusive
-     * @param newPosition new position to move the members to
-     */
-//    public native void reorderMembers(int start, int end, int newPosition) /*-{
-//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.reorderMembers(start, end, newPosition);
-//    }-*/;
-
-    /**
-     * An array of canvases that will be contained within this layout. You can set the following properties on these
-     * canvases (in addition to the standard component properties): <ul>  <li>layoutAlign--specifies the member's
-     * alignment along the breadth axis; valid  values are "top", "center" and "bottom" for a horizontal layout and
-     * "left", "center"  and "right" for a vertical layout (see {@link com.smartgwt.client.widgets.layout.Layout#getDefaultLayoutAlign
-     * defaultLayoutAlign} for default  implementation.)  <li>showResizeBar--set to true to show a resize bar (default
-     * is false) </ul> Height and width settings found on members are interpreted by the Layout according to the {@link
-     * com.smartgwt.client.widgets.layout.Layout#getVPolicy vPolicy}.
-     *
-     * @param members members Default value is null
-     */
-//    public void setMembers(Canvas... members) {
-//        if(!isCreated()) {
-//            setAttribute("members", members, true);
-//        }
-//        else {
-//            Canvas[] membersToRemove = getMembers();
-//            for(Canvas member : membersToRemove) {
-//                removeMember(member);
-//            }
-//            for(Canvas member : members) {
-//                addMember(member);
-//            }
-//        }
-//    }
-
-    /**
-     * Add a canvas to the layout, optionally at a specific position.
-     *
-     * @param widget the canvas object to be added to the layout
-     */
-//    public void addMember(Widget widget) {
-//        if (widget instanceof Canvas) {
-//            addMember((Canvas) widget);
-//        } else {
-//            addMember(new WidgetCanvas(widget));
-//        }
-//    }
-
-    /**
-     * Add a canvas to the layout, optionally at a specific position.
-     *
-     * @param component the canvas object to be added to the layout
-     */
-//    public void addMember(Canvas component) {
-//        JavaScriptObject componentJS = component.getOrCreateJsObj();
-//
-//        if (isCreated()) {
-//            addMemberPostCreate(componentJS);
-//
-//        } else {
-//            addMemberPreCreate(componentJS);
-//        }
-//    }
-
-//    public void addMember(Widget widget, int position) {
-//        if (widget instanceof Canvas) {
-//            addMember((Canvas) widget, position);
-//        } else {
-//            addMember(new WidgetCanvas(widget), position);
-//        }
-//    }
-
-
-    /**
-     * Add a canvas to the layout, optionally at a specific position.
-     *
-     * @param component the canvas object to be added to the layout
-     * @param position  the position in the layout to place newMember (starts with 0);
-     *                  if omitted, it will be added at the last position
-     */
-//    public void addMember(Canvas component, int position) {
-//        JavaScriptObject componentJS = component.getOrCreateJsObj();
-//
-//        if (isCreated()) {
-//            addMemberPostCreate(componentJS, position);
-//
-//        } else {
-//            addMemberPreCreate(componentJS, position);
-//        }
-//    }
-
-//    protected native void addMemberPreCreate(Object componentJS) /*-{
-//		var config = this.@com.smartgwt.client.widgets.BaseWidget::config;
-//
-//        if(!config.members) {
-//            config.members = @com.smartgwt.client.util.JSOHelper::createJavaScriptArray()();
-//        }
-//        config.members.push(componentJS);
-//    }-*/;
-
-//    protected native void addMemberPostCreate(Object componentJS) /*-{
-//        var container = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        container.addMember(componentJS);
-//    }-*/;
-
-//    protected native void addMemberPreCreate(Object componentJS, int position) /*-{
-//		var config = this.@com.smartgwt.client.widgets.BaseWidget::config;
-//
-//        if(!config.members) {
-//            config.members = @com.smartgwt.client.util.JSOHelper::createJavaScriptArray()();
-//        }
-//        config.members.addAt(componentJS, position);
-//    }-*/;
-
-//    protected native void addMemberPostCreate(Object componentJS, int position) /*-{
-//        var container = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        container.addMember(componentJS, position);
-//    }-*/;
-
-    /**
-     * Removes the specified members from the layout. If any of the removed members have resize  bars, the bars will be
-     * destroyed.
-     *
-     * @param members array of members to be removed, or reference to single
-     *                member.
-     */
-//    public native void removeMembers(Canvas[] members) /*-{
-//        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        var membersJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(members);
-//        self.removeMembers(membersJS);
-//    }-*/;
-
-
-    /**
-     * Return the members in the Layout.
-     *
-     * @return the members
-     */
-//    public Canvas[] getMembers() {
-//        return Canvas.convertToCanvasArray(getAttributeAsJavaScriptObject("members"));
-//    }
-    
-    /**
-     * Given a numerical index or a member ID, return a pointer to the appropriate member. <p> If passed a member
-     * Canvas, just returns it.
-     *
-     * @param index index for the member
-     * @return member widget
-     */
-//    public native Canvas getMember(int index) /*-{
-//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        var ret = self.getMember(index);
-//        return ret == null ? null : @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-//    }-*/;
-
-    /**
-     * Given a member Canvas or member ID, return the index of that member within this layout's members array <p> If
-     * passed a number, just returns it.
-     *
-     * @param member the member
-     * @return index of the member canvas (or -1 if not found)
-     */
-//    public native int getMemberNumber(Canvas member) /*-{
-//        var self  = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        var memberJS = member.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-//        return self.getMemberNumber(memberJS);
-//    }-*/;
-
-	
-	public Boolean hasMember(Component component)
+	/**
+	 * Returns true if the layout includes the specified canvas.
+	 * 
+	 * @param canvas
+	 *            the canvas to check for
+	 * 
+	 * @return true if the layout includes the specified canvas
+	 */
+	public Boolean hasMember(Canvas canvas)
 	{
-		return components.contains(component);
+		return members.contains(canvas);
 	}
 
 	/**
@@ -1577,16 +1384,44 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param member
 	 *            the canvas to be removed from the layout
 	 */
-	public void removeMember(Component member)
+	public void removeMember(Canvas member)
 	{
+		members.remove(member);
+
 		if (isCreated())
 		{
-			removedComponents.add(member);
+			membersRemoved.add(member);
 		}
-		components.remove(member);
 		requestRepaint();
 	}
 
+	/**
+	 * Shift a member of the layout to a new position
+	 * 
+	 * @param memberNum
+	 *            current position of the member to move to a new position
+	 * @param newPosition
+	 *            new position to move the member to
+	 */
+	// public native void reorderMember(int memberNum, int newPosition) /*-{
+	// var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+	// self.reorderMember(memberNum, newPosition);
+	// }-*/;
+
+	/**
+	 * Move a range of members to a new position
+	 * 
+	 * @param start
+	 *            beginning of range of members to move
+	 * @param end
+	 *            end of range of members to move, non-inclusive
+	 * @param newPosition
+	 *            new position to move the members to
+	 */
+	// public native void reorderMembers(int start, int end, int newPosition) /*-{
+	// var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+	// self.reorderMembers(start, end, newPosition);
+	// }-*/;
 
 	/**
 	 * An array of canvases that will be contained within this layout. You can set the following properties on these canvases (in addition to the standard
@@ -1603,29 +1438,27 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param members
 	 *            members Default value is null
 	 */
-	public void setMembers(Component... members)
+	public void setMembers(Canvas... newMembers)
 	{
-		if (!isCreated())
+		if (isCreated())
 		{
-			setAttribute("members", members, true);
-		}
-		else
-		{
-			Component[] membersToRemove = getMembers();
-			for (Component member : membersToRemove)
-			{
+			for (Canvas member : members)
 				removeMember(member);
-			}
-			for (Component member : members)
-			{
-				addMember(member, false);
-			}
 		}
+
+		members.addAll(members);
+
+		for (Canvas member : members)
+		{
+			member.setParent(this);
+		}
+
+		requestRepaint();
 	}
 
-	public void addMember(Component c)
+	public void setMembers(List<Canvas> members)
 	{
-		addMember(c, true);
+		setMembers((Canvas[]) members.toArray());
 	}
 
 	/**
@@ -1634,62 +1467,16 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param component
 	 *            the canvas object to be added to the layout
 	 */
-	private void addMember(Component c, boolean immediateUpdate)
+	public void addMember(Canvas component)
 	{
+		component.setParent(this);
+		members.add(component);
+
 		if (isCreated())
 		{
-			addedComponents.add(c);
+			membersAdded.add(component);
 		}
-
-		components.add(c);
-
-		if (c instanceof ComponentContainer)
-		{
-			// Make sure we're not adding the component inside it's own content
-			for (Component parent = this; parent != null; parent = parent.getParent())
-			{
-				if (parent == c)
-				{
-					throw new IllegalArgumentException("Component cannot be added inside it's own content");
-				}
-			}
-		}
-
-		if (c.getParent() != null)
-		{
-			// If the component already has a parent, try to remove it
-			ComponentContainer oldParent = (ComponentContainer) c.getParent();
-			oldParent.removeComponent(c);
-
-		}
-
-		c.setParent(this);
-		// fireComponentAttachEvent(c);
-
-		if (immediateUpdate)
-			requestRepaint();
-	}
-
-	@Override
-	public void addComponent(Component component)
-	{
-		addMember(component);
-	}
-
-	@Override
-	public void removeAllComponents()
-	{
-		addedComponents.clear();
-		removedComponents.clear();
-		replacedComponents.clear();
-		components.clear();
-
 		requestRepaint();
-	}
-
-	public void addMember(Component component, int position)
-	{
-		addMember(component, position, true);
 	}
 
 	/**
@@ -1700,37 +1487,28 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param position
 	 *            the position in the layout to place newMember (starts with 0); if omitted, it will be added at the last position
 	 */
-	public void addMember(Component component, int position, boolean added)
+	public void addMember(Canvas component, int position)
 	{
-		if (!isCreated() && added)
-		{
-			addedComponents.add(component);
-		}
-
-		components.add(position, component);
-
-		if (component instanceof ComponentContainer)
-		{
-			// Make sure we're not adding the component inside it's own content
-			for (Component parent = this; parent != null; parent = parent.getParent())
-			{
-				if (parent == component)
-				{
-					throw new IllegalArgumentException("Component cannot be added inside it's own content");
-				}
-			}
-		}
-
-		if (component.getParent() != null)
-		{
-			// If the component already has a parent, try to remove it
-			ComponentContainer oldParent = (ComponentContainer) component.getParent();
-			oldParent.removeComponent(component);
-		}
-
 		component.setParent(this);
-		// fireComponentAttachEvent(c);
+		members.add(position, component);
 
+		if (isCreated())
+		{
+			membersAdded.add(component);
+		}
+		requestRepaint();
+	}
+
+	/**
+	 * Removes the specified members from the layout. If any of the removed members have resize bars, the bars will be destroyed.
+	 * 
+	 * @param members
+	 *            array of members to be removed, or reference to single member.
+	 */
+	public void removeMembers(Canvas[] members)
+	{
+		for (Canvas member : members)
+			removeMember(member);
 	}
 
 	/**
@@ -1738,74 +1516,142 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * 
 	 * @return the members
 	 */
-	public Component[] getMembers()
+	public Canvas[] getMembers()
 	{
-		Component arr[] = new Component[0];
+		Canvas[] tmp = new Canvas[0];
 
-		return components.toArray(arr);
+		return members.toArray(tmp);
 	}
 
-	protected List<Component> components = new LinkedList<Component>();
-	protected List<Component> addedComponents = new LinkedList<Component>();
-	protected List<Component[]> replacedComponents = new LinkedList<Component[]>();
-	protected List<Component> removedComponents = new LinkedList<Component>();
+	/**
+	 * Return the members in the Layout as a List.
+	 * 
+	 * @return the members
+	 */
+	// public List<Canvas> getMembersAsList()
+	// {
+	// return members;
+	// }
+
+	/**
+	 * Given a numerical index or a member ID, return a pointer to the appropriate member.
+	 * <p>
+	 * If passed a member Canvas, just returns it.
+	 * 
+	 * @param index
+	 *            index for the member
+	 * @return member widget
+	 */
+	public Canvas getMember(int index)
+	{
+		return getMembers()[index];
+	}
+
+	/**
+	 * Given a member Canvas or member ID, return the index of that member within this layout's members array
+	 * <p>
+	 * If passed a number, just returns it.
+	 * 
+	 * @param member
+	 *            the member
+	 * @return index of the member canvas (or -1 if not found)
+	 */
+	public int getMemberNumber(Canvas member)
+	{
+		return members.indexOf(member);
+	}
+
+	public void removeMemberAt(int pos)
+	{
+		// List<Canvas> members = getMembersAsList();
+		removeMember(members.get(pos));
+	}
+
+	public void replaceMember(Canvas oldComponent, Canvas newComponent)
+	{
+		int index = getMemberNumber(oldComponent);
+		members.remove(index);
+		members.add(index, newComponent);
+
+		newComponent.setParent(this);
+		
+		if (isCreated())
+		{
+			membersReplaced.add(new Canvas[] { oldComponent, newComponent });
+		}
+		requestRepaint();
+	}
+
+	@Override
+	public void addComponent(Component component)
+	{
+		addMember((Canvas) component);
+	}
+
+	@Override
+	public void removeAllComponents()
+	{
+		setMembers(new Canvas[0]);
+		requestRepaint();
+	}
 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		JsonPaintTarget jpt = (JsonPaintTarget) target;
+		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-		if (addedComponents.size() == 0 && replacedComponents.size() == 0 && removedComponents.size() == 0)
+		if (membersAdded.size() == 0 && membersReplaced.size() == 0 && membersRemoved.size() == 0)
 		{
 			// full repaint since no "special" component list has been modified
+			List<String> references = new ArrayList<String>();
 
-			for (Component c : components)
+			for (Canvas c : members)
 			{
 				c.paint(target);
+				references.add(jspt.getPaintIdentifier(c));
 			}
-			target.addAttribute("*children-painted", "");
+			target.addAttribute("*members", references.toArray());
 		}
 		else
 		{
-			if (addedComponents.size() > 0)
+			if (membersAdded.size() > 0)
 			{
 				List<String> references = new ArrayList<String>();
 
-				for (Component c : addedComponents)
+				for (Canvas c : membersAdded)
 				{
 					c.paint(target);
-					references.add(jpt.getPaintIdentifier(c));
+					references.add(jspt.getPaintIdentifier(c));
 				}
 
-				target.addAttribute("*added", references.toArray());
-				addedComponents.clear();
+				target.addAttribute("*membersAdded", references.toArray());
+				membersAdded.clear();
 			}
 
-			if (removedComponents.size() > 0)
+			if (membersRemoved.size() > 0)
 			{
 				List<String> references = new ArrayList<String>();
 
-				for (Component c : removedComponents)
+				for (Canvas c : membersRemoved)
 				{
-					references.add(jpt.getPaintIdentifier(c));
+					references.add(jspt.getPaintIdentifier(c));
 				}
 
-				target.addAttribute("*removed", references.toArray());
-				removedComponents.clear();
+				target.addAttribute("*membersRemoved", references.toArray());
+				membersRemoved.clear();
 			}
 
-			if (replacedComponents.size() > 0)
+			if (membersReplaced.size() > 0)
 			{
 				List<String> references = new ArrayList<String>();
-				for (Component[] c : replacedComponents)
+				for (Component[] c : membersReplaced)
 				{
-					references.add(jpt.getPaintIdentifier(c[0]));
-
-					references.add(jpt.getPaintIdentifier(c[1]));
+					references.add(jspt.getPaintIdentifier(c[0]));
+					references.add(jspt.getPaintIdentifier(c[1]));
 					c[1].paint(target);
 				}
-				target.addAttribute("*replaced", references.toArray());
-				replacedComponents.clear();
+				target.addAttribute("*membersReplaced", references.toArray());
+				membersReplaced.clear();
 			}
 		}
 
@@ -1816,39 +1662,26 @@ public class Layout extends Canvas implements ComponentContainer {
 	@Override
 	public void replaceComponent(Component oldComponent, Component newComponent)
 	{
-		if (isCreated())
-		{
-			// let's not do a full repaint. We'll just keep track of it
-			replacedComponents.add(new Component[] { oldComponent, newComponent });
-		}
-
-		int index = components.indexOf(oldComponent);
-		components.remove(index);
-
-		addMember(newComponent, index, false);
+		replaceMember((Canvas) oldComponent, (Canvas) newComponent);
 	}
 
 	@Override
 	public Iterator<Component> getComponentIterator()
 	{
+		// List<Canvas> members = getMembersAsList();
+
+		List<Component> components = new ArrayList<Component>();
+		for (Canvas canvas : members)
+		{
+			components.add(canvas);
+		}
 		return components.iterator();
 	}
 
 	@Override
 	public void removeComponent(Component c)
 	{
-		if (isCreated())
-		{
-			if (c.getParent() == this)
-			{
-				c.setParent(null);
-				// fireComponentDetachEvent(c);
-			}
-			removedComponents.add(c);
-		}
-
-		components.remove(c);
-
+		removeComponent((Canvas) c);
 	}
 
 	@Override
@@ -1866,7 +1699,7 @@ public class Layout extends Canvas implements ComponentContainer {
 			}
 			else if (c instanceof Table)
 			{
-				((Table) c).requestRepaintAll();
+				// ((Table) c).requestRepaintAll();
 			}
 			else if (c instanceof ComponentContainer)
 			{

@@ -7,7 +7,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.core.DataClass;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.BaseWidget;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.tab.Tab;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -58,8 +60,11 @@ public class PainterHelper
 		return childWidgets;
 	}
 
-	public static void updateSmartGWTComponent(Widget component, UIDL uidl)
+	public static void updateSmartGWTComponent(ApplicationConnection client, Widget component, UIDL uidl)
 	{
+		if (uidl.hasAttribute("cached"))
+			return;
+
 		for (String att : uidl.getAttributeNames())
 		{
 			if (!att.startsWith("*"))// && !att.equals("id"))
@@ -68,19 +73,50 @@ public class PainterHelper
 				{
 					BaseWidget widget = (BaseWidget) component;
 
-					String sValue = uidl.getStringAttribute(att);
+					if (att.startsWith("["))
+					{
+						String[] refs = uidl.getStringArrayAttribute(att);
+						List<Canvas> paintables = new ArrayList<Canvas>();
 
-					if (sValue.equals("null"))
-					{
-						widget.setProperty(att, (String) null);
+						for (String c : refs)
+						{
+							Paintable p = client.getPaintable(c);
+							if (p instanceof Wrapper)
+							{
+								Canvas canvas = ((Wrapper) p).unwrap();
+								paintables.add(canvas);
+							}
+						}
+
+						Canvas[] toSet = new Canvas[0];
+						toSet = paintables.toArray(toSet);
+
+						// component.setAttribute(att.substring(1), toSet);
 					}
-					else if (sValue.length() == 0)
+					else if (att.startsWith("#"))
 					{
-						widget.setProperty(att, "");
+						Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
+						if (paintable instanceof Canvas)
+						{
+							widget.setProperty(att.substring(1), ((Canvas) paintable).getOrCreateJsObj());
+						}
 					}
 					else
 					{
-						setWidgetProperty(widget, att, sValue);
+						String sValue = uidl.getStringAttribute(att);
+
+						if (sValue.equals("null"))
+						{
+							widget.setProperty(att, (String) null);
+						}
+						else if (sValue.length() == 0)
+						{
+							widget.setProperty(att, "");
+						}
+						else
+						{
+							setWidgetProperty(widget, att, sValue);
+						}
 					}
 				}
 			}
@@ -187,19 +223,42 @@ public class PainterHelper
 		}
 	}
 
-	public static void updateFormItem(FormItem formItem, UIDL uidl)
+	public static void updateDataObject(ApplicationConnection client, DataClass dataObject, UIDL uidl)
 	{
 		for (String att : uidl.getAttributeNames())
 		{
-			System.out.println("name:" + att + ", value:" + uidl.getStringAttribute(att));
-		}
+			if (att.startsWith("["))
+			{
+				String[] refs = uidl.getStringArrayAttribute(att);
+				List<Canvas> paintables = new ArrayList<Canvas>();
 
-		for (String att : uidl.getAttributeNames())
-		{
-			if (!att.startsWith("*") && !att.equals("id"))
+				for (String c : refs)
+				{
+					Paintable p = client.getPaintable(c);
+					if (p instanceof Wrapper)
+					{
+						Canvas canvas = ((Wrapper) p).unwrap();
+						paintables.add(canvas);
+					}
+				}
+
+				Canvas[] toSet = new Canvas[0];
+				toSet = paintables.toArray(toSet);
+				dataObject.setAttribute(att.substring(1), toSet);
+			}
+			else if (att.startsWith("#"))
+			{
+				Paintable p = client.getPaintable(uidl.getStringAttribute(att));
+				if (p instanceof BaseWidget)
+				{
+					BaseWidget bw = (BaseWidget) p;
+					dataObject.setAttribute(att.substring(1), bw.getOrCreateJsObj());
+				}
+			}
+			else if (!att.startsWith("*") && !att.equals("id"))
 			{
 				String sValue = uidl.getStringAttribute(att);
-				setDataProperty(formItem, att, sValue);
+				setDataProperty(dataObject, att, sValue);
 			}
 		}
 	}

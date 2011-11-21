@@ -1,8 +1,10 @@
 package org.vaadin.smartgwt.server.form;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.layout.Layout;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -43,13 +45,13 @@ import com.smartgwt.client.widgets.form.FormItemEventInfo;
 import com.smartgwt.client.widgets.form.FormItemHoverFormatter;
 import com.smartgwt.client.widgets.form.ValuesManager;
 import com.smartgwt.client.widgets.form.events.HiddenValidationErrorsHandler;
-import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.FormItemFactory;
 import com.smartgwt.client.widgets.grid.ListGrid;
 
 /**
  * Server side component for the VDynamicForm widget.
  */
+// @formatter:off
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.VDynamicForm.class)
 public class DynamicForm extends Layout
 {
@@ -2631,14 +2633,14 @@ public class DynamicForm extends Layout
         self._showErrors();
     }-*/;
 
-    private void linkFields() {
-        if (fields != null) {
-            for (FormItem field : fields) {
-                JavaScriptObject fieldJS = getFieldJS(field.getName());
-                field.setJsObj(fieldJS);
-            }
-        }
-    }
+//    private void linkFields() {
+//        if (fields != null) {
+//            for (FormItem field : fields) {
+//                JavaScriptObject fieldJS = getFieldJS(field.getName());
+//                field.setJsObj(fieldJS);
+//            }
+//        }
+//    }
 
     private native JavaScriptObject getFieldJS(String fieldName) /*-{
         var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
@@ -2934,22 +2936,22 @@ public class DynamicForm extends Layout
         return EnumUtil.getEnum(OperatorId.values(), getAttribute("operator"));
     }
 
-    /**
-     * An array of field objects, specifying the order, layout, and types of each field in the DynamicForm. When both
-     * {@link #setFields fields} and {@link #setDataSource dataSource} are set, {@link #setFields fields} acts as a set
-     * of overrides as explained in DataBoundComponent fields.
-     * <p/>
-     * See Form Layout for information about how flags specified on the FormItems control how the form is laid out.
-     *
-     * @param fields form item fields
-     */
-    public void setFields(FormItem... fields) {
-        setAttribute("fields", fields, true);
-        this.fields = fields;
-        if(isCreated()) {
-            linkFields();
-        }
-    }
+//    /**
+//     * An array of field objects, specifying the order, layout, and types of each field in the DynamicForm. When both
+//     * {@link #setFields fields} and {@link #setDataSource dataSource} are set, {@link #setFields fields} acts as a set
+//     * of overrides as explained in DataBoundComponent fields.
+//     * <p/>
+//     * See Form Layout for information about how flags specified on the FormItems control how the form is laid out.
+//     *
+//     * @param fields form item fields
+//     */
+//    public void setFields(FormItem... fields) {
+//        setAttribute("fields", fields, true);
+//        this.fields = fields;
+//        if(isCreated()) {
+//            linkFields();
+//        }
+//    }
 
     /**
      * Return thhe form fields
@@ -2957,25 +2959,25 @@ public class DynamicForm extends Layout
      * @return the form fields
      */
     public FormItem[] getFields() {
-        if(fields == null || getDataSource() != null) {
-            return convertToFormItemArray(getAttributeAsJavaScriptObject("fields"));
-        } else {
+//        if(fields == null || getDataSource() != null) {
+//            return convertToFormItemArray(getAttributeAsJavaScriptObject("fields"));
+//        } else {
             return fields;
-        }
+//        }
     }
 
-    private static FormItem[] convertToFormItemArray(JavaScriptObject nativeArray) {
-        if (nativeArray == null) {
-            return new FormItem[]{};
-        }
-        JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
-        FormItem[] objects = new FormItem[componentsj.length];
-        for (int i = 0; i < componentsj.length; i++) {
-            JavaScriptObject fieldJS = componentsj[i];
-            objects[i] = FormItemFactory.getFormItem(fieldJS);
-        }
-        return objects;
-    }
+//    private static FormItem[] convertToFormItemArray(JavaScriptObject nativeArray) {
+//        if (nativeArray == null) {
+//            return new FormItem[]{};
+//        }
+//        JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
+//        FormItem[] objects = new FormItem[componentsj.length];
+//        for (int i = 0; i < componentsj.length; i++) {
+//            JavaScriptObject fieldJS = componentsj[i];
+//            objects[i] = FormItemFactory.getFormItem(fieldJS);
+//        }
+//        return objects;
+//    }
 
     public FormItem getItem(String name) {
         return getField(name);
@@ -2988,14 +2990,15 @@ public class DynamicForm extends Layout
                     return field;
                 }
             }
-        } else {
-            JavaScriptObject fieldJS = getFieldJS(name);
-            if(fieldJS != null) {
-                return FormItemFactory.getFormItem(fieldJS);
-            } else {
-                return null;
-            }
-        }
+        } 
+//        else {
+//            JavaScriptObject fieldJS = getFieldJS(name);
+//            if(fieldJS != null) {
+//                return FormItemFactory.getFormItem(fieldJS);
+//            } else {
+//                return null;
+//            }
+//        }
         return null;
     }
 
@@ -4145,5 +4148,39 @@ public class DynamicForm extends Layout
         }
     }-*/;
 
-}
+    
+    // ******** Vaadin Integration
+    
+ // @formatter:on
+	public void addField(FormItem item)
+	{
+		FormItem[] items = getFields();
+		if (items == null)
+		{
+			items = new FormItem[0];
+		}
+		items = Arrays.copyOf(items, items.length + 1);
+		items[items.length-1] = item;
+		setFields(items);
+	}
 
+	/**
+	 * An array of field objects, specifying the order, layout, and types of each field in the DynamicForm. When both {@link #setFields fields} and
+	 * {@link #setDataSource dataSource} are set, {@link #setFields fields} acts as a set of overrides as explained in DataBoundComponent fields.
+	 * <p/>
+	 * See Form Layout for information about how flags specified on the FormItems control how the form is laid out.
+	 * 
+	 * @param fields
+	 *            form item fields
+	 */
+	public void setFields(FormItem... fields)
+	{
+		setAttribute("*fields", fields, true);
+		for (FormItem item : fields)
+		{
+			item.setParent(this);
+		}
+		this.fields = fields;
+	}
+
+}

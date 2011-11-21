@@ -53,7 +53,7 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //    }
 
     public Canvas(String id) {
-        super(id);
+//        super(id);
         scClassName = "Canvas";
     }
 
@@ -6906,10 +6906,10 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
      *
      * @return true if the widget is visible, false otherwise
      */
-    public native boolean isVisible() /*-{
-            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-            return self.isVisible();
-        }-*/;
+//    public native boolean isVisible() /*-{
+//            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//            return self.isVisible();
+//        }-*/;
 
 
     /**

@@ -1,48 +1,25 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.vaadin.smartgwt.client.ui.VaadinManagement;
+import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper.WidgetInfo;
-import org.vaadin.smartgwt.client.ui.wrapper.TabWrapper;
+import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VTabSet extends TabSet implements Paintable, VaadinManagement
+public class VTabSet extends TabSet implements Paintable
 {
 	protected String paintableId;
 	private ApplicationConnection client;
-	private List<WidgetInfo> widgetInfos;
-	private Element dummyDiv = null;
 
 	@Override
 	public Element getElement()
 	{
-		if (dummyDiv == null)
-		{
-			dummyDiv = DOM.createDiv();
-			DOMUtil.setID(dummyDiv, getID() + "_dummy");
-			RootPanel.getBodyElement().appendChild(dummyDiv);
-		}
-		return dummyDiv;
-	}
-
-	@Override
-	public void unregister()
-	{
-		client.unregisterPaintable(this);
-		RootPanel.getBodyElement().removeChild(dummyDiv);
-		dummyDiv = null;
+		return VMasterContainer.getDummy();
 	}
 
 	@Override
@@ -51,38 +28,67 @@ public class VTabSet extends TabSet implements Paintable, VaadinManagement
 		this.client = client;
 		paintableId = uidl.getId();
 
-		PainterHelper.updateSmartGWTComponent(this, uidl);
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
+		PainterHelper.paintChildren(uidl, client);
 
 		addTabs(uidl, client);
 	}
 
 	private void addTabs(UIDL uidl, ApplicationConnection client)
 	{
-		widgetInfos = PainterHelper.paintChildren(uidl, client);
-
-		if (widgetInfos.size() > 0)
+		if (uidl.hasAttribute("*members"))
 		{
-			List<Tab> tabs = new ArrayList<Tab>();
-
-			for (WidgetInfo widgetInfo : widgetInfos)
+			// remove and unregister all members
+			for (Tab tab : getTabs())
 			{
-				if (widgetInfo.getWidget() instanceof TabWrapper)
-				{
-					Tab tab = ((TabWrapper) widgetInfo.getWidget()).getTab();
-
-					if (tab != null)
-						tabs.add(tab);
-				}
+				removeTab(tab);
 			}
 
-			if (tabs.size() > 0)
-			{
-				Tab[] tabsArr = new Tab[0];
-				tabsArr = tabs.toArray(tabsArr);
+			String[] members = uidl.getStringArrayAttribute("*members");
 
-				setTabs(tabsArr);
+			for (String member : members)
+			{
+				Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
+				addTab(tab);
+			}
+		}
+		else
+		{
+			if (uidl.hasAttribute("*membersReplaced"))
+			{
+				String[] replaced = uidl.getStringArrayAttribute("*membersReplaced");
+
+				for (int i = 0; i < replaced.length; i += 2)
+				{
+					Tab oldTab = ((Wrapper) client.getPaintable(replaced[i])).unwrap();
+					Tab newTab = ((Wrapper) client.getPaintable(replaced[i + 1])).unwrap();
+
+					int pos = getTabNumber(oldTab.getID());
+					removeTab(oldTab);
+
+					addTab(newTab, pos);
+				}
+			}
+			if (uidl.hasAttribute("*membersRemoved"))
+			{
+				String[] removed = uidl.getStringArrayAttribute("*membersRemoved");
+
+				for (String member : removed)
+				{
+					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
+					removeTab(tab);
+				}
+			}
+			if (uidl.hasAttribute("*membersAdded"))
+			{
+				String[] added = uidl.getStringArrayAttribute("*membersAdded");
+
+				for (String member : added)
+				{
+					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
+					addTab(tab);
+				}
 			}
 		}
 	}
-
 }

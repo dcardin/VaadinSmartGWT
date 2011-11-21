@@ -3,8 +3,10 @@ package org.vaadin.smartgwt.server;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
@@ -15,15 +17,17 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Window;
-import com.smartgwt.client.util.IDManager;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
+import com.vaadin.terminal.Paintable;
+import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.AbstractComponent;
 
+// @formatter:off
 public abstract class BaseWidget extends AbstractComponent implements HasHandlers, Serializable {
 //	private Function onRenderFn;
 
@@ -35,7 +39,7 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        $wnd.isc.setAutoDraw(false);               
 //    }-*/;
 
-	protected String id;
+//	protected String id;
     protected JavaScriptObject config = null; // JSOHelper.createObject();
 //    protected boolean isElementSet = false;
     protected String scClassName;
@@ -88,13 +92,13 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        setID(id);
     }
 
-    protected BaseWidget(JavaScriptObject jsObj) {
-        id = JSOHelper.getAttribute(jsObj, "ID");
-    }
+//    protected BaseWidget(JavaScriptObject jsObj) {
+//        id = JSOHelper.getAttribute(jsObj, "ID");
+//    }
 
-    public BaseWidget(String id) {
-        setID(id);
-    }
+//    public BaseWidget(String id) {
+//        setID(id);
+//    }
 
     public static BaseWidget getRef(JavaScriptObject jsObj) {
         return jsObj == null ? null : (BaseWidget) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
@@ -295,18 +299,18 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //    }-*/;
 
 
-    public String getID() {
-        return id;
-    }
-
-    public void setID(String id) {
-        if (this.id != null) {
-            IDManager.unregisterID(this.id);
-        }
-        IDManager.registerID(id);
-        setAttribute("ID", id, false);
-        this.id = id;
-    }
+//    public String getID() {
+//        return id;
+//    }
+//
+//    public void setID(String id) {
+//        if (this.id != null) {
+//            IDManager.unregisterID(this.id);
+//        }
+//        IDManager.registerID(id);
+//        setAttribute("ID", id, false);
+//        this.id = id;
+//    }
 
     public JavaScriptObject getConfig() {
         return config;
@@ -856,35 +860,41 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        }
 //    }
 
-    public boolean equals(Object obj) {
-        if (obj instanceof BaseWidget) {
-            if (obj == this) {
-                return true;
-            } else {
-                BaseWidget other = (BaseWidget) obj;
-                if (other.getID().equals(getID())) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-            return false;
-        }
-    }
+//    public boolean equals(Object obj) {
+//        if (obj instanceof BaseWidget) {
+//            if (obj == this) {
+//                return true;
+//            } else {
+//                BaseWidget other = (BaseWidget) obj;
+//                if (other.getID().equals(getID())) {
+//                    return true;
+//                }
+//            }
+//            return false;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public int hashCode() {
+//        return getID().hashCode();
+//    }
 
-    public int hashCode() {
-        return getID().hashCode();
-    }
+    // @formatter:on
+	// ------------ Vaadin integration methods
 
-    // ------------ Vaadin integration methods
-    
 	private static final long serialVersionUID = 1L;
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
 	private boolean isCreated = false;
 
-	protected boolean isCreated()
+	public boolean isCreated()
 	{
 		return isCreated;
+	}
+
+	public void removeAttribute(String attribute)
+	{
+		attributes.remove(attribute);
 	}
 
 	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
@@ -957,15 +967,14 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			return Float.valueOf(value.toString());
 	}
 
-	
-	public Map<?,?> getAttributeAsMap(String attribute)
+	public Map<?, ?> getAttributeAsMap(String attribute)
 	{
 		Object value = attributes.get(attribute);
 
 		if (value == null)
 			return null;
 		else
-			return (Map<?,?>) value;
+			return (Map<?, ?>) value;
 	}
 
 	public Date getAttributeAsDate(String attribute)
@@ -1000,25 +1009,22 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			return (String[]) value;
 	}
 
-	public String[] getAttributeAsJava(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return (String[]) value;
-	}
-	
 	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
 	{
 		throw new IllegalStateException();
 	}
 
+	public <T> T getAttributeAsObject(String attribute)
+	{
+		Object value = attributes.get(attribute);
+		return (T) value;
+	}
 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		JsonPaintTarget jpt = (JsonPaintTarget) target;
+
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
 			Object value = entry.getValue();
@@ -1027,7 +1033,7 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			if (value == null)
 				target.addAttribute(name, "null");
 
-			else if (value instanceof Boolean)
+			if (value instanceof Boolean)
 			{
 				target.addAttribute(name, "b" + String.valueOf(value));
 			}
@@ -1051,12 +1057,39 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			{
 				target.addAttribute(name, "s" + String.valueOf(value));
 			}
+			else if (value instanceof Paintable[])
+			{
+				List<String> references = new ArrayList<String>();
+
+				for (Paintable p : (Paintable[]) value)
+				{
+					p.paint(target);
+					references.add(jpt.getPaintIdentifier(p));
+				}
+				
+				if (name.charAt(0) != '*')
+					name = "[" + name;
+				
+				target.addAttribute(name, references.toArray()); // [ = array
+			}
+			else if (value instanceof Paintable)
+			{
+				String ref = jpt.getPaintIdentifier( (Paintable) value);
+				((Paintable)value).paint(target);
+
+				if (name.charAt(0) != '*')
+					name = "#" + name;
+				
+				target.addAttribute(name, ref); // # = reference
+			}
 		}
 
 		// Since the paint is finished, set the created attribute
 		isCreated = true;
 	}
-	
+
+	public BaseWidget getOrCreateJsObj() {
+		return this;
+	}
 
 }
-

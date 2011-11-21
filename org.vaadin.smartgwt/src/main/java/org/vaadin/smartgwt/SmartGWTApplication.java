@@ -7,15 +7,15 @@ import java.util.Random;
 
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
-import org.vaadin.smartgwt.server.IButton;
+import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
-import org.vaadin.smartgwt.server.data.ListGridField;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
 import org.vaadin.smartgwt.server.grid.ListGrid;
+import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
@@ -47,37 +47,40 @@ public class SmartGWTApplication extends Application
 		mainWindow.setSizeFull();
 
 		MasterContainer layout = new MasterContainer();
-		layout.addMember(getEricLayout());
+		layout.addMember(getMainPanel());
 
 		mainWindow.setContent(layout);
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new SmartGWTApplication().getListGrid();
 	}
-	private void getListGrid()
+
+	private Canvas getListGrid()
 	{
-        final ListGrid countryGrid = new ListGrid();  
-        countryGrid.setWidth(500);  
-        countryGrid.setHeight(224);  
-        countryGrid.setShowAllRecords(true);  
-  
-        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
-        countryCodeField.setAlign(Alignment.CENTER);  
-        countryCodeField.setType(ListGridFieldType.IMAGE);  
-        countryCodeField.setImageURLPrefix("flags/16/");  
-        countryCodeField.setImageURLSuffix(".png");  
-  
-        ListGridField nameField = new ListGridField("countryName", "Country");  
-        ListGridField capitalField = new ListGridField("capital", "Capital");  
-        ListGridField continentField = new ListGridField("continent", "Continent");  
-        
-        countryGrid.setFields(countryCodeField, nameField, capitalField, continentField);  
-        countryGrid.setCanResizeFields(true);  
-        countryGrid.setData(CountryData.getRecords());  
+		final ListGrid countryGrid = new ListGrid();
+		countryGrid.setWidth(500);
+		countryGrid.setHeight(224);
+		countryGrid.setShowAllRecords(true);
+
+		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
+		countryCodeField.setAlign(Alignment.CENTER);
+		countryCodeField.setType(ListGridFieldType.IMAGE);
+		countryCodeField.setImageURLPrefix("flags/16/");
+		countryCodeField.setImageURLSuffix(".png");
+
+		ListGridField nameField = new ListGridField("countryName", "Country");
+		ListGridField capitalField = new ListGridField("capital", "Capital");
+		ListGridField continentField = new ListGridField("continent", "Continent");
+
+		countryGrid.setFields(countryCodeField, nameField, capitalField, continentField);
+		countryGrid.setCanResizeFields(true);
+		countryGrid.setData(CountryData.getRecords());
+		
+		return countryGrid;
 	}
-	
+
 	private Layout paintBorderLayout()
 	{
 		final VLayout outerLayout = new VLayout();
@@ -119,7 +122,7 @@ public class SmartGWTApplication extends Application
 		return outerLayout;
 	}
 
-	private BaseWidget complexLayout(boolean subPanel)
+	private Layout complexLayout(boolean subPanel)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setSizeFull();
@@ -138,14 +141,12 @@ public class SmartGWTApplication extends Application
 		east.setBackgroundColor("green");
 		east.setHeight100();
 
-		layout.addComponent(north, BorderLayout.Constraint.NORTH);
-
-		if (subPanel)
-			layout.addComponent(getMainPanel(), BorderLayout.Constraint.CENTER);
-		layout.addComponent(south, BorderLayout.Constraint.SOUTH);
-		layout.addComponent(west, BorderLayout.Constraint.WEST);
-		layout.addComponent(east, BorderLayout.Constraint.EAST);
-
+		/*
+		 * TEMP layout.addMember(north, BorderLayout.Constraint.NORTH);
+		 * 
+		 * if (subPanel) layout.addMember(getMainPanel(), BorderLayout.Constraint.CENTER); layout.addMember(south, BorderLayout.Constraint.SOUTH);
+		 * layout.addMember(west, BorderLayout.Constraint.WEST); layout.addMember(east, BorderLayout.Constraint.EAST);
+		 */
 		return layout;
 	}
 
@@ -241,7 +242,7 @@ public class SmartGWTApplication extends Application
 		return layout;
 	}
 
-	private BaseWidget getMainPanel()
+	private Layout getMainPanel()
 	{
 		TabSet tabset = new TabSet();
 		tabset.setSizeFull();
@@ -255,13 +256,13 @@ public class SmartGWTApplication extends Application
 		Tab tab7 = new Tab("Fake border");
 
 		tab.setPane(createForm(4));
-		tab2.setPane(createForm(6));
+		tab2.setPane(getListGrid());
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
-		vl.addMember(new IButton("Press me 1!"));
-		vl.addMember(new IButton("Press me 2!"));
-		vl.addMember(new IButton("Press me 3!"));
-		vl.addMember(new IButton("Press me 4!"));
+		vl.addMember(new Button("Press me 1!"));
+		vl.addMember(new Button("Press me 2!"));
+		vl.addMember(new Button("Press me 3!"));
+		vl.addMember(new Button("Press me 4!"));
 		Label filler = new Label("");
 		filler.setHeight("*");
 		filler.setWidth100();
@@ -294,9 +295,9 @@ public class SmartGWTApplication extends Application
 		layout.setWidth100();
 		layout.setHeight100();
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 1; i <= 10; i++)
 		{
-			Button button = new Button("Button " + i)
+			final Button button = new Button("Button " + i)
 				{
 					/**
 					 * 
@@ -308,15 +309,15 @@ public class SmartGWTApplication extends Application
 					{
 						if (new Random().nextBoolean() == true)
 						{
-							layout.removeMember(layout.getMembers()[0]);
+							layout.removeMember(this); // layout.getMembers()[0]);
 						}
 						else
 						{
-							layout.replaceComponent(this, new Button("unclickable button"));
+							layout.replaceMember(this, new Button("unclickable button"));
 						}
 					}
 				};
-			layout.addComponent(button);
+			layout.addMember(button);
 		}
 
 		return layout;
@@ -329,14 +330,14 @@ public class SmartGWTApplication extends Application
 		vlayout.setWidth("100%");
 		vlayout.setMembersMargin(30);
 
-		vlayout.addComponent(createForm(4));
+		vlayout.addMember(createForm(4));
 		Button button = new Button("Click to switch");
 		button.setIcon("http://www.mricons.com/store/png/119004_36574_32_top_icon.png");
 		button.setWidth(200);
 		button.setActionType(SelectionType.CHECKBOX);
 
-		vlayout.addComponent(button);
-		vlayout.addComponent(createForm(6));
+		vlayout.addMember(button);
+		vlayout.addMember(createForm(6));
 
 		return vlayout;
 	}
@@ -355,7 +356,7 @@ public class SmartGWTApplication extends Application
 
 		int i = 1;
 
-		final FormItem tiEvent = new TextItem();
+		final FormItem tiEvent = new TextItem("blah" + i);
 		tiEvent.addChangedHandler(new ChangedHandler()
 			{
 				@Override
@@ -368,81 +369,81 @@ public class SmartGWTApplication extends Application
 		tiEvent.setTitle("Edit Field " + i++);
 		tiEvent.setValue("value!");
 		tiEvent.setWidth("100%");
-		form.addComponent(tiEvent);
+		form.addField(tiEvent);
 
-		FormItem ti = new TextItem();
+		FormItem ti = new TextItem("blah" + i);
 		ti.setTitle("Edit Field " + i++);
 		ti.setValue("value!");
 		ti.setWidth("100%");
-		form.addComponent(ti);
+		form.addField(ti);
 
-		ti = new TextItem();
+		ti = new TextItem("blah" + i);
 		ti.setTitle("Edit Field " + i++);
 		ti.setValue("value!");
 		ti.setWidth("100%");
-		form.addComponent(ti);
+		form.addField(ti);
 
-		SelectItem si = new SelectItem("");
+		SelectItem si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
-		form.addComponent(si);
+		form.addField(si);
 
-		si = new SelectItem("");
+		si = new SelectItem("blah"+i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
-		form.addComponent(si);
+		form.addField(si);
 
-		si = new SelectItem("");
+		si = new SelectItem("blah"+i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
-		form.addComponent(si);
+		form.addField(si);
 
-		si = new SelectItem("");
+		si = new SelectItem("blah"+i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
-		form.addComponent(si);
+		form.addField(si);
 
-		DateItem di = new DateItem();
+		DateItem di = new DateItem("blah" +i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		di.setUseTextField(true);
-		form.addComponent(di);
+		form.addField(di);
 
-		di = new DateItem();
+		di = new DateItem("blah"+i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
-		form.addComponent(di);
+		form.addField(di);
 
-		di = new DateItem();
+		di = new DateItem("blah"+i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
 		di.setUseTextField(true);
-		form.addComponent(di);
+		form.addField(di);
 
-		di = new DateItem();
+		di = new DateItem("blah"+i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
-		form.addComponent(di);
+		form.addField(di);
 
-		di = new DateItem();
+		di = new DateItem("blah"+i);
 		di.setWidth("100%");
 		di.setTitle("Edit Field " + i++);
-		form.addComponent(di);
+		form.addField(di);
 
-		ti = new TextItem();
+		ti = new TextItem("blah"+i);
 		ti.setWidth("100%");
 		ti.setTitle("Edit Field " + i++);
-		form.addComponent(ti);
+		form.addField(ti);
 
-		ti = new TextItem();
+		ti = new TextItem("blah"+i);
 		ti.setWidth("100%");
 		ti.setTitle("Edit Field " + i++);
-		form.addComponent(ti);
+		form.addField(ti);
 
 		return form;
 	}
 
-	public static <T> Iterable<T> iterate2(final Enumeration<T> en)
+	public static <T> Iterable<T> iterate(final Enumeration<T> en)
 	{
 		final Iterator<T> iterator = new Iterator<T>()
 			{

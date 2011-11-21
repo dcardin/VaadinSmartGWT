@@ -1,10 +1,12 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import java.util.List;
-
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper.WidgetInfo;
 
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.DOMUtil;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
@@ -14,7 +16,23 @@ public class VMasterContainer extends VLayout implements Paintable
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
-	private List<WidgetInfo> widgetInfos;
+
+	public static Element dummyDiv;
+
+	public static Element getDummy()
+	{
+		return dummyDiv;
+	}
+
+	static
+	{
+		if (dummyDiv == null)
+		{
+			dummyDiv = DOM.createDiv();
+			DOMUtil.setID(dummyDiv, "dummy_placeholder");
+			RootPanel.getBodyElement().appendChild(dummyDiv);
+		}
+	}
 
 	public VMasterContainer()
 	{
@@ -27,18 +45,30 @@ public class VMasterContainer extends VLayout implements Paintable
 		this.client = client;
 		paintableId = uidl.getId();
 
-		PainterHelper.updateSmartGWTComponent(this, uidl);
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
+		PainterHelper.paintChildren(uidl, client);
 
-		if (uidl.hasAttribute("*children-painted"))
+		if (uidl.hasAttribute("*members"))
 		{
-			widgetInfos = PainterHelper.paintChildren(uidl, client);
-
 			removeMembers(getMembers());
+			String[] members = uidl.getStringArrayAttribute("*members");
 
-			for (WidgetInfo widgetInfo : widgetInfos)
+			for (String member : members)
 			{
-				addMember(widgetInfo.getWidget());
+				addMember((Canvas) client.getPaintable(member));
 			}
 		}
+
+		// if (uidl.hasAttribute("*children-painted"))
+		// {
+		// widgetInfos = PainterHelper.paintChildren(uidl, client);
+		//
+		// removeMembers(getMembers());
+		//
+		// for (WidgetInfo widgetInfo : widgetInfos)
+		// {
+		// addMember(widgetInfo.getWidget());
+		// }
+		// }
 	}
 }

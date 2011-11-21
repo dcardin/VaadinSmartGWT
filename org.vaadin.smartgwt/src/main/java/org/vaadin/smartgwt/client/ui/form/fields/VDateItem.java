@@ -2,15 +2,12 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 
 import java.util.Date;
 
-import org.vaadin.smartgwt.client.ui.VaadinManagement;
+import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.wrapper.FormItemWrapper;
+import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.DOMUtil;
-import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.BlurEvent;
@@ -21,39 +18,23 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VDateItem extends Label implements Paintable, FormItemWrapper, VaadinManagement
+public class VDateItem extends Canvas implements Paintable, Wrapper
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
 
 	private final DateItem di;
 	private final Date savedValue = null;
-	private Element dummyDiv = null;
 
 	@Override
 	public Element getElement()
 	{
-		if (dummyDiv == null)
-		{
-			dummyDiv = DOM.createDiv();
-			DOMUtil.setID(dummyDiv, getID() + "_dummy");
-			RootPanel.getBodyElement().appendChild(dummyDiv);
-		}
-		return dummyDiv;
-	}
-
-	@Override
-	public void unregister()
-	{
-		client.unregisterPaintable(this);
-		RootPanel.getBodyElement().removeChild(dummyDiv);
-		dummyDiv = null;
+		return VMasterContainer.getDummy();
 	}
 
 	public VDateItem()
 	{
 		super();
-		setSize("1px", "1px");
 
 		di = new DateItem();
 
@@ -120,11 +101,11 @@ public class VDateItem extends Label implements Paintable, FormItemWrapper, Vaad
 			// }
 		}
 
-		PainterHelper.updateFormItem(di, uidl);
+		PainterHelper.updateDataObject(client, di, uidl);
 	}
 
 	@Override
-	public FormItem getFormItem()
+	public FormItem unwrap()
 	{
 		return di;
 	}

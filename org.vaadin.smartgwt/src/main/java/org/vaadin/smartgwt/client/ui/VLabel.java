@@ -1,40 +1,23 @@
 package org.vaadin.smartgwt.client.ui;
 
+import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.DOMUtil;
 import com.smartgwt.client.widgets.Label;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VLabel extends Label implements Paintable, VaadinManagement
+public class VLabel extends Label implements Paintable
 {
 	protected String paintableId;
 	protected ApplicationConnection client;
-	private Element dummyDiv = null;
 
 	@Override
 	public Element getElement()
 	{
-		if (dummyDiv == null)
-		{
-			dummyDiv = DOM.createDiv();
-			DOMUtil.setID(dummyDiv, getID() + "_dummy");
-			RootPanel.getBodyElement().appendChild(dummyDiv);
-		}
-		return dummyDiv;
-	}
-
-	@Override
-	public void unregister()
-	{
-		client.unregisterPaintable(this);
-		RootPanel.getBodyElement().removeChild(dummyDiv);
-		dummyDiv = null;
+		return VMasterContainer.getDummy();
 	}
 
 	/**
@@ -43,7 +26,10 @@ public class VLabel extends Label implements Paintable, VaadinManagement
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		PainterHelper.updateSmartGWTComponent(this, uidl);
+		this.client = client;
+		this.paintableId = uidl.getId();
+
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 	}
 
 }
