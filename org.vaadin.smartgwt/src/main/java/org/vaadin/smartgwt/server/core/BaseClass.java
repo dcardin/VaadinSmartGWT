@@ -6,11 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
@@ -34,7 +29,7 @@ import com.vaadin.ui.AbstractComponent;
 public abstract class BaseClass extends AbstractComponent {
 
     protected String id;
-    protected JavaScriptObject config; //= JSOHelper.createObject();
+//    protected JavaScriptObject config; //= JSOHelper.createObject();
     protected String scClassName;
 
 //    public BaseClass() {
@@ -85,9 +80,9 @@ public abstract class BaseClass extends AbstractComponent {
         this.scClassName = scClassName;
     }
 
-    public JavaScriptObject getConfig() {
-        return config;
-    }
+//    public JavaScriptObject getConfig() {
+//        return config;
+//    }
 
 //    public native boolean isCreated()/*-{
 //        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
@@ -95,16 +90,16 @@ public abstract class BaseClass extends AbstractComponent {
 //        // && $wnd.isc.isA.Canvas(obj) === true
 //        return id != null && obj != null && obj !== undefined;
 //    }-*/;
-
-    public native JavaScriptObject getJsObj()/*-{
-        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
-        if($wnd.window[id] != null && $wnd.window[id]!== undefined) {
-            return $wnd.window[id];
-        } else {
-            return null;
-        }
-    }-*/;
-
+//
+//    public native JavaScriptObject getJsObj()/*-{
+//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
+//        if($wnd.window[id] != null && $wnd.window[id]!== undefined) {
+//            return $wnd.window[id];
+//        } else {
+//            return null;
+//        }
+//    }-*/;
+//
 //    public JavaScriptObject getOrCreateJsObj() {
 //        if (!isCreated()) {
 //            JavaScriptObject jsObj = create();
@@ -119,18 +114,18 @@ public abstract class BaseClass extends AbstractComponent {
 //    public static BaseClass getRef(JavaScriptObject jsObj) {
 //        return jsObj == null ? null : (BaseClass) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
 //    }
-	
-	/**
-	 * Destroy this object.
-	 */
-    public native void destroy()/*-{
-		var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-		var ID = this.@com.smartgwt.client.core.BaseClass::getID()();
-		if (self != null && self.destroy) self.destroy();
-		if (ID != null) {
-		    @com.smartgwt.client.util.IDManager::unregisterID(Ljava/lang/String;)(ID);
-		}
-	}-*/;	
+//	
+//	/**
+//	 * Destroy this object.
+//	 */
+//    public native void destroy()/*-{
+//		var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+//		var ID = this.@com.smartgwt.client.core.BaseClass::getID()();
+//		if (self != null && self.destroy) self.destroy();
+//		if (ID != null) {
+//		    @com.smartgwt.client.util.IDManager::unregisterID(Ljava/lang/String;)(ID);
+//		}
+//	}-*/;	
 
     protected void error(String attribute, String value, boolean allowPostCreate) throws IllegalStateException {
         if (allowPostCreate) {
@@ -474,38 +469,38 @@ public abstract class BaseClass extends AbstractComponent {
 //        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
 //        self.setProperty(property, value);
 //    }-*/;
-
-    //event handling ode
-    private HandlerManager manager = null;
-
-    public void fireEvent(GwtEvent<?> event) {
-        if (manager != null) {
-            manager.fireEvent(event);
-        }
-    }
-
-    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
-           final H handler, GwtEvent.Type<H> type) {
-        return ensureHandlers().addHandler(type, handler);
-    }
-
-    /**
-     * Ensures the existence of the handler manager.
-     *
-     * @return the handler manager
-     **/
-    HandlerManager ensureHandlers() {
-        return manager == null ? manager = new HandlerManager(this)
-        : manager;
-    }
-
-    HandlerManager getManager() {
-        return manager;
-    }
-
-    public int getHandlerCount(GwtEvent.Type<?> type) {
-        return manager == null? 0 : manager.getHandlerCount(type);
-    }
+//
+//    //event handling ode
+//    private HandlerManager manager = null;
+//
+//    public void fireEvent(GwtEvent<?> event) {
+//        if (manager != null) {
+//            manager.fireEvent(event);
+//        }
+//    }
+//
+//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
+//           final H handler, GwtEvent.Type<H> type) {
+//        return ensureHandlers().addHandler(type, handler);
+//    }
+//
+//    /**
+//     * Ensures the existence of the handler manager.
+//     *
+//     * @return the handler manager
+//     **/
+//    HandlerManager ensureHandlers() {
+//        return manager == null ? manager = new HandlerManager(this)
+//        : manager;
+//    }
+//
+//    HandlerManager getManager() {
+//        return manager;
+//    }
+//
+//    public int getHandlerCount(GwtEvent.Type<?> type) {
+//        return manager == null? 0 : manager.getHandlerCount(type);
+//    }
 
     // ------------ Vaadin integration methods
     
@@ -645,12 +640,6 @@ public abstract class BaseClass extends AbstractComponent {
 			return (String[]) value;
 	}
 	
-	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
-	{
-		throw new IllegalStateException();
-	}
-
-
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{

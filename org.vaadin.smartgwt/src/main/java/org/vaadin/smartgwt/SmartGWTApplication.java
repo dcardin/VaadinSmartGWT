@@ -425,15 +425,6 @@ public class SmartGWTApplication extends Application
 		int i = 1;
 
 		final FormItem tiEvent = new TextItem("blah" + i);
-		tiEvent.addChangedHandler(new ChangedHandler()
-			{
-				@Override
-				public void onChanged(ChangedEvent event)
-				{
-					tiEvent.setValue("c:" + event.getValue());
-				}
-			});
-
 		tiEvent.setTitle("Edit Field " + i++);
 		tiEvent.setValue("value!");
 		tiEvent.setWidth("100%");

@@ -1,5 +1,8 @@
 package org.vaadin.smartgwt.server;
 
+import org.vaadin.smartgwt.server.types.ImageStyle;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -16,8 +19,6 @@ package org.vaadin.smartgwt.server;
  * Lesser General Public License for more details.
  */
  
-import com.smartgwt.client.types.ImageStyle;
-import com.smartgwt.client.util.EnumUtil;
 
 /**
  * The StretchImg widget class implements a widget type that displays a list of multiple images  that make up a single
@@ -352,47 +353,47 @@ public class StretchImg extends StatefulCanvas {
 
     // ********************* Methods ***********************
             
-    /**
-     * Set the specified image's state to newState and update the displayed image given by whichPart, or set the state for all
-     * images to newState and update the displayed images if whichPart is not provided.
-     * @param newState name for the new state ("off", "down", etc)
-     */
-    public native void setState(String newState) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setState(newState);
-    }-*/;
-
-    /**
-     * Set the specified image's state to newState and update the displayed image given by whichPart, or set the state for all
-     * images to newState and update the displayed images if whichPart is not provided.
-     * @param newState name for the new state ("off", "down", etc)
-     * @param whichPart name of the piece to set ("start", "stretch" or "end")           if not specified, sets them all
-     * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
-     */
-    public native void setState(String newState, String whichPart) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setState(newState, whichPart);
-    }-*/;
-
-    // ********************* Static Methods ***********************
-    /**
-     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
-     * class will automatically have the default properties that were set when this method was called. This is a powerful
-     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
-     * properties of this class. Can also be used for skinning / styling purposes.
-     * <P>
-     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
-     * underlying class (including those automatically generated in JavaScript). 
-     * This method should not be used to apply standard EventHandlers or override methods for
-     * a class - use a custom subclass instead.
-     *
-     * @param stretchImgProperties properties that should be used as new defaults when instances of this class are created
-     */
-    public static native void setDefaultProperties(StretchImg stretchImgProperties) /*-{
-    	var properties = $wnd.isc.addProperties({},stretchImgProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
-    	delete properties.ID;
-        $wnd.isc.StretchImg.addProperties(properties);
-    }-*/;
+//    /**
+//     * Set the specified image's state to newState and update the displayed image given by whichPart, or set the state for all
+//     * images to newState and update the displayed images if whichPart is not provided.
+//     * @param newState name for the new state ("off", "down", etc)
+//     */
+//    public native void setState(String newState) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setState(newState);
+//    }-*/;
+//
+//    /**
+//     * Set the specified image's state to newState and update the displayed image given by whichPart, or set the state for all
+//     * images to newState and update the displayed images if whichPart is not provided.
+//     * @param newState name for the new state ("off", "down", etc)
+//     * @param whichPart name of the piece to set ("start", "stretch" or "end")           if not specified, sets them all
+//     * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
+//     */
+//    public native void setState(String newState, String whichPart) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setState(newState, whichPart);
+//    }-*/;
+//
+//    // ********************* Static Methods ***********************
+//    /**
+//     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
+//     * class will automatically have the default properties that were set when this method was called. This is a powerful
+//     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
+//     * properties of this class. Can also be used for skinning / styling purposes.
+//     * <P>
+//     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
+//     * underlying class (including those automatically generated in JavaScript). 
+//     * This method should not be used to apply standard EventHandlers or override methods for
+//     * a class - use a custom subclass instead.
+//     *
+//     * @param stretchImgProperties properties that should be used as new defaults when instances of this class are created
+//     */
+//    public static native void setDefaultProperties(StretchImg stretchImgProperties) /*-{
+//    	var properties = $wnd.isc.addProperties({},stretchImgProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
+//    	delete properties.ID;
+//        $wnd.isc.StretchImg.addProperties(properties);
+//    }-*/;
         
     // ***********************************************************        
 

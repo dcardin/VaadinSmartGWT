@@ -1,10 +1,10 @@
 package org.vaadin.smartgwt.server;
 
+import org.vaadin.smartgwt.server.menu.Menu;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.types.AnimationEffect;
 import org.vaadin.smartgwt.server.types.BkgndRepeat;
-import org.vaadin.smartgwt.server.types.ClickMaskMode;
 import org.vaadin.smartgwt.server.types.Cursor;
 import org.vaadin.smartgwt.server.types.DragAppearance;
 import org.vaadin.smartgwt.server.types.DragIntersectStyle;
@@ -18,23 +18,7 @@ import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.types.Visibility;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.core.Function;
-import com.smartgwt.client.core.Rectangle;
-import com.smartgwt.client.util.PrintHTMLCallback;
-import com.smartgwt.client.util.PrintPreviewCallback;
-import com.smartgwt.client.util.PrintProperties;
-import com.smartgwt.client.widgets.AnimationCallback;
-import com.smartgwt.client.widgets.DataBoundComponent;
-import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.events.DragRepositionMoveHandler;
-import com.smartgwt.client.widgets.events.DragResizeMoveHandler;
-import com.smartgwt.client.widgets.form.ValuesManager;
-import com.smartgwt.client.widgets.form.fields.CanvasItem;
-import com.smartgwt.client.widgets.menu.Menu;
-
-public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.events.HasDropHandlers, com.smartgwt.client.widgets.events.HasResizedHandlers, com.smartgwt.client.widgets.events.HasClickHandlers, com.smartgwt.client.widgets.events.HasDoubleClickHandlers, com.smartgwt.client.widgets.events.HasDragMoveHandlers, com.smartgwt.client.widgets.events.HasDragRepositionMoveHandlers, com.smartgwt.client.widgets.events.HasDragRepositionStartHandlers, com.smartgwt.client.widgets.events.HasDragRepositionStopHandlers, com.smartgwt.client.widgets.events.HasDragResizeMoveHandlers, com.smartgwt.client.widgets.events.HasDragResizeStartHandlers, com.smartgwt.client.widgets.events.HasDragResizeStopHandlers, com.smartgwt.client.widgets.events.HasDragStartHandlers, com.smartgwt.client.widgets.events.HasDragStopHandlers, com.smartgwt.client.widgets.events.HasDropMoveHandlers, com.smartgwt.client.widgets.events.HasDropOutHandlers, com.smartgwt.client.widgets.events.HasDropOverHandlers, com.smartgwt.client.widgets.events.HasMouseDownHandlers, com.smartgwt.client.widgets.events.HasMouseMoveHandlers, com.smartgwt.client.widgets.events.HasMouseOutHandlers, com.smartgwt.client.widgets.events.HasMouseOverHandlers, com.smartgwt.client.widgets.events.HasMouseStillDownHandlers, com.smartgwt.client.widgets.events.HasMouseUpHandlers, com.smartgwt.client.widgets.events.HasMouseWheelHandlers, com.smartgwt.client.widgets.events.HasKeyPressHandlers, com.smartgwt.client.widgets.events.HasKeyDownHandlers, com.smartgwt.client.widgets.events.HasRightMouseDownHandlers, com.smartgwt.client.widgets.events.HasHoverHandlers, com.smartgwt.client.widgets.events.HasHoverHiddenHandlers, com.smartgwt.client.widgets.events.HasScrolledHandlers, com.smartgwt.client.widgets.events.HasMovedHandlers, com.smartgwt.client.widgets.events.HasParentMovedHandlers, com.smartgwt.client.widgets.events.HasFocusChangedHandlers, com.smartgwt.client.widgets.events.HasShowContextMenuHandlers, com.smartgwt.client.widgets.events.HasVisibilityChangedHandlers {
+public class Canvas extends BaseWidget { // implements com.smartgwt.client.widgets.events.HasDropHandlers, com.smartgwt.client.widgets.events.HasResizedHandlers, com.smartgwt.client.widgets.events.HasClickHandlers, com.smartgwt.client.widgets.events.HasDoubleClickHandlers, com.smartgwt.client.widgets.events.HasDragMoveHandlers, com.smartgwt.client.widgets.events.HasDragRepositionMoveHandlers, com.smartgwt.client.widgets.events.HasDragRepositionStartHandlers, com.smartgwt.client.widgets.events.HasDragRepositionStopHandlers, com.smartgwt.client.widgets.events.HasDragResizeMoveHandlers, com.smartgwt.client.widgets.events.HasDragResizeStartHandlers, com.smartgwt.client.widgets.events.HasDragResizeStopHandlers, com.smartgwt.client.widgets.events.HasDragStartHandlers, com.smartgwt.client.widgets.events.HasDragStopHandlers, com.smartgwt.client.widgets.events.HasDropMoveHandlers, com.smartgwt.client.widgets.events.HasDropOutHandlers, com.smartgwt.client.widgets.events.HasDropOverHandlers, com.smartgwt.client.widgets.events.HasMouseDownHandlers, com.smartgwt.client.widgets.events.HasMouseMoveHandlers, com.smartgwt.client.widgets.events.HasMouseOutHandlers, com.smartgwt.client.widgets.events.HasMouseOverHandlers, com.smartgwt.client.widgets.events.HasMouseStillDownHandlers, com.smartgwt.client.widgets.events.HasMouseUpHandlers, com.smartgwt.client.widgets.events.HasMouseWheelHandlers, com.smartgwt.client.widgets.events.HasKeyPressHandlers, com.smartgwt.client.widgets.events.HasKeyDownHandlers, com.smartgwt.client.widgets.events.HasRightMouseDownHandlers, com.smartgwt.client.widgets.events.HasHoverHandlers, com.smartgwt.client.widgets.events.HasHoverHiddenHandlers, com.smartgwt.client.widgets.events.HasScrolledHandlers, com.smartgwt.client.widgets.events.HasMovedHandlers, com.smartgwt.client.widgets.events.HasParentMovedHandlers, com.smartgwt.client.widgets.events.HasFocusChangedHandlers, com.smartgwt.client.widgets.events.HasShowContextMenuHandlers, com.smartgwt.client.widgets.events.HasVisibilityChangedHandlers {
 //    public static Canvas getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
 //        BaseWidget obj = BaseWidget.getRef(jsObj);
@@ -871,9 +855,9 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
      * @param canvasItem canvasItem Default value is null
      * @throws IllegalStateException this property cannot be changed after the component has been created
      */
-    public void setCanvasItem(CanvasItem canvasItem)  throws IllegalStateException {
-        setAttribute("canvasItem", canvasItem.getJsObj(), false);
-    }
+//    public void setCanvasItem(CanvasItem canvasItem)  throws IllegalStateException {
+//        setAttribute("canvasItem", canvasItem.getJsObj(), false);
+//    }
 
     /**
      * If this canvas is being displayed in a {@link com.smartgwt.client.widgets.form.fields.CanvasItem}, this property will be
@@ -3633,9 +3617,9 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
      *
      * @param valuesManager new dataPath. Default value is null
      */
-    public void setValuesManager(ValuesManager valuesManager) {
-        setAttribute("valuesManager", valuesManager == null ? null : valuesManager.getOrCreateJsObj(), true);
-    }
+//    public void setValuesManager(ValuesManager valuesManager) {
+//        setAttribute("valuesManager", valuesManager == null ? null : valuesManager.getOrCreateJsObj(), true);
+//    }
 
     /**
      * {@link com.smartgwt.client.widgets.form.ValuesManager} for managing values displayed in this component. If specified at
@@ -3685,2557 +3669,2558 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
     }
 
     // ********************* Methods ***********************
-            
-    /**
-     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if name
-     * argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent it will be
-     * removed from it. If it has a master, it will be detached from it if the master is a child of a different parent. If
-     * newChild has peers, they'll be added to this widget as children as well.
-     * @param newChild new child canvas to add
-     *
-     * @return the new child, or null if it couldn't be added
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Canvas addChild(Canvas newChild) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret = self.addChild(newChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-        if(ret == null || ret === undefined) return null;
-        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        if(retVal == null) {
-            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        }
-        return retVal;
-    }-*/;
-
-    /**
-     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if name
-     * argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent it will be
-     * removed from it. If it has a master, it will be detached from it if the master is a child of a different parent. If
-     * newChild has peers, they'll be added to this widget as children as well.
-     * @param newChild new child canvas to add
-     * @param name name to assign to child (eg: this[name] == child)
-     * @param autoDraw if false, child will not automatically be drawn (only                                          for advanced use)
-     *
-     * @return the new child, or null if it couldn't be added
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Canvas addChild(Canvas newChild, String name, boolean autoDraw) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret = self.addChild(newChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), name, autoDraw);
-        if(ret == null || ret === undefined) return null;
-        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        if(retVal == null) {
-            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        }
-        return retVal;
-    }-*/;
-            
-    /**
-     * Adds newPeer as a peer of this widget (also making it a child of this widget's parent, if      any), set up a named
-     * object reference (i.e., this[name]) to the new widget if name is      provided, and draw the peer if this widget has
-     * been drawn already.<br>      The widget to be added as a peer will be removed from its old master and/or parent, if any,
-     *      and it will be added as a child to the parent of this canvas (if any)
-     * @param newPeer new peer widget to add
-     *
-     * @return the new peer, or null if it couldn't be added
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Canvas addPeer(Canvas newPeer) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret = self.addPeer(newPeer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-        if(ret == null || ret === undefined) return null;
-        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        if(retVal == null) {
-            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        }
-        return retVal;
-    }-*/;
-
-    /**
-     * Adds newPeer as a peer of this widget (also making it a child of this widget's parent, if      any), set up a named
-     * object reference (i.e., this[name]) to the new widget if name is      provided, and draw the peer if this widget has
-     * been drawn already.<br>      The widget to be added as a peer will be removed from its old master and/or parent, if any,
-     *      and it will be added as a child to the parent of this canvas (if any)
-     * @param newPeer new peer widget to add
-     * @param name name to assign to peer (eg: this[peer] == child)
-     * @param autoDraw if true, peer will not automatically be drawn (only                                  for advanced use)
-     * @param preDraw if true, when draw is called on the master widget, the peer                                  will be drawn before the
-     * master
-     *
-     * @return the new peer, or null if it couldn't be added
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Canvas addPeer(Canvas newPeer, String name, boolean autoDraw, boolean preDraw) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret = self.addPeer(newPeer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), name, autoDraw, preDraw);
-        if(ret == null || ret === undefined) return null;
-        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        if(retVal == null) {
-            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        }
-        return retVal;
-    }-*/;
-            
-    /**
-     * This method tells a component to adjust for size changes made to content by external code. <P> This is for very advanced
-     * use in which the contents of a Canvas are being directly updated by Ajax techniques, which is required for integration
-     * with some third-party libraries. Calling this method is required because browsers do not provide consistent events by
-     * which Smart GWT can be notified of external content changes. <P> Only contents supplied to a widget via {@link
-     * com.smartgwt.client.widgets.Canvas#getContents contents} or via an override of {@link
-     * com.smartgwt.client.widgets.Canvas#getInnerHTML Canvas.getInnerHTML} should be manipulated directly.  Contents
-     * automatically generated by Smart GWT components (such as the basic structure of a Button) should never be manipulated:
-     * these structures are considered internal, differ by platform, and will change without notice.
-     * @param immediate By default the adjustment will occur on a small delay for performance reasons.   Pass in this parameter to force
-     * immediate adjustment.
-     */
-    public native void adjustForContent(boolean immediate) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.adjustForContent(immediate);
-    }-*/;
-            
-    /**
-     * If this canvas has keyboard focus, blur it. After this method, the canvas will no longer appear focused and will stop
-     * receiving keyboard events.
-     */
-    public native void blur() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.blur();
-    }-*/;
-            
-    /**
-     * Puts this widget at the top of the stacking order, so it appears in front of all other widgets in the same parent.
-     */
-    public native void bringToFront() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.bringToFront();
-    }-*/;
-            
-    /**
-     * Remove all visual representation of a Canvas, including all child or member Canvases, or managed top-level components
-     * such as the ListGrid drop location indicator. <P> This is more expensive than hide(), because in order to become visible
-     * again, the Canvas must be draw()n again.  Generally, application code has no reason to call clear() unless it is
-     * attempting to do advanced memory management.  If you want to temporarily hide a Canvas, use hide() and show(), and if
-     * you want to permanently destroy a Canvas, use {@link com.smartgwt.client.widgets.Canvas#destroy Canvas.destroy}. <P> You
-     * would only use clear() if you were managing a very large pool of components and you wanted to reclaim some of the memory
-     * used by components that had not been used in a while, while still being able to just draw() them to make them active and
-     * visible again. <P> Note: a clear() will happen as part of moving a Canvas to a different parent.  See {@link
-     * com.smartgwt.client.widgets.Canvas#addChild Canvas.addChild}.
-     */
-    public native void clear() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.clear();
-    }-*/;
-    /**
-     * Add a click handler.
-     * <p>
-     * Executed when the left mouse is clicked (pressed and then released) on this widget.  No default implementation.
-     *
-     * @param handler the click handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addClickHandler(com.smartgwt.client.widgets.events.ClickHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.ClickEvent.getType()) == 0) setupClickEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.ClickEvent.getType());
-    }
-
-    private native void setupClickEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({click:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.ClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.click = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.ClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Determines whether a clickmask is showing
-     */
-    public native void clickMaskUp() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.clickMaskUp();
-    }-*/;
-
-    /**
-     * Determines whether a clickmask is showing
-     * @param ID optional ID of specific clickMask to check. If not passed,                       checks for the click mask associated
-     * with this widget only.
-     * @see com.smartgwt.client.widgets.Canvas#showClickMask
-     */
-    public native void clickMaskUp(String ID) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.clickMaskUp(ID);
-    }-*/;
-            
-    /**
-     * Returns true if element is a descendant of this widget (i.e., exists below this widget in      the containment
-     * hierarchy); and false otherwise.
-     * @param canvas the canvas to be tested
-     *
-     * @return true if specified element is a descendant of this canvas; false otherwise
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Boolean contains(Canvas canvas) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.contains(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Returns true if element is a descendant of this widget (i.e., exists below this widget in      the containment
-     * hierarchy); and false otherwise.
-     * @param canvas the canvas to be tested
-     * @param testSelf If passed this method will return true if the the canvas                                parameter is a pointer to this
-     * widget.
-     *
-     * @return true if specified element is a descendant of this canvas; false otherwise
-     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
-     */
-    public native Boolean contains(Canvas canvas, boolean testSelf) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.contains(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), testSelf);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Return true if the last event's mouse coordinates are within the bounds of this component.  NOTE: Z-ordering is not
-     * considered for the purposes of this test.  If the coordinate you're  testing is occluded by other component, but the X,Y
-     * coordinates are still within the bounds  of that component, this method will return true.
-     *
-     * @return true if the event occurred within the bounds of this component
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native Boolean containsEvent() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.containsEvent();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Returns true if the keyboard focus is in this Canvas or any child of this Canvas.
-     *
-     * @return whether this Canvas contains the keyboard focus
-     * @see com.smartgwt.client.docs.Focus Focus overview and related methods
-     */
-    public native Boolean containsFocus() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.containsFocus();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Return whether or not this object contains the specified global (x,y) coordinates. <P> Will return false if any
-     * parentElement does not contain the specified point, (EG: you're hovering over an element's absolute location, but it is
-     * scrolled out of  view in a parent element)
-     * @param x GLOBAL x-coordinate
-     * @param y GLOBAL y-coordinate
-     *
-     * @return true if this object contains the specified point; false otherwise
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native Boolean containsPoint(int x, int y) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.containsPoint(x, y);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Return whether or not this object contains the specified global (x,y) coordinates. <P> Will return false if any
-     * parentElement does not contain the specified point, (EG: you're hovering over an element's absolute location, but it is
-     * scrolled out of  view in a parent element)
-     * @param x GLOBAL x-coordinate
-     * @param y GLOBAL y-coordinate
-     * @param withinViewport point lies specifically within our viewport                                              (drawn area excluding margins
-     * and scrollbars if                                              present)
-     *
-     * @return true if this object contains the specified point; false otherwise
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native Boolean containsPoint(int x, int y, boolean withinViewport) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.containsPoint(x, y, withinViewport);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Disables this widget and any children and peers of this widget.
-     */
-    public native void disable() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.disable();
-    }-*/;
-    /**
-     * Add a doubleClick handler.
-     * <p>
-     * Executed when the left mouse button is clicked twice in rapid succession (within {@link
-     * com.smartgwt.client.widgets.Canvas#getDoubleClickDelay doubleClickDelay} by default) in this object.
-     *
-     * @param handler the doubleClick handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDoubleClickHandler(com.smartgwt.client.widgets.events.DoubleClickHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DoubleClickEvent.getType()) == 0) setupDoubleClickEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DoubleClickEvent.getType());
-    }
-
-    private native void setupDoubleClickEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({doubleClick:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DoubleClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.doubleClick = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DoubleClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragMove handler.
-     * <p>
-     * Executed every time the mouse moves while dragging this canvas.
-     *
-     * @param handler the dragMove handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragMoveHandler(com.smartgwt.client.widgets.events.DragMoveHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragMoveEvent.getType()) == 0) setupDragMoveEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragMoveEvent.getType());
-    }
-
-    private native void setupDragMoveEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragMove:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragMove = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragRepositionMove handler.
-     * <p>
-     * Executed every time the mouse moves while drag-repositioning. If this method does not Call {@link com.smartgwt.client.widgets.events.DragRepositionMoveEvent#cancel()} from within {@link DragRepositionMoveHandler#onDragRepositionMove}, the {@link
-     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
-     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline" will automatically be moved as
-     * appropriate whenever the mouse moves.
-     *
-     * @param handler the dragRepositionMove handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragRepositionMoveHandler(com.smartgwt.client.widgets.events.DragRepositionMoveHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionMoveEvent.getType()) == 0) setupDragRepositionMoveEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionMoveEvent.getType());
-    }
-
-    private native void setupDragRepositionMoveEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragRepositionMove:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragRepositionMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragRepositionMove = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragRepositionMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragRepositionStart handler.
-     * <p>
-     * Executed when dragging first starts. No default implementation.  Create this handler to set things up for the drag
-     * reposition.
-     *
-     * @param handler the dragRepositionStart handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragRepositionStartHandler(com.smartgwt.client.widgets.events.DragRepositionStartHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionStartEvent.getType()) == 0) setupDragRepositionStartEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionStartEvent.getType());
-    }
-
-    private native void setupDragRepositionStartEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragRepositionStart:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragRepositionStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragRepositionStart = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragRepositionStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragRepositionStop handler.
-     * <p>
-     * Executed when the mouse button is released at the end of the drag. Your widget can use this opportunity to fire custom
-     * code based upon where the mouse button was released, etc.  <p> Returning true from this handler will cause the {@link
-     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
-     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline") to be left in its current
-     * location. Returning false from this handler will cause it to snap back to its original location.
-     *
-     * @param handler the dragRepositionStop handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragRepositionStopHandler(com.smartgwt.client.widgets.events.DragRepositionStopHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionStopEvent.getType()) == 0) setupDragRepositionStopEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionStopEvent.getType());
-    }
-
-    private native void setupDragRepositionStopEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragRepositionStop:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragRepositionStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragRepositionStop = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragRepositionStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragResizeMove handler.
-     * <p>
-     * Executed every time the mouse moves while drag-resizing. If this method does not Call {@link com.smartgwt.client.widgets.events.DragResizeMoveEvent#cancel()} from within {@link DragResizeMoveHandler#onDragResizeMove}, the {@link
-     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
-     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline" will automatically be moved as
-     * appropriate whenever the mouse moves.
-     *
-     * @param handler the dragResizeMove handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragResizeMoveHandler(com.smartgwt.client.widgets.events.DragResizeMoveHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeMoveEvent.getType()) == 0) setupDragResizeMoveEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeMoveEvent.getType());
-    }
-
-    private native void setupDragResizeMoveEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragResizeMove:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragResizeMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragResizeMove = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragResizeMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragResizeStart handler.
-     * <p>
-     * Executed when resize dragging first starts. No default implementation.   Create this handler to set things up for the
-     * drag resize.
-     *
-     * @param handler the dragResizeStart handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragResizeStartHandler(com.smartgwt.client.widgets.events.DragResizeStartHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeStartEvent.getType()) == 0) setupDragResizeStartEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeStartEvent.getType());
-    }
-
-    private native void setupDragResizeStartEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragResizeStart:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragResizeStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragResizeStart = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragResizeStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragResizeStop handler.
-     * <p>
-     * Executed when the mouse button is released at the end of the drag resize. Your widget can use this opportunity to fire
-     * custom code based upon where the mouse button was released, etc.  <p> Returning true from this handler will cause the
-     * {@link com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
-     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline") to be left at its current
-     * size. Returning false from this handler will cause it to snap back to its original location size
-     *
-     * @param handler the dragResizeStop handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragResizeStopHandler(com.smartgwt.client.widgets.events.DragResizeStopHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeStopEvent.getType()) == 0) setupDragResizeStopEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeStopEvent.getType());
-    }
-
-    private native void setupDragResizeStopEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragResizeStop:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragResizeStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragResizeStop = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragResizeStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragStart handler.
-     * <p>
-     * Executed when dragging first starts. Your widget can use this opportunity to set things up for the drag, such as setting
-     * the drag tracker. Returning false from this event handler will cancel the drag action entirely. <p> A drag action is
-     * considered to be begin when the mouse has moved {@link com.smartgwt.client.widgets.Canvas#getDragStartDistance
-     * dragStartDistance} with the left mouse down.
-     *
-     * @param handler the dragStart handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragStartHandler(com.smartgwt.client.widgets.events.DragStartHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragStartEvent.getType()) == 0) setupDragStartEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragStartEvent.getType());
-    }
-
-    private native void setupDragStartEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragStart:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragStart = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dragStop handler.
-     * <p>
-     * Executed when the mouse button is released at the end of the drag. Your widget can use this opportunity to fire code
-     * based on the last location of the drag or reset any visual state that was sent.
-     *
-     * @param handler the dragStop handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDragStopHandler(com.smartgwt.client.widgets.events.DragStopHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DragStopEvent.getType()) == 0) setupDragStopEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragStopEvent.getType());
-    }
-
-    private native void setupDragStopEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dragStop:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DragStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dragStop = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DragStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dropMove handler.
-     * <p>
-     * Executed whenever the compatible dragged object is moved over this drop target. You can use this to show a custom visual
-     * indication of where the drop would occur within the widget.
-     *
-     * @param handler the dropMove handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDropMoveHandler(com.smartgwt.client.widgets.events.DropMoveHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DropMoveEvent.getType()) == 0) setupDropMoveEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropMoveEvent.getType());
-    }
-
-    private native void setupDropMoveEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dropMove:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DropMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dropMove = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DropMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dropOut handler.
-     * <p>
-     * Executed when the dragged object is moved out of the rectangle of this drop target. If you have set a visual indication
-     * in dropOver or dropMove, you should reset it to its normal state in dropOut.
-     *
-     * @param handler the dropOut handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDropOutHandler(com.smartgwt.client.widgets.events.DropOutHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DropOutEvent.getType()) == 0) setupDropOutEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropOutEvent.getType());
-    }
-
-    private native void setupDropOutEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dropOut:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DropOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dropOut = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DropOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a dropOver handler.
-     * <p>
-     * Executed when the compatible dragged object is first moved over this drop target. Your implementation can use this to
-     * show a custom visual indication that the object can be dropped here.
-     *
-     * @param handler the dropOver handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDropOverHandler(com.smartgwt.client.widgets.events.DropOverHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DropOverEvent.getType()) == 0) setupDropOverEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropOverEvent.getType());
-    }
-
-    private native void setupDropOverEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({dropOver:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.DropOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.dropOver = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.DropOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Enables this widget and any children / peers of this widget.
-     */
-    public native void enable() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.enable();
-    }-*/;
-            
-    /**
-     * If this canvas can accept focus, give it keyboard focus. After this method, the canvas will appear focused and will
-     * receive keyboard events.
-     */
-    public native void focus() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.focus();
-    }-*/;
-    /**
-     * Add a focusChanged handler.
-     * <p>
-     * Notification function fired when this widget receives or loses keyboard focus.
-     *
-     * @param handler the focusChanged handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addFocusChangedHandler(com.smartgwt.client.widgets.events.FocusChangedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.FocusChangedEvent.getType()) == 0) setupFocusChangedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.FocusChangedEvent.getType());
-    }
-
-    private native void setupFocusChangedEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({focusChanged:$entry(function(){
-                        var param = {"hasFocus" : arguments[0]};
-                        var event = @com.smartgwt.client.widgets.events.FocusChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.focusChanged = $entry(function(){
-                   var param = {"hasFocus" : arguments[0]};
-                   var event = @com.smartgwt.client.widgets.events.FocusChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-            
-    /**
-     * Return the bottom coordinate of this object as rendered, relative to its enclosing context, in pixels.
-     *
-     * @return bottom coordinate
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getBottom() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getBottom();
-    }-*/;
-            
-    /**
-     * Returns a fully qualified String for this canvas. This is calculated by combining the canvas' specified {@link
-     * com.smartgwt.client.widgets.Canvas#getDataPath dataPath} with the <code>dataPath</code> of any parent  canvases up to
-     * whichever canvas has a specified {@link com.smartgwt.client.widgets.Canvas#getValuesManager valuesManager} specified to
-     * actually manage values from this component.
-     *
-     * @return fully qualified dataPath for this component
-     */
-    public native String getFullDataPath() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getFullDataPath();
-    }-*/;
-            
-    /**
-     * If <code>this.showHover</code> is true, when the user holds the mouse over this Canvas for long enough to trigger a
-     * hover event, a hover canvas is shown by default. This method returns the contents of that hover canvas. Default
-     * implementation returns <code>this.prompt</code> - override for custom hover HTML. Note that returning <code>null</code>
-     * or an empty string will suppress the hover canvas altogether.
-     */
-    public native void getHoverHTML() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.getHoverHTML();
-    }-*/;
-            
-    /**
-     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
-     *
-     * @return The offset to use when snapping
-     * @see com.smartgwt.client.widgets.Canvas#getHSnapPosition
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getHSnapOrigin() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getHSnapOrigin();
-    }-*/;
-
-    /**
-     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
-     * @param snapChild the child that is being snapped
-     *
-     * @return The offset to use when snapping
-     * @see com.smartgwt.client.widgets.Canvas#getHSnapPosition
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getHSnapOrigin(Canvas snapChild) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getHSnapOrigin(snapChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-    }-*/;
-            
-    /**
-     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
-     * (ie, grid points are every x pixels); regular grids should be  defined using {@link
-     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
-     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
-     * @param coordinate x-coordinate of the drag event relative to the inside of this widget
-     *
-     * @return The horizontal coordinate to snap to
-     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
-     */
-    public native int getHSnapPosition(int coordinate) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getHSnapPosition(coordinate);
-    }-*/;
-
-    /**
-     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
-     * (ie, grid points are every x pixels); regular grids should be  defined using {@link
-     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
-     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
-     * @param coordinate x-coordinate of the drag event relative to the inside of this widget
-     * @param direction "before" or "after" denoting whether the returned coordinate should   match the left or right edge of the current
-     * square. If unset {@link com.smartgwt.client.widgets.Canvas#getSnapHDirection snapHDirection} will   be used by default
-     *
-     * @return The horizontal coordinate to snap to
-     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
-     */
-    public native int getHSnapPosition(int coordinate, String direction) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getHSnapPosition(coordinate, direction);
-    }-*/;
-            
-    /**
-     * Returns the amount of space available for interior content (or relatively positioned child widget(s)) without
-     * introducing clipping, scrolling or overflow.<br> This is the space within the viewport of the widget (not including
-     * padding, and excluding  margins, borders or scrollbars) rendered at its specified size.
-     *
-     * @return inner height of the widget in pixels
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
-     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getInnerContentHeight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getInnerContentHeight();
-    }-*/;
-            
-    /**
-     * Returns the amount of space available for interior content (or relatively positioned child  widget(s)) without
-     * introducing clipping, scrolling or overflow.<br>  This is the space within the viewport of the widget (not including
-     * padding, and excluding   margins, borders or scrollbars) rendered at its specified size.
-     *
-     * @return inner height of the widget in pixels
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getInnerContentWidth() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getInnerContentWidth();
-    }-*/;
-            
-    /**
-     * Returns the amount of space available for (an) absolutely positioned child widget(s) or  absolutely positioned HTML
-     * content, without introducing clipping, scrolling or overflow. <P> This is the space within the viewport of the widget
-     * (including padding, but excluding  margins, borders or scrollbars) rendered at its specified size.
-     *
-     * @return inner height of the widget in pixels
-     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getInnerHeight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getInnerHeight();
-    }-*/;
-            
-    /**
-     * Returns the amount of space available for absolutely positioned child widget(s) or  absolutely positioned HTML content,
-     * without introducing clipping, scrolling or overflow. <P> This is the space within the viewport of the widget (including
-     * padding, but excluding  margins, borders or scrollbars) rendered at its specified size.
-     *
-     * @return inner width of the widget in pixels
-     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
-     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getInnerWidth() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getInnerWidth();
-    }-*/;
-            
-    /**
-     * Return the X-coordinate of the last event relative to the left edge of the content of this Canvas.<br><br>  NOTE: To get
-     * a coordinate relative to the <b>viewport</b> of this Canvas, subtract  this.getScrollLeft()
-     *
-     * @return 
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getOffsetX() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getOffsetX();
-    }-*/;
-            
-    /**
-     * Return the Y-coordinate of the last event, relative to the top edge of the content of this Canvas.<br><br>  NOTE: To get
-     * a coordinate relative to the <b>viewport</b> of this Canvas, subtract  this.getScrollTop()
-     *
-     * @return 
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getOffsetY() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getOffsetY();
-    }-*/;
-            
-    /**
-     * Return the page-relative bottom coordinate of this object, in pixels.
-     *
-     * @return GLOBAL bottom coordinate
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getPageBottom() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getPageBottom();
-    }-*/;
-            
-    /**
-     * Returns the page-relative left coordinate of the widget on the page, in pixels.
-     *
-     * @return global left coordinate
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getPageLeft() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getPageLeft();
-    }-*/;
-            
-    /**
-     * Return the page-relative right coordinate of this object, in pixels.
-     *
-     * @return GLOBAL right coordinate
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getPageRight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getPageRight();
-    }-*/;
-            
-    /**
-     * Returns the page-relative top coordinate of the widget on the page, in pixels
-     *
-     * @return GLOBAL top coordinate
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getPageTop() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getPageTop();
-    }-*/;
-            
-    /**
-     * Return the right coordinate of this object as rendered, relative to its enclosing context, in pixels.
-     *
-     * @return right coordinate
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getRight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getRight();
-    }-*/;
-            
-    /**
-     * Returns the scrollable height of the widget's contents, including children, ignoring          clipping.
-     *
-     * @return height of the element that can scroll
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getScrollHeight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getScrollHeight();
-    }-*/;
-            
-    /**
-     * Get the number of pixels this Canvas is scrolled from its left edge.
-     *
-     * @return scrollLeft
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getScrollLeft() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getScrollLeft();
-    }-*/;
-            
-    /**
-     * Get the number of pixels this Canvas is scrolled from its top edge.
-     *
-     * @return scrollTop
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getScrollTop() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getScrollTop();
-    }-*/;
-            
-    /**
-     * Returns the scrollable width of the widget's contents, including children, ignoring clipping.
-     *
-     * @return the scrollable width of the widget's contents
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getScrollWidth() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getScrollWidth();
-    }-*/;
-            
-    /**
-     * Returns the height of the viewport onto the scrollable content.
-     *
-     * @return height of the viewport, in pixels
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getViewportHeight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getViewportHeight();
-    }-*/;
-            
-    /**
-     * Returns the width of the viewport onto the scrollable content.
-     *
-     * @return width of the viewport, in pixels
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getViewportWidth() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getViewportWidth();
-    }-*/;
-            
-    /**
-     * Return the visible height of the Canvas.
-     *
-     * @return visible height in pixels
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getVisibleHeight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVisibleHeight();
-    }-*/;
-            
-    /**
-     * Return the visible width of the Canvas.
-     *
-     * @return visible width in pixels
-     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
-     */
-    public native int getVisibleWidth() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVisibleWidth();
-    }-*/;
-            
-    /**
-     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
-     *
-     * @return The offset to use when snapping
-     * @see com.smartgwt.client.widgets.Canvas#getVSnapPosition
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getVSnapOrigin() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVSnapOrigin();
-    }-*/;
-
-    /**
-     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
-     * @param snapChild the child that is being snapped
-     *
-     * @return The offset to use when snapping
-     * @see com.smartgwt.client.widgets.Canvas#getVSnapPosition
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native int getVSnapOrigin(Canvas snapChild) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVSnapOrigin(snapChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-    }-*/;
-            
-    /**
-     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
-     * (ie, grid points are every x pixels) - regular grids should be  defined using {@link
-     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
-     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
-     * @param coordinate y-coordinate of the drag event relative to the inside of this widget
-     *
-     * @return The vertical coordinate to snap to
-     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
-     */
-    public native int getVSnapPosition(int coordinate) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVSnapPosition(coordinate);
-    }-*/;
-
-    /**
-     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
-     * (ie, grid points are every x pixels) - regular grids should be  defined using {@link
-     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
-     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
-     * @param coordinate y-coordinate of the drag event relative to the inside of this widget
-     * @param direction "before" or "after" denoting whether the returned coordinate should   match the top or bottom edge of the current
-     * square. If unset {@link com.smartgwt.client.widgets.Canvas#getSnapHDirection snapHDirection} will   be used by default
-     *
-     * @return The vertical coordinate to snap to
-     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
-     */
-    public native int getVSnapPosition(int coordinate, String direction) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getVSnapPosition(coordinate, direction);
-    }-*/;
-            
-    /**
-     * Handler fired on a delay when the user hovers the mouse over this hover-target. Default implementation will fire
-     * <code>this.hover()</code> (if defined), and handle  showing the hover canvas if <code>this.showHover</code> is true.
-     */
-    public native void handleHover() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.handleHover();
-    }-*/;
-            
-    /**
-     * Sets the widget's CSS visibility attribute to "hidden".
-     */
-    public native void hide() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.hide();
-    }-*/;
-            
-    /**
-     * Hides the click mask associated with this canvas.
-     */
-    public native void hideClickMask() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.hideClickMask();
-    }-*/;
-
-    /**
-     * Hides the click mask associated with this canvas.
-     * @param ID optional ID of specific clickMask to hide. If not passed,                       defaults to hiding the click mask
-     * associated with this widget only.
-     * @see com.smartgwt.client.widgets.Canvas#showClickMask
-     */
-    public native void hideClickMask(String ID) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.hideClickMask(ID);
-    }-*/;
-            
-    /**
-     * The default implementation of this method hides the contextMenu currently being shown for this component (which occurs
-     * when the mouse button that toggles the context menu is released). Override if you want some other behavior.
-     */
-    public native void hideContextMenu() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.hideContextMenu();
-    }-*/;
-    /**
-     * Add a hover handler.
-     * <p>
-     * If <code>canHover</code> is true for this widget, the <code>hover</code> string method will be fired when the user
-     * hovers over this canvas. If this method returns false, it will suppress the default behavior of showing a hover canvas
-     * if <code>this.showHover</code>  is true.
-     *
-     * @param handler the hover handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addHoverHandler(com.smartgwt.client.widgets.events.HoverHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.HoverEvent.getType()) == 0) setupHoverEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.HoverEvent.getType());
-    }
-
-    private native void setupHoverEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({hover:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.HoverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.hover = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.HoverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a hoverHidden handler.
-     * <p>
-     * If {@link com.smartgwt.client.widgets.Canvas#getShowHover showHover} is true for this canvas, this notification method
-     * will be fired whenever the hover shown in response to {@link com.smartgwt.client.widgets.Canvas#handleHover
-     * handleHover()} is  hidden. This method may be observed or overridden.
-     *
-     * @param handler the hoverHidden handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addHoverHiddenHandler(com.smartgwt.client.widgets.events.HoverHiddenHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.HoverHiddenEvent.getType()) == 0) setupHoverHiddenEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.HoverHiddenEvent.getType());
-    }
-
-    private native void setupHoverHiddenEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({hoverHidden:$entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.HoverHiddenEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.hoverHidden = $entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.HoverHiddenEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-            
-    /**
-     * Returns true if the rectangles of this widget and the specified widget overlap.
-     * @param other other canvas to test for intersection
-     *
-     * @return true if this canvas intersects other; false otherwise
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native Boolean intersects(Canvas other) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.intersects(other.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Returns whether a canvas is waiting to be redrawn. Will return true if  {@link
-     * com.smartgwt.client.widgets.Canvas#markForRedraw Canvas.markForRedraw} has been called, but this canvas has not yet been
-     * redrawn.
-     *
-     * @return true is this canvas needs to be redrawn; false otherwise
-     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
-     */
-    public native Boolean isDirty() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.isDirty();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Is this canvas disabled? Note that the disabled state is inherited - this method will return true if this widget, or any
-     * of its ancestors are marked disabled.
-     *
-     * @return true if the widget or any widget above it in the containment hierarchy                      are disabled.
-     * @see com.smartgwt.client.docs.Enable Enable overview and related methods
-     */
-    public native Boolean isDisabled() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.isDisabled();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Returns the boolean true, if the widget has been completely drawn, and false otherwise.
-     *
-     * @return true if drawn, false if not drawn
-     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
-     */
-    public native Boolean isDrawn() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.isDrawn();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-    /**
-     * Add a keyDown handler.
-     * <p>
-     * Executed when a key is pressed on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus canFocus}:
-     * true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the String of the
-     * key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown EventHandler.shiftKeyDown} and
-     * related functions to determine whether modifier keys were down.
-     *
-     * @param handler the keyDown handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addKeyDownHandler(com.smartgwt.client.widgets.events.KeyDownHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.KeyDownEvent.getType()) == 0) setupKeyDownEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.KeyDownEvent.getType());
-    }
-
-    private native void setupKeyDownEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({keyDown:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.KeyDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.keyDown = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.KeyDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a keyPress handler.
-     * <p>
-     * Executed when a key is pressed and released on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus
-     * canFocus}: true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the
-     * String of the key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown
-     * EventHandler.shiftKeyDown} and related functions to determine whether modifier keys were down.
-     *
-     * @param handler the keyPress handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addKeyPressHandler(com.smartgwt.client.widgets.events.KeyPressHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.KeyPressEvent.getType()) == 0) setupKeyPressEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.KeyPressEvent.getType());
-    }
-
-    private native void setupKeyPressEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({keyPress:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.KeyPressEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.keyPress = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.KeyPressEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Executed when a key is released on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus canFocus}:
-     * true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the String of the
-     * key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown EventHandler.shiftKeyDown} and
-     * related functions to determine whether modifier keys were down.
-     *
-     * @return false to prevent this event from bubbling to this widget's parent, true or undefined to bubble.
-     * @see com.smartgwt.client.widgets.Canvas#getCanFocus
-     */
-    public native Boolean keyUp() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.keyUp();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * <code>layoutChildren()</code> is where a Canvas should implement a sizing policy for it's Canvas children.  Since
-     * <code>layoutChildren</code> calls parentResized() on its children, {@link
-     * com.smartgwt.client.widgets.Canvas#parentResized Canvas.parentResized} is a good place for a child to implement a layout
-     * policy that can be used within any parent. <P> Recommended practice for a Canvas that manages Canvas children is to
-     * create those children without any initial coordinate or size settings and do all sizing when layoutChildren() is called.
-     * <P> layoutChildren() is always called at least once before children are drawn, and is called automatically whenever the
-     * viewport size changes (which includes both resizing and introduction/removal of scrolling).  layoutChildren() can also
-     * be manually invoked in any other component-specific situation which changes the layout. <P> NOTE: layoutChildren() may
-     * be called before draw() if a widget is resized before draw(), so be sure to avoid errors such as assuming that any
-     * children you automatically create have already been created. <P> NOTE: auto-sizing: layoutChildren() is also called once
-     * during the initial draw(), before children are drawn, with a "reason" of "initial draw".  During this invocation of
-     * layoutChildren() it is legal to directly draw children (call child.draw()), which is otherwise never allowed.  This
-     * allows a Canvas to implement an auto-sizing layout policy by drawing some children before deciding on the sizes of
-     * remaining children, which is far more efficient than drawing all children and resizing some of them after they are
-     * drawn.
-     * @param reason reason why layoutChildren() is being called, passed when framework                        code invokes layoutChildren()
-     */
-    public native void layoutChildren(String reason) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.layoutChildren(reason);
-    }-*/;
-            
-    /**
-     * Generates the HTML for a standard link element
-     * @param href URL for the link to point to
-     *
-     * @return HTML for the link
-     */
-    public native String linkHTML(String href) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.linkHTML(href);
-    }-*/;
-
-    /**
-     * Generates the HTML for a standard link element
-     * @param href URL for the link to point to
-     * @param text Text to for the link (defaults to the href)
-     * @param target Target window for the link (defaults to opening in a new, unnamed window)
-     * @param ID optional ID for the link element to be written out
-     * @param tabIndex optional tabIndex for the link
-     * @param accessKey optional accessKey for the link
-     *
-     * @return HTML for the link
-     */
-    public native String linkHTML(String href, String text, String target, String ID, int tabIndex, String accessKey) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.linkHTML(href, text, target, ID, tabIndex, accessKey);
-    }-*/;
-            
-    /**
-     * {@link com.smartgwt.client.widgets.Canvas#destroy destroy()} this canvas on a timeout. This method should be used
-     * instead of calling <code>canvas.destroy()</code> directly unless there's a reason a the canvas needs to be destroyed
-     * synchronously. By using a timeout, this method ensures the <code>destroy()</code> will occur after the current thread of
-     * execution completes. This allows you to easily mark canvases for destruction while they're handling events, which must
-     * complete before the canvas can be destroyed.
-     */
-    public native void markForDestroy() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.markForDestroy();
-    }-*/;
-            
-    /**
-     * Marks the widget as "dirty" so that it will be added to a queue for redraw. Redraw of dirty components is handled by a
-     * looping timer and will after a very short delay (typically less than 100ms). In most cases it is recommended that
-     * developers use <code>markForRedraw()</code> instead of calling {@link com.smartgwt.client.widgets.Canvas#redraw
-     * Canvas.redraw} directly. Since this method queues the redraw, multiple calls to markForRedraw() within a single thread
-     * of execution will only lead to a single DOM manipulation which greatly improves application performance.
-     */
-    public native void markForRedraw() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.markForRedraw();
-    }-*/;
-
-    /**
-     * Marks the widget as "dirty" so that it will be added to a queue for redraw. Redraw of dirty components is handled by a
-     * looping timer and will after a very short delay (typically less than 100ms). In most cases it is recommended that
-     * developers use <code>markForRedraw()</code> instead of calling {@link com.smartgwt.client.widgets.Canvas#redraw
-     * Canvas.redraw} directly. Since this method queues the redraw, multiple calls to markForRedraw() within a single thread
-     * of execution will only lead to a single DOM manipulation which greatly improves application performance.
-     * @param reason reason for performing the redraw
-     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
-     */
-    public native void markForRedraw(String reason) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.markForRedraw(reason);
-    }-*/;
-    /**
-     * Add a mouseDown handler.
-     * <p>
-     * Executed when the left mouse down is pressed on this widget.  No default implementation.
-     *
-     * @param handler the mouseDown handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseDownHandler(com.smartgwt.client.widgets.events.MouseDownHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseDownEvent.getType()) == 0) setupMouseDownEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseDownEvent.getType());
-    }
-
-    private native void setupMouseDownEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseDown:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseDown = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseMove handler.
-     * <p>
-     * Executed when the mouse moves within this widget.  No default implementation.
-     *
-     * @param handler the mouseMove handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseMoveHandler(com.smartgwt.client.widgets.events.MouseMoveHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseMoveEvent.getType()) == 0) setupMouseMoveEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseMoveEvent.getType());
-    }
-
-    private native void setupMouseMoveEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseMove:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseMove = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseOut handler.
-     * <p>
-     * Executed when the mouse leaves this widget.  No default implementation.
-     *
-     * @param handler the mouseOut handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseOutHandler(com.smartgwt.client.widgets.events.MouseOutHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseOutEvent.getType()) == 0) setupMouseOutEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseOutEvent.getType());
-    }
-
-    private native void setupMouseOutEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseOut:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseOut = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseOver handler.
-     * <p>
-     * Executed when mouse enters this widget.  No default implementation.
-     *
-     * @param handler the mouseOver handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseOverHandler(com.smartgwt.client.widgets.events.MouseOverHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseOverEvent.getType()) == 0) setupMouseOverEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseOverEvent.getType());
-    }
-
-    private native void setupMouseOverEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseOver:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseOver = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseStillDown handler.
-     * <p>
-     * Executed repeatedly (every {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownDelay mouseStillDownDelay} by
-     * default) when the system is idle - i.e. not busy running other scripts - and the left mouse button is held down after
-     * having been pressed in the object. This event is not native to JavaScript, but is provided by the ISC system. <p> Note:
-     * The event handling system waits {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownInitialDelay
-     * mouseStillDownInitialDelay} before calling mouseStillDown for the first time on the widget.  Subsequently the method is
-     * called every {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownDelay mouseStillDownDelay}.  Both attributes are
-     * configurable per widget instance. <p> This method is called only when the left mouse is held down.
-     *
-     * @param handler the mouseStillDown handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseStillDownHandler(com.smartgwt.client.widgets.events.MouseStillDownHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseStillDownEvent.getType()) == 0) setupMouseStillDownEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseStillDownEvent.getType());
-    }
-
-    private native void setupMouseStillDownEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseStillDown:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseStillDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseStillDown = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseStillDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseUp handler.
-     * <p>
-     * Executed when the left mouse is released on this widget.  No default implementation.
-     *
-     * @param handler the mouseUp handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseUpHandler(com.smartgwt.client.widgets.events.MouseUpHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseUpEvent.getType()) == 0) setupMouseUpEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseUpEvent.getType());
-    }
-
-    private native void setupMouseUpEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseUp:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseUpEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseUp = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseUpEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-    /**
-     * Add a mouseWheel handler.
-     * <p>
-     * Executed when the mouse wheel is actuated.
-     *
-     * @param handler the mouseWheel handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMouseWheelHandler(com.smartgwt.client.widgets.events.MouseWheelHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseWheelEvent.getType()) == 0) setupMouseWheelEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseWheelEvent.getType());
-    }
-
-    private native void setupMouseWheelEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({mouseWheel:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.MouseWheelEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.mouseWheel = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.MouseWheelEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Puts this widget just above the specified widget in the stacking order, so it appears in front of the specified widget
-     * if both widgets have the same parent.
-     * @param canvas canvas to move above
-     */
-    public native void moveAbove(Canvas canvas) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.moveAbove(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-    }-*/;
-            
-    /**
-     * Puts this widget just below the specified widget in the stacking order, so it appears behind the specified widget if
-     * both widgets have the same parent.
-     * @param canvas canvas to move below
-     */
-    public native void moveBelow(Canvas canvas) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.moveBelow(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-    }-*/;
-            
-    /**
-     * Moves the widget deltaX pixels to the right and deltaY pixels down. Pass negative          numbers to move up and/or to
-     * the left.
-     * @param deltaX amount to move horizontally (may be negative)
-     * @param deltaY amount to move vertically (may be negative)
-     *
-     * @return whether the component actually moved
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#basics_components_move" target="examples">Move Example</a>
-     */
-    public native Boolean moveBy(int deltaX, int deltaY) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.moveBy(deltaX, deltaY);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-    /**
-     * Add a moved handler.
-     * <p>
-     * Notification method fired when this component is explicitly moved. Note that a component's position on the screen may
-     * also changed due to an ancestor being moved. The {@link com.smartgwt.client.widgets.Canvas#addParentMovedHandler
-     * Canvas.parentMoved} method provides a notification entry point to catch that case as well.
-     *
-     * @param handler the moved handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addMovedHandler(com.smartgwt.client.widgets.events.MovedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.MovedEvent.getType()) == 0) setupMovedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.MovedEvent.getType());
-    }
-
-    private native void setupMovedEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({moved:$entry(function(){
-                        var param = {"deltaX" : arguments[0], "deltaY" : arguments[1]};
-                        var event = @com.smartgwt.client.widgets.events.MovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.moved = $entry(function(){
-                   var param = {"deltaX" : arguments[0], "deltaY" : arguments[1]};
-                   var event = @com.smartgwt.client.widgets.events.MovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-    /**
-     * Add a parentMoved handler.
-     * <p>
-     * Notification method fire when an ancestor of this component's position changes.
-     *
-     * @param handler the parentMoved handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addParentMovedHandler(com.smartgwt.client.widgets.events.ParentMovedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.ParentMovedEvent.getType()) == 0) setupParentMovedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.ParentMovedEvent.getType());
-    }
-
-    private native void setupParentMovedEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({parentMoved:$entry(function(){
-                        var param = {"parent" : arguments[0], "deltaX" : arguments[1], "deltaY" : arguments[2]};
-                        var event = @com.smartgwt.client.widgets.events.ParentMovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.parentMoved = $entry(function(){
-                   var param = {"parent" : arguments[0], "deltaX" : arguments[1], "deltaY" : arguments[2]};
-                   var event = @com.smartgwt.client.widgets.events.ParentMovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-            
-    /**
-     * Redraws the widget immediately with its current property values.   Generally, if you want a Canvas to redraw, call
-     * markForRedraw() - this will cause the Canvas to be redrawn when current processing ends, so that a series of
-     * modifications made to a Canvas will cause it to redraw only once. Only call redraw() directly if you need immediate
-     * responsiveness, for example you are redrawing in response to continuous mouse motion.
-     */
-    public native void redraw() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.redraw();
-    }-*/;
-
-    /**
-     * Redraws the widget immediately with its current property values.   Generally, if you want a Canvas to redraw, call
-     * markForRedraw() - this will cause the Canvas to be redrawn when current processing ends, so that a series of
-     * modifications made to a Canvas will cause it to redraw only once. Only call redraw() directly if you need immediate
-     * responsiveness, for example you are redrawing in response to continuous mouse motion.
-     * @param reason reason for performing the redraw
-     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
-     */
-    public native void redraw(String reason) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.redraw(reason);
-    }-*/;
-    /**
-     * Add a resized handler.
-     * <p>
-     * Observable method called whenever a Canvas changes size. Note that if this canvas is {@link
-     * com.smartgwt.client.widgets.Canvas#getOverflow overflow:"visible"}, and is waiting for a queued redraw (see  {@link
-     * com.smartgwt.client.widgets.Canvas#isDirty Canvas.isDirty}), the value for {@link
-     * com.smartgwt.client.widgets.Canvas#getVisibleWidth Canvas.getVisibleWidth} and {@link
-     * com.smartgwt.client.widgets.Canvas#getVisibleHeight Canvas.getVisibleHeight} will be unreliable until
-     * <code>redraw()</code> fires.
-     *
-     * @param handler the resized handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addResizedHandler(com.smartgwt.client.widgets.events.ResizedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.ResizedEvent.getType()) == 0) setupResizedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.ResizedEvent.getType());
-    }
-
-    private native void setupResizedEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({resized:$entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.ResizedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.resized = $entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.ResizedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-    /**
-     * Add a rightMouseDown handler.
-     * <p>
-     * Executed when the right mouse down is pressed on this widget.  No default implementation.
-     *
-     * @param handler the rightMouseDown handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addRightMouseDownHandler(com.smartgwt.client.widgets.events.RightMouseDownHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.RightMouseDownEvent.getType()) == 0) setupRightMouseDownEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.RightMouseDownEvent.getType());
-    }
-
-    private native void setupRightMouseDownEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({rightMouseDown:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.RightMouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.rightMouseDown = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.RightMouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Scroll this widget by some pixel increment in either (or both) direction(s).
-     * @param dX Number of pixels to scroll horizontally
-     * @param dY Number of pixels to scroll vertically
-     */
-    public native void scrollBy(int dX, int dY) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollBy(dX, dY);
-    }-*/;
-    /**
-     * Add a scrolled handler.
-     * <p>
-     * Notification that this component has just scrolled.  Use with  observation. <P> Fires for both CSS and {@link
-     * com.smartgwt.client.widgets.Scrollbar "synthetic" scrollbars}.
-     *
-     * @param handler the scrolled handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addScrolledHandler(com.smartgwt.client.widgets.events.ScrolledHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.ScrolledEvent.getType()) == 0) setupScrolledEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.ScrolledEvent.getType());
-    }
-
-    private native void setupScrolledEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({scrolled:$entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.ScrolledEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.scrolled = $entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.ScrolledEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-            
-    /**
-     * Scrolls the content of the widget so that the origin (top-left corner) of the content is left pixels to the left and top
-     * pixels above the widget's top-left corner (but still clipped by the widget's dimensions). <p> This is guaranteed to be
-     * called whenever this Canvas is scrolled, whether scrolling is initiated programmatically, by custom scrollbars, or a by
-     * a native scrollbar.
-     */
-    public native void scrollTo() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollTo();
-    }-*/;
-
-    /**
-     * Scrolls the content of the widget so that the origin (top-left corner) of the content is left pixels to the left and top
-     * pixels above the widget's top-left corner (but still clipped by the widget's dimensions). <p> This is guaranteed to be
-     * called whenever this Canvas is scrolled, whether scrolling is initiated programmatically, by custom scrollbars, or a by
-     * a native scrollbar.
-     * @param left the left coordinate
-     * @param top the top coordinate
-     * @see com.smartgwt.client.docs.Scrolling Scrolling overview and related methods
-     */
-    public native void scrollTo(int left, int top) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollTo(left, top);
-    }-*/;
-            
-    /**
-     * Vertically scrolls the content of the widget to the end of its content
-     */
-    public native void scrollToBottom() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollToBottom();
-    }-*/;
-            
-    /**
-     * Horizontally scrolls the content of the widget to 0
-     */
-    public native void scrollToLeft() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollToLeft();
-    }-*/;
-            
-    /**
-     * Horizontally scrolls the content of the widget to the end of its content
-     */
-    public native void scrollToRight() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollToRight();
-    }-*/;
-            
-    /**
-     * Vertically scrolls the content of the widget to 0
-     */
-    public native void scrollToTop() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.scrollToTop();
-    }-*/;
-            
-    /**
-     * Puts this widget at the bottom of the stacking order, so it appears behind all other widgets in the same parent.
-     */
-    public native void sendToBack() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.sendToBack();
-    }-*/;
-            
-    /**
-     * Resizes the widget vertically to position its bottom edge at the specified coordinate. <P> NOTE: if you're setting
-     * multiple coordinates, use setRect(), moveTo() or resizeTo() instead
-     * @param bottom new bottom coordinate
-     */
-    public native void setBottom(int bottom) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setBottom(bottom);
-    }-*/;
-            
-    /**
-     * Set the URL of an image element by name. <p> The image element must have been created from HTML generated by calling
-     * <code>canvas.imgHTML()</code> on this particular Canvas.
-     * @param identifier name of the image to change, as originally passed to                              <code>imgHTML</code>
-     * @param URL URL for the image
-     */
-    public native void setImage(String identifier, String URL) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setImage(identifier, URL);
-    }-*/;
-
-    /**
-     * Set the URL of an image element by name. <p> The image element must have been created from HTML generated by calling
-     * <code>canvas.imgHTML()</code> on this particular Canvas.
-     * @param identifier name of the image to change, as originally passed to                              <code>imgHTML</code>
-     * @param URL URL for the image
-     * @param imgDir optional image directory, overrides the default for this Canvas
-     * @see com.smartgwt.client.docs.Images Images overview and related methods
-     */
-    public native void setImage(String identifier, String URL, String imgDir) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setImage(identifier, URL, imgDir);
-    }-*/;
-            
-    /**
-     * Set the page-relative left coordinate of this widget.
-     * @param left new left coordinate in pixels
-     */
-    public native void setPageLeft(int left) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setPageLeft(left);
-    }-*/;
-            
-    /**
-     * Set the page-relative top coordinate of this widget.
-     * @param top new top coordinate in pixels
-     */
-    public native void setPageTop(int top) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setPageTop(top);
-    }-*/;
-            
-    /**
-     * Resizes the widget horizontally to position its right side at the specified coordinate. <P> NOTE: if you're setting
-     * multiple coordinates, use setRect(), moveTo() or resizeTo() instead
-     * @param right new right coordinate
-     */
-    public native void setRight(int right) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setRight(right);
-    }-*/;
-            
-    /**
-     * If this widget is showing scrollbars, and a user drags close to the edge of the viewport, should we scroll the viewport
-     * in the appropriate direction? Returns this.canDragScroll by default.
-     */
-    public native void shouldDragScroll() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.shouldDragScroll();
-    }-*/;
-            
-    /**
-     * Sets this widget's visibility to "inherit", so that it becomes visible if all it's parents are visible or it has no
-     * parents. <P> If the widget has not yet been drawn (and doesn't have a parent or master), this method calls the draw
-     * method as well.
-     */
-    public native void show() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.show();
-    }-*/;
-    /**
-     * Add a showContextMenu handler.
-     * <p>
-     * Executed when the right mouse button is clicked.  The default implementation of this method auto-creates a {@link
-     * com.smartgwt.client.widgets.menu.Menu} from the {@link com.smartgwt.client.widgets.Canvas#getContextMenu contextMenu}
-     * property on this component and then calls {@link com.smartgwt.client.widgets.menu.Menu#showContextMenu
-     * Menu.showContextMenu} on it to show it. <p> If you want to show a standard context menu, you can simply define your Menu
-     * and set it as the contextMenu property on your component - you do not need to override this method. <p> If you want to
-     * do some other processing before showing a menu or do something else entirely, then you should override this method. 
-     * Note that the return value from this method controls whether or not the native browser context menu is shown.
-     *
-     * @param handler the showContextMenu handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addShowContextMenuHandler(com.smartgwt.client.widgets.events.ShowContextMenuHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.ShowContextMenuEvent.getType()) == 0) setupShowContextMenuEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.ShowContextMenuEvent.getType());
-    }
-
-    private native void setupShowContextMenuEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({showContextMenu:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.ShowContextMenuEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.showContextMenu = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.ShowContextMenuEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Show this widget next to another widget.
-     * @param otherWidget Canvas to show next to
-     */
-    public native void showNextTo(Canvas otherWidget) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.showNextTo(otherWidget.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-    }-*/;
-
-    /**
-     * Show this widget next to another widget.
-     * @param otherWidget Canvas to show next to
-     * @param side which side to show on, defaults to "right"
-     */
-    public native void showNextTo(Canvas otherWidget, String side) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.showNextTo(otherWidget.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), side);
-    }-*/;
-            
-    /**
-     * If this canvas is currently showing a hover (see {@link com.smartgwt.client.widgets.Canvas#handleHover
-     * Canvas.handleHover}), this method can be called to update the contents of the hover. Has no effect if the hover canvas
-     * is not showing for this widget.
-     */
-    public native void updateHover() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.updateHover();
-    }-*/;
-
-    /**
-     * If this canvas is currently showing a hover (see {@link com.smartgwt.client.widgets.Canvas#handleHover
-     * Canvas.handleHover}), this method can be called to update the contents of the hover. Has no effect if the hover canvas
-     * is not showing for this widget.
-     * @param hoverHTML Option to specify new HTML for the hover. If not passed, the result   of {@link
-     * com.smartgwt.client.widgets.Canvas#getHoverHTML this.getHoverHTML()} will be used instead. Note that if the   hover HTML
-     * is empty the hover will be hidden.
-     */
-    public native void updateHover(String hoverHTML) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.updateHover(hoverHTML);
-    }-*/;
-    /**
-     * Add a visibilityChanged handler.
-     * <p>
-     * Notification  fired when this canvas becomes visible or hidden to the user. Note - this method is fired when the {@link
-     * com.smartgwt.client.widgets.Canvas#isVisible Canvas.isVisible} state of this  component changes. It may be fired in
-     * response an explicit call to {@link com.smartgwt.client.widgets.Canvas#show Canvas.show}  or {@link
-     * com.smartgwt.client.widgets.Canvas#hide Canvas.hide} or {@link com.smartgwt.client.widgets.Canvas#setVisibility
-     * Canvas.setVisibility}, or in response to a parent component  being shown or hidden when this widgets {@link
-     * com.smartgwt.client.widgets.Canvas#getVisibility visibility} is set to "inherit". <P> Note that a call to {@link
-     * com.smartgwt.client.widgets.Canvas#show Canvas.show} or {@link com.smartgwt.client.widgets.Canvas#hide Canvas.hide} will
-     * not <b>always</b> fire this notification. If this widget has a hidden parent, show or hide would change this  components
-     * {@link com.smartgwt.client.widgets.Canvas#getVisibility visibility} property, and may update the CSS visibility
-     * attribute of the drawn handle in the DOM, but would not actually hide or reveal the component to the user and as such
-     * the notification would not fire. <P> Note also that this notification will only be fired for components which have been 
-     * {@link com.smartgwt.client.widgets.Canvas#draw drawn}.
-     *
-     * @param handler the visibilityChanged handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addVisibilityChangedHandler(com.smartgwt.client.widgets.events.VisibilityChangedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.VisibilityChangedEvent.getType()) == 0) setupVisibilityChangedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.VisibilityChangedEvent.getType());
-    }
-
-    private native void setupVisibilityChangedEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({visibilityChanged:$entry(function(){
-                        var param = {"isVisible" : arguments[0]};
-                        var event = @com.smartgwt.client.widgets.events.VisibilityChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    })
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.visibilityChanged = $entry(function(){
-                   var param = {"isVisible" : arguments[0]};
-                   var event = @com.smartgwt.client.widgets.events.VisibilityChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-               });
-        }
-   }-*/;
-
-    // ********************* Static Methods ***********************
-            
-    /**
-     * Retrieve a Canvas by it's global {@link com.smartgwt.client.widgets.Canvas#getID ID}.
-     * @param ID global ID of the Canvas
-     *
-     * @return the Canvas, or null if not found
-     */
-    public static native Canvas getById(String ID) /*-{
-        var ret = $wnd.isc.Canvas.getById(ID);
-        if(ret == null || ret === undefined) return null;
-        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        if(retVal == null) {
-            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-        }
-        return retVal;
-    }-*/;
-            
-    /**
-     * Changes the system-wide {@link com.smartgwt.client.widgets.Canvas#allowExternalFilters allowExternalFilters} setting.
-     * @param allExternalFilters new setting
-     */
-    public static native void setAllowExternalFilters(boolean allExternalFilters) /*-{
-        $wnd.isc.Canvas.setAllowExternalFilters(allExternalFilters);
-    }-*/;
-            
-    /**
-     * Changes the system-wide {@link com.smartgwt.client.widgets.Canvas#neverUseFilters neverUseFilters} setting.
-     * @param neverUseFilters new setting
-     */
-    public static native void setNeverUseFilters(boolean neverUseFilters) /*-{
-        $wnd.isc.Canvas.setNeverUseFilters(neverUseFilters);
-    }-*/;
-    /**
-     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
-     * class will automatically have the default properties that were set when this method was called. This is a powerful
-     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
-     * properties of this class. Can also be used for skinning / styling purposes.
-     * <P>
-     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
-     * underlying class (including those automatically generated in JavaScript). 
-     * This method should not be used to apply standard EventHandlers or override methods for
-     * a class - use a custom subclass instead.
-     *
-     * @param canvasProperties properties that should be used as new defaults when instances of this class are created
-     */
-    public static native void setDefaultProperties(Canvas canvasProperties) /*-{
-    	var properties = $wnd.isc.addProperties({},canvasProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
-    	delete properties.ID;
-        $wnd.isc.Canvas.addProperties(properties);
-    }-*/;
-        
-    // ***********************************************************        
 
 
-	protected native void onInit () /*-{
-
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self._jsOverrideCall = {};
-        self._fireDefaultMethod = {};
-
-        self.__parentResized = self.parentResized;
-        self.parentResized = $debox($entry(function() {
-            var jObj = this.__ref;
-            jObj.@com.smartgwt.client.widgets.Canvas::parentResized()();
-        }));
-
-        self.__willAcceptDrop = self.willAcceptDrop;
-        self.willAcceptDrop = $debox($entry(function() {
-            var jObj = this.__ref;
-            var retVal = jObj.@com.smartgwt.client.widgets.Canvas::willAcceptDrop()();
-            return retVal.@java.lang.Boolean::booleanValue()();
-        }));
-
-         
-        self.__getPrintHTML = self.getPrintHTML;
-        self.getPrintHTML = function (printProperties, callback) {
-            self._jsOverrideCall.getPrintHTML = true;
-            var jObj = this.__ref;
-             var jPP = printProperties == null ? null :
-                      @com.smartgwt.client.util.PrintProperties::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printProperties);
-             var ret;
-             ret = jObj.@com.smartgwt.client.widgets.Canvas::getPrintHTMLJSCB(Lcom/smartgwt/client/util/PrintProperties;Lcom/google/gwt/core/client/JavaScriptObject;)(jPP,callback);
-             if (self._fireDefaultMethod.getPrintHTML) {
-                 ret = self.__getPrintHTML(printProperties,callback);
-             }
-             self._jsOverrideCall.getPrintHTML = null;
-             self._fireDefaultMethod.getPrintHTML = null;
-             return ret;
-        }
-         
-        self.__getHoverComponent = self.getHoverComponent;
-        self.getHoverComponent = $entry(function() {
-            var jObj = this.__ref;
-            var componentJ = jObj.@com.smartgwt.client.widgets.Canvas::getHoverComponent()();
-            return componentJ == null ? null : componentJ.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-        });    
-
-	}-*/;
-
-    /**
-     * Create a databound component corresponding to the passed jsObj.
-     *
-     * @param jsObj the javascript object
-     * @return the databound component
-     */
-    private static native DataBoundComponent getOrCreateDBC(JavaScriptObject jsObj) /*-{
-        if(jsObj == null) return null;
-        var obj = jsObj.__ref;
-        if(obj == null || obj === undefined) {
-            if($wnd.isc.isA.ListGrid(jsObj)) return @com.smartgwt.client.widgets.grid.ListGrid::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            if($wnd.isc.isA.DynamicForm(jsObj)) return @com.smartgwt.client.widgets.form.DynamicForm::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            if($wnd.isc.isA.DetailViewer(jsObj)) return @com.smartgwt.client.widgets.viewer.DetailViewer::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            if($wnd.isc.isA.Calendar(jsObj)) return @com.smartgwt.client.widgets.calendar.Calendar::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            if($wnd.isc.isA.ColumnTree(jsObj)) return @com.smartgwt.client.widgets.grid.ColumnTree::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            if($wnd.isc.isA.TileGrid(jsObj)) return @com.smartgwt.client.widgets.tile.TileGrid::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-            return @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
-        } else {
-            return obj;
-        }
-    }-*/;
-
-    /**
-     * Multiple styles are currently not supported. This method essentially calls {@link #setStyleName(String)}
-     *
-     * @param style the style name
-     * @see #setStyleName(String)
-     */
-    public void addStyleName(String style) {
-        setStyleName(style);
-        com.google.gwt.core.client.GWT.log("addStyleName is not supported. Calling setStyleName instead", null);
-    }
+//    /**
+//     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if name
+//     * argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent it will be
+//     * removed from it. If it has a master, it will be detached from it if the master is a child of a different parent. If
+//     * newChild has peers, they'll be added to this widget as children as well.
+//     * @param newChild new child canvas to add
+//     *
+//     * @return the new child, or null if it couldn't be added
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Canvas addChild(Canvas newChild) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret = self.addChild(newChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        if(ret == null || ret === undefined) return null;
+//        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        if(retVal == null) {
+//            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        }
+//        return retVal;
+//    }-*/;
+//
+//    /**
+//     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if name
+//     * argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent it will be
+//     * removed from it. If it has a master, it will be detached from it if the master is a child of a different parent. If
+//     * newChild has peers, they'll be added to this widget as children as well.
+//     * @param newChild new child canvas to add
+//     * @param name name to assign to child (eg: this[name] == child)
+//     * @param autoDraw if false, child will not automatically be drawn (only                                          for advanced use)
+//     *
+//     * @return the new child, or null if it couldn't be added
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Canvas addChild(Canvas newChild, String name, boolean autoDraw) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret = self.addChild(newChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), name, autoDraw);
+//        if(ret == null || ret === undefined) return null;
+//        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        if(retVal == null) {
+//            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        }
+//        return retVal;
+//    }-*/;
+//            
+//    /**
+//     * Adds newPeer as a peer of this widget (also making it a child of this widget's parent, if      any), set up a named
+//     * object reference (i.e., this[name]) to the new widget if name is      provided, and draw the peer if this widget has
+//     * been drawn already.<br>      The widget to be added as a peer will be removed from its old master and/or parent, if any,
+//     *      and it will be added as a child to the parent of this canvas (if any)
+//     * @param newPeer new peer widget to add
+//     *
+//     * @return the new peer, or null if it couldn't be added
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Canvas addPeer(Canvas newPeer) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret = self.addPeer(newPeer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        if(ret == null || ret === undefined) return null;
+//        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        if(retVal == null) {
+//            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        }
+//        return retVal;
+//    }-*/;
+//
+//    /**
+//     * Adds newPeer as a peer of this widget (also making it a child of this widget's parent, if      any), set up a named
+//     * object reference (i.e., this[name]) to the new widget if name is      provided, and draw the peer if this widget has
+//     * been drawn already.<br>      The widget to be added as a peer will be removed from its old master and/or parent, if any,
+//     *      and it will be added as a child to the parent of this canvas (if any)
+//     * @param newPeer new peer widget to add
+//     * @param name name to assign to peer (eg: this[peer] == child)
+//     * @param autoDraw if true, peer will not automatically be drawn (only                                  for advanced use)
+//     * @param preDraw if true, when draw is called on the master widget, the peer                                  will be drawn before the
+//     * master
+//     *
+//     * @return the new peer, or null if it couldn't be added
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Canvas addPeer(Canvas newPeer, String name, boolean autoDraw, boolean preDraw) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret = self.addPeer(newPeer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), name, autoDraw, preDraw);
+//        if(ret == null || ret === undefined) return null;
+//        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        if(retVal == null) {
+//            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        }
+//        return retVal;
+//    }-*/;
+//            
+//    /**
+//     * This method tells a component to adjust for size changes made to content by external code. <P> This is for very advanced
+//     * use in which the contents of a Canvas are being directly updated by Ajax techniques, which is required for integration
+//     * with some third-party libraries. Calling this method is required because browsers do not provide consistent events by
+//     * which Smart GWT can be notified of external content changes. <P> Only contents supplied to a widget via {@link
+//     * com.smartgwt.client.widgets.Canvas#getContents contents} or via an override of {@link
+//     * com.smartgwt.client.widgets.Canvas#getInnerHTML Canvas.getInnerHTML} should be manipulated directly.  Contents
+//     * automatically generated by Smart GWT components (such as the basic structure of a Button) should never be manipulated:
+//     * these structures are considered internal, differ by platform, and will change without notice.
+//     * @param immediate By default the adjustment will occur on a small delay for performance reasons.   Pass in this parameter to force
+//     * immediate adjustment.
+//     */
+//    public native void adjustForContent(boolean immediate) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.adjustForContent(immediate);
+//    }-*/;
+//            
+//    /**
+//     * If this canvas has keyboard focus, blur it. After this method, the canvas will no longer appear focused and will stop
+//     * receiving keyboard events.
+//     */
+//    public native void blur() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.blur();
+//    }-*/;
+//            
+//    /**
+//     * Puts this widget at the top of the stacking order, so it appears in front of all other widgets in the same parent.
+//     */
+//    public native void bringToFront() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.bringToFront();
+//    }-*/;
+//            
+//    /**
+//     * Remove all visual representation of a Canvas, including all child or member Canvases, or managed top-level components
+//     * such as the ListGrid drop location indicator. <P> This is more expensive than hide(), because in order to become visible
+//     * again, the Canvas must be draw()n again.  Generally, application code has no reason to call clear() unless it is
+//     * attempting to do advanced memory management.  If you want to temporarily hide a Canvas, use hide() and show(), and if
+//     * you want to permanently destroy a Canvas, use {@link com.smartgwt.client.widgets.Canvas#destroy Canvas.destroy}. <P> You
+//     * would only use clear() if you were managing a very large pool of components and you wanted to reclaim some of the memory
+//     * used by components that had not been used in a while, while still being able to just draw() them to make them active and
+//     * visible again. <P> Note: a clear() will happen as part of moving a Canvas to a different parent.  See {@link
+//     * com.smartgwt.client.widgets.Canvas#addChild Canvas.addChild}.
+//     */
+//    public native void clear() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.clear();
+//    }-*/;
+//    /**
+//     * Add a click handler.
+//     * <p>
+//     * Executed when the left mouse is clicked (pressed and then released) on this widget.  No default implementation.
+//     *
+//     * @param handler the click handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addClickHandler(com.smartgwt.client.widgets.events.ClickHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.ClickEvent.getType()) == 0) setupClickEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.ClickEvent.getType());
+//    }
+//
+//    private native void setupClickEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({click:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.ClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.click = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.ClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Determines whether a clickmask is showing
+//     */
+//    public native void clickMaskUp() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.clickMaskUp();
+//    }-*/;
+//
+//    /**
+//     * Determines whether a clickmask is showing
+//     * @param ID optional ID of specific clickMask to check. If not passed,                       checks for the click mask associated
+//     * with this widget only.
+//     * @see com.smartgwt.client.widgets.Canvas#showClickMask
+//     */
+//    public native void clickMaskUp(String ID) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.clickMaskUp(ID);
+//    }-*/;
+//            
+//    /**
+//     * Returns true if element is a descendant of this widget (i.e., exists below this widget in      the containment
+//     * hierarchy); and false otherwise.
+//     * @param canvas the canvas to be tested
+//     *
+//     * @return true if specified element is a descendant of this canvas; false otherwise
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Boolean contains(Canvas canvas) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.contains(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Returns true if element is a descendant of this widget (i.e., exists below this widget in      the containment
+//     * hierarchy); and false otherwise.
+//     * @param canvas the canvas to be tested
+//     * @param testSelf If passed this method will return true if the the canvas                                parameter is a pointer to this
+//     * widget.
+//     *
+//     * @return true if specified element is a descendant of this canvas; false otherwise
+//     * @see com.smartgwt.client.docs.Containment Containment overview and related methods
+//     */
+//    public native Boolean contains(Canvas canvas, boolean testSelf) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.contains(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), testSelf);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Return true if the last event's mouse coordinates are within the bounds of this component.  NOTE: Z-ordering is not
+//     * considered for the purposes of this test.  If the coordinate you're  testing is occluded by other component, but the X,Y
+//     * coordinates are still within the bounds  of that component, this method will return true.
+//     *
+//     * @return true if the event occurred within the bounds of this component
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native Boolean containsEvent() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.containsEvent();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Returns true if the keyboard focus is in this Canvas or any child of this Canvas.
+//     *
+//     * @return whether this Canvas contains the keyboard focus
+//     * @see com.smartgwt.client.docs.Focus Focus overview and related methods
+//     */
+//    public native Boolean containsFocus() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.containsFocus();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Return whether or not this object contains the specified global (x,y) coordinates. <P> Will return false if any
+//     * parentElement does not contain the specified point, (EG: you're hovering over an element's absolute location, but it is
+//     * scrolled out of  view in a parent element)
+//     * @param x GLOBAL x-coordinate
+//     * @param y GLOBAL y-coordinate
+//     *
+//     * @return true if this object contains the specified point; false otherwise
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native Boolean containsPoint(int x, int y) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.containsPoint(x, y);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Return whether or not this object contains the specified global (x,y) coordinates. <P> Will return false if any
+//     * parentElement does not contain the specified point, (EG: you're hovering over an element's absolute location, but it is
+//     * scrolled out of  view in a parent element)
+//     * @param x GLOBAL x-coordinate
+//     * @param y GLOBAL y-coordinate
+//     * @param withinViewport point lies specifically within our viewport                                              (drawn area excluding margins
+//     * and scrollbars if                                              present)
+//     *
+//     * @return true if this object contains the specified point; false otherwise
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native Boolean containsPoint(int x, int y, boolean withinViewport) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.containsPoint(x, y, withinViewport);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Disables this widget and any children and peers of this widget.
+//     */
+//    public native void disable() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.disable();
+//    }-*/;
+//    /**
+//     * Add a doubleClick handler.
+//     * <p>
+//     * Executed when the left mouse button is clicked twice in rapid succession (within {@link
+//     * com.smartgwt.client.widgets.Canvas#getDoubleClickDelay doubleClickDelay} by default) in this object.
+//     *
+//     * @param handler the doubleClick handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDoubleClickHandler(com.smartgwt.client.widgets.events.DoubleClickHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DoubleClickEvent.getType()) == 0) setupDoubleClickEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DoubleClickEvent.getType());
+//    }
+//
+//    private native void setupDoubleClickEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({doubleClick:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DoubleClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.doubleClick = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DoubleClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragMove handler.
+//     * <p>
+//     * Executed every time the mouse moves while dragging this canvas.
+//     *
+//     * @param handler the dragMove handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragMoveHandler(com.smartgwt.client.widgets.events.DragMoveHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragMoveEvent.getType()) == 0) setupDragMoveEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragMoveEvent.getType());
+//    }
+//
+//    private native void setupDragMoveEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragMove:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragMove = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragRepositionMove handler.
+//     * <p>
+//     * Executed every time the mouse moves while drag-repositioning. If this method does not Call {@link com.smartgwt.client.widgets.events.DragRepositionMoveEvent#cancel()} from within {@link DragRepositionMoveHandler#onDragRepositionMove}, the {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline" will automatically be moved as
+//     * appropriate whenever the mouse moves.
+//     *
+//     * @param handler the dragRepositionMove handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragRepositionMoveHandler(com.smartgwt.client.widgets.events.DragRepositionMoveHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionMoveEvent.getType()) == 0) setupDragRepositionMoveEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionMoveEvent.getType());
+//    }
+//
+//    private native void setupDragRepositionMoveEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragRepositionMove:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragRepositionMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragRepositionMove = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragRepositionMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragRepositionStart handler.
+//     * <p>
+//     * Executed when dragging first starts. No default implementation.  Create this handler to set things up for the drag
+//     * reposition.
+//     *
+//     * @param handler the dragRepositionStart handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragRepositionStartHandler(com.smartgwt.client.widgets.events.DragRepositionStartHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionStartEvent.getType()) == 0) setupDragRepositionStartEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionStartEvent.getType());
+//    }
+//
+//    private native void setupDragRepositionStartEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragRepositionStart:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragRepositionStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragRepositionStart = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragRepositionStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragRepositionStop handler.
+//     * <p>
+//     * Executed when the mouse button is released at the end of the drag. Your widget can use this opportunity to fire custom
+//     * code based upon where the mouse button was released, etc.  <p> Returning true from this handler will cause the {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline") to be left in its current
+//     * location. Returning false from this handler will cause it to snap back to its original location.
+//     *
+//     * @param handler the dragRepositionStop handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragRepositionStopHandler(com.smartgwt.client.widgets.events.DragRepositionStopHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragRepositionStopEvent.getType()) == 0) setupDragRepositionStopEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragRepositionStopEvent.getType());
+//    }
+//
+//    private native void setupDragRepositionStopEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragRepositionStop:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragRepositionStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragRepositionStop = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragRepositionStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragResizeMove handler.
+//     * <p>
+//     * Executed every time the mouse moves while drag-resizing. If this method does not Call {@link com.smartgwt.client.widgets.events.DragResizeMoveEvent#cancel()} from within {@link DragResizeMoveHandler#onDragResizeMove}, the {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline" will automatically be moved as
+//     * appropriate whenever the mouse moves.
+//     *
+//     * @param handler the dragResizeMove handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragResizeMoveHandler(com.smartgwt.client.widgets.events.DragResizeMoveHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeMoveEvent.getType()) == 0) setupDragResizeMoveEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeMoveEvent.getType());
+//    }
+//
+//    private native void setupDragResizeMoveEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragResizeMove:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragResizeMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragResizeMove = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragResizeMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragResizeStart handler.
+//     * <p>
+//     * Executed when resize dragging first starts. No default implementation.   Create this handler to set things up for the
+//     * drag resize.
+//     *
+//     * @param handler the dragResizeStart handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragResizeStartHandler(com.smartgwt.client.widgets.events.DragResizeStartHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeStartEvent.getType()) == 0) setupDragResizeStartEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeStartEvent.getType());
+//    }
+//
+//    private native void setupDragResizeStartEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragResizeStart:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragResizeStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragResizeStart = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragResizeStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragResizeStop handler.
+//     * <p>
+//     * Executed when the mouse button is released at the end of the drag resize. Your widget can use this opportunity to fire
+//     * custom code based upon where the mouse button was released, etc.  <p> Returning true from this handler will cause the
+//     * {@link com.smartgwt.client.widgets.Canvas#getDragTarget dragTarget} (or outline if {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragAppearance dragAppearance} is set to "outline") to be left at its current
+//     * size. Returning false from this handler will cause it to snap back to its original location size
+//     *
+//     * @param handler the dragResizeStop handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragResizeStopHandler(com.smartgwt.client.widgets.events.DragResizeStopHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragResizeStopEvent.getType()) == 0) setupDragResizeStopEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragResizeStopEvent.getType());
+//    }
+//
+//    private native void setupDragResizeStopEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragResizeStop:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragResizeStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragResizeStop = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragResizeStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragStart handler.
+//     * <p>
+//     * Executed when dragging first starts. Your widget can use this opportunity to set things up for the drag, such as setting
+//     * the drag tracker. Returning false from this event handler will cancel the drag action entirely. <p> A drag action is
+//     * considered to be begin when the mouse has moved {@link com.smartgwt.client.widgets.Canvas#getDragStartDistance
+//     * dragStartDistance} with the left mouse down.
+//     *
+//     * @param handler the dragStart handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragStartHandler(com.smartgwt.client.widgets.events.DragStartHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragStartEvent.getType()) == 0) setupDragStartEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragStartEvent.getType());
+//    }
+//
+//    private native void setupDragStartEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragStart:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragStart = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragStartEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dragStop handler.
+//     * <p>
+//     * Executed when the mouse button is released at the end of the drag. Your widget can use this opportunity to fire code
+//     * based on the last location of the drag or reset any visual state that was sent.
+//     *
+//     * @param handler the dragStop handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDragStopHandler(com.smartgwt.client.widgets.events.DragStopHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DragStopEvent.getType()) == 0) setupDragStopEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DragStopEvent.getType());
+//    }
+//
+//    private native void setupDragStopEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dragStop:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DragStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dragStop = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DragStopEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dropMove handler.
+//     * <p>
+//     * Executed whenever the compatible dragged object is moved over this drop target. You can use this to show a custom visual
+//     * indication of where the drop would occur within the widget.
+//     *
+//     * @param handler the dropMove handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDropMoveHandler(com.smartgwt.client.widgets.events.DropMoveHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DropMoveEvent.getType()) == 0) setupDropMoveEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropMoveEvent.getType());
+//    }
+//
+//    private native void setupDropMoveEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dropMove:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DropMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dropMove = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DropMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dropOut handler.
+//     * <p>
+//     * Executed when the dragged object is moved out of the rectangle of this drop target. If you have set a visual indication
+//     * in dropOver or dropMove, you should reset it to its normal state in dropOut.
+//     *
+//     * @param handler the dropOut handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDropOutHandler(com.smartgwt.client.widgets.events.DropOutHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DropOutEvent.getType()) == 0) setupDropOutEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropOutEvent.getType());
+//    }
+//
+//    private native void setupDropOutEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dropOut:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DropOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dropOut = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DropOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a dropOver handler.
+//     * <p>
+//     * Executed when the compatible dragged object is first moved over this drop target. Your implementation can use this to
+//     * show a custom visual indication that the object can be dropped here.
+//     *
+//     * @param handler the dropOver handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDropOverHandler(com.smartgwt.client.widgets.events.DropOverHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DropOverEvent.getType()) == 0) setupDropOverEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropOverEvent.getType());
+//    }
+//
+//    private native void setupDropOverEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({dropOver:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.DropOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.dropOver = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.DropOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Enables this widget and any children / peers of this widget.
+//     */
+//    public native void enable() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.enable();
+//    }-*/;
+//            
+//    /**
+//     * If this canvas can accept focus, give it keyboard focus. After this method, the canvas will appear focused and will
+//     * receive keyboard events.
+//     */
+//    public native void focus() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.focus();
+//    }-*/;
+//    /**
+//     * Add a focusChanged handler.
+//     * <p>
+//     * Notification function fired when this widget receives or loses keyboard focus.
+//     *
+//     * @param handler the focusChanged handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addFocusChangedHandler(com.smartgwt.client.widgets.events.FocusChangedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.FocusChangedEvent.getType()) == 0) setupFocusChangedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.FocusChangedEvent.getType());
+//    }
+//
+//    private native void setupFocusChangedEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({focusChanged:$entry(function(){
+//                        var param = {"hasFocus" : arguments[0]};
+//                        var event = @com.smartgwt.client.widgets.events.FocusChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.focusChanged = $entry(function(){
+//                   var param = {"hasFocus" : arguments[0]};
+//                   var event = @com.smartgwt.client.widgets.events.FocusChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Return the bottom coordinate of this object as rendered, relative to its enclosing context, in pixels.
+//     *
+//     * @return bottom coordinate
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getBottom() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getBottom();
+//    }-*/;
+//            
+//    /**
+//     * Returns a fully qualified String for this canvas. This is calculated by combining the canvas' specified {@link
+//     * com.smartgwt.client.widgets.Canvas#getDataPath dataPath} with the <code>dataPath</code> of any parent  canvases up to
+//     * whichever canvas has a specified {@link com.smartgwt.client.widgets.Canvas#getValuesManager valuesManager} specified to
+//     * actually manage values from this component.
+//     *
+//     * @return fully qualified dataPath for this component
+//     */
+//    public native String getFullDataPath() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getFullDataPath();
+//    }-*/;
+//            
+//    /**
+//     * If <code>this.showHover</code> is true, when the user holds the mouse over this Canvas for long enough to trigger a
+//     * hover event, a hover canvas is shown by default. This method returns the contents of that hover canvas. Default
+//     * implementation returns <code>this.prompt</code> - override for custom hover HTML. Note that returning <code>null</code>
+//     * or an empty string will suppress the hover canvas altogether.
+//     */
+//    public native void getHoverHTML() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.getHoverHTML();
+//    }-*/;
+//            
+//    /**
+//     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
+//     *
+//     * @return The offset to use when snapping
+//     * @see com.smartgwt.client.widgets.Canvas#getHSnapPosition
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getHSnapOrigin() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getHSnapOrigin();
+//    }-*/;
+//
+//    /**
+//     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
+//     * @param snapChild the child that is being snapped
+//     *
+//     * @return The offset to use when snapping
+//     * @see com.smartgwt.client.widgets.Canvas#getHSnapPosition
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getHSnapOrigin(Canvas snapChild) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getHSnapOrigin(snapChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//    }-*/;
+//            
+//    /**
+//     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
+//     * (ie, grid points are every x pixels); regular grids should be  defined using {@link
+//     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
+//     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
+//     * @param coordinate x-coordinate of the drag event relative to the inside of this widget
+//     *
+//     * @return The horizontal coordinate to snap to
+//     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
+//     */
+//    public native int getHSnapPosition(int coordinate) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getHSnapPosition(coordinate);
+//    }-*/;
+//
+//    /**
+//     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
+//     * (ie, grid points are every x pixels); regular grids should be  defined using {@link
+//     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
+//     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
+//     * @param coordinate x-coordinate of the drag event relative to the inside of this widget
+//     * @param direction "before" or "after" denoting whether the returned coordinate should   match the left or right edge of the current
+//     * square. If unset {@link com.smartgwt.client.widgets.Canvas#getSnapHDirection snapHDirection} will   be used by default
+//     *
+//     * @return The horizontal coordinate to snap to
+//     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
+//     */
+//    public native int getHSnapPosition(int coordinate, String direction) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getHSnapPosition(coordinate, direction);
+//    }-*/;
+//            
+//    /**
+//     * Returns the amount of space available for interior content (or relatively positioned child widget(s)) without
+//     * introducing clipping, scrolling or overflow.<br> This is the space within the viewport of the widget (not including
+//     * padding, and excluding  margins, borders or scrollbars) rendered at its specified size.
+//     *
+//     * @return inner height of the widget in pixels
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getInnerContentHeight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getInnerContentHeight();
+//    }-*/;
+//            
+//    /**
+//     * Returns the amount of space available for interior content (or relatively positioned child  widget(s)) without
+//     * introducing clipping, scrolling or overflow.<br>  This is the space within the viewport of the widget (not including
+//     * padding, and excluding   margins, borders or scrollbars) rendered at its specified size.
+//     *
+//     * @return inner height of the widget in pixels
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getInnerContentWidth() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getInnerContentWidth();
+//    }-*/;
+//            
+//    /**
+//     * Returns the amount of space available for (an) absolutely positioned child widget(s) or  absolutely positioned HTML
+//     * content, without introducing clipping, scrolling or overflow. <P> This is the space within the viewport of the widget
+//     * (including padding, but excluding  margins, borders or scrollbars) rendered at its specified size.
+//     *
+//     * @return inner height of the widget in pixels
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerWidth
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getInnerHeight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getInnerHeight();
+//    }-*/;
+//            
+//    /**
+//     * Returns the amount of space available for absolutely positioned child widget(s) or  absolutely positioned HTML content,
+//     * without introducing clipping, scrolling or overflow. <P> This is the space within the viewport of the widget (including
+//     * padding, but excluding  margins, borders or scrollbars) rendered at its specified size.
+//     *
+//     * @return inner width of the widget in pixels
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentHeight
+//     * @see com.smartgwt.client.widgets.Canvas#getInnerContentWidth
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getInnerWidth() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getInnerWidth();
+//    }-*/;
+//            
+//    /**
+//     * Return the X-coordinate of the last event relative to the left edge of the content of this Canvas.<br><br>  NOTE: To get
+//     * a coordinate relative to the <b>viewport</b> of this Canvas, subtract  this.getScrollLeft()
+//     *
+//     * @return 
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getOffsetX() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getOffsetX();
+//    }-*/;
+//            
+//    /**
+//     * Return the Y-coordinate of the last event, relative to the top edge of the content of this Canvas.<br><br>  NOTE: To get
+//     * a coordinate relative to the <b>viewport</b> of this Canvas, subtract  this.getScrollTop()
+//     *
+//     * @return 
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getOffsetY() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getOffsetY();
+//    }-*/;
+//            
+//    /**
+//     * Return the page-relative bottom coordinate of this object, in pixels.
+//     *
+//     * @return GLOBAL bottom coordinate
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getPageBottom() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getPageBottom();
+//    }-*/;
+//            
+//    /**
+//     * Returns the page-relative left coordinate of the widget on the page, in pixels.
+//     *
+//     * @return global left coordinate
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getPageLeft() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getPageLeft();
+//    }-*/;
+//            
+//    /**
+//     * Return the page-relative right coordinate of this object, in pixels.
+//     *
+//     * @return GLOBAL right coordinate
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getPageRight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getPageRight();
+//    }-*/;
+//            
+//    /**
+//     * Returns the page-relative top coordinate of the widget on the page, in pixels
+//     *
+//     * @return GLOBAL top coordinate
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getPageTop() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getPageTop();
+//    }-*/;
+//            
+//    /**
+//     * Return the right coordinate of this object as rendered, relative to its enclosing context, in pixels.
+//     *
+//     * @return right coordinate
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getRight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getRight();
+//    }-*/;
+//            
+//    /**
+//     * Returns the scrollable height of the widget's contents, including children, ignoring          clipping.
+//     *
+//     * @return height of the element that can scroll
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getScrollHeight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getScrollHeight();
+//    }-*/;
+//            
+//    /**
+//     * Get the number of pixels this Canvas is scrolled from its left edge.
+//     *
+//     * @return scrollLeft
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getScrollLeft() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getScrollLeft();
+//    }-*/;
+//            
+//    /**
+//     * Get the number of pixels this Canvas is scrolled from its top edge.
+//     *
+//     * @return scrollTop
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getScrollTop() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getScrollTop();
+//    }-*/;
+//            
+//    /**
+//     * Returns the scrollable width of the widget's contents, including children, ignoring clipping.
+//     *
+//     * @return the scrollable width of the widget's contents
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getScrollWidth() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getScrollWidth();
+//    }-*/;
+//            
+//    /**
+//     * Returns the height of the viewport onto the scrollable content.
+//     *
+//     * @return height of the viewport, in pixels
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getViewportHeight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getViewportHeight();
+//    }-*/;
+//            
+//    /**
+//     * Returns the width of the viewport onto the scrollable content.
+//     *
+//     * @return width of the viewport, in pixels
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getViewportWidth() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getViewportWidth();
+//    }-*/;
+//            
+//    /**
+//     * Return the visible height of the Canvas.
+//     *
+//     * @return visible height in pixels
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getVisibleHeight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVisibleHeight();
+//    }-*/;
+//            
+//    /**
+//     * Return the visible width of the Canvas.
+//     *
+//     * @return visible width in pixels
+//     * @see com.smartgwt.client.docs.Sizing Sizing overview and related methods
+//     */
+//    public native int getVisibleWidth() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVisibleWidth();
+//    }-*/;
+//            
+//    /**
+//     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
+//     *
+//     * @return The offset to use when snapping
+//     * @see com.smartgwt.client.widgets.Canvas#getVSnapPosition
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getVSnapOrigin() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVSnapOrigin();
+//    }-*/;
+//
+//    /**
+//     * Get an offset to be used when calculating snap positioning. Returns 0 by default.
+//     * @param snapChild the child that is being snapped
+//     *
+//     * @return The offset to use when snapping
+//     * @see com.smartgwt.client.widgets.Canvas#getVSnapPosition
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native int getVSnapOrigin(Canvas snapChild) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVSnapOrigin(snapChild.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//    }-*/;
+//            
+//    /**
+//     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
+//     * (ie, grid points are every x pixels) - regular grids should be  defined using {@link
+//     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
+//     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
+//     * @param coordinate y-coordinate of the drag event relative to the inside of this widget
+//     *
+//     * @return The vertical coordinate to snap to
+//     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
+//     */
+//    public native int getVSnapPosition(int coordinate) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVSnapPosition(coordinate);
+//    }-*/;
+//
+//    /**
+//     * Override this method to provide a custom snap-to grid.  Note that you do not need to do this if your grid is regular
+//     * (ie, grid points are every x pixels) - regular grids should be  defined using {@link
+//     * com.smartgwt.client.widgets.Canvas#getSnapHGap snapHGap} and {@link com.smartgwt.client.widgets.Canvas#getSnapVGap
+//     * snapVGap}. You should only override this method if you want to provide support for a grid of  irregularly-placed points
+//     * @param coordinate y-coordinate of the drag event relative to the inside of this widget
+//     * @param direction "before" or "after" denoting whether the returned coordinate should   match the top or bottom edge of the current
+//     * square. If unset {@link com.smartgwt.client.widgets.Canvas#getSnapHDirection snapHDirection} will   be used by default
+//     *
+//     * @return The vertical coordinate to snap to
+//     * @see com.smartgwt.client.docs.Dragdrop Dragdrop overview and related methods
+//     */
+//    public native int getVSnapPosition(int coordinate, String direction) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getVSnapPosition(coordinate, direction);
+//    }-*/;
+//            
+//    /**
+//     * Handler fired on a delay when the user hovers the mouse over this hover-target. Default implementation will fire
+//     * <code>this.hover()</code> (if defined), and handle  showing the hover canvas if <code>this.showHover</code> is true.
+//     */
+//    public native void handleHover() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.handleHover();
+//    }-*/;
+//            
+//    /**
+//     * Sets the widget's CSS visibility attribute to "hidden".
+//     */
+//    public native void hide() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.hide();
+//    }-*/;
+//            
+//    /**
+//     * Hides the click mask associated with this canvas.
+//     */
+//    public native void hideClickMask() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.hideClickMask();
+//    }-*/;
+//
+//    /**
+//     * Hides the click mask associated with this canvas.
+//     * @param ID optional ID of specific clickMask to hide. If not passed,                       defaults to hiding the click mask
+//     * associated with this widget only.
+//     * @see com.smartgwt.client.widgets.Canvas#showClickMask
+//     */
+//    public native void hideClickMask(String ID) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.hideClickMask(ID);
+//    }-*/;
+//            
+//    /**
+//     * The default implementation of this method hides the contextMenu currently being shown for this component (which occurs
+//     * when the mouse button that toggles the context menu is released). Override if you want some other behavior.
+//     */
+//    public native void hideContextMenu() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.hideContextMenu();
+//    }-*/;
+//    /**
+//     * Add a hover handler.
+//     * <p>
+//     * If <code>canHover</code> is true for this widget, the <code>hover</code> string method will be fired when the user
+//     * hovers over this canvas. If this method returns false, it will suppress the default behavior of showing a hover canvas
+//     * if <code>this.showHover</code>  is true.
+//     *
+//     * @param handler the hover handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addHoverHandler(com.smartgwt.client.widgets.events.HoverHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.HoverEvent.getType()) == 0) setupHoverEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.HoverEvent.getType());
+//    }
+//
+//    private native void setupHoverEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({hover:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.HoverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.hover = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.HoverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a hoverHidden handler.
+//     * <p>
+//     * If {@link com.smartgwt.client.widgets.Canvas#getShowHover showHover} is true for this canvas, this notification method
+//     * will be fired whenever the hover shown in response to {@link com.smartgwt.client.widgets.Canvas#handleHover
+//     * handleHover()} is  hidden. This method may be observed or overridden.
+//     *
+//     * @param handler the hoverHidden handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addHoverHiddenHandler(com.smartgwt.client.widgets.events.HoverHiddenHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.HoverHiddenEvent.getType()) == 0) setupHoverHiddenEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.HoverHiddenEvent.getType());
+//    }
+//
+//    private native void setupHoverHiddenEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({hoverHidden:$entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.HoverHiddenEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.hoverHidden = $entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.HoverHiddenEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Returns true if the rectangles of this widget and the specified widget overlap.
+//     * @param other other canvas to test for intersection
+//     *
+//     * @return true if this canvas intersects other; false otherwise
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native Boolean intersects(Canvas other) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.intersects(other.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Returns whether a canvas is waiting to be redrawn. Will return true if  {@link
+//     * com.smartgwt.client.widgets.Canvas#markForRedraw Canvas.markForRedraw} has been called, but this canvas has not yet been
+//     * redrawn.
+//     *
+//     * @return true is this canvas needs to be redrawn; false otherwise
+//     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
+//     */
+//    public native Boolean isDirty() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.isDirty();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Is this canvas disabled? Note that the disabled state is inherited - this method will return true if this widget, or any
+//     * of its ancestors are marked disabled.
+//     *
+//     * @return true if the widget or any widget above it in the containment hierarchy                      are disabled.
+//     * @see com.smartgwt.client.docs.Enable Enable overview and related methods
+//     */
+//    public native Boolean isDisabled() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.isDisabled();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Returns the boolean true, if the widget has been completely drawn, and false otherwise.
+//     *
+//     * @return true if drawn, false if not drawn
+//     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
+//     */
+//    public native Boolean isDrawn() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.isDrawn();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//    /**
+//     * Add a keyDown handler.
+//     * <p>
+//     * Executed when a key is pressed on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus canFocus}:
+//     * true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the String of the
+//     * key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown EventHandler.shiftKeyDown} and
+//     * related functions to determine whether modifier keys were down.
+//     *
+//     * @param handler the keyDown handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addKeyDownHandler(com.smartgwt.client.widgets.events.KeyDownHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.KeyDownEvent.getType()) == 0) setupKeyDownEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.KeyDownEvent.getType());
+//    }
+//
+//    private native void setupKeyDownEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({keyDown:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.KeyDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.keyDown = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.KeyDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a keyPress handler.
+//     * <p>
+//     * Executed when a key is pressed and released on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus
+//     * canFocus}: true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the
+//     * String of the key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown
+//     * EventHandler.shiftKeyDown} and related functions to determine whether modifier keys were down.
+//     *
+//     * @param handler the keyPress handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addKeyPressHandler(com.smartgwt.client.widgets.events.KeyPressHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.KeyPressEvent.getType()) == 0) setupKeyPressEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.KeyPressEvent.getType());
+//    }
+//
+//    private native void setupKeyPressEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({keyPress:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.KeyPressEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.keyPress = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.KeyPressEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Executed when a key is released on a focusable widget ({@link com.smartgwt.client.widgets.Canvas#getCanFocus canFocus}:
+//     * true).  <P> Use {@link com.smartgwt.client.util.EventHandler#getKey EventHandler.getKey} to find out the String of the
+//     * key that was pressed, and use {@link com.smartgwt.client.util.EventHandler#shiftKeyDown EventHandler.shiftKeyDown} and
+//     * related functions to determine whether modifier keys were down.
+//     *
+//     * @return false to prevent this event from bubbling to this widget's parent, true or undefined to bubble.
+//     * @see com.smartgwt.client.widgets.Canvas#getCanFocus
+//     */
+//    public native Boolean keyUp() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.keyUp();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * <code>layoutChildren()</code> is where a Canvas should implement a sizing policy for it's Canvas children.  Since
+//     * <code>layoutChildren</code> calls parentResized() on its children, {@link
+//     * com.smartgwt.client.widgets.Canvas#parentResized Canvas.parentResized} is a good place for a child to implement a layout
+//     * policy that can be used within any parent. <P> Recommended practice for a Canvas that manages Canvas children is to
+//     * create those children without any initial coordinate or size settings and do all sizing when layoutChildren() is called.
+//     * <P> layoutChildren() is always called at least once before children are drawn, and is called automatically whenever the
+//     * viewport size changes (which includes both resizing and introduction/removal of scrolling).  layoutChildren() can also
+//     * be manually invoked in any other component-specific situation which changes the layout. <P> NOTE: layoutChildren() may
+//     * be called before draw() if a widget is resized before draw(), so be sure to avoid errors such as assuming that any
+//     * children you automatically create have already been created. <P> NOTE: auto-sizing: layoutChildren() is also called once
+//     * during the initial draw(), before children are drawn, with a "reason" of "initial draw".  During this invocation of
+//     * layoutChildren() it is legal to directly draw children (call child.draw()), which is otherwise never allowed.  This
+//     * allows a Canvas to implement an auto-sizing layout policy by drawing some children before deciding on the sizes of
+//     * remaining children, which is far more efficient than drawing all children and resizing some of them after they are
+//     * drawn.
+//     * @param reason reason why layoutChildren() is being called, passed when framework                        code invokes layoutChildren()
+//     */
+//    public native void layoutChildren(String reason) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.layoutChildren(reason);
+//    }-*/;
+//            
+//    /**
+//     * Generates the HTML for a standard link element
+//     * @param href URL for the link to point to
+//     *
+//     * @return HTML for the link
+//     */
+//    public native String linkHTML(String href) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.linkHTML(href);
+//    }-*/;
+//
+//    /**
+//     * Generates the HTML for a standard link element
+//     * @param href URL for the link to point to
+//     * @param text Text to for the link (defaults to the href)
+//     * @param target Target window for the link (defaults to opening in a new, unnamed window)
+//     * @param ID optional ID for the link element to be written out
+//     * @param tabIndex optional tabIndex for the link
+//     * @param accessKey optional accessKey for the link
+//     *
+//     * @return HTML for the link
+//     */
+//    public native String linkHTML(String href, String text, String target, String ID, int tabIndex, String accessKey) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.linkHTML(href, text, target, ID, tabIndex, accessKey);
+//    }-*/;
+//            
+//    /**
+//     * {@link com.smartgwt.client.widgets.Canvas#destroy destroy()} this canvas on a timeout. This method should be used
+//     * instead of calling <code>canvas.destroy()</code> directly unless there's a reason a the canvas needs to be destroyed
+//     * synchronously. By using a timeout, this method ensures the <code>destroy()</code> will occur after the current thread of
+//     * execution completes. This allows you to easily mark canvases for destruction while they're handling events, which must
+//     * complete before the canvas can be destroyed.
+//     */
+//    public native void markForDestroy() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.markForDestroy();
+//    }-*/;
+//            
+//    /**
+//     * Marks the widget as "dirty" so that it will be added to a queue for redraw. Redraw of dirty components is handled by a
+//     * looping timer and will after a very short delay (typically less than 100ms). In most cases it is recommended that
+//     * developers use <code>markForRedraw()</code> instead of calling {@link com.smartgwt.client.widgets.Canvas#redraw
+//     * Canvas.redraw} directly. Since this method queues the redraw, multiple calls to markForRedraw() within a single thread
+//     * of execution will only lead to a single DOM manipulation which greatly improves application performance.
+//     */
+//    public native void markForRedraw() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.markForRedraw();
+//    }-*/;
+//
+//    /**
+//     * Marks the widget as "dirty" so that it will be added to a queue for redraw. Redraw of dirty components is handled by a
+//     * looping timer and will after a very short delay (typically less than 100ms). In most cases it is recommended that
+//     * developers use <code>markForRedraw()</code> instead of calling {@link com.smartgwt.client.widgets.Canvas#redraw
+//     * Canvas.redraw} directly. Since this method queues the redraw, multiple calls to markForRedraw() within a single thread
+//     * of execution will only lead to a single DOM manipulation which greatly improves application performance.
+//     * @param reason reason for performing the redraw
+//     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
+//     */
+//    public native void markForRedraw(String reason) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.markForRedraw(reason);
+//    }-*/;
+//    /**
+//     * Add a mouseDown handler.
+//     * <p>
+//     * Executed when the left mouse down is pressed on this widget.  No default implementation.
+//     *
+//     * @param handler the mouseDown handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseDownHandler(com.smartgwt.client.widgets.events.MouseDownHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseDownEvent.getType()) == 0) setupMouseDownEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseDownEvent.getType());
+//    }
+//
+//    private native void setupMouseDownEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseDown:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseDown = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseMove handler.
+//     * <p>
+//     * Executed when the mouse moves within this widget.  No default implementation.
+//     *
+//     * @param handler the mouseMove handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseMoveHandler(com.smartgwt.client.widgets.events.MouseMoveHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseMoveEvent.getType()) == 0) setupMouseMoveEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseMoveEvent.getType());
+//    }
+//
+//    private native void setupMouseMoveEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseMove:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseMove = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseMoveEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseOut handler.
+//     * <p>
+//     * Executed when the mouse leaves this widget.  No default implementation.
+//     *
+//     * @param handler the mouseOut handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseOutHandler(com.smartgwt.client.widgets.events.MouseOutHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseOutEvent.getType()) == 0) setupMouseOutEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseOutEvent.getType());
+//    }
+//
+//    private native void setupMouseOutEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseOut:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseOut = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseOutEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseOver handler.
+//     * <p>
+//     * Executed when mouse enters this widget.  No default implementation.
+//     *
+//     * @param handler the mouseOver handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseOverHandler(com.smartgwt.client.widgets.events.MouseOverHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseOverEvent.getType()) == 0) setupMouseOverEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseOverEvent.getType());
+//    }
+//
+//    private native void setupMouseOverEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseOver:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseOver = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseOverEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseStillDown handler.
+//     * <p>
+//     * Executed repeatedly (every {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownDelay mouseStillDownDelay} by
+//     * default) when the system is idle - i.e. not busy running other scripts - and the left mouse button is held down after
+//     * having been pressed in the object. This event is not native to JavaScript, but is provided by the ISC system. <p> Note:
+//     * The event handling system waits {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownInitialDelay
+//     * mouseStillDownInitialDelay} before calling mouseStillDown for the first time on the widget.  Subsequently the method is
+//     * called every {@link com.smartgwt.client.widgets.Canvas#getMouseStillDownDelay mouseStillDownDelay}.  Both attributes are
+//     * configurable per widget instance. <p> This method is called only when the left mouse is held down.
+//     *
+//     * @param handler the mouseStillDown handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseStillDownHandler(com.smartgwt.client.widgets.events.MouseStillDownHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseStillDownEvent.getType()) == 0) setupMouseStillDownEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseStillDownEvent.getType());
+//    }
+//
+//    private native void setupMouseStillDownEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseStillDown:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseStillDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseStillDown = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseStillDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseUp handler.
+//     * <p>
+//     * Executed when the left mouse is released on this widget.  No default implementation.
+//     *
+//     * @param handler the mouseUp handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseUpHandler(com.smartgwt.client.widgets.events.MouseUpHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseUpEvent.getType()) == 0) setupMouseUpEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseUpEvent.getType());
+//    }
+//
+//    private native void setupMouseUpEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseUp:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseUpEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseUp = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseUpEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//    /**
+//     * Add a mouseWheel handler.
+//     * <p>
+//     * Executed when the mouse wheel is actuated.
+//     *
+//     * @param handler the mouseWheel handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMouseWheelHandler(com.smartgwt.client.widgets.events.MouseWheelHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MouseWheelEvent.getType()) == 0) setupMouseWheelEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MouseWheelEvent.getType());
+//    }
+//
+//    private native void setupMouseWheelEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({mouseWheel:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.MouseWheelEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.mouseWheel = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.MouseWheelEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Puts this widget just above the specified widget in the stacking order, so it appears in front of the specified widget
+//     * if both widgets have the same parent.
+//     * @param canvas canvas to move above
+//     */
+//    public native void moveAbove(Canvas canvas) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.moveAbove(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//    }-*/;
+//            
+//    /**
+//     * Puts this widget just below the specified widget in the stacking order, so it appears behind the specified widget if
+//     * both widgets have the same parent.
+//     * @param canvas canvas to move below
+//     */
+//    public native void moveBelow(Canvas canvas) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.moveBelow(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//    }-*/;
+//            
+//    /**
+//     * Moves the widget deltaX pixels to the right and deltaY pixels down. Pass negative          numbers to move up and/or to
+//     * the left.
+//     * @param deltaX amount to move horizontally (may be negative)
+//     * @param deltaY amount to move vertically (may be negative)
+//     *
+//     * @return whether the component actually moved
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#basics_components_move" target="examples">Move Example</a>
+//     */
+//    public native Boolean moveBy(int deltaX, int deltaY) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.moveBy(deltaX, deltaY);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//    /**
+//     * Add a moved handler.
+//     * <p>
+//     * Notification method fired when this component is explicitly moved. Note that a component's position on the screen may
+//     * also changed due to an ancestor being moved. The {@link com.smartgwt.client.widgets.Canvas#addParentMovedHandler
+//     * Canvas.parentMoved} method provides a notification entry point to catch that case as well.
+//     *
+//     * @param handler the moved handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addMovedHandler(com.smartgwt.client.widgets.events.MovedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.MovedEvent.getType()) == 0) setupMovedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.MovedEvent.getType());
+//    }
+//
+//    private native void setupMovedEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({moved:$entry(function(){
+//                        var param = {"deltaX" : arguments[0], "deltaY" : arguments[1]};
+//                        var event = @com.smartgwt.client.widgets.events.MovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.moved = $entry(function(){
+//                   var param = {"deltaX" : arguments[0], "deltaY" : arguments[1]};
+//                   var event = @com.smartgwt.client.widgets.events.MovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//    /**
+//     * Add a parentMoved handler.
+//     * <p>
+//     * Notification method fire when an ancestor of this component's position changes.
+//     *
+//     * @param handler the parentMoved handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addParentMovedHandler(com.smartgwt.client.widgets.events.ParentMovedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.ParentMovedEvent.getType()) == 0) setupParentMovedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.ParentMovedEvent.getType());
+//    }
+//
+//    private native void setupParentMovedEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({parentMoved:$entry(function(){
+//                        var param = {"parent" : arguments[0], "deltaX" : arguments[1], "deltaY" : arguments[2]};
+//                        var event = @com.smartgwt.client.widgets.events.ParentMovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.parentMoved = $entry(function(){
+//                   var param = {"parent" : arguments[0], "deltaX" : arguments[1], "deltaY" : arguments[2]};
+//                   var event = @com.smartgwt.client.widgets.events.ParentMovedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Redraws the widget immediately with its current property values.   Generally, if you want a Canvas to redraw, call
+//     * markForRedraw() - this will cause the Canvas to be redrawn when current processing ends, so that a series of
+//     * modifications made to a Canvas will cause it to redraw only once. Only call redraw() directly if you need immediate
+//     * responsiveness, for example you are redrawing in response to continuous mouse motion.
+//     */
+//    public native void redraw() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.redraw();
+//    }-*/;
+//
+//    /**
+//     * Redraws the widget immediately with its current property values.   Generally, if you want a Canvas to redraw, call
+//     * markForRedraw() - this will cause the Canvas to be redrawn when current processing ends, so that a series of
+//     * modifications made to a Canvas will cause it to redraw only once. Only call redraw() directly if you need immediate
+//     * responsiveness, for example you are redrawing in response to continuous mouse motion.
+//     * @param reason reason for performing the redraw
+//     * @see com.smartgwt.client.docs.Drawing Drawing overview and related methods
+//     */
+//    public native void redraw(String reason) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.redraw(reason);
+//    }-*/;
+//    /**
+//     * Add a resized handler.
+//     * <p>
+//     * Observable method called whenever a Canvas changes size. Note that if this canvas is {@link
+//     * com.smartgwt.client.widgets.Canvas#getOverflow overflow:"visible"}, and is waiting for a queued redraw (see  {@link
+//     * com.smartgwt.client.widgets.Canvas#isDirty Canvas.isDirty}), the value for {@link
+//     * com.smartgwt.client.widgets.Canvas#getVisibleWidth Canvas.getVisibleWidth} and {@link
+//     * com.smartgwt.client.widgets.Canvas#getVisibleHeight Canvas.getVisibleHeight} will be unreliable until
+//     * <code>redraw()</code> fires.
+//     *
+//     * @param handler the resized handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addResizedHandler(com.smartgwt.client.widgets.events.ResizedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.ResizedEvent.getType()) == 0) setupResizedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.ResizedEvent.getType());
+//    }
+//
+//    private native void setupResizedEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({resized:$entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.ResizedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.resized = $entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.ResizedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//    /**
+//     * Add a rightMouseDown handler.
+//     * <p>
+//     * Executed when the right mouse down is pressed on this widget.  No default implementation.
+//     *
+//     * @param handler the rightMouseDown handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addRightMouseDownHandler(com.smartgwt.client.widgets.events.RightMouseDownHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.RightMouseDownEvent.getType()) == 0) setupRightMouseDownEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.RightMouseDownEvent.getType());
+//    }
+//
+//    private native void setupRightMouseDownEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({rightMouseDown:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.RightMouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.rightMouseDown = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.RightMouseDownEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Scroll this widget by some pixel increment in either (or both) direction(s).
+//     * @param dX Number of pixels to scroll horizontally
+//     * @param dY Number of pixels to scroll vertically
+//     */
+//    public native void scrollBy(int dX, int dY) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollBy(dX, dY);
+//    }-*/;
+//    /**
+//     * Add a scrolled handler.
+//     * <p>
+//     * Notification that this component has just scrolled.  Use with  observation. <P> Fires for both CSS and {@link
+//     * com.smartgwt.client.widgets.Scrollbar "synthetic" scrollbars}.
+//     *
+//     * @param handler the scrolled handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addScrolledHandler(com.smartgwt.client.widgets.events.ScrolledHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.ScrolledEvent.getType()) == 0) setupScrolledEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.ScrolledEvent.getType());
+//    }
+//
+//    private native void setupScrolledEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({scrolled:$entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.ScrolledEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.scrolled = $entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.ScrolledEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Scrolls the content of the widget so that the origin (top-left corner) of the content is left pixels to the left and top
+//     * pixels above the widget's top-left corner (but still clipped by the widget's dimensions). <p> This is guaranteed to be
+//     * called whenever this Canvas is scrolled, whether scrolling is initiated programmatically, by custom scrollbars, or a by
+//     * a native scrollbar.
+//     */
+//    public native void scrollTo() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollTo();
+//    }-*/;
+//
+//    /**
+//     * Scrolls the content of the widget so that the origin (top-left corner) of the content is left pixels to the left and top
+//     * pixels above the widget's top-left corner (but still clipped by the widget's dimensions). <p> This is guaranteed to be
+//     * called whenever this Canvas is scrolled, whether scrolling is initiated programmatically, by custom scrollbars, or a by
+//     * a native scrollbar.
+//     * @param left the left coordinate
+//     * @param top the top coordinate
+//     * @see com.smartgwt.client.docs.Scrolling Scrolling overview and related methods
+//     */
+//    public native void scrollTo(int left, int top) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollTo(left, top);
+//    }-*/;
+//            
+//    /**
+//     * Vertically scrolls the content of the widget to the end of its content
+//     */
+//    public native void scrollToBottom() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollToBottom();
+//    }-*/;
+//            
+//    /**
+//     * Horizontally scrolls the content of the widget to 0
+//     */
+//    public native void scrollToLeft() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollToLeft();
+//    }-*/;
+//            
+//    /**
+//     * Horizontally scrolls the content of the widget to the end of its content
+//     */
+//    public native void scrollToRight() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollToRight();
+//    }-*/;
+//            
+//    /**
+//     * Vertically scrolls the content of the widget to 0
+//     */
+//    public native void scrollToTop() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.scrollToTop();
+//    }-*/;
+//            
+//    /**
+//     * Puts this widget at the bottom of the stacking order, so it appears behind all other widgets in the same parent.
+//     */
+//    public native void sendToBack() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.sendToBack();
+//    }-*/;
+//            
+//    /**
+//     * Resizes the widget vertically to position its bottom edge at the specified coordinate. <P> NOTE: if you're setting
+//     * multiple coordinates, use setRect(), moveTo() or resizeTo() instead
+//     * @param bottom new bottom coordinate
+//     */
+//    public native void setBottom(int bottom) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setBottom(bottom);
+//    }-*/;
+//            
+//    /**
+//     * Set the URL of an image element by name. <p> The image element must have been created from HTML generated by calling
+//     * <code>canvas.imgHTML()</code> on this particular Canvas.
+//     * @param identifier name of the image to change, as originally passed to                              <code>imgHTML</code>
+//     * @param URL URL for the image
+//     */
+//    public native void setImage(String identifier, String URL) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setImage(identifier, URL);
+//    }-*/;
+//
+//    /**
+//     * Set the URL of an image element by name. <p> The image element must have been created from HTML generated by calling
+//     * <code>canvas.imgHTML()</code> on this particular Canvas.
+//     * @param identifier name of the image to change, as originally passed to                              <code>imgHTML</code>
+//     * @param URL URL for the image
+//     * @param imgDir optional image directory, overrides the default for this Canvas
+//     * @see com.smartgwt.client.docs.Images Images overview and related methods
+//     */
+//    public native void setImage(String identifier, String URL, String imgDir) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setImage(identifier, URL, imgDir);
+//    }-*/;
+//            
+//    /**
+//     * Set the page-relative left coordinate of this widget.
+//     * @param left new left coordinate in pixels
+//     */
+//    public native void setPageLeft(int left) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setPageLeft(left);
+//    }-*/;
+//            
+//    /**
+//     * Set the page-relative top coordinate of this widget.
+//     * @param top new top coordinate in pixels
+//     */
+//    public native void setPageTop(int top) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setPageTop(top);
+//    }-*/;
+//            
+//    /**
+//     * Resizes the widget horizontally to position its right side at the specified coordinate. <P> NOTE: if you're setting
+//     * multiple coordinates, use setRect(), moveTo() or resizeTo() instead
+//     * @param right new right coordinate
+//     */
+//    public native void setRight(int right) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setRight(right);
+//    }-*/;
+//            
+//    /**
+//     * If this widget is showing scrollbars, and a user drags close to the edge of the viewport, should we scroll the viewport
+//     * in the appropriate direction? Returns this.canDragScroll by default.
+//     */
+//    public native void shouldDragScroll() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.shouldDragScroll();
+//    }-*/;
+//            
+//    /**
+//     * Sets this widget's visibility to "inherit", so that it becomes visible if all it's parents are visible or it has no
+//     * parents. <P> If the widget has not yet been drawn (and doesn't have a parent or master), this method calls the draw
+//     * method as well.
+//     */
+//    public native void show() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.show();
+//    }-*/;
+//    /**
+//     * Add a showContextMenu handler.
+//     * <p>
+//     * Executed when the right mouse button is clicked.  The default implementation of this method auto-creates a {@link
+//     * com.smartgwt.client.widgets.menu.Menu} from the {@link com.smartgwt.client.widgets.Canvas#getContextMenu contextMenu}
+//     * property on this component and then calls {@link com.smartgwt.client.widgets.menu.Menu#showContextMenu
+//     * Menu.showContextMenu} on it to show it. <p> If you want to show a standard context menu, you can simply define your Menu
+//     * and set it as the contextMenu property on your component - you do not need to override this method. <p> If you want to
+//     * do some other processing before showing a menu or do something else entirely, then you should override this method. 
+//     * Note that the return value from this method controls whether or not the native browser context menu is shown.
+//     *
+//     * @param handler the showContextMenu handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addShowContextMenuHandler(com.smartgwt.client.widgets.events.ShowContextMenuHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.ShowContextMenuEvent.getType()) == 0) setupShowContextMenuEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.ShowContextMenuEvent.getType());
+//    }
+//
+//    private native void setupShowContextMenuEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({showContextMenu:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.ShowContextMenuEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.showContextMenu = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.ShowContextMenuEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Show this widget next to another widget.
+//     * @param otherWidget Canvas to show next to
+//     */
+//    public native void showNextTo(Canvas otherWidget) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.showNextTo(otherWidget.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//    }-*/;
+//
+//    /**
+//     * Show this widget next to another widget.
+//     * @param otherWidget Canvas to show next to
+//     * @param side which side to show on, defaults to "right"
+//     */
+//    public native void showNextTo(Canvas otherWidget, String side) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.showNextTo(otherWidget.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), side);
+//    }-*/;
+//            
+//    /**
+//     * If this canvas is currently showing a hover (see {@link com.smartgwt.client.widgets.Canvas#handleHover
+//     * Canvas.handleHover}), this method can be called to update the contents of the hover. Has no effect if the hover canvas
+//     * is not showing for this widget.
+//     */
+//    public native void updateHover() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.updateHover();
+//    }-*/;
+//
+//    /**
+//     * If this canvas is currently showing a hover (see {@link com.smartgwt.client.widgets.Canvas#handleHover
+//     * Canvas.handleHover}), this method can be called to update the contents of the hover. Has no effect if the hover canvas
+//     * is not showing for this widget.
+//     * @param hoverHTML Option to specify new HTML for the hover. If not passed, the result   of {@link
+//     * com.smartgwt.client.widgets.Canvas#getHoverHTML this.getHoverHTML()} will be used instead. Note that if the   hover HTML
+//     * is empty the hover will be hidden.
+//     */
+//    public native void updateHover(String hoverHTML) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.updateHover(hoverHTML);
+//    }-*/;
+//    /**
+//     * Add a visibilityChanged handler.
+//     * <p>
+//     * Notification  fired when this canvas becomes visible or hidden to the user. Note - this method is fired when the {@link
+//     * com.smartgwt.client.widgets.Canvas#isVisible Canvas.isVisible} state of this  component changes. It may be fired in
+//     * response an explicit call to {@link com.smartgwt.client.widgets.Canvas#show Canvas.show}  or {@link
+//     * com.smartgwt.client.widgets.Canvas#hide Canvas.hide} or {@link com.smartgwt.client.widgets.Canvas#setVisibility
+//     * Canvas.setVisibility}, or in response to a parent component  being shown or hidden when this widgets {@link
+//     * com.smartgwt.client.widgets.Canvas#getVisibility visibility} is set to "inherit". <P> Note that a call to {@link
+//     * com.smartgwt.client.widgets.Canvas#show Canvas.show} or {@link com.smartgwt.client.widgets.Canvas#hide Canvas.hide} will
+//     * not <b>always</b> fire this notification. If this widget has a hidden parent, show or hide would change this  components
+//     * {@link com.smartgwt.client.widgets.Canvas#getVisibility visibility} property, and may update the CSS visibility
+//     * attribute of the drawn handle in the DOM, but would not actually hide or reveal the component to the user and as such
+//     * the notification would not fire. <P> Note also that this notification will only be fired for components which have been 
+//     * {@link com.smartgwt.client.widgets.Canvas#draw drawn}.
+//     *
+//     * @param handler the visibilityChanged handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addVisibilityChangedHandler(com.smartgwt.client.widgets.events.VisibilityChangedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.VisibilityChangedEvent.getType()) == 0) setupVisibilityChangedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.VisibilityChangedEvent.getType());
+//    }
+//
+//    private native void setupVisibilityChangedEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({visibilityChanged:$entry(function(){
+//                        var param = {"isVisible" : arguments[0]};
+//                        var event = @com.smartgwt.client.widgets.events.VisibilityChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    })
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.visibilityChanged = $entry(function(){
+//                   var param = {"isVisible" : arguments[0]};
+//                   var event = @com.smartgwt.client.widgets.events.VisibilityChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//               });
+//        }
+//   }-*/;
+//
+//    // ********************* Static Methods ***********************
+//            
+//    /**
+//     * Retrieve a Canvas by it's global {@link com.smartgwt.client.widgets.Canvas#getID ID}.
+//     * @param ID global ID of the Canvas
+//     *
+//     * @return the Canvas, or null if not found
+//     */
+//    public static native Canvas getById(String ID) /*-{
+//        var ret = $wnd.isc.Canvas.getById(ID);
+//        if(ret == null || ret === undefined) return null;
+//        var retVal = @com.smartgwt.client.widgets.BaseWidget::getRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        if(retVal == null) {
+//            retVal = @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//        }
+//        return retVal;
+//    }-*/;
+//            
+//    /**
+//     * Changes the system-wide {@link com.smartgwt.client.widgets.Canvas#allowExternalFilters allowExternalFilters} setting.
+//     * @param allExternalFilters new setting
+//     */
+//    public static native void setAllowExternalFilters(boolean allExternalFilters) /*-{
+//        $wnd.isc.Canvas.setAllowExternalFilters(allExternalFilters);
+//    }-*/;
+//            
+//    /**
+//     * Changes the system-wide {@link com.smartgwt.client.widgets.Canvas#neverUseFilters neverUseFilters} setting.
+//     * @param neverUseFilters new setting
+//     */
+//    public static native void setNeverUseFilters(boolean neverUseFilters) /*-{
+//        $wnd.isc.Canvas.setNeverUseFilters(neverUseFilters);
+//    }-*/;
+//    /**
+//     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
+//     * class will automatically have the default properties that were set when this method was called. This is a powerful
+//     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
+//     * properties of this class. Can also be used for skinning / styling purposes.
+//     * <P>
+//     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
+//     * underlying class (including those automatically generated in JavaScript). 
+//     * This method should not be used to apply standard EventHandlers or override methods for
+//     * a class - use a custom subclass instead.
+//     *
+//     * @param canvasProperties properties that should be used as new defaults when instances of this class are created
+//     */
+//    public static native void setDefaultProperties(Canvas canvasProperties) /*-{
+//    	var properties = $wnd.isc.addProperties({},canvasProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
+//    	delete properties.ID;
+//        $wnd.isc.Canvas.addProperties(properties);
+//    }-*/;
+//        
+//    // ***********************************************************        
+//
+//
+//	protected native void onInit () /*-{
+//
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self._jsOverrideCall = {};
+//        self._fireDefaultMethod = {};
+//
+//        self.__parentResized = self.parentResized;
+//        self.parentResized = $debox($entry(function() {
+//            var jObj = this.__ref;
+//            jObj.@com.smartgwt.client.widgets.Canvas::parentResized()();
+//        }));
+//
+//        self.__willAcceptDrop = self.willAcceptDrop;
+//        self.willAcceptDrop = $debox($entry(function() {
+//            var jObj = this.__ref;
+//            var retVal = jObj.@com.smartgwt.client.widgets.Canvas::willAcceptDrop()();
+//            return retVal.@java.lang.Boolean::booleanValue()();
+//        }));
+//
+//         
+//        self.__getPrintHTML = self.getPrintHTML;
+//        self.getPrintHTML = function (printProperties, callback) {
+//            self._jsOverrideCall.getPrintHTML = true;
+//            var jObj = this.__ref;
+//             var jPP = printProperties == null ? null :
+//                      @com.smartgwt.client.util.PrintProperties::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printProperties);
+//             var ret;
+//             ret = jObj.@com.smartgwt.client.widgets.Canvas::getPrintHTMLJSCB(Lcom/smartgwt/client/util/PrintProperties;Lcom/google/gwt/core/client/JavaScriptObject;)(jPP,callback);
+//             if (self._fireDefaultMethod.getPrintHTML) {
+//                 ret = self.__getPrintHTML(printProperties,callback);
+//             }
+//             self._jsOverrideCall.getPrintHTML = null;
+//             self._fireDefaultMethod.getPrintHTML = null;
+//             return ret;
+//        }
+//         
+//        self.__getHoverComponent = self.getHoverComponent;
+//        self.getHoverComponent = $entry(function() {
+//            var jObj = this.__ref;
+//            var componentJ = jObj.@com.smartgwt.client.widgets.Canvas::getHoverComponent()();
+//            return componentJ == null ? null : componentJ.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//        });    
+//
+//	}-*/;
+//
+//    /**
+//     * Create a databound component corresponding to the passed jsObj.
+//     *
+//     * @param jsObj the javascript object
+//     * @return the databound component
+//     */
+//    private static native DataBoundComponent getOrCreateDBC(JavaScriptObject jsObj) /*-{
+//        if(jsObj == null) return null;
+//        var obj = jsObj.__ref;
+//        if(obj == null || obj === undefined) {
+//            if($wnd.isc.isA.ListGrid(jsObj)) return @com.smartgwt.client.widgets.grid.ListGrid::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            if($wnd.isc.isA.DynamicForm(jsObj)) return @com.smartgwt.client.widgets.form.DynamicForm::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            if($wnd.isc.isA.DetailViewer(jsObj)) return @com.smartgwt.client.widgets.viewer.DetailViewer::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            if($wnd.isc.isA.Calendar(jsObj)) return @com.smartgwt.client.widgets.calendar.Calendar::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            if($wnd.isc.isA.ColumnTree(jsObj)) return @com.smartgwt.client.widgets.grid.ColumnTree::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            if($wnd.isc.isA.TileGrid(jsObj)) return @com.smartgwt.client.widgets.tile.TileGrid::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//            return @com.smartgwt.client.widgets.Canvas::new(Lcom/google/gwt/core/client/JavaScriptObject;)(jsObj);
+//        } else {
+//            return obj;
+//        }
+//    }-*/;
+//
+//    /**
+//     * Multiple styles are currently not supported. This method essentially calls {@link #setStyleName(String)}
+//     *
+//     * @param style the style name
+//     * @see #setStyleName(String)
+//     */
+//    public void addStyleName(String style) {
+//        setStyleName(style);
+//        com.google.gwt.core.client.GWT.log("addStyleName is not supported. Calling setStyleName instead", null);
+//    }
 
     public void setVisible(boolean visible) {
         setVisibility(visible ? Visibility.INHERIT : Visibility.HIDDEN);
@@ -6513,13 +6498,13 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
         setAttribute("align", align.getValue(), true);
     }
 
-    public int getAbsoluteLeft() {
-        return getPageLeft();
-    }
-
-    public int getAbsoluteTop() {
-        return getPageTop();
-    }
+//    public int getAbsoluteLeft() {
+//        return getPageLeft();
+//    }
+//
+//    public int getAbsoluteTop() {
+//        return getPageTop();
+//    }
 
     /**
      * Default animation effect to use if {@link Canvas#animateShow()} is called without an explicit effect parameter.
@@ -6587,62 +6572,62 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //    }    
     
 
-    /**
-     * Returns true if the widget object being dragged can be dropped on this widget, and false otherwise.  The default
-     * implementation of this method simply compares the {@link com.smartgwt.client.widgets.Canvas#getDragType dragType} of the
-     * <code>dragTarget</code> (the component being dragged from) with the list of {@link
-     * com.smartgwt.client.widgets.Canvas#getDropTypes dropTypes} on this Canvas.  If the {@link
-     * com.smartgwt.client.widgets.Canvas#getDropTypes dropTypes} list contains the {@link
-     * com.smartgwt.client.widgets.Canvas#getDragType dragType} value, then this method returns true.  Otherwise it returns
-     * false.
-     * <br><b>Note: This is an override point</b>
-     * 
-     *
-     * @return true if the widget object being dragged can be dropped on this widget,                      false otherwise
-     */
-    public native Boolean willAcceptDrop() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal = self.__willAcceptDrop();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Fires when the interior size of the parent changes, including parent resize and scrollbar introduction or removal. <p>
-     * This method allows a child to implement a layout policy that can be used within any  parent, such as a Resizer component
-     * that always snaps to the parent's bottom-right corner.  The default implementation of this method applies a child's
-     * percent sizes, if any, or implements layout based on the {@link com.smartgwt.client.widgets.Canvas#getSnapTo snapTo}
-     * property.
-     * <br><p>Make sure you call super.parentResized() if you'd like the default behavior to apply.
-     *
-     * <br><b>Note: This is an override point</b>
-     *
-     */
-    protected native void parentResized() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.__parentResized();
-    }-*/;
-    
-    /**
-     * When {@link com.smartgwt.client.widgets.Canvas#getShowHoverComponents showHoverComponents} is true, this method is
-     * called to get the component to show as a hover for this Canvas.  There is no default implementation of this method, so
-     * you need to override it with an implementation that returns a Canvas that suits your needs. <P> By default, components
-     * returned by <code>getHoverComponent()</code> will not be automatically destroyed when the hover is hidden.  To enforce
-     * this, set {@link com.smartgwt.client.widgets.Canvas#getHoverAutoDestroy hoverAutoDestroy} to true on the returned
-     * component.
-     * 
-     * <br><b>Note: this is an override point</b>
-     *
-     * @return the component to show as a hover
-     */
-    public native Canvas getHoverComponent() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var hoverComponent = (self.__getHoverComponent == null) ? null : self.__getHoverComponent();
-        return hoverComponent == null ? null : hoverComponent.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-    }-*/;
+//    /**
+//     * Returns true if the widget object being dragged can be dropped on this widget, and false otherwise.  The default
+//     * implementation of this method simply compares the {@link com.smartgwt.client.widgets.Canvas#getDragType dragType} of the
+//     * <code>dragTarget</code> (the component being dragged from) with the list of {@link
+//     * com.smartgwt.client.widgets.Canvas#getDropTypes dropTypes} on this Canvas.  If the {@link
+//     * com.smartgwt.client.widgets.Canvas#getDropTypes dropTypes} list contains the {@link
+//     * com.smartgwt.client.widgets.Canvas#getDragType dragType} value, then this method returns true.  Otherwise it returns
+//     * false.
+//     * <br><b>Note: This is an override point</b>
+//     * 
+//     *
+//     * @return true if the widget object being dragged can be dropped on this widget,                      false otherwise
+//     */
+//    public native Boolean willAcceptDrop() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal = self.__willAcceptDrop();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Fires when the interior size of the parent changes, including parent resize and scrollbar introduction or removal. <p>
+//     * This method allows a child to implement a layout policy that can be used within any  parent, such as a Resizer component
+//     * that always snaps to the parent's bottom-right corner.  The default implementation of this method applies a child's
+//     * percent sizes, if any, or implements layout based on the {@link com.smartgwt.client.widgets.Canvas#getSnapTo snapTo}
+//     * property.
+//     * <br><p>Make sure you call super.parentResized() if you'd like the default behavior to apply.
+//     *
+//     * <br><b>Note: This is an override point</b>
+//     *
+//     */
+//    protected native void parentResized() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.__parentResized();
+//    }-*/;
+//    
+//    /**
+//     * When {@link com.smartgwt.client.widgets.Canvas#getShowHoverComponents showHoverComponents} is true, this method is
+//     * called to get the component to show as a hover for this Canvas.  There is no default implementation of this method, so
+//     * you need to override it with an implementation that returns a Canvas that suits your needs. <P> By default, components
+//     * returned by <code>getHoverComponent()</code> will not be automatically destroyed when the hover is hidden.  To enforce
+//     * this, set {@link com.smartgwt.client.widgets.Canvas#getHoverAutoDestroy hoverAutoDestroy} to true on the returned
+//     * component.
+//     * 
+//     * <br><b>Note: this is an override point</b>
+//     *
+//     * @return the component to show as a hover
+//     */
+//    public native Canvas getHoverComponent() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var hoverComponent = (self.__getHoverComponent == null) ? null : self.__getHoverComponent();
+//        return hoverComponent == null ? null : hoverComponent.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//    }-*/;
     
     
 
@@ -6737,9 +6722,9 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
     }
 
 
-    public void setKeepInParentRect(Rectangle rectangle) {
-        setAttribute("keepInParentRect", rectangle.getAsJSArray(), true);
-    }
+//    public void setKeepInParentRect(Rectangle rectangle) {
+//        setAttribute("keepInParentRect", rectangle.getAsJSArray(), true);
+//    }
 
     public void setPrefix(String prefix) {
         setAttribute("prefix", prefix, true);
@@ -6811,803 +6796,803 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
      */
 
 
-    /**
-     * Moves the widget so that its top-left corner is at the specified coordinates. This method will also accept a
-     * single parameter as an object array with left and top given as properties.
-     *
-     * @param left x-coordinate to move to in LOCAL coordinates
-     * @param top  y-coordinate to move to in LOCAL coordinates
-     * @return whether the component actually moved
-     */
-    public native boolean moveTo(int left, int top) /*-{
-        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return widget.moveTo(left, top);
-    }-*/;
-
-    /**
-     * Resizes the widget, adding deltaX to its width and deltaY to its height (moves the right          and/or bottom sides of
-     * the widget).
-     * @param deltaX amount to resize horizontally (may be negative)
-     * @param deltaY amount to resize vertically (may be negative)
-     *
-     * @return whether the component actually changed size
-     */
-    public native Boolean resizeBy(int deltaX, int deltaY) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.resizeBy(deltaX, deltaY);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Resizes the widget to the specified width and height (moves the right and/ or bottom          sides of the widget). The
-     * width and height parameters can be expressed as a percentage          of viewport size or as the number of pixels.
-     * @param width new width for canvas
-     * @param height new height for canvas
-     *
-     * @return whether the size actually changed
-     */
-    public native Boolean resizeTo(String width, String height) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.resizeTo(width, height);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Resizes the widget to the specified width and height (moves the right and/ or bottom          sides of the widget). The
-     * width and height parameters can be expressed as a percentage          of viewport size or as the number of pixels.
-     * @param width new width for canvas
-     * @param height new height for canvas
-     *
-     * @return whether the size actually changed
-     */
-    public native Boolean resizeTo(int width, int height) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.resizeTo(width, height);
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Scroll this widget by some percentage of scroll size in either (or both) direction(s).
-     *
-     * @param dX Percentage to scroll horizontally.
-     * @param dY Percentage to scroll vertically.
-     */
-    public native void scrollByPercent(int dX, int dY) /*-{
-        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return widget.scrollByPercent(dX, dY);
-    }-*/;
-
-    /**
-     * Scroll this widget to some position specified as a percentage of scroll size in either (or both) direction(s).
-     *
-     * @param left left Percentage position to scroll to
-     * @param top  top Percentage position to scroll to
-     */
-    public native void scrollToPercent(int left, int top) /*-{
-        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return widget.scrollToPercent(left, top);
-    }-*/;
-
-    /**
-     * Returns true if the widget is visible, taking all parents into account, so that a widget which is not hidden
-     * might still report itself as not visible if it is within a hidden parent. <P> NOTE: Undrawn widgets will
-     * report themselves as visible if they would be visible if drawn.
-     *
-     * @return true if the widget is visible, false otherwise
-     */
+//    /**
+//     * Moves the widget so that its top-left corner is at the specified coordinates. This method will also accept a
+//     * single parameter as an object array with left and top given as properties.
+//     *
+//     * @param left x-coordinate to move to in LOCAL coordinates
+//     * @param top  y-coordinate to move to in LOCAL coordinates
+//     * @return whether the component actually moved
+//     */
+//    public native boolean moveTo(int left, int top) /*-{
+//        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return widget.moveTo(left, top);
+//    }-*/;
+//
+//    /**
+//     * Resizes the widget, adding deltaX to its width and deltaY to its height (moves the right          and/or bottom sides of
+//     * the widget).
+//     * @param deltaX amount to resize horizontally (may be negative)
+//     * @param deltaY amount to resize vertically (may be negative)
+//     *
+//     * @return whether the component actually changed size
+//     */
+//    public native Boolean resizeBy(int deltaX, int deltaY) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.resizeBy(deltaX, deltaY);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Resizes the widget to the specified width and height (moves the right and/ or bottom          sides of the widget). The
+//     * width and height parameters can be expressed as a percentage          of viewport size or as the number of pixels.
+//     * @param width new width for canvas
+//     * @param height new height for canvas
+//     *
+//     * @return whether the size actually changed
+//     */
+//    public native Boolean resizeTo(String width, String height) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.resizeTo(width, height);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Resizes the widget to the specified width and height (moves the right and/ or bottom          sides of the widget). The
+//     * width and height parameters can be expressed as a percentage          of viewport size or as the number of pixels.
+//     * @param width new width for canvas
+//     * @param height new height for canvas
+//     *
+//     * @return whether the size actually changed
+//     */
+//    public native Boolean resizeTo(int width, int height) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.resizeTo(width, height);
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Scroll this widget by some percentage of scroll size in either (or both) direction(s).
+//     *
+//     * @param dX Percentage to scroll horizontally.
+//     * @param dY Percentage to scroll vertically.
+//     */
+//    public native void scrollByPercent(int dX, int dY) /*-{
+//        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return widget.scrollByPercent(dX, dY);
+//    }-*/;
+//
+//    /**
+//     * Scroll this widget to some position specified as a percentage of scroll size in either (or both) direction(s).
+//     *
+//     * @param left left Percentage position to scroll to
+//     * @param top  top Percentage position to scroll to
+//     */
+//    public native void scrollToPercent(int left, int top) /*-{
+//        var widget = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return widget.scrollToPercent(left, top);
+//    }-*/;
+//
+//    /**
+//     * Returns true if the widget is visible, taking all parents into account, so that a widget which is not hidden
+//     * might still report itself as not visible if it is within a hidden parent. <P> NOTE: Undrawn widgets will
+//     * report themselves as visible if they would be visible if drawn.
+//     *
+//     * @return true if the widget is visible, false otherwise
+//     */
 //    public native boolean isVisible() /*-{
 //            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
 //            return self.isVisible();
 //        }-*/;
-
-
-    /**
-     * Animate a reposition of this canvas from its current position to the specified position
-     *
-     * @param left new left position (or null for unchanged)
-     * @param top  new top position (or null for unchanged)
-     */
-    public native void animateMove(Integer left, Integer top) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        self.animateMove(leftJS, topJS);
-    }-*/;
-
-    /**
-     * Animate a reposition of this canvas from its current position to the specified position
-     *
-     * @param left     new left position (or null for unchanged)
-     * @param top      new top position (or null for unchanged)
-     * @param callback When the move completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     */
-    public native void animateMove(Integer left, Integer top, AnimationCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
-             earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-             if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Animate a reposition of this canvas from its current position to the specified position
-     *
-     * @param left     new left position (or null for unchanged)
-     * @param top      new top position (or null for unchanged)
-     * @param callback When the move completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     * @param duration Duration in ms of the animated move
-     */
-    public native void animateMove(Integer left, Integer top, AnimationCallback callback, int duration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Animate a reposition of this canvas from its current position to the specified position
-     *
-     * @param left         new left position (or null for unchanged)
-     * @param top          new top position (or null for unchanged)
-     * @param callback     When the move completes this callback will be fired. Single
-     *                     'earlyFinish' parameter will be passed if the animation was                              cut
-     *                     short by a call to finishAnimation
-     * @param duration     Duration in ms of the animated move
-     * @param acceleration Optional acceleration effect to bias the ratios
-     */
-    public native void animateMove(Integer left, Integer top, AnimationCallback callback, int duration, AnimationAcceleration acceleration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration, acceleration == null ? null : acceleration.@com.smartgwt.client.types.ValueEnum::getValue()());
-    }-*/;
-
-    /**
-     * Animate a scroll from the current scroll position to the specified position.
-     *
-     * @param scrollLeft desired final left scroll postion
-     * @param scrollTop  desired final top scroll postion
-     */
-    public native void animateScroll(int scrollLeft, int scrollTop) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateScroll(scrollLeft, scrollTop);
-    }-*/;
-
-    /**
-     * Animate a scroll from the current scroll position to the specified position.
-     *
-     * @param scrollLeft desired final left scroll postion
-     * @param scrollTop  desired final top scroll postion
-     * @param callback   When the scroll completes this callback will be fired. Single
-     *                   'earlyFinish' parameter will be passed if the animation was                              cut
-     *                   short by a call to finishAnimation
-     */
-    public native void animateScroll(int scrollLeft, int scrollTop, AnimationCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateScroll(scrollLeft, scrollTop, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Animate a scroll from the current scroll position to the specified position.
-     *
-     * @param scrollLeft desired final left scroll postion
-     * @param scrollTop  desired final top scroll postion
-     * @param callback   When the scroll completes this callback will be fired. Single
-     *                   'earlyFinish' parameter will be passed if the animation was                              cut
-     *                   short by a call to finishAnimation
-     * @param duration   Duration in ms of the animated scroll
-     */
-    public native void animateScroll(int scrollLeft, int scrollTop, AnimationCallback callback, int duration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateScroll(scrollLeft, scrollTop, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Animate a reposition / resize of this canvas from its current size and postion.
-     *
-     * @param left   new left position (or null for unchanged)
-     * @param top    new top position (or null for unchanged)
-     * @param width  new width (or null for unchanged)
-     * @param height new height (or null for unchanged)
-     */
-    public native void animateRect(Integer left, Integer top, Integer width, Integer height) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-        self.animateRect(leftJS, topJS, widthJS, heightJS);
-    }-*/;
-
-    /**
-     * Animate a reposition / resize of this canvas from its current size and postion.
-     *
-     * @param left     new left position (or null for unchanged)
-     * @param top      new top position (or null for unchanged)
-     * @param width    new width (or null for unchanged)
-     * @param height   new height (or null for unchanged)
-     * @param callback When the setRect completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     */
-    public native void animateRect(Integer left, Integer top, Integer width, Integer height, AnimationCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-
-        self.animateRect(leftJS, topJS, widthJS, heightJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Animate a reposition / resize of this canvas from its current size and postion.
-     *
-     * @param left     new left position (or null for unchanged)
-     * @param top      new top position (or null for unchanged)
-     * @param width    new width (or null for unchanged)
-     * @param height   new height (or null for unchanged)
-     * @param callback When the setRect completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     * @param duration Duration in ms of the animated setRect
-     */
-    public native void animateRect(Integer left, Integer top, Integer width, Integer height, AnimationCallback callback, int duration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
-        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-
-        self.animateRect(leftJS, topJS, widthJS, heightJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Animate a resize of this canvas from its current size to the specified size
-     *
-     * @param width  new width (or null for unchanged)
-     * @param height new height (or null for unchanged)
-     */
-    public native void animateResize(Integer width, Integer height) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-        self.animateResize(widthJS, heightJS);
-    }-*/;
-
-    /**
-     * Animate a resize of this canvas from its current size to the specified size
-     *
-     * @param width    new width (or null for unchanged)
-     * @param height   new height (or null for unchanged)
-     * @param callback When the resize completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     */
-    public native void animateResize(Integer width, Integer height, AnimationCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-        self.animateResize(widthJS, heightJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Animate a resize of this canvas from its current size to the specified size
-     *
-     * @param width    new width (or null for unchanged)
-     * @param height   new height (or null for unchanged)
-     * @param callback When the resize completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     * @param duration Duration in ms of the animated resize
-     */
-    public native void animateResize(Integer width, Integer height, AnimationCallback callback, int duration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
-        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
-        self.animateResize(widthJS, heightJS, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-
-    /**
-     * Animate a change in opacity from the widget's current opacity to the specified opacity.
-     *
-     * @param opacity desired final opacity
-     */
-    public native void animateFade(int opacity) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateFade(opacity);
-    }-*/;
-
-    /**
-     * Animate a change in opacity from the widget's current opacity to the specified opacity.
-     *
-     * @param opacity  desired final opacity
-     * @param callback When the fade completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     */
-    public native void animateFade(int opacity, AnimationCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateFade(opacity, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Animate a change in opacity from the widget's current opacity to the specified opacity.
-     *
-     * @param opacity  desired final opacity
-     * @param callback When the fade completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation
-     * @param duration Duration in ms of the animated fade
-     */
-    public native void animateFade(int opacity, AnimationCallback callback, int duration) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateFade(opacity, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
-     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
-     *
-     * @param effect How should the content of the  window be hidden during the hide? If ommitted, default behavior can
-     *               be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
-     *               animateHideEffect}
-     */
-    public native void animateHide(AnimationEffect effect) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateHide(effectVal);
-    }-*/;
-
-    /**
-     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
-     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
-     *
-     * @param effect   How should the content of the  window be hidden during the hide? If ommitted, default behavior
-     *                 can be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
-     *                 animateHideEffect}
-     * @param callback When the hide completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation.
-     */
-    public native void animateHide(AnimationEffect effect, AnimationCallback callback) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateHide(effectVal, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
-     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
-     *
-     * @param effect   How should the content of the  window be hidden during the hide? If ommitted, default behavior
-     *                 can be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
-     *                 animateHideEffect}
-     * @param callback When the hide completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation.
-     * @param duration Duration in ms of the animated hide.  If unset, duration will be   picked up from {@link
-     *                 com.smartgwt.client.widgets.Canvas#getAnimateHideTime animateHideTime}
-     */
-    public native void animateHide(AnimationEffect effect, AnimationCallback callback, int duration) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateHide(effectVal, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
-     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
-     * <code>"hidden"</code>.
-     *
-     * @param effect Animation effect to use      when revealing the widget. If ommitted, default behavior can be
-     *               configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
-     *               animateShowEffect}
-     */
-    public native void animateShow(AnimationEffect effect) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateShow(effectVal);
-    }-*/;
-
-    /**
-     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
-     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
-     * <code>"hidden"</code>.
-     *
-     * @param effect   Animation effect to use      when revealing the widget. If ommitted, default behavior can be
-     *                 configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
-     *                 animateShowEffect}
-     * @param callback When the show completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation.
-     */
-    public native void animateShow(AnimationEffect effect, AnimationCallback callback) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateShow(effectVal, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }));
-    }-*/;
-
-    /**
-     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
-     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
-     * <code>"hidden"</code>.
-     *
-     * @param effect   Animation effect to use      when revealing the widget. If ommitted, default behavior can be
-     *                 configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
-     *                 animateShowEffect}
-     * @param callback When the show completes this callback will be fired. Single
-     *                 'earlyFinish' parameter will be passed if the animation was                              cut
-     *                 short by a call to finishAnimation.
-     * @param duration Duration in ms of the animated show. If unset, duration will be   picked up from {@link
-     *                 com.smartgwt.client.widgets.Canvas#getAnimateShowTime animateShowTime}
-     */
-    public native void animateShow(AnimationEffect effect, AnimationCallback callback, int duration) /*-{
-        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.animateShow(effectVal, $entry(function(earlyFinish) {
-            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
-            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
-        }), duration);
-    }-*/;
-
-    /**
-     * Update the canvas shadow.
-     */
-    public native void updateShadow() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.updateShadow();
-    }-*/;
-
-    /**
-     * Get the z-Index of this canvas.
-     *
-     * @return the zIndex
-     */
-    public native int getZIndex() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getZIndex(true);
-    }-*/;
-
-    /**
-     * get the next zIndex for the next item to be drawn. see setZIndex() for notes
-     *
-     * @return the next zIndex
-     */
-    public native int getNextZIndex() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getNextZIndex();
-    }-*/;
-
-    /**
-     * Set the z-Index of the canvas.
-     *
-     * @param newIndex the new  zIndex to set to
-     */
-    public native void setZIndex(int newIndex) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setZIndex(newIndex);
-    }-*/;
-
-    public native Rectangle getPageRect() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var rect = self.getPageRect();
-        return @com.smartgwt.client.core.Rectangle::new(IIII)(rect[0], rect[1],rect[2],rect[3]);
-    }-*/;
-
-
-    /**
-     * Set all four coordinates, relative to the enclosing context, at once. <P> Moves the widget so that its top-left
-     * corner is at the specified top-left coordinates, then resizes it to the specified width and height.
-     *
-     * @param rectangle new coordinates
-     */
-    public void setRect(Rectangle rectangle) {
-        setRect(rectangle.getLeft(), rectangle.getTop(), rectangle.getWidth(), rectangle.getHeight());
-    }
-
-    /**
-     * Set all four coordinates, relative to the enclosing context, at once. <P> Moves the widget so that its top-left
-     * corner is at the specified top-left coordinates, then resizes it to the specified width and height.
-     *
-     * @param left   new left coordinate, Array of coordinates                                                  in
-     *               parameter order, or Object with left,                                                  top, width,
-     *               height properties.  If an Array                                                  or Object is
-     *               passed, the remaining                                                  parameters are ignored
-     * @param top    new top coordinate
-     * @param width  new width
-     * @param height new height
-     */
-    public native void setRect(int left, int top, int width, int height) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.setRect(left, top, width, height);
-    }-*/;
-
-    /**
-     * Get all four coordinates, relative to the enclosing context, at one.
-     *
-     * @return the Rectangle
-     */
-    public native Rectangle getRect() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var rect = self.getRect();
-        return @com.smartgwt.client.core.Rectangle::new(IIII)(rect[0], rect[1],rect[2],rect[3]);
-    }-*/;
-
-
-    /**
-     * Return the full URL for an image to be drawn in this canvas. <P> If the passed URL begins with the special
-     * prefix "[SKIN]", it will have the widget.skinImgDir and Page.skinImgDir prepended.  Otherwise the image is
-     * assumed to be application-specific, and will have the widget.appImgDir and Page.appImgDir automatically
-     * prepended. <P> Note that if passed an absolute path (starting with "/" or "http://" for example), no extra
-     * image directory information will be prepended to the generated URL.//
-     *
-     * @param URL URL local to skin or application image directory
-     * @return URL to use
-     */
-    public static native String getImgURL(String URL) /*-{
-            return $wnd.isc.Canvas.getImgURL(URL);
-        }-*/;
-
-    /**
-     * Return the full URL for an image to be drawn in this canvas. <P> If the passed URL begins with the special
-     * prefix "[SKIN]", it will have the widget.skinImgDir and Page.skinImgDir prepended.  Otherwise the image is
-     * assumed to be application-specific, and will have the widget.appImgDir and Page.appImgDir automatically
-     * prepended. <P> Note that if passed an absolute path (starting with "/" or "http://" for example), no extra
-     * image directory information will be prepended to the generated URL.//
-     *
-     * @param URL    URL local to skin or application image directory
-     * @param imgDir optional image directory to override the default for this Canvas
-     * @return URL to use
-     */
-    public static native String getImgURL(String URL, String imgDir) /*-{
-            return $wnd.isc.Canvas.getImgURL(URL, imgDir);
-        }-*/;
-
-    /**
-     * Generates the HTML for an image unique to this Canvas. <P> The full URL for the image will be formed
-     * according to the rules documented for <code>{@link com.smartgwt.client.widgets.Canvas#getImgURL}</code>. <P>
-     * The created image will have an identifier unique to this Canvas, and subsequent calls to <code>{@link
-     * com.smartgwt.client.widgets.Canvas#getImage}</code> and <code>{@link com.smartgwt.client.widgets.Canvas#setImage}</code>
-     *  with the name passed to this function will act on the image object produced by the HTML returned from this
-     * call.
-     *
-     * @param src URL local to the skin or application directory.<br>  NOTE: instead of passing several parameters,
-     *            you can pass an object as the 'src'      parameter with properties for all the various function
-     *            parameters with, eg:<br>      canvas.imgHTML( {src:"foo", width:10, height:10} );
-     * @return HTML to draw the image.
-     */
-    public static native String imgHTML(String src) /*-{
-            return $wnd.isc.Canvas.imgHTML(src);
-        }-*/;
-
-    /**
-     * Generates the HTML for an image unique to this Canvas. <P> The full URL for the image will be formed
-     * according to the rules documented for <code>{@link com.smartgwt.client.widgets.Canvas#getImgURL}</code>. <P>
-     * The created image will have an identifier unique to this Canvas, and subsequent calls to <code>{@link
-     * com.smartgwt.client.widgets.Canvas#getImage}</code> and <code>{@link com.smartgwt.client.widgets.Canvas#setImage}</code>
-     *  with the name passed to this function will act on the image object produced by the HTML returned from this
-     * call.
-     *
-     * @param src        URL local to the skin or application directory.<br>  NOTE: instead of passing several
-     *                   parameters, you can pass an object as the 'src'      parameter with properties for all the
-     *                   various function parameters with, eg:<br>      canvas.imgHTML( {src:"foo", width:10,
-     *                   height:10} );
-     * @param width      width of the image
-     * @param height     height of the image
-     * @param name       name for the image
-     * @param extraStuff additional attributes to write in the tag
-     * @param imgDir     image-specific image directory to override the default                                  for
-     *                   this Canvas
-     * @return HTML to draw the image.
-     */
-    public static native String imgHTML(String src, int width, int height, String name, String extraStuff, String imgDir) /*-{
-            return $wnd.isc.Canvas.imgHTML(src, width, height, name, extraStuff, imgDir);
-        }-*/;
-
-    public static native String imgHTML(String src, int width, int height) /*-{
-         return $wnd.isc.Canvas.imgHTML(src, width, height);
-     }-*/;
-
-
-    /**
-     * Returns the scrollTop required to scroll vertically to the end of this widget's content.
-     */
-    public native int getScrollBottom() /*-{
-            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-            return self.getScrollBottom();
-        }-*/;
-
-    /**
-     * Returns the scrollLeft required to scroll horizontally to the end of this widget's content.
-     */
-    public native int getScrollRight() /*-{
-            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-            return self.getScrollRight();
-        }-*/;
-
-
-    /**
-     * Show a PrintWindow containing a printable view of the component passed in containing print HTML.
-     *
-     * @param component to get printable HTML for.
-     */
-    public static native void showPrintPreview(Canvas component) /*-{
-         var componentJS = component.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-         return $wnd.isc.Canvas.showPrintPreview(componentJS);
-     }-*/;
-
-    /**
-     * Show a Print containing a printable view of the components passed in.
-     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
-     * output
-     */
-    public static native void showPrintPreview(Object[] components) /*-{
-     	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
-        $wnd.isc.Canvas.showPrintPreview(componentsJS);
-    }-*/;
-
-
-    /**
-     * Show a Print containing a printable view of the components passed in.
-     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
-     * output
-     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
-     * @param title for the print window
-     * @param callback to fire when the print preview window has been created and shown
-     */
-    public static native void showPrintPreview(Object[] components, PrintProperties printProperties, String title, PrintPreviewCallback callback) /*-{
-        var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
-        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
-        var pvpJS = {};
-        if(title != null) $wnd.isc.addProperties(pvpJS, {title:title});
-        $wnd.isc.Canvas.showPrintPreview(componentsJS, ppJS, pvpJS,
-        callback == null ? null :
-	        $entry(function (printCanvas, printWindow) {
-	        	var canvasJ = @com.smartgwt.client.widgets.PrintCanvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printCanvas);
-	        	var windowJ = @com.smartgwt.client.widgets.PrintWindow::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printWindow);
-	        	callback.@com.smartgwt.client.util.PrintPreviewCallback::execute(Lcom/smartgwt/client/widgets/PrintCanvas;Lcom/smartgwt/client/widgets/PrintWindow;)(canvasJ, windowJ);
-	        })
-         );
-    }-*/;
-
-    /**
-     * Show a Print containing a printable view of the components passed in.
-     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
-     * output
-     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
-     * @param title for the print window
-     * @param callback to fire when the print preview window has been created and shown
-     * @param printWindowProperties the print window properties
-     * @param printButtonTitle the brint button title
-     */
-    public static native void showPrintPreview(Object[] components, PrintProperties printProperties, String title, PrintPreviewCallback callback, Window printWindowProperties, String printButtonTitle) /*-{
-        var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
-        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
-        var pvpJS = printWindowProperties == null ? {} : printWindowProperties.@com.smartgwt.client.widgets.Window::getConfig()();
-        if(title != null) $wnd.isc.addProperties(pvpJS, {title:title});
-        if(printButtonTitle != null) $wnd.isc.addProperties(pvpJS, {printButtonTitle:printButtonTitle});
-
-        $wnd.isc.Canvas.showPrintPreview(componentsJS, ppJS, pvpJS,
-        callback == null ? null :
-	        $entry(function (printCanvas, printWindow) {
-	        	var canvasJ = @com.smartgwt.client.widgets.PrintCanvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printCanvas);
-	        	var windowJ = @com.smartgwt.client.widgets.PrintWindow::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printWindow);
-	        	callback.@com.smartgwt.client.util.PrintPreviewCallback::execute(Lcom/smartgwt/client/widgets/PrintCanvas;Lcom/smartgwt/client/widgets/PrintWindow;)(canvasJ, windowJ);
-	        })
-         );
-    }-*/;
-
-    /**
-     * Returns print-formatted HTML for the specified list of components.
-     * @param components Components to get the print HTML for. Strings of raw HTML may  also be included in this array, and will be integrated
-     * into the final HTML at the appropriate  point.
-     * <code>HTML</code>.
-     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
-     * @param callback to fire when the HTML has been generated
-  
-     */
-    public static native void getPrintHTML(Object[] components, PrintProperties printProperties, PrintHTMLCallback callback) /*-{
-    	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
-        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
-        $wnd.isc.Canvas.getPrintHTML(componentsJS, ppJS,
-         callback == null ? null : 
-         $entry(function (HTML) {
-        	callback.@com.smartgwt.client.util.PrintHTMLCallback::setHTML(Ljava/lang/String;)(HTML);
-        }));
-    }-*/;
-    
-    
-   /**
-     * Retrieves printable HTML for this component and all printable subcomponents.
-     * By default any Canvas with children will simply collect the printable HTML of its
-     * children by calling getPrintHTML() on each child that has shouldPrint set to true and is not
-     * omitted as a control.
-     *
-     * If overriding this method for a custom component, you should <b>either</b> return a String of printable HTML string directly <b>or</b> return null,
-     * and call {@link PrintHTMLCallback#setHTML(String)}. This allows for providing a printable view for asynch interfaces
-     * - for example fetching records that aren't yet loaded for the print view, etc
-     *
-     *  <b>Note: this is an override point.</b>
-     * @param printProperties properties to configure printing behavior - may be null
-     * @param callback to fire. Generated HTML should be passed to the execute method of the callback.
-     */
-    public native String getPrintHTML(PrintProperties printProperties, PrintHTMLCallback callback) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        if (self._jsOverrideCall.getPrintHTML) {
-            self._fireDefaultMethod.getPrintHTML = true;
-            return;
-        }
-        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
-        
-        var ret = self.__getPrintHTML(
-                ppJS,
-                callback == null ? null :  
-                    $entry(function (HTML) {
-                        callback.@com.smartgwt.client.util.PrintHTMLCallback::setHTML(Ljava/lang/String;)(HTML);
-                    })
-         );
-        return ret === undefined ? null : ret;
-    }-*/;
-
+//
+//
+//    /**
+//     * Animate a reposition of this canvas from its current position to the specified position
+//     *
+//     * @param left new left position (or null for unchanged)
+//     * @param top  new top position (or null for unchanged)
+//     */
+//    public native void animateMove(Integer left, Integer top) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        self.animateMove(leftJS, topJS);
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition of this canvas from its current position to the specified position
+//     *
+//     * @param left     new left position (or null for unchanged)
+//     * @param top      new top position (or null for unchanged)
+//     * @param callback When the move completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     */
+//    public native void animateMove(Integer left, Integer top, AnimationCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
+//             earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//             if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition of this canvas from its current position to the specified position
+//     *
+//     * @param left     new left position (or null for unchanged)
+//     * @param top      new top position (or null for unchanged)
+//     * @param callback When the move completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     * @param duration Duration in ms of the animated move
+//     */
+//    public native void animateMove(Integer left, Integer top, AnimationCallback callback, int duration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition of this canvas from its current position to the specified position
+//     *
+//     * @param left         new left position (or null for unchanged)
+//     * @param top          new top position (or null for unchanged)
+//     * @param callback     When the move completes this callback will be fired. Single
+//     *                     'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                     short by a call to finishAnimation
+//     * @param duration     Duration in ms of the animated move
+//     * @param acceleration Optional acceleration effect to bias the ratios
+//     */
+//    public native void animateMove(Integer left, Integer top, AnimationCallback callback, int duration, AnimationAcceleration acceleration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        self.animateMove(leftJS, topJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration, acceleration == null ? null : acceleration.@com.smartgwt.client.types.ValueEnum::getValue()());
+//    }-*/;
+//
+//    /**
+//     * Animate a scroll from the current scroll position to the specified position.
+//     *
+//     * @param scrollLeft desired final left scroll postion
+//     * @param scrollTop  desired final top scroll postion
+//     */
+//    public native void animateScroll(int scrollLeft, int scrollTop) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateScroll(scrollLeft, scrollTop);
+//    }-*/;
+//
+//    /**
+//     * Animate a scroll from the current scroll position to the specified position.
+//     *
+//     * @param scrollLeft desired final left scroll postion
+//     * @param scrollTop  desired final top scroll postion
+//     * @param callback   When the scroll completes this callback will be fired. Single
+//     *                   'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                   short by a call to finishAnimation
+//     */
+//    public native void animateScroll(int scrollLeft, int scrollTop, AnimationCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateScroll(scrollLeft, scrollTop, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Animate a scroll from the current scroll position to the specified position.
+//     *
+//     * @param scrollLeft desired final left scroll postion
+//     * @param scrollTop  desired final top scroll postion
+//     * @param callback   When the scroll completes this callback will be fired. Single
+//     *                   'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                   short by a call to finishAnimation
+//     * @param duration   Duration in ms of the animated scroll
+//     */
+//    public native void animateScroll(int scrollLeft, int scrollTop, AnimationCallback callback, int duration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateScroll(scrollLeft, scrollTop, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition / resize of this canvas from its current size and postion.
+//     *
+//     * @param left   new left position (or null for unchanged)
+//     * @param top    new top position (or null for unchanged)
+//     * @param width  new width (or null for unchanged)
+//     * @param height new height (or null for unchanged)
+//     */
+//    public native void animateRect(Integer left, Integer top, Integer width, Integer height) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//        self.animateRect(leftJS, topJS, widthJS, heightJS);
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition / resize of this canvas from its current size and postion.
+//     *
+//     * @param left     new left position (or null for unchanged)
+//     * @param top      new top position (or null for unchanged)
+//     * @param width    new width (or null for unchanged)
+//     * @param height   new height (or null for unchanged)
+//     * @param callback When the setRect completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     */
+//    public native void animateRect(Integer left, Integer top, Integer width, Integer height, AnimationCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//
+//        self.animateRect(leftJS, topJS, widthJS, heightJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Animate a reposition / resize of this canvas from its current size and postion.
+//     *
+//     * @param left     new left position (or null for unchanged)
+//     * @param top      new top position (or null for unchanged)
+//     * @param width    new width (or null for unchanged)
+//     * @param height   new height (or null for unchanged)
+//     * @param callback When the setRect completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     * @param duration Duration in ms of the animated setRect
+//     */
+//    public native void animateRect(Integer left, Integer top, Integer width, Integer height, AnimationCallback callback, int duration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var leftJS = left == null ? null : left.@java.lang.Integer::intValue()();
+//        var topJS = top == null ? null : top.@java.lang.Integer::intValue()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//
+//        self.animateRect(leftJS, topJS, widthJS, heightJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Animate a resize of this canvas from its current size to the specified size
+//     *
+//     * @param width  new width (or null for unchanged)
+//     * @param height new height (or null for unchanged)
+//     */
+//    public native void animateResize(Integer width, Integer height) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//        self.animateResize(widthJS, heightJS);
+//    }-*/;
+//
+//    /**
+//     * Animate a resize of this canvas from its current size to the specified size
+//     *
+//     * @param width    new width (or null for unchanged)
+//     * @param height   new height (or null for unchanged)
+//     * @param callback When the resize completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     */
+//    public native void animateResize(Integer width, Integer height, AnimationCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//        self.animateResize(widthJS, heightJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Animate a resize of this canvas from its current size to the specified size
+//     *
+//     * @param width    new width (or null for unchanged)
+//     * @param height   new height (or null for unchanged)
+//     * @param callback When the resize completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     * @param duration Duration in ms of the animated resize
+//     */
+//    public native void animateResize(Integer width, Integer height, AnimationCallback callback, int duration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var widthJS = width == null ? null : width.@java.lang.Integer::intValue()();
+//        var heightJS = height == null ? null : height.@java.lang.Integer::intValue()();
+//        self.animateResize(widthJS, heightJS, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//
+//    /**
+//     * Animate a change in opacity from the widget's current opacity to the specified opacity.
+//     *
+//     * @param opacity desired final opacity
+//     */
+//    public native void animateFade(int opacity) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateFade(opacity);
+//    }-*/;
+//
+//    /**
+//     * Animate a change in opacity from the widget's current opacity to the specified opacity.
+//     *
+//     * @param opacity  desired final opacity
+//     * @param callback When the fade completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     */
+//    public native void animateFade(int opacity, AnimationCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateFade(opacity, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Animate a change in opacity from the widget's current opacity to the specified opacity.
+//     *
+//     * @param opacity  desired final opacity
+//     * @param callback When the fade completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation
+//     * @param duration Duration in ms of the animated fade
+//     */
+//    public native void animateFade(int opacity, AnimationCallback callback, int duration) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateFade(opacity, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
+//     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
+//     *
+//     * @param effect How should the content of the  window be hidden during the hide? If ommitted, default behavior can
+//     *               be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
+//     *               animateHideEffect}
+//     */
+//    public native void animateHide(AnimationEffect effect) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateHide(effectVal);
+//    }-*/;
+//
+//    /**
+//     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
+//     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
+//     *
+//     * @param effect   How should the content of the  window be hidden during the hide? If ommitted, default behavior
+//     *                 can be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
+//     *                 animateHideEffect}
+//     * @param callback When the hide completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation.
+//     */
+//    public native void animateHide(AnimationEffect effect, AnimationCallback callback) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateHide(effectVal, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Hide a canvas by shrinking it vertically to zero height over a period of time. This method will not fire if the
+//     * widget is already drawn and visible, or has overflow other than <code>"visible"</code> or <code>"hidden"</code>.
+//     *
+//     * @param effect   How should the content of the  window be hidden during the hide? If ommitted, default behavior
+//     *                 can be configured via  {@link com.smartgwt.client.widgets.Canvas#getAnimateHideEffect
+//     *                 animateHideEffect}
+//     * @param callback When the hide completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation.
+//     * @param duration Duration in ms of the animated hide.  If unset, duration will be   picked up from {@link
+//     *                 com.smartgwt.client.widgets.Canvas#getAnimateHideTime animateHideTime}
+//     */
+//    public native void animateHide(AnimationEffect effect, AnimationCallback callback, int duration) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateHide(effectVal, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
+//     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
+//     * <code>"hidden"</code>.
+//     *
+//     * @param effect Animation effect to use      when revealing the widget. If ommitted, default behavior can be
+//     *               configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
+//     *               animateShowEffect}
+//     */
+//    public native void animateShow(AnimationEffect effect) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateShow(effectVal);
+//    }-*/;
+//
+//    /**
+//     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
+//     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
+//     * <code>"hidden"</code>.
+//     *
+//     * @param effect   Animation effect to use      when revealing the widget. If ommitted, default behavior can be
+//     *                 configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
+//     *                 animateShowEffect}
+//     * @param callback When the show completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation.
+//     */
+//    public native void animateShow(AnimationEffect effect, AnimationCallback callback) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateShow(effectVal, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Show a canvas by growing it vertically to its fully drawn height over a period of time. This method will not fire
+//     * if the widget is already drawn and visible, or has overflow other than <code>"visible"</code> or
+//     * <code>"hidden"</code>.
+//     *
+//     * @param effect   Animation effect to use      when revealing the widget. If ommitted, default behavior can be
+//     *                 configured via      {@link com.smartgwt.client.widgets.Canvas#getAnimateShowEffect
+//     *                 animateShowEffect}
+//     * @param callback When the show completes this callback will be fired. Single
+//     *                 'earlyFinish' parameter will be passed if the animation was                              cut
+//     *                 short by a call to finishAnimation.
+//     * @param duration Duration in ms of the animated show. If unset, duration will be   picked up from {@link
+//     *                 com.smartgwt.client.widgets.Canvas#getAnimateShowTime animateShowTime}
+//     */
+//    public native void animateShow(AnimationEffect effect, AnimationCallback callback, int duration) /*-{
+//        var effectVal = effect.@com.smartgwt.client.types.AnimationEffect::getValue()();
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.animateShow(effectVal, $entry(function(earlyFinish) {
+//            earlyFinish = earlyFinish === undefined ? false : earlyFinish;
+//            if(callback != null) callback.@com.smartgwt.client.widgets.AnimationCallback::execute(Z)(earlyFinish);
+//        }), duration);
+//    }-*/;
+//
+//    /**
+//     * Update the canvas shadow.
+//     */
+//    public native void updateShadow() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.updateShadow();
+//    }-*/;
+//
+//    /**
+//     * Get the z-Index of this canvas.
+//     *
+//     * @return the zIndex
+//     */
+//    public native int getZIndex() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getZIndex(true);
+//    }-*/;
+//
+//    /**
+//     * get the next zIndex for the next item to be drawn. see setZIndex() for notes
+//     *
+//     * @return the next zIndex
+//     */
+//    public native int getNextZIndex() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        return self.getNextZIndex();
+//    }-*/;
+//
+//    /**
+//     * Set the z-Index of the canvas.
+//     *
+//     * @param newIndex the new  zIndex to set to
+//     */
+//    public native void setZIndex(int newIndex) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setZIndex(newIndex);
+//    }-*/;
+//
+//    public native Rectangle getPageRect() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var rect = self.getPageRect();
+//        return @com.smartgwt.client.core.Rectangle::new(IIII)(rect[0], rect[1],rect[2],rect[3]);
+//    }-*/;
+//
+//
+//    /**
+//     * Set all four coordinates, relative to the enclosing context, at once. <P> Moves the widget so that its top-left
+//     * corner is at the specified top-left coordinates, then resizes it to the specified width and height.
+//     *
+//     * @param rectangle new coordinates
+//     */
+//    public void setRect(Rectangle rectangle) {
+//        setRect(rectangle.getLeft(), rectangle.getTop(), rectangle.getWidth(), rectangle.getHeight());
+//    }
+//
+//    /**
+//     * Set all four coordinates, relative to the enclosing context, at once. <P> Moves the widget so that its top-left
+//     * corner is at the specified top-left coordinates, then resizes it to the specified width and height.
+//     *
+//     * @param left   new left coordinate, Array of coordinates                                                  in
+//     *               parameter order, or Object with left,                                                  top, width,
+//     *               height properties.  If an Array                                                  or Object is
+//     *               passed, the remaining                                                  parameters are ignored
+//     * @param top    new top coordinate
+//     * @param width  new width
+//     * @param height new height
+//     */
+//    public native void setRect(int left, int top, int width, int height) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.setRect(left, top, width, height);
+//    }-*/;
+//
+//    /**
+//     * Get all four coordinates, relative to the enclosing context, at one.
+//     *
+//     * @return the Rectangle
+//     */
+//    public native Rectangle getRect() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var rect = self.getRect();
+//        return @com.smartgwt.client.core.Rectangle::new(IIII)(rect[0], rect[1],rect[2],rect[3]);
+//    }-*/;
+//
+//
+//    /**
+//     * Return the full URL for an image to be drawn in this canvas. <P> If the passed URL begins with the special
+//     * prefix "[SKIN]", it will have the widget.skinImgDir and Page.skinImgDir prepended.  Otherwise the image is
+//     * assumed to be application-specific, and will have the widget.appImgDir and Page.appImgDir automatically
+//     * prepended. <P> Note that if passed an absolute path (starting with "/" or "http://" for example), no extra
+//     * image directory information will be prepended to the generated URL.//
+//     *
+//     * @param URL URL local to skin or application image directory
+//     * @return URL to use
+//     */
+//    public static native String getImgURL(String URL) /*-{
+//            return $wnd.isc.Canvas.getImgURL(URL);
+//        }-*/;
+//
+//    /**
+//     * Return the full URL for an image to be drawn in this canvas. <P> If the passed URL begins with the special
+//     * prefix "[SKIN]", it will have the widget.skinImgDir and Page.skinImgDir prepended.  Otherwise the image is
+//     * assumed to be application-specific, and will have the widget.appImgDir and Page.appImgDir automatically
+//     * prepended. <P> Note that if passed an absolute path (starting with "/" or "http://" for example), no extra
+//     * image directory information will be prepended to the generated URL.//
+//     *
+//     * @param URL    URL local to skin or application image directory
+//     * @param imgDir optional image directory to override the default for this Canvas
+//     * @return URL to use
+//     */
+//    public static native String getImgURL(String URL, String imgDir) /*-{
+//            return $wnd.isc.Canvas.getImgURL(URL, imgDir);
+//        }-*/;
+//
+//    /**
+//     * Generates the HTML for an image unique to this Canvas. <P> The full URL for the image will be formed
+//     * according to the rules documented for <code>{@link com.smartgwt.client.widgets.Canvas#getImgURL}</code>. <P>
+//     * The created image will have an identifier unique to this Canvas, and subsequent calls to <code>{@link
+//     * com.smartgwt.client.widgets.Canvas#getImage}</code> and <code>{@link com.smartgwt.client.widgets.Canvas#setImage}</code>
+//     *  with the name passed to this function will act on the image object produced by the HTML returned from this
+//     * call.
+//     *
+//     * @param src URL local to the skin or application directory.<br>  NOTE: instead of passing several parameters,
+//     *            you can pass an object as the 'src'      parameter with properties for all the various function
+//     *            parameters with, eg:<br>      canvas.imgHTML( {src:"foo", width:10, height:10} );
+//     * @return HTML to draw the image.
+//     */
+//    public static native String imgHTML(String src) /*-{
+//            return $wnd.isc.Canvas.imgHTML(src);
+//        }-*/;
+//
+//    /**
+//     * Generates the HTML for an image unique to this Canvas. <P> The full URL for the image will be formed
+//     * according to the rules documented for <code>{@link com.smartgwt.client.widgets.Canvas#getImgURL}</code>. <P>
+//     * The created image will have an identifier unique to this Canvas, and subsequent calls to <code>{@link
+//     * com.smartgwt.client.widgets.Canvas#getImage}</code> and <code>{@link com.smartgwt.client.widgets.Canvas#setImage}</code>
+//     *  with the name passed to this function will act on the image object produced by the HTML returned from this
+//     * call.
+//     *
+//     * @param src        URL local to the skin or application directory.<br>  NOTE: instead of passing several
+//     *                   parameters, you can pass an object as the 'src'      parameter with properties for all the
+//     *                   various function parameters with, eg:<br>      canvas.imgHTML( {src:"foo", width:10,
+//     *                   height:10} );
+//     * @param width      width of the image
+//     * @param height     height of the image
+//     * @param name       name for the image
+//     * @param extraStuff additional attributes to write in the tag
+//     * @param imgDir     image-specific image directory to override the default                                  for
+//     *                   this Canvas
+//     * @return HTML to draw the image.
+//     */
+//    public static native String imgHTML(String src, int width, int height, String name, String extraStuff, String imgDir) /*-{
+//            return $wnd.isc.Canvas.imgHTML(src, width, height, name, extraStuff, imgDir);
+//        }-*/;
+//
+//    public static native String imgHTML(String src, int width, int height) /*-{
+//         return $wnd.isc.Canvas.imgHTML(src, width, height);
+//     }-*/;
+//
+//
+//    /**
+//     * Returns the scrollTop required to scroll vertically to the end of this widget's content.
+//     */
+//    public native int getScrollBottom() /*-{
+//            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//            return self.getScrollBottom();
+//        }-*/;
+//
+//    /**
+//     * Returns the scrollLeft required to scroll horizontally to the end of this widget's content.
+//     */
+//    public native int getScrollRight() /*-{
+//            var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//            return self.getScrollRight();
+//        }-*/;
+//
+//
+//    /**
+//     * Show a PrintWindow containing a printable view of the component passed in containing print HTML.
+//     *
+//     * @param component to get printable HTML for.
+//     */
+//    public static native void showPrintPreview(Canvas component) /*-{
+//         var componentJS = component.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//         return $wnd.isc.Canvas.showPrintPreview(componentJS);
+//     }-*/;
+//
+//    /**
+//     * Show a Print containing a printable view of the components passed in.
+//     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
+//     * output
+//     */
+//    public static native void showPrintPreview(Object[] components) /*-{
+//     	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
+//        $wnd.isc.Canvas.showPrintPreview(componentsJS);
+//    }-*/;
+//
+//
+//    /**
+//     * Show a Print containing a printable view of the components passed in.
+//     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
+//     * output
+//     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
+//     * @param title for the print window
+//     * @param callback to fire when the print preview window has been created and shown
+//     */
+//    public static native void showPrintPreview(Object[] components, PrintProperties printProperties, String title, PrintPreviewCallback callback) /*-{
+//        var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
+//        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
+//        var pvpJS = {};
+//        if(title != null) $wnd.isc.addProperties(pvpJS, {title:title});
+//        $wnd.isc.Canvas.showPrintPreview(componentsJS, ppJS, pvpJS,
+//        callback == null ? null :
+//	        $entry(function (printCanvas, printWindow) {
+//	        	var canvasJ = @com.smartgwt.client.widgets.PrintCanvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printCanvas);
+//	        	var windowJ = @com.smartgwt.client.widgets.PrintWindow::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printWindow);
+//	        	callback.@com.smartgwt.client.util.PrintPreviewCallback::execute(Lcom/smartgwt/client/widgets/PrintCanvas;Lcom/smartgwt/client/widgets/PrintWindow;)(canvasJ, windowJ);
+//	        })
+//         );
+//    }-*/;
+//
+//    /**
+//     * Show a Print containing a printable view of the components passed in.
+//     * @param components components to get the print HTML for. May also include  raw HTML strings which will be folded into the generated print
+//     * output
+//     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
+//     * @param title for the print window
+//     * @param callback to fire when the print preview window has been created and shown
+//     * @param printWindowProperties the print window properties
+//     * @param printButtonTitle the brint button title
+//     */
+//    public static native void showPrintPreview(Object[] components, PrintProperties printProperties, String title, PrintPreviewCallback callback, Window printWindowProperties, String printButtonTitle) /*-{
+//        var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
+//        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
+//        var pvpJS = printWindowProperties == null ? {} : printWindowProperties.@com.smartgwt.client.widgets.Window::getConfig()();
+//        if(title != null) $wnd.isc.addProperties(pvpJS, {title:title});
+//        if(printButtonTitle != null) $wnd.isc.addProperties(pvpJS, {printButtonTitle:printButtonTitle});
+//
+//        $wnd.isc.Canvas.showPrintPreview(componentsJS, ppJS, pvpJS,
+//        callback == null ? null :
+//	        $entry(function (printCanvas, printWindow) {
+//	        	var canvasJ = @com.smartgwt.client.widgets.PrintCanvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printCanvas);
+//	        	var windowJ = @com.smartgwt.client.widgets.PrintWindow::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(printWindow);
+//	        	callback.@com.smartgwt.client.util.PrintPreviewCallback::execute(Lcom/smartgwt/client/widgets/PrintCanvas;Lcom/smartgwt/client/widgets/PrintWindow;)(canvasJ, windowJ);
+//	        })
+//         );
+//    }-*/;
+//
+//    /**
+//     * Returns print-formatted HTML for the specified list of components.
+//     * @param components Components to get the print HTML for. Strings of raw HTML may  also be included in this array, and will be integrated
+//     * into the final HTML at the appropriate  point.
+//     * <code>HTML</code>.
+//     * @param printProperties for customizing the print HTML output. If this parameter is passed as null, it will be ignored.
+//     * @param callback to fire when the HTML has been generated
+//  
+//     */
+//    public static native void getPrintHTML(Object[] components, PrintProperties printProperties, PrintHTMLCallback callback) /*-{
+//    	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
+//        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
+//        $wnd.isc.Canvas.getPrintHTML(componentsJS, ppJS,
+//         callback == null ? null : 
+//         $entry(function (HTML) {
+//        	callback.@com.smartgwt.client.util.PrintHTMLCallback::setHTML(Ljava/lang/String;)(HTML);
+//        }));
+//    }-*/;
+//    
+//    
+//   /**
+//     * Retrieves printable HTML for this component and all printable subcomponents.
+//     * By default any Canvas with children will simply collect the printable HTML of its
+//     * children by calling getPrintHTML() on each child that has shouldPrint set to true and is not
+//     * omitted as a control.
+//     *
+//     * If overriding this method for a custom component, you should <b>either</b> return a String of printable HTML string directly <b>or</b> return null,
+//     * and call {@link PrintHTMLCallback#setHTML(String)}. This allows for providing a printable view for asynch interfaces
+//     * - for example fetching records that aren't yet loaded for the print view, etc
+//     *
+//     *  <b>Note: this is an override point.</b>
+//     * @param printProperties properties to configure printing behavior - may be null
+//     * @param callback to fire. Generated HTML should be passed to the execute method of the callback.
+//     */
+//    public native String getPrintHTML(PrintProperties printProperties, PrintHTMLCallback callback) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        if (self._jsOverrideCall.getPrintHTML) {
+//            self._fireDefaultMethod.getPrintHTML = true;
+//            return;
+//        }
+//        var ppJS = printProperties == null ? null : printProperties.@com.smartgwt.client.util.PrintProperties::getJsObj()();
+//        
+//        var ret = self.__getPrintHTML(
+//                ppJS,
+//                callback == null ? null :  
+//                    $entry(function (HTML) {
+//                        callback.@com.smartgwt.client.util.PrintHTMLCallback::setHTML(Ljava/lang/String;)(HTML);
+//                    })
+//         );
+//        return ret === undefined ? null : ret;
+//    }-*/;
+//
 //	private String getPrintHTMLJSCB(PrintProperties printProperties, final JavaScriptObject jscallback) {
 //		if (jscallback == null) {
 //			return getPrintHTML(printProperties, null);
@@ -7623,42 +7608,42 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //			return getPrintHTML(printProperties, jcb);
 //		}
 //	}
-
-
-
-    /**
-     * Generate printable HTML for the designated components and trigger the native print dialog, without ever showing the
-     * printable HTML to the user.
-     * @param components components to get the print HTML for. May also include        raw HTML strings which will be folded into the generated
-     * print output
-     */
-    public static native void printComponents(Object[] components) /*-{
-    	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
-        $wnd.isc.Canvas.printComponents(componentsJS);
-    }-*/;
-
-
-    
-
-    /**
-     * This Canvas's immediate parent, if any. <BR> Can be initialized, but any subsequent manipulation should be via
-     * {@link com.smartgwt.client.widgets.Canvas#addChild} and {@link com.smartgwt.client.widgets.Canvas#removeChild}
-     * calls on the parent. <p><b>Note : </b> This is an advanced setting</p>
-     *
-     * @param parentElement parentElement Default value is null
-     * @throws IllegalStateException this property cannot be changed after the component has been created
-     */
+//
+//
+//
+//    /**
+//     * Generate printable HTML for the designated components and trigger the native print dialog, without ever showing the
+//     * printable HTML to the user.
+//     * @param components components to get the print HTML for. May also include        raw HTML strings which will be folded into the generated
+//     * print output
+//     */
+//    public static native void printComponents(Object[] components) /*-{
+//    	var componentsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(components);
+//        $wnd.isc.Canvas.printComponents(componentsJS);
+//    }-*/;
+//
+//
+//    
+//
+//    /**
+//     * This Canvas's immediate parent, if any. <BR> Can be initialized, but any subsequent manipulation should be via
+//     * {@link com.smartgwt.client.widgets.Canvas#addChild} and {@link com.smartgwt.client.widgets.Canvas#removeChild}
+//     * calls on the parent. <p><b>Note : </b> This is an advanced setting</p>
+//     *
+//     * @param parentElement parentElement Default value is null
+//     * @throws IllegalStateException this property cannot be changed after the component has been created
+//     */
 //    public void setParentElement(Canvas parentElement) throws IllegalStateException {
 //        setAttribute("parentElement", parentElement.getOrCreateJsObj(), false);
 //    }
-
-    /**
-     * This Canvas's immediate parent, if any. <BR> Can be initialized, but any subsequent manipulation should be via
-     * {@link com.smartgwt.client.widgets.Canvas#addChild} and {@link com.smartgwt.client.widgets.Canvas#removeChild}
-     * calls on the parent.
-     *
-     * @return Canvas
-     */
+//
+//    /**
+//     * This Canvas's immediate parent, if any. <BR> Can be initialized, but any subsequent manipulation should be via
+//     * {@link com.smartgwt.client.widgets.Canvas#addChild} and {@link com.smartgwt.client.widgets.Canvas#removeChild}
+//     * calls on the parent.
+//     *
+//     * @return Canvas
+//     */
 //    public Canvas getParentElement() {
 //        JavaScriptObject parentJS = getAttributeAsJavaScriptObject("parentElement");
 //        if(parentJS == null) return null;
@@ -7668,15 +7653,15 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //        }
 //        return canvas;
 //    }
-
-    /**
-     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if
-     * name argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent
-     * it will be removed from it. If it has a master, it will be detached from it if the master is a child of a
-     * different parent. If newChild has peers, they'll be added to this widget as children as well.
-     *
-     * @param newChild new child canvas to add
-     */
+//
+//    /**
+//     * Adds newChild as a child of this widget, set up a named object reference (i.e., this[name]) to the new widget if
+//     * name argument is provided, and draw the child if this widget has been drawn already. <P> If newChild has a parent
+//     * it will be removed from it. If it has a master, it will be detached from it if the master is a child of a
+//     * different parent. If newChild has peers, they'll be added to this widget as children as well.
+//     *
+//     * @param newChild new child canvas to add
+//     */
 //    public void addChild(Widget widget) {
 //        if (widget instanceof Canvas) {
 //            addChild((Canvas) widget);
@@ -7684,13 +7669,13 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //            addChild(new WidgetCanvas(widget));
 //        }
 //    }
-
-    /**
-     * Array of all Canvii that are immediate children of this Canvas. <p><b>Note : </b> This is an advanced
-     * setting</p>
-     *
-     * @param children children Default value is null
-     */
+//
+//    /**
+//     * Array of all Canvii that are immediate children of this Canvas. <p><b>Note : </b> This is an advanced
+//     * setting</p>
+//     *
+//     * @param children children Default value is null
+//     */
 //    public void setChildren(Canvas... children) {
 //        if(!isDrawn()) {
 //            setAttribute("children", children, false);
@@ -7701,15 +7686,15 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //            }
 //        }
 //    }
-
-    /**
-     * Array of all Canvii that are immediate children of this Canvas. <p><b>Note : </b> This is an advanced
-     * setting</p>
-     */
+//
+//    /**
+//     * Array of all Canvii that are immediate children of this Canvas. <p><b>Note : </b> This is an advanced
+//     * setting</p>
+//     */
 //    public Canvas[] getChildren() {
 //        return convertToCanvasArray(getAttributeAsJavaScriptObject("children"));
 //    }
-
+//
 //    protected static Canvas[] convertToCanvasArray(JavaScriptObject nativeArray) {
 //        if (nativeArray == null) {
 //            return new Canvas[]{};
@@ -7726,40 +7711,40 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
 //        }
 //        return objects;
 //    }
-
-    /**
-     * Remove a child from its parent if it has one.
-     *
-     * @param child Child canvas to remove from this parent.
-     */
+//
+//    /**
+//     * Remove a child from its parent if it has one.
+//     *
+//     * @param child Child canvas to remove from this parent.
+//     */
 //    public native void removeChild(Canvas child) /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
 //        var childJS= child.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
 //        self.removeChild(childJS);
 //    }-*/;
-
-/**
- * Remove a child from its parent if it has one.
- *
- * @param child Child canvas to remove from this parent.
- * @param name  If the child canvas was assigned a name, it should be passed in here                          to
- *              ensure this[name] is cleared
- */
+//
+///**
+// * Remove a child from its parent if it has one.
+// *
+// * @param child Child canvas to remove from this parent.
+// * @param name  If the child canvas was assigned a name, it should be passed in here                          to
+// *              ensure this[name] is cleared
+// */
 //    public native void removeChild(Canvas child, String name) /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
 //        var childJS= child.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
 //        self.removeChild(childJS, name);
 //    }-*/;
-
-
-    public int getOffsetHeight() {
-        return getVisibleHeight();
-    }
-
-    public int getOffsetWidth() {
-        return getVisibleWidth();
-    }
-
+//
+//
+//    public int getOffsetHeight() {
+//        return getVisibleHeight();
+//    }
+//
+//    public int getOffsetWidth() {
+//        return getVisibleWidth();
+//    }
+//
     /**
      * Set the minimum value for height.
      * <p>
@@ -7780,88 +7765,95 @@ public class Canvas extends BaseWidget implements com.smartgwt.client.widgets.ev
         setWidth(1);
     }
 
-    /**
-     * Show a clickMask over the entire screen that intercepts mouse clicks and fires some action. The mask created will be
-     * associated with this canvas - calling this method multiple times will not show multiple (stacked) clickMasks if the mask
-     * associated with this canvas is  already up.<br><br> The clickMask useful for modal dialogs, menus and similar uses,
-     * where any click outside of some Canvas should either be suppressed (as in a modal dialog) or just cause something (like
-     * dismissing a menu).
-     * @param clickActionCallback action to fire when the user clicks on the mask
-     * @param mode whether to automatically hide the clickMask on mouseDown                                      and suppress the mouseDown
-     * event from reaching                                      the target under the mouse
-     * @param unmaskedTargets initially unmasked targets for this clickMask. Note that if this is a  <code>"hard"</code> mask, unmasked children of
-     * masked parents are not supported  so any non-top-level widgets passed in will have their parents unmasked.  Children of
-     * masked parents can never be masked.
-     *
-     * @return clickMask ID
-     */
-    public native String showClickMask(Function clickActionCallback, ClickMaskMode mode, Canvas[] unmaskedTargets) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var unmaskedTargetsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(unmaskedTargets);
-        return self.showClickMask($entry(function() {
-           if(clickActionCallback != null) clickActionCallback.@com.smartgwt.client.core.Function::execute()();
-        }), mode.@com.smartgwt.client.types.ClickMaskMode::getValue()(), unmaskedTargetsJS);
-    }-*/;
+//    /**
+//     * Show a clickMask over the entire screen that intercepts mouse clicks and fires some action. The mask created will be
+//     * associated with this canvas - calling this method multiple times will not show multiple (stacked) clickMasks if the mask
+//     * associated with this canvas is  already up.<br><br> The clickMask useful for modal dialogs, menus and similar uses,
+//     * where any click outside of some Canvas should either be suppressed (as in a modal dialog) or just cause something (like
+//     * dismissing a menu).
+//     * @param clickActionCallback action to fire when the user clicks on the mask
+//     * @param mode whether to automatically hide the clickMask on mouseDown                                      and suppress the mouseDown
+//     * event from reaching                                      the target under the mouse
+//     * @param unmaskedTargets initially unmasked targets for this clickMask. Note that if this is a  <code>"hard"</code> mask, unmasked children of
+//     * masked parents are not supported  so any non-top-level widgets passed in will have their parents unmasked.  Children of
+//     * masked parents can never be masked.
+//     *
+//     * @return clickMask ID
+//     */
+//    public native String showClickMask(Function clickActionCallback, ClickMaskMode mode, Canvas[] unmaskedTargets) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var unmaskedTargetsJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(unmaskedTargets);
+//        return self.showClickMask($entry(function() {
+//           if(clickActionCallback != null) clickActionCallback.@com.smartgwt.client.core.Function::execute()();
+//        }), mode.@com.smartgwt.client.types.ClickMaskMode::getValue()(), unmaskedTargetsJS);
+//    }-*/;
+//
+//    /**
+//     * Does this widget contain the specified global (x,y) coordinates, and have no other widgets also at the specified
+//     * position, obscuring this one?  This is commonly used for (for example) drag and drop interactions.
+//     * @param x GLOBAL x-coordinate
+//     * @param y GLOBAL y-coordinate
+//     * @param withinViewport point lies within our viewport rather than just our drawn area
+//     * @param ignoreWidgets If passed ignore widget(s), do not check whether those widgets occludes this one
+//     * @param upToParent If passed, only check for siblings occluding the component up as far as the specified parent widget
+//     *
+//     * @return true if this object contains the specified point; false otherwise
+//     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
+//     */
+//    public native Boolean visibleAtPoint(int x, int y, boolean withinViewport, Canvas ignoreWidgets, Canvas upToParent) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.visibleAtPoint(x, y, withinViewport, ignoreWidgets == null ? null : ignoreWidgets.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), upToParent == null ? null : upToParent.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    /**
+//     * Add a onDrop handler.
+//     * <p>
+//     * Notification method fired when the user drops another canvas onto this one.
+//     * 
+//     * @param handler the onDrop handler
+//     * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addDropHandler(com.smartgwt.client.widgets.events.DropHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.DropEvent.getType()) == 0) setupDropEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropEvent.getType());
+//    }
+//    private native void setupDropEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({onDrop:$debox($entry(function(){
+//                    var param = {};
+//                    var event = @com.smartgwt.client.widgets.events.DropEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                    selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                    var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                    return !ret;
+//                }))
+//            });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.onDrop = $debox($entry(function(){
+//                var param = {};
+//                var event = @com.smartgwt.client.widgets.events.DropEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                return !ret;
+//            }));
+//        }
+//    }-*/;
 
-    /**
-     * Does this widget contain the specified global (x,y) coordinates, and have no other widgets also at the specified
-     * position, obscuring this one?  This is commonly used for (for example) drag and drop interactions.
-     * @param x GLOBAL x-coordinate
-     * @param y GLOBAL y-coordinate
-     * @param withinViewport point lies within our viewport rather than just our drawn area
-     * @param ignoreWidgets If passed ignore widget(s), do not check whether those widgets occludes this one
-     * @param upToParent If passed, only check for siblings occluding the component up as far as the specified parent widget
-     *
-     * @return true if this object contains the specified point; false otherwise
-     * @see com.smartgwt.client.docs.Positioning Positioning overview and related methods
-     */
-    public native Boolean visibleAtPoint(int x, int y, boolean withinViewport, Canvas ignoreWidgets, Canvas upToParent) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.visibleAtPoint(x, y, withinViewport, ignoreWidgets == null ? null : ignoreWidgets.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), upToParent == null ? null : upToParent.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-                return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    /**
-     * Add a onDrop handler.
-     * <p>
-     * Notification method fired when the user drops another canvas onto this one.
-     * 
-     * @param handler the onDrop handler
-     * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addDropHandler(com.smartgwt.client.widgets.events.DropHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.DropEvent.getType()) == 0) setupDropEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.DropEvent.getType());
-    }
-    private native void setupDropEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({onDrop:$debox($entry(function(){
-                    var param = {};
-                    var event = @com.smartgwt.client.widgets.events.DropEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                    selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                    var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                    return !ret;
-                }))
-            });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.onDrop = $debox($entry(function(){
-                var param = {};
-                var event = @com.smartgwt.client.widgets.events.DropEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                return !ret;
-            }));
-        }
-    }-*/;
-
+    // @formatter:on
+    // vaadin integration
+  public Boolean isDrawn() 
+  {
+	  return isCreated();
+  }
+    
 }
 
 

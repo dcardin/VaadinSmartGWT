@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
-
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
 import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
@@ -15,6 +14,7 @@ import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
 import org.vaadin.smartgwt.server.types.Overflow;
 import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.util.EnumUtil;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
@@ -826,211 +826,211 @@ public class Layout extends Canvas implements ComponentContainer {
 
     // ********************* Methods ***********************
             
-    /**
-     * Get the position a new member would be dropped.  This drop position switches in the middle of each member, and both
-     * edges (before beginning, after end) are legal drop positions <p> Use this method to obtain the drop position for e.g. a
-     * custom drop handler.
-     *
-     * @return the position a new member would be dropped
-     */
-    public native int getDropPosition() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        return self.getDropPosition();
-    }-*/;
-            
-    /**
-     * Return the breadth for a member of this layout which either didn't specify a breadth or specified a percent breadth with
-     * {@link com.smartgwt.client.widgets.layout.Layout#getManagePercentBreadth managePercentBreadth}:true. <P> Called only for
-     * Layouts which have a {@link com.smartgwt.client.types.LayoutPolicy layout policy} for the breadth axis of "fill", since
-     * Layouts with a breadth policy of "none" leave all member breadths alone.
-     * @param member Component to be sized
-     * @param defaultBreadth Value of the currently calculated member breadth. This      may be returned verbatim or manipulated in this method.
-     */
-    public native void getMemberDefaultBreadth(Canvas member, int defaultBreadth) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.getMemberDefaultBreadth(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), defaultBreadth);
-    }-*/;
-            
-    /**
-     * Override point for changing the offset on the breadth axis for members, that is, the offset relative to the left edge
-     * for a vertical layout, or the offset relative to the top edge for a horizontal layout. <P> The method is passed the
-     * default offset that would be used for the member if getMemberOffset() were not implemented.  This default offset already
-     * takes into account {@link com.smartgwt.client.widgets.layout.Layout#getLayoutMargin layoutMargin}, as well as the {@link
-     * com.smartgwt.client.widgets.layout.Layout#getDefaultLayoutAlign alignment on the breadth axis}, which is also passed to
-     * getMemberOffset(). <P> This method is an override point only; it does not exist by default and cannot be called.
-     * @param member Component to be positioned
-     * @param defaultOffset Value of the currently calculated member offset.  If this      value is returned unchanged the layout will have its
-     * default behavior
-     * @param alignment alignment of the enclosing layout, on the breadth axis
-     */
-    public native void getMemberOffset(Canvas member, int defaultOffset, String alignment) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.getMemberOffset(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), defaultOffset, alignment);
-    }-*/;
-            
-    /**
-     * Returns true if the layout includes the specified canvas.
-     * @param canvas the canvas to check for
-     *
-     * @return true if the layout includes the specified canvas
-     */
-//    public native Boolean hasMember(Canvas canvas) /*-{
+//    /**
+//     * Get the position a new member would be dropped.  This drop position switches in the middle of each member, and both
+//     * edges (before beginning, after end) are legal drop positions <p> Use this method to obtain the drop position for e.g. a
+//     * custom drop handler.
+//     *
+//     * @return the position a new member would be dropped
+//     */
+//    public native int getDropPosition() /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        var retVal =self.hasMember(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
-//        if(retVal == null || retVal === undefined) {
-//            return null;
-//        } else {
-//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-//        }
+//        return self.getDropPosition();
 //    }-*/;
-            
-    /**
-     * Calling this method hides the dropLine shown during a drag and drop interaction with a Layout that has {@link
-     * com.smartgwt.client.widgets.layout.Layout#getCanDropComponents canDropComponents} set to true.  This method is only
-     * useful for custom implementations of {@link com.smartgwt.client.widgets.layout.Layout#drop Layout.drop} as the default
-     * implementation calls this method automatically.
-     */
-    public native void hideDropLine() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.hideDropLine();
-    }-*/;
-            
-    /**
-     * Fires once at initialization if the layout has any initial members, and then fires whenever members are added, removed
-     * or reordered.
-     */
-    public native void membersChanged() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.membersChanged();
-    }-*/;
-            
-    /**
-     * Layout members according to current settings. <P> Members will reflow automatically when the layout is resized, members
-     * resize, the list of members changes or members change visibility.  It is only necessary to manually call
-     * <code>reflow()</code> after changing settings on the layout, for example, <code>layout.reverseOrder</code>.
-     */
-    public native void reflow() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.reflow();
-    }-*/;
-
-    /**
-     * Layout members according to current settings. <P> Members will reflow automatically when the layout is resized, members
-     * resize, the list of members changes or members change visibility.  It is only necessary to manually call
-     * <code>reflow()</code> after changing settings on the layout, for example, <code>layout.reverseOrder</code>.
-     * @param reason reason reflow() had to be called (appear in logs if enabled)
-     */
-    public native void reflow(String reason) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.reflow(reason);
-    }-*/;
-            
-    /**
-     * Layout members according to current settings, immediately. <br> Generally, when changes occur that require a layout to
-     * reflow (such as members being shown or hidden), the Layout will reflow only after a delay, so that multiple changes
-     * cause only one reflow.  To remove this delay for cases where it is not helpful, reflowNow() can be called.
-     */
-    public native void reflowNow() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.reflowNow();
-    }-*/;
-            
-    /**
-     * Removes the specified member from the layout. If it has a resize bar, the bar will be destroyed.
-     * @param member the canvas to be removed from the layout
-     */
-//    public native void removeMember(Canvas member) /*-{
+//            
+//    /**
+//     * Return the breadth for a member of this layout which either didn't specify a breadth or specified a percent breadth with
+//     * {@link com.smartgwt.client.widgets.layout.Layout#getManagePercentBreadth managePercentBreadth}:true. <P> Called only for
+//     * Layouts which have a {@link com.smartgwt.client.types.LayoutPolicy layout policy} for the breadth axis of "fill", since
+//     * Layouts with a breadth policy of "none" leave all member breadths alone.
+//     * @param member Component to be sized
+//     * @param defaultBreadth Value of the currently calculated member breadth. This      may be returned verbatim or manipulated in this method.
+//     */
+//    public native void getMemberDefaultBreadth(Canvas member, int defaultBreadth) /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.removeMember(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        self.getMemberDefaultBreadth(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), defaultBreadth);
 //    }-*/;
-            
-    /**
-     * Shift a member of the layout to a new position
-     * @param memberNum current position of the member to move to a new position
-     * @param newPosition new position to move the member to
-     */
-//    public native void reorderMember(int memberNum, int newPosition) /*-{
+//            
+//    /**
+//     * Override point for changing the offset on the breadth axis for members, that is, the offset relative to the left edge
+//     * for a vertical layout, or the offset relative to the top edge for a horizontal layout. <P> The method is passed the
+//     * default offset that would be used for the member if getMemberOffset() were not implemented.  This default offset already
+//     * takes into account {@link com.smartgwt.client.widgets.layout.Layout#getLayoutMargin layoutMargin}, as well as the {@link
+//     * com.smartgwt.client.widgets.layout.Layout#getDefaultLayoutAlign alignment on the breadth axis}, which is also passed to
+//     * getMemberOffset(). <P> This method is an override point only; it does not exist by default and cannot be called.
+//     * @param member Component to be positioned
+//     * @param defaultOffset Value of the currently calculated member offset.  If this      value is returned unchanged the layout will have its
+//     * default behavior
+//     * @param alignment alignment of the enclosing layout, on the breadth axis
+//     */
+//    public native void getMemberOffset(Canvas member, int defaultOffset, String alignment) /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.reorderMember(memberNum, newPosition);
+//        self.getMemberOffset(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), defaultOffset, alignment);
 //    }-*/;
-            
-    /**
-     * Move a range of members to a new position
-     * @param start beginning of range of members to move
-     * @param end end of range of members to move, non-inclusive
-     * @param newPosition new position to move the members to
-     */
-//    public native void reorderMembers(int start, int end, int newPosition) /*-{
+//            
+//    /**
+//     * Returns true if the layout includes the specified canvas.
+//     * @param canvas the canvas to check for
+//     *
+//     * @return true if the layout includes the specified canvas
+//     */
+////    public native Boolean hasMember(Canvas canvas) /*-{
+////        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+////        var retVal =self.hasMember(canvas.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+////        if(retVal == null || retVal === undefined) {
+////            return null;
+////        } else {
+////            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+////        }
+////    }-*/;
+//            
+//    /**
+//     * Calling this method hides the dropLine shown during a drag and drop interaction with a Layout that has {@link
+//     * com.smartgwt.client.widgets.layout.Layout#getCanDropComponents canDropComponents} set to true.  This method is only
+//     * useful for custom implementations of {@link com.smartgwt.client.widgets.layout.Layout#drop Layout.drop} as the default
+//     * implementation calls this method automatically.
+//     */
+//    public native void hideDropLine() /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.reorderMembers(start, end, newPosition);
+//        self.hideDropLine();
 //    }-*/;
-            
-    /**
-     * Hide all other members and make the single parameter member visible.
-     * @param member member to show
-     */
-//    public native void setVisibleMember(Canvas member) /*-{
+//            
+//    /**
+//     * Fires once at initialization if the layout has any initial members, and then fires whenever members are added, removed
+//     * or reordered.
+//     */
+//    public native void membersChanged() /*-{
 //        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-//        self.setVisibleMember(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+//        self.membersChanged();
 //    }-*/;
-
-    // ********************* Static Methods ***********************
-    /**
-     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
-     * class will automatically have the default properties that were set when this method was called. This is a powerful
-     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
-     * properties of this class. Can also be used for skinning / styling purposes.
-     * <P>
-     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
-     * underlying class (including those automatically generated in JavaScript). 
-     * This method should not be used to apply standard EventHandlers or override methods for
-     * a class - use a custom subclass instead.
-     *
-     * @param layoutProperties properties that should be used as new defaults when instances of this class are created
-     */
-    public static native void setDefaultProperties(Layout layoutProperties) /*-{
-    	var properties = $wnd.isc.addProperties({},layoutProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
-    	delete properties.ID;
-        $wnd.isc.Layout.addProperties(properties);
-    }-*/;
-        
-    // ***********************************************************        
-
-
-
-	protected void onInit() {
-		super.onInit();
-		onInit_Layout();
-	}
-    protected native void onInit_Layout() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.__getDropComponent = self.getDropComponent;
-        self.getDropComponent = $entry(function(dragTarget, dropPosition) {
-            var jObj = this.__ref;
-            var dragTargetJ = @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(dragTarget);
-            var dragTarget2J = jObj.@com.smartgwt.client.widgets.layout.Layout::getDropComponent(Lcom/smartgwt/client/widgets/Canvas;I)(dragTargetJ, dropPosition);
-            return dragTarget2J == null ? null : dragTarget2J.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-        });
-    }-*/;
-
-    /*
-     * When {@link com.smartgwt.client.widgets.layout.Layout#getCanDropComponents canDropComponents} is true, this method will
-     * be called when a component is dropped onto the layout to determine what component to add as a new layout member. <P> By
-     * default, the actual component being dragged (isc.EventHandler.getDragTarget()) will be added to the layout.  For a
-     * different behavior, such as wrapping dropped components in Windows, or creating components on the fly from dropped data,
-     * override this method.   <P> You can also return null to cancel the drop.
-     *
-     * <b>Note : </b> This is an override point
-     * @param dragTarget current drag target
-     * @param dropPosition index of the drop in the list of current members
-     *
-     * @return Returning null will cancel the drop entirely. By default the dragTarget is returned
-     */
-    protected native Canvas getDropComponent(Canvas dragTarget, int dropPosition) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var ret =  self.__getDropComponent(dragTarget == null ? null : dragTarget.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()(), dropPosition);
-        return ret == null || ret == undefined ? null : @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
-    }-*/;
+//            
+//    /**
+//     * Layout members according to current settings. <P> Members will reflow automatically when the layout is resized, members
+//     * resize, the list of members changes or members change visibility.  It is only necessary to manually call
+//     * <code>reflow()</code> after changing settings on the layout, for example, <code>layout.reverseOrder</code>.
+//     */
+//    public native void reflow() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.reflow();
+//    }-*/;
+//
+//    /**
+//     * Layout members according to current settings. <P> Members will reflow automatically when the layout is resized, members
+//     * resize, the list of members changes or members change visibility.  It is only necessary to manually call
+//     * <code>reflow()</code> after changing settings on the layout, for example, <code>layout.reverseOrder</code>.
+//     * @param reason reason reflow() had to be called (appear in logs if enabled)
+//     */
+//    public native void reflow(String reason) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.reflow(reason);
+//    }-*/;
+//            
+//    /**
+//     * Layout members according to current settings, immediately. <br> Generally, when changes occur that require a layout to
+//     * reflow (such as members being shown or hidden), the Layout will reflow only after a delay, so that multiple changes
+//     * cause only one reflow.  To remove this delay for cases where it is not helpful, reflowNow() can be called.
+//     */
+//    public native void reflowNow() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.reflowNow();
+//    }-*/;
+//            
+//    /**
+//     * Removes the specified member from the layout. If it has a resize bar, the bar will be destroyed.
+//     * @param member the canvas to be removed from the layout
+//     */
+////    public native void removeMember(Canvas member) /*-{
+////        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+////        self.removeMember(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+////    }-*/;
+//            
+//    /**
+//     * Shift a member of the layout to a new position
+//     * @param memberNum current position of the member to move to a new position
+//     * @param newPosition new position to move the member to
+//     */
+////    public native void reorderMember(int memberNum, int newPosition) /*-{
+////        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+////        self.reorderMember(memberNum, newPosition);
+////    }-*/;
+//            
+//    /**
+//     * Move a range of members to a new position
+//     * @param start beginning of range of members to move
+//     * @param end end of range of members to move, non-inclusive
+//     * @param newPosition new position to move the members to
+//     */
+////    public native void reorderMembers(int start, int end, int newPosition) /*-{
+////        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+////        self.reorderMembers(start, end, newPosition);
+////    }-*/;
+//            
+//    /**
+//     * Hide all other members and make the single parameter member visible.
+//     * @param member member to show
+//     */
+////    public native void setVisibleMember(Canvas member) /*-{
+////        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+////        self.setVisibleMember(member.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()());
+////    }-*/;
+//
+//    // ********************* Static Methods ***********************
+//    /**
+//     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
+//     * class will automatically have the default properties that were set when this method was called. This is a powerful
+//     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
+//     * properties of this class. Can also be used for skinning / styling purposes.
+//     * <P>
+//     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
+//     * underlying class (including those automatically generated in JavaScript). 
+//     * This method should not be used to apply standard EventHandlers or override methods for
+//     * a class - use a custom subclass instead.
+//     *
+//     * @param layoutProperties properties that should be used as new defaults when instances of this class are created
+//     */
+//    public static native void setDefaultProperties(Layout layoutProperties) /*-{
+//    	var properties = $wnd.isc.addProperties({},layoutProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
+//    	delete properties.ID;
+//        $wnd.isc.Layout.addProperties(properties);
+//    }-*/;
+//        
+//    // ***********************************************************        
+//
+//
+//
+////	protected void onInit() {
+////		super.onInit();
+////		onInit_Layout();
+////	}
+//    protected native void onInit_Layout() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.__getDropComponent = self.getDropComponent;
+//        self.getDropComponent = $entry(function(dragTarget, dropPosition) {
+//            var jObj = this.__ref;
+//            var dragTargetJ = @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(dragTarget);
+//            var dragTarget2J = jObj.@com.smartgwt.client.widgets.layout.Layout::getDropComponent(Lcom/smartgwt/client/widgets/Canvas;I)(dragTargetJ, dropPosition);
+//            return dragTarget2J == null ? null : dragTarget2J.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+//        });
+//    }-*/;
+//
+//    /*
+//     * When {@link com.smartgwt.client.widgets.layout.Layout#getCanDropComponents canDropComponents} is true, this method will
+//     * be called when a component is dropped onto the layout to determine what component to add as a new layout member. <P> By
+//     * default, the actual component being dragged (isc.EventHandler.getDragTarget()) will be added to the layout.  For a
+//     * different behavior, such as wrapping dropped components in Windows, or creating components on the fly from dropped data,
+//     * override this method.   <P> You can also return null to cancel the drop.
+//     *
+//     * <b>Note : </b> This is an override point
+//     * @param dragTarget current drag target
+//     * @param dropPosition index of the drop in the list of current members
+//     *
+//     * @return Returning null will cancel the drop entirely. By default the dragTarget is returned
+//     */
+//    protected native Canvas getDropComponent(Canvas dragTarget, int dropPosition) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var ret =  self.__getDropComponent(dragTarget == null ? null : dragTarget.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()(), dropPosition);
+//        return ret == null || ret == undefined ? null : @com.smartgwt.client.widgets.Canvas::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(ret);
+//    }-*/;
 
     /**
      * An array of canvases that will be contained within this layout. You can set the following properties on these

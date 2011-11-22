@@ -1,10 +1,6 @@
 package org.vaadin.smartgwt.server.menu;
 
-import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.KeyIdentifier;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
-
-import com.google.gwt.event.shared.HandlerRegistration;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -44,7 +40,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  *  &lt;/Menu&gt;
  *  </pre>
  */
-public class MenuItem extends ListGridRecord  implements com.smartgwt.client.widgets.menu.events.HasClickHandlers {
+public class MenuItem extends ListGridRecord { // implements com.smartgwt.client.widgets.menu.events.HasClickHandlers {
 
 //    public static MenuItem getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -336,95 +332,95 @@ public class MenuItem extends ListGridRecord  implements com.smartgwt.client.wid
 
     // ********************* Methods ***********************
             
-    /**
-     * Contains the condition that will check or uncheck the current menuItem. The handler must be specified as a function or
-     * string of script.  Return false to uncheck the menuItem or true to check it <p> If you don't need to set this state
-     * dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getChecked checked} instead. <p> May be defined as a
-     * {@link com.smartgwt.client.docs.StringMethods stringMethod}. <p>
-     * @param target {@link com.smartgwt.client.widgets.menu.Menu#getTarget target} attribute for the top level menu.
-     * @param menu {@link com.smartgwt.client.widgets.menu.Menu menu} contains the reference to the menu that contains the current item
-     * @param item contains the reference to the current item
-     *
-     * @return Return true to show a checkmark by this menu item
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#menus_category_dynamic" target="examples">Dynamic Items Example</a>
-     */
-    public native Boolean checkIf(Canvas target, Menu menu, MenuItem item) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        var retVal =self.checkIf(target.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), menu.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), item.@com.smartgwt.client.core.DataClass::getJsObj()());
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-    /**
-     * Add a click handler.
-     * <p>
-     * Executed when this menu item is clicked by the user. The click handler must be specified as a function or string of
-     * script.  Call {@link com.smartgwt.client.widgets.menu.events.MenuItemClickEvent#cancel()} from within {@link ClickHandler#onClick} to suppress the {@link com.smartgwt.client.widgets.menu.Menu#addItemClickHandler Menu.itemClick}
-     * handler if specified.
-     *
-     * @param handler the click handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addClickHandler(com.smartgwt.client.widgets.menu.events.ClickHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.menu.events.MenuItemClickEvent.getType()) == 0) setupClickEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.menu.events.MenuItemClickEvent.getType());
-    }
-
-    private native void setupClickEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.click = $entry(function(){
-                var param = {"target" : arguments[0], "item" : arguments[1], "menu" : arguments[2], "colNum" : arguments[3]};
-                var event = @com.smartgwt.client.widgets.menu.events.MenuItemClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-            });
-   }-*/;
-            
-    /**
-     * Contains the condition that will enable or disable the current menuItem. The handler must be specified as a function or
-     * string of script.  Return false to disable the menuItem or true to enable it <p> If you don't need to set this state
-     * dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getEnabled enabled} instead. <p> May be defined as a
-     * {@link com.smartgwt.client.docs.StringMethods stringMethod}. <p>
-     * @param target {@link com.smartgwt.client.widgets.menu.Menu#getTarget target} attribute for the top level menu.
-     * @param menu {@link com.smartgwt.client.widgets.menu.Menu menu} contains the reference to the menu that contains the current item
-     * @param item contains the reference to the current item
-     *
-     * @return Return true to show a checkmark by this menu item
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#menus_category_dynamic" target="examples">Dynamic Items Example</a>
-     */
-    public native Boolean enableIf(Canvas target, Menu menu, MenuItem item) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        var retVal =self.enableIf(target.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), menu.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), item.@com.smartgwt.client.core.DataClass::getJsObj()());
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-
-    // ********************* Static Methods ***********************
-        
-    // ***********************************************************        
-
-
-    /**
-     * Shortcut key(s) to fire the menu item action. Each key can be defined as a {@link KeyIdentifier}.
-     * To apply multiple shortcut keys to this item, set this property to an array of such key identifiers.
-     *
-     * @param keys keys Default value is null
-     */
-    public void setKeys(KeyIdentifier... keys) {
-        setAttribute("keys", keys);
-    }
-
-    /**
-     * Contains the condition that will enable or disable the curent menuItem. The handler must be specified as a
-     * function or string of script.  Return false to disable the menuItem or true to enable it <p> If you don't need to
-     * set this state dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getEnabled enabled} instead.
-     */
+//    /**
+//     * Contains the condition that will check or uncheck the current menuItem. The handler must be specified as a function or
+//     * string of script.  Return false to uncheck the menuItem or true to check it <p> If you don't need to set this state
+//     * dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getChecked checked} instead. <p> May be defined as a
+//     * {@link com.smartgwt.client.docs.StringMethods stringMethod}. <p>
+//     * @param target {@link com.smartgwt.client.widgets.menu.Menu#getTarget target} attribute for the top level menu.
+//     * @param menu {@link com.smartgwt.client.widgets.menu.Menu menu} contains the reference to the menu that contains the current item
+//     * @param item contains the reference to the current item
+//     *
+//     * @return Return true to show a checkmark by this menu item
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#menus_category_dynamic" target="examples">Dynamic Items Example</a>
+//     */
+//    public native Boolean checkIf(Canvas target, Menu menu, MenuItem item) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        var retVal =self.checkIf(target.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), menu.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), item.@com.smartgwt.client.core.DataClass::getJsObj()());
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//    /**
+//     * Add a click handler.
+//     * <p>
+//     * Executed when this menu item is clicked by the user. The click handler must be specified as a function or string of
+//     * script.  Call {@link com.smartgwt.client.widgets.menu.events.MenuItemClickEvent#cancel()} from within {@link ClickHandler#onClick} to suppress the {@link com.smartgwt.client.widgets.menu.Menu#addItemClickHandler Menu.itemClick}
+//     * handler if specified.
+//     *
+//     * @param handler the click handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addClickHandler(com.smartgwt.client.widgets.menu.events.ClickHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.menu.events.MenuItemClickEvent.getType()) == 0) setupClickEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.menu.events.MenuItemClickEvent.getType());
+//    }
+//
+//    private native void setupClickEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.click = $entry(function(){
+//                var param = {"target" : arguments[0], "item" : arguments[1], "menu" : arguments[2], "colNum" : arguments[3]};
+//                var event = @com.smartgwt.client.widgets.menu.events.MenuItemClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//            });
+//   }-*/;
+//            
+//    /**
+//     * Contains the condition that will enable or disable the current menuItem. The handler must be specified as a function or
+//     * string of script.  Return false to disable the menuItem or true to enable it <p> If you don't need to set this state
+//     * dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getEnabled enabled} instead. <p> May be defined as a
+//     * {@link com.smartgwt.client.docs.StringMethods stringMethod}. <p>
+//     * @param target {@link com.smartgwt.client.widgets.menu.Menu#getTarget target} attribute for the top level menu.
+//     * @param menu {@link com.smartgwt.client.widgets.menu.Menu menu} contains the reference to the menu that contains the current item
+//     * @param item contains the reference to the current item
+//     *
+//     * @return Return true to show a checkmark by this menu item
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#menus_category_dynamic" target="examples">Dynamic Items Example</a>
+//     */
+//    public native Boolean enableIf(Canvas target, Menu menu, MenuItem item) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        var retVal =self.enableIf(target.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), menu.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), item.@com.smartgwt.client.core.DataClass::getJsObj()());
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//
+//    // ********************* Static Methods ***********************
+//        
+//    // ***********************************************************        
+//
+//
+//    /**
+//     * Shortcut key(s) to fire the menu item action. Each key can be defined as a {@link KeyIdentifier}.
+//     * To apply multiple shortcut keys to this item, set this property to an array of such key identifiers.
+//     *
+//     * @param keys keys Default value is null
+//     */
+//    public void setKeys(KeyIdentifier... keys) {
+//        setAttribute("keys", keys);
+//    }
+//
+//    /**
+//     * Contains the condition that will enable or disable the curent menuItem. The handler must be specified as a
+//     * function or string of script.  Return false to disable the menuItem or true to enable it <p> If you don't need to
+//     * set this state dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getEnabled enabled} instead.
+//     */
 //    public native void setEnableIfCondition(MenuItemIfFunction enableIf) /*-{
 //        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
 //        self.enableIf = $debox($entry(function(target, menu, item) {
@@ -441,12 +437,12 @@ public class MenuItem extends ListGridRecord  implements com.smartgwt.client.wid
 //            return enableIf.@com.smartgwt.client.widgets.menu.MenuItemIfFunction::execute(Lcom/smartgwt/client/widgets/Canvas;Lcom/smartgwt/client/widgets/menu/Menu;Lcom/smartgwt/client/widgets/menu/MenuItem;)(targetJ, menuJ, itemJ);
 //        }));
 //    }-*/;
-
-    /**
-     * Contains the condition that will check or uncheck the curent menuItem. The handler must be specified as a
-     * function or string of script.  Return false to uncheck the menuItem or true to check it <p> If you don't need to
-     * set this state dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getChecked checked} instead.
-     */
+//
+//    /**
+//     * Contains the condition that will check or uncheck the curent menuItem. The handler must be specified as a
+//     * function or string of script.  Return false to uncheck the menuItem or true to check it <p> If you don't need to
+//     * set this state dynamically, use {@link com.smartgwt.client.widgets.menu.MenuItem#getChecked checked} instead.
+//     */
 //    public native void setCheckIfCondition(MenuItemIfFunction checkIf) /*-{
 //        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
 //        self.checkIf = $debox($entry(function(target, menu, item) {
@@ -463,12 +459,12 @@ public class MenuItem extends ListGridRecord  implements com.smartgwt.client.wid
 //            return checkIf.@com.smartgwt.client.widgets.menu.MenuItemIfFunction::execute(Lcom/smartgwt/client/widgets/Canvas;Lcom/smartgwt/client/widgets/menu/Menu;Lcom/smartgwt/client/widgets/menu/MenuItem;)(targetJ, menuJ, itemJ);
 //         }));
 //    }-*/;
-
-    /**
-     * Contains the condition that will change the curent items' title when met. The handler must be specified as a
-     * function or string of script.   <p> If you don't need to set this state dynamically, use {@link
-     * com.smartgwt.client.widgets.menu.MenuItem#getTitle title} instead.
-     */
+//
+//    /**
+//     * Contains the condition that will change the curent items' title when met. The handler must be specified as a
+//     * function or string of script.   <p> If you don't need to set this state dynamically, use {@link
+//     * com.smartgwt.client.widgets.menu.MenuItem#getTitle title} instead.
+//     */
 //    public native void setDynamicTitleFunction(MenuItemStringFunction handler) /*-{
 //        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
 //        self.dynamicTitle = $debox($entry(function(target, menu, item) {
@@ -485,12 +481,12 @@ public class MenuItem extends ListGridRecord  implements com.smartgwt.client.wid
 //            return handler.@com.smartgwt.client.widgets.menu.MenuItemStringFunction::execute(Lcom/smartgwt/client/widgets/Canvas;Lcom/smartgwt/client/widgets/menu/Menu;Lcom/smartgwt/client/widgets/menu/MenuItem;)(targetJ, menuJ, itemJ);
 //        }));
 //    }-*/;
-
-    /**
-     * Contains the condition that will change the curent items' icon when met. The handler must be specified as a
-     * function or string of script. <p> If you don't need to set this state dynamically, use {@link
-     * com.smartgwt.client.widgets.menu.MenuItem#getIcon icon} instead.
-     */
+//
+//    /**
+//     * Contains the condition that will change the curent items' icon when met. The handler must be specified as a
+//     * function or string of script. <p> If you don't need to set this state dynamically, use {@link
+//     * com.smartgwt.client.widgets.menu.MenuItem#getIcon icon} instead.
+//     */
 //    public native void setDynamicIconFunction(MenuItemStringFunction handler) /*-{
 //        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
 //        self.dynamicIcon = $debox($entry(function(target, menu, item) {

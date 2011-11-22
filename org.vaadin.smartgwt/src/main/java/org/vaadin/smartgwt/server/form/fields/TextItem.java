@@ -1,8 +1,7 @@
 package org.vaadin.smartgwt.server.form.fields;
 
-import com.smartgwt.client.types.CharacterCasing;
-import com.smartgwt.client.util.EnumUtil;
-import com.vaadin.ui.ClientWidget;
+import org.vaadin.smartgwt.server.types.CharacterCasing;
+import org.vaadin.smartgwt.server.util.EnumUtil;
 
 /*
  * Smart GWT (GWT for SmartClient)

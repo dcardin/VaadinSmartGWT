@@ -16,10 +16,6 @@ package org.vaadin.smartgwt.server.core;
  * Lesser General Public License for more details.
  */
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.smartgwt.client.util.JSOHelper;
-import com.smartgwt.client.util.SC;
-
 
 public class RefDataClass extends DataClass {
 
@@ -38,18 +34,18 @@ public class RefDataClass extends DataClass {
         return null;
     }
 
-    public static RefDataClass getRef(JavaScriptObject jsObj) {
-
-        if (jsObj == null) {
-            return null;
-        } else {
-            Object ref = JSOHelper.getAttributeAsObject((JavaScriptObject) jsObj, SC.REF);
-            if (ref != null && !(ref instanceof RefDataClass)) {
-                return null;
-            } else {
-                return (RefDataClass) ref;
-            }
-        }
-    }
+//    public static RefDataClass getRef(JavaScriptObject jsObj) {
+//
+//        if (jsObj == null) {
+//            return null;
+//        } else {
+//            Object ref = JSOHelper.getAttributeAsObject((JavaScriptObject) jsObj, SC.REF);
+//            if (ref != null && !(ref instanceof RefDataClass)) {
+//                return null;
+//            } else {
+//                return (RefDataClass) ref;
+//            }
+//        }
+//    }
     
 }

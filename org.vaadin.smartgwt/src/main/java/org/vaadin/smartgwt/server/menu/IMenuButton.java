@@ -17,9 +17,6 @@ package org.vaadin.smartgwt.server.menu;
 
 import org.vaadin.smartgwt.server.StretchImgButton;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.smartgwt.client.widgets.menu.Menu;
-
 /**
  * StretchImgButton based version of the {@link com.smartgwt.client.widgets.menu.MenuButton} class.
  */
@@ -54,13 +51,13 @@ public class IMenuButton extends StretchImgButton {
         scClassName = "IMenuButton";
     }
 
-    protected native JavaScriptObject create()/*-{
-        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
-        var widget = $wnd.isc[scClassName].create(config);
-        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
-        return widget;
-    }-*/;
+//    protected native JavaScriptObject create()/*-{
+//        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
+//        var widget = $wnd.isc[scClassName].create(config);
+//        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
+//        return widget;
+//    }-*/;
     // ********************* Properties / Attributes ***********************
 
     /**
@@ -116,16 +113,16 @@ public class IMenuButton extends StretchImgButton {
         setAttribute("menu", menu == null ? null : menu.getOrCreateJsObj(), true);
     }
 
-    /**
-     * The menu to show. <P> For a menu button with no menu (menu: null) the up/down arrow image can be suppressed by setting
-     * {@link com.smartgwt.client.widgets.menu.MenuButton#getShowMenuButtonImage showMenuButtonImage}: <code>false</code>.
-     *
-     *
-     * @return Menu
-     */
-    public Menu getMenu()  {
-        return Menu.getOrCreateRef(getAttributeAsJavaScriptObject("menu"));
-    }
+//    /**
+//     * The menu to show. <P> For a menu button with no menu (menu: null) the up/down arrow image can be suppressed by setting
+//     * {@link com.smartgwt.client.widgets.menu.MenuButton#getShowMenuButtonImage showMenuButtonImage}: <code>false</code>.
+//     *
+//     *
+//     * @return Menu
+//     */
+//    public Menu getMenu()  {
+//        return Menu.getOrCreateRef(getAttributeAsJavaScriptObject("menu"));
+//    }
 
     /**
      * Allows you to specify an animation effect to apply to the menu when it is being shown. Valid options are "none" (no
@@ -270,27 +267,39 @@ public class IMenuButton extends StretchImgButton {
     // ********************* Methods ***********************
 
     // ********************* Static Methods ***********************
-    /**
-     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
-     * class will automatically have the default properties that were set when this method was called. This is a powerful
-     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
-     * properties of this class. Can also be used for skinning / styling purposes.
-     * <P>
-     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
-     * underlying class (including those automatically generated in JavaScript). 
-     * This method should not be used to apply standard EventHandlers or override methods for
-     * a class - use a custom subclass instead.
-     *
-     * @param iMenuButtonProperties properties that should be used as new defaults when instances of this class are created
-     */
-    public static native void setDefaultProperties(IMenuButton iMenuButtonProperties) /*-{
-    	var properties = $wnd.isc.addProperties({},iMenuButtonProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
-    	delete properties.ID;
-        $wnd.isc.IMenuButton.addProperties(properties);
-    }-*/;
+//    /**
+//     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
+//     * class will automatically have the default properties that were set when this method was called. This is a powerful
+//     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
+//     * properties of this class. Can also be used for skinning / styling purposes.
+//     * <P>
+//     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
+//     * underlying class (including those automatically generated in JavaScript). 
+//     * This method should not be used to apply standard EventHandlers or override methods for
+//     * a class - use a custom subclass instead.
+//     *
+//     * @param iMenuButtonProperties properties that should be used as new defaults when instances of this class are created
+//     */
+//    public static native void setDefaultProperties(IMenuButton iMenuButtonProperties) /*-{
+//    	var properties = $wnd.isc.addProperties({},iMenuButtonProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
+//    	delete properties.ID;
+//        $wnd.isc.IMenuButton.addProperties(properties);
+//    }-*/;
         
     // ***********************************************************        
 
+    /**
+     * The menu to show. <P> For a menu button with no menu (menu: null) the up/down arrow image can be suppressed by setting
+     * {@link com.smartgwt.client.widgets.menu.MenuButton#getShowMenuButtonImage showMenuButtonImage}: <code>false</code>.
+     *
+     *
+     * @return Menu
+     */
+    public Menu getMenu()  {
+        return getAttributeAsObject("menu");
+    }
+
+    
 }
 
 

@@ -21,15 +21,12 @@ import org.vaadin.smartgwt.server.types.State;
 import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.HandlerRegistration;
-
 /**
  * A StretchImg that behaves like a button, going through up/down/over state transitions in response to user events. 
  * Supports an optional title, and will auto-size to accommodate the title text if <code>overflow</code> is set to
  * "visible". <P> Examples of use include fancy buttons, poplist headers, and tabs.
  */
-public class StretchImgButton extends StretchImg  implements com.smartgwt.client.widgets.events.HasIconClickHandlers {
+public class StretchImgButton extends StretchImg { // implements com.smartgwt.client.widgets.events.HasIconClickHandlers {
 
 //    public static StretchImgButton getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -48,14 +45,14 @@ public class StretchImgButton extends StretchImg  implements com.smartgwt.client
 //    public StretchImgButton(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
-
-    protected native JavaScriptObject create()/*-{
-        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
-        var widget = $wnd.isc[scClassName].create(config);
-        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
-        return widget;
-    }-*/;
+//
+//    protected native JavaScriptObject create()/*-{
+//        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
+//        var widget = $wnd.isc[scClassName].create(config);
+//        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
+//        return widget;
+//    }-*/;
     // ********************* Properties / Attributes ***********************
 
     /**
@@ -1037,140 +1034,140 @@ public class StretchImgButton extends StretchImg  implements com.smartgwt.client
 
     // ********************* Methods ***********************
             
-    /**
-     * This property contains the default 'action' for the Button to fire when activated.
-     */
-    public native void action() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.action();
-    }-*/;
-            
-    /**
-     * Add this widget to the specified mutually exclusive selection group with the ID passed in. Selecting this widget will
-     * then deselect any other StatefulCanvases with the same radioGroup ID. StatefulCanvases can belong to only one
-     * radioGroup, so this method will remove from  any other radiogroup of which this button is already a member.
-     * @param groupID - ID of the radiogroup to which this widget should be added
-     */
-    public native void addToRadioGroup(String groupID) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.addToRadioGroup(groupID);
-    }-*/;
-            
-    /**
-     * Select this object.
-     */
-    public native void deselect() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.deselect();
-    }-*/;
-    /**
-     * Add a iconClick handler.
-     * <p>
-     * If this button is showing an {@link com.smartgwt.client.widgets.StretchImgButton#getIcon icon}, a separate click handler
-     * for the icon may be defined as <code>this.iconClick</code>. Returning false will suppress the standard button click
-     * handling code.
-     *
-     * @param handler the iconClick handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addIconClickHandler(com.smartgwt.client.widgets.events.IconClickHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.events.IconClickEvent.getType()) == 0) setupIconClickEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.events.IconClickEvent.getType());
-    }
-
-    private native void setupIconClickEvent() /*-{
-        var obj = null;
-        var selfJ = this;
-        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
-            obj.addProperties({iconClick:$debox($entry(function(){
-                        var param = {};
-                        var event = @com.smartgwt.client.widgets.events.IconClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                        return !ret;
-                    }))
-             });
-        } else {
-            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-            obj.iconClick = $debox($entry(function(){
-                   var param = {};
-                   var event = @com.smartgwt.client.widgets.events.IconClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                   return !ret;
-               }));
-        }
-   }-*/;
-            
-    /**
-     * Find out if this object is selected
-     *
-     * @return 
-     * @see com.smartgwt.client.docs.State State overview and related methods
-     */
-    public native Boolean isSelected() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        var retVal =self.isSelected();
-        if(retVal == null || retVal === undefined) {
-            return null;
-        } else {
-            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
-        }
-    }-*/;
-            
-    /**
-     * Remove this widget from the specified mutually exclusive selection group with the ID passed in. No-op's if this widget
-     * is not a member of the groupID passed in. If no groupID is passed in, defaults to removing from whatever radioGroup this
-     * widget is a member of.
-     */
-    public native void removeFromRadioGroup() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.removeFromRadioGroup();
-    }-*/;
-
-    /**
-     * Remove this widget from the specified mutually exclusive selection group with the ID passed in. No-op's if this widget
-     * is not a member of the groupID passed in. If no groupID is passed in, defaults to removing from whatever radioGroup this
-     * widget is a member of.
-     * @param groupID - optional radio group ID (to ensure the widget is removed                                        from the appropriate
-     * group.
-     * @see com.smartgwt.client.docs.State State overview and related methods
-     */
-    public native void removeFromRadioGroup(String groupID) /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.removeFromRadioGroup(groupID);
-    }-*/;
-            
-    /**
-     * Select this object.
-     */
-    public native void select() /*-{
-        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-        self.select();
-    }-*/;
-
-    // ********************* Static Methods ***********************
-    /**
-     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
-     * class will automatically have the default properties that were set when this method was called. This is a powerful
-     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
-     * properties of this class. Can also be used for skinning / styling purposes.
-     * <P>
-     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
-     * underlying class (including those automatically generated in JavaScript). 
-     * This method should not be used to apply standard EventHandlers or override methods for
-     * a class - use a custom subclass instead.
-     *
-     * @param stretchImgButtonProperties properties that should be used as new defaults when instances of this class are created
-     */
-    public static native void setDefaultProperties(StretchImgButton stretchImgButtonProperties) /*-{
-    	var properties = $wnd.isc.addProperties({},stretchImgButtonProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
-    	delete properties.ID;
-        $wnd.isc.StretchImgButton.addProperties(properties);
-    }-*/;
-        
-    // ***********************************************************        
+//    /**
+//     * This property contains the default 'action' for the Button to fire when activated.
+//     */
+//    public native void action() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.action();
+//    }-*/;
+//            
+//    /**
+//     * Add this widget to the specified mutually exclusive selection group with the ID passed in. Selecting this widget will
+//     * then deselect any other StatefulCanvases with the same radioGroup ID. StatefulCanvases can belong to only one
+//     * radioGroup, so this method will remove from  any other radiogroup of which this button is already a member.
+//     * @param groupID - ID of the radiogroup to which this widget should be added
+//     */
+//    public native void addToRadioGroup(String groupID) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.addToRadioGroup(groupID);
+//    }-*/;
+//            
+//    /**
+//     * Select this object.
+//     */
+//    public native void deselect() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.deselect();
+//    }-*/;
+//    /**
+//     * Add a iconClick handler.
+//     * <p>
+//     * If this button is showing an {@link com.smartgwt.client.widgets.StretchImgButton#getIcon icon}, a separate click handler
+//     * for the icon may be defined as <code>this.iconClick</code>. Returning false will suppress the standard button click
+//     * handling code.
+//     *
+//     * @param handler the iconClick handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addIconClickHandler(com.smartgwt.client.widgets.events.IconClickHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.events.IconClickEvent.getType()) == 0) setupIconClickEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.events.IconClickEvent.getType());
+//    }
+//
+//    private native void setupIconClickEvent() /*-{
+//        var obj = null;
+//        var selfJ = this;
+//        if(this.@com.smartgwt.client.widgets.BaseWidget::isCreated()()) {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getJsObj()();
+//            obj.addProperties({iconClick:$debox($entry(function(){
+//                        var param = {};
+//                        var event = @com.smartgwt.client.widgets.events.IconClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                        selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                        var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                        return !ret;
+//                    }))
+//             });
+//        } else {
+//            obj = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//            obj.iconClick = $debox($entry(function(){
+//                   var param = {};
+//                   var event = @com.smartgwt.client.widgets.events.IconClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                   selfJ.@com.smartgwt.client.widgets.BaseWidget::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                   var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                   return !ret;
+//               }));
+//        }
+//   }-*/;
+//            
+//    /**
+//     * Find out if this object is selected
+//     *
+//     * @return 
+//     * @see com.smartgwt.client.docs.State State overview and related methods
+//     */
+//    public native Boolean isSelected() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        var retVal =self.isSelected();
+//        if(retVal == null || retVal === undefined) {
+//            return null;
+//        } else {
+//            return @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(retVal);
+//        }
+//    }-*/;
+//            
+//    /**
+//     * Remove this widget from the specified mutually exclusive selection group with the ID passed in. No-op's if this widget
+//     * is not a member of the groupID passed in. If no groupID is passed in, defaults to removing from whatever radioGroup this
+//     * widget is a member of.
+//     */
+//    public native void removeFromRadioGroup() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.removeFromRadioGroup();
+//    }-*/;
+//
+//    /**
+//     * Remove this widget from the specified mutually exclusive selection group with the ID passed in. No-op's if this widget
+//     * is not a member of the groupID passed in. If no groupID is passed in, defaults to removing from whatever radioGroup this
+//     * widget is a member of.
+//     * @param groupID - optional radio group ID (to ensure the widget is removed                                        from the appropriate
+//     * group.
+//     * @see com.smartgwt.client.docs.State State overview and related methods
+//     */
+//    public native void removeFromRadioGroup(String groupID) /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.removeFromRadioGroup(groupID);
+//    }-*/;
+//            
+//    /**
+//     * Select this object.
+//     */
+//    public native void select() /*-{
+//        var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
+//        self.select();
+//    }-*/;
+//
+//    // ********************* Static Methods ***********************
+//    /**
+//     * Class level method to set the default properties of this class. If set, then all subsequent instances of this
+//     * class will automatically have the default properties that were set when this method was called. This is a powerful
+//     * feature that eliminates the need for users to create a separate hierarchy of subclasses that only alter the default
+//     * properties of this class. Can also be used for skinning / styling purposes.
+//     * <P>
+//     * <b>Note:</b> This method is intended for setting default attributes only and will effect all instances of the
+//     * underlying class (including those automatically generated in JavaScript). 
+//     * This method should not be used to apply standard EventHandlers or override methods for
+//     * a class - use a custom subclass instead.
+//     *
+//     * @param stretchImgButtonProperties properties that should be used as new defaults when instances of this class are created
+//     */
+//    public static native void setDefaultProperties(StretchImgButton stretchImgButtonProperties) /*-{
+//    	var properties = $wnd.isc.addProperties({},stretchImgButtonProperties.@com.smartgwt.client.widgets.BaseWidget::getConfig()());
+//    	delete properties.ID;
+//        $wnd.isc.StretchImgButton.addProperties(properties);
+//    }-*/;
+//        
+//    // ***********************************************************        
 
 }
 

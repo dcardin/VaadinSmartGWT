@@ -1,13 +1,8 @@
 package org.vaadin.smartgwt.server.tab;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.menu.Menu;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.util.IDManager;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -62,9 +57,9 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //        }
 //    }
 
-    public Tab(){
-        setID(com.smartgwt.client.util.SC.generateID(getClass().getName()));
-    }
+//    public Tab(){
+//        setID(com.smartgwt.client.util.SC.generateID(getClass().getName()));
+//    }
 
 //    public Tab(JavaScriptObject jsObj){
 //        super(jsObj);
@@ -316,148 +311,148 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //    }
 
     // ********************* Methods ***********************
-    /**
-     * Add a tabDeselected handler.
-     * <p>
-     * Optional handler to fire when a tab is deselected. Returning false will cancel the new selection, leaving this tab
-     * selected. As with {@link com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} this method
-     * only fires when the tabset is drawn.
-     *
-     * @param handler the tabDeselected handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addTabDeselectedHandler(com.smartgwt.client.widgets.tab.events.TabDeselectedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.tab.events.TabDeselectedEvent.getType()) == 0) setupTabDeselectedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.tab.events.TabDeselectedEvent.getType());
-    }
-
-    private native void setupTabDeselectedEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.tabDeselected = $debox($entry(function(){
-                var param = {"tabSet" : arguments[0], "tabNum" : arguments[1], "tabPane" : arguments[2], "ID" : arguments[3], "tab" : arguments[4], "newTab" : arguments[5]};
-                var event = @com.smartgwt.client.widgets.tab.events.TabDeselectedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                return !ret;
-            }));
-   }-*/;
-    /**
-     * Add a tabSelected handler.
-     * <p>
-     * Optional handler to fire when a tab is selected. As with {@link
-     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} this method only fires when the tabset
-     * is drawn.
-     *
-     * @param handler the tabSelected handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addTabSelectedHandler(com.smartgwt.client.widgets.tab.events.TabSelectedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.tab.events.TabSelectedEvent.getType()) == 0) setupTabSelectedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.tab.events.TabSelectedEvent.getType());
-    }
-
-    private native void setupTabSelectedEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.tabSelected = $entry(function(){
-                var param = {"tabSet" : arguments[0], "tabNum" : arguments[1], "tabPane" : arguments[2], "ID" : arguments[3], "tab" : arguments[4]};
-                var event = @com.smartgwt.client.widgets.tab.events.TabSelectedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-            });
-   }-*/;
+//    /**
+//     * Add a tabDeselected handler.
+//     * <p>
+//     * Optional handler to fire when a tab is deselected. Returning false will cancel the new selection, leaving this tab
+//     * selected. As with {@link com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} this method
+//     * only fires when the tabset is drawn.
+//     *
+//     * @param handler the tabDeselected handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addTabDeselectedHandler(com.smartgwt.client.widgets.tab.events.TabDeselectedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.tab.events.TabDeselectedEvent.getType()) == 0) setupTabDeselectedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.tab.events.TabDeselectedEvent.getType());
+//    }
+//
+//    private native void setupTabDeselectedEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.tabDeselected = $debox($entry(function(){
+//                var param = {"tabSet" : arguments[0], "tabNum" : arguments[1], "tabPane" : arguments[2], "ID" : arguments[3], "tab" : arguments[4], "newTab" : arguments[5]};
+//                var event = @com.smartgwt.client.widgets.tab.events.TabDeselectedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                return !ret;
+//            }));
+//   }-*/;
+//    /**
+//     * Add a tabSelected handler.
+//     * <p>
+//     * Optional handler to fire when a tab is selected. As with {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} this method only fires when the tabset
+//     * is drawn.
+//     *
+//     * @param handler the tabSelected handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addTabSelectedHandler(com.smartgwt.client.widgets.tab.events.TabSelectedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.tab.events.TabSelectedEvent.getType()) == 0) setupTabSelectedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.tab.events.TabSelectedEvent.getType());
+//    }
+//
+//    private native void setupTabSelectedEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.tabSelected = $entry(function(){
+//                var param = {"tabSet" : arguments[0], "tabNum" : arguments[1], "tabPane" : arguments[2], "ID" : arguments[3], "tab" : arguments[4]};
+//                var event = @com.smartgwt.client.widgets.tab.events.TabSelectedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//            });
+//   }-*/;
 
     // ********************* Static Methods ***********************
         
     // ***********************************************************        
 
 
-    /**
-     * Optional ID for the tab, which can later be used to reference the tab. APIs requiring a reference to a tab will accept
-     * the tabs ID  [including  {@link com.smartgwt.client.widgets.tab.TabSet#selectTab TabSet.selectTab}, {@link
-     * com.smartgwt.client.widgets.tab.TabSet#updateTab TabSet.updateTab}, {@link
-     * com.smartgwt.client.widgets.tab.TabSet#removeTab TabSet.removeTab}].<br> The ID will also be passed to the {@link
-     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} and {@link
-     * com.smartgwt.client.widgets.tab.TabSet#addTabDeselectedHandler TabSet.tabDeselected} handler functions, if specified.
-     * <p> Note that if you provide an ID, it must be globally unique.
-     *
-     * @param ID ID Default value is null
-     */
-    public void setID(String ID) {
-        IDManager.isValidID(ID);
-        setAttribute("ID", ID);
-    }
+//    /**
+//     * Optional ID for the tab, which can later be used to reference the tab. APIs requiring a reference to a tab will accept
+//     * the tabs ID  [including  {@link com.smartgwt.client.widgets.tab.TabSet#selectTab TabSet.selectTab}, {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#updateTab TabSet.updateTab}, {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#removeTab TabSet.removeTab}].<br> The ID will also be passed to the {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} and {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#addTabDeselectedHandler TabSet.tabDeselected} handler functions, if specified.
+//     * <p> Note that if you provide an ID, it must be globally unique.
+//     *
+//     * @param ID ID Default value is null
+//     */
+//    public void setID(String ID) {
+//        IDManager.isValidID(ID);
+//        setAttribute("ID", ID);
+//    }
+//
+//    /**
+//     * Optional ID for the tab, which can later be used to reference the tab. APIs requiring a reference to a tab will accept
+//     * the tabs ID  [including  {@link com.smartgwt.client.widgets.tab.TabSet#selectTab TabSet.selectTab}, {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#updateTab TabSet.updateTab}, {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#removeTab TabSet.removeTab}].<br> The ID will also be passed to the {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} and {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#addTabDeselectedHandler TabSet.tabDeselected} handler functions, if specified.
+//     * <p> Note that if you provide an ID, it must be globally unique.
+//     *
+//     *
+//     * @return String
+//     */
+//    public String getID()  {
+//        return getAttributeAsString("ID");
+//    }
 
-    /**
-     * Optional ID for the tab, which can later be used to reference the tab. APIs requiring a reference to a tab will accept
-     * the tabs ID  [including  {@link com.smartgwt.client.widgets.tab.TabSet#selectTab TabSet.selectTab}, {@link
-     * com.smartgwt.client.widgets.tab.TabSet#updateTab TabSet.updateTab}, {@link
-     * com.smartgwt.client.widgets.tab.TabSet#removeTab TabSet.removeTab}].<br> The ID will also be passed to the {@link
-     * com.smartgwt.client.widgets.tab.TabSet#addTabSelectedHandler TabSet.tabSelected} and {@link
-     * com.smartgwt.client.widgets.tab.TabSet#addTabDeselectedHandler TabSet.tabDeselected} handler functions, if specified.
-     * <p> Note that if you provide an ID, it must be globally unique.
-     *
-     *
-     * @return String
-     */
-    public String getID()  {
-        return getAttributeAsString("ID");
-    }
-
-    /**
-     * Specifies the title of the this tab.  To change the title after the TabSet has been created, call {@link
-     * com.smartgwt.client.widgets.tab.TabSet#setTabTitle TabSet.setTabTitle}.
-     *
-     * @param title title Default value is null
-     */
-    public void setTitle(String title) {
-        if(tabSet == null || !tabSet.isDrawn()) {
-            setAttribute("title", title);
-        } else {
-            tabSet.setTabTitle(this, title);
-        }
-    }
-
-    /**
-     * Specifies the title of the this tab.
-     *
-     * @return String
-     */
-    public String getTitle()  {
-        if(tabSet == null || !tabSet.isDrawn()) {
-            return getAttributeAsString("title");
-        } else {
-            return tabSet.getTab(getID()).getAttributeAsString("title");
-        }
-    }
-    
-    /**
-     * If specified, this tab will initially be rendered in a disabled state.
-     *
-     * @param disabled disabled Default value is null
-     */
-    public void setDisabled(boolean disabled) {
-        if(tabSet == null || !tabSet.isDrawn()) {
-            setAttribute("disabled", disabled);
-        } else {
-            if(disabled) {
-                tabSet.disableTab(getID());
-            } else {
-                tabSet.enableTab(getID());
-            }
-        }
-    }
-
-    /**
-     * If specified, this tab will initially be rendered in a disabled state. To enable or disable tabs on the fly use the
-     * {@link com.smartgwt.client.widgets.tab.TabSet#enableTab TabSet.enableTab}, and {@link
-     * com.smartgwt.client.widgets.tab.TabSet#disableTab TabSet.disableTab} methods.
-     *
-     *
-     * @return Boolean
-     */
+//    /**
+//     * Specifies the title of the this tab.  To change the title after the TabSet has been created, call {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#setTabTitle TabSet.setTabTitle}.
+//     *
+//     * @param title title Default value is null
+//     */
+//    public void setTitle(String title) {
+//        if(tabSet == null || !tabSet.isDrawn()) {
+//            setAttribute("title", title);
+//        } else {
+//            tabSet.setTabTitle(this, title);
+//        }
+//    }
+//
+//    /**
+//     * Specifies the title of the this tab.
+//     *
+//     * @return String
+//     */
+//    public String getTitle()  {
+//        if(tabSet == null || !tabSet.isDrawn()) {
+//            return getAttributeAsString("title");
+//        } else {
+//            return tabSet.getTab(getID()).getAttributeAsString("title");
+//        }
+//    }
+//    
+//    /**
+//     * If specified, this tab will initially be rendered in a disabled state.
+//     *
+//     * @param disabled disabled Default value is null
+//     */
+//    public void setDisabled(boolean disabled) {
+//        if(tabSet == null || !tabSet.isDrawn()) {
+//            setAttribute("disabled", disabled);
+//        } else {
+//            if(disabled) {
+//                tabSet.disableTab(getID());
+//            } else {
+//                tabSet.enableTab(getID());
+//            }
+//        }
+//    }
+//
+//    /**
+//     * If specified, this tab will initially be rendered in a disabled state. To enable or disable tabs on the fly use the
+//     * {@link com.smartgwt.client.widgets.tab.TabSet#enableTab TabSet.enableTab}, and {@link
+//     * com.smartgwt.client.widgets.tab.TabSet#disableTab TabSet.disableTab} methods.
+//     *
+//     *
+//     * @return Boolean
+//     */
 //    public Boolean getDisabled()  {
 //        if(tabSet == null || !tabSet.isDrawn()) {
 //            return getAttributeAsBoolean("disabled");
@@ -465,66 +460,66 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //            return tabSet.getTab(getID()).getAttributeAsBoolean("disabled");
 //        }
 //    }
-
-    /**
-     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
-     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
-     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
-     * takes a single parameter <code>tab</code>, a pointer to the tab object.
-     *
-     * @param icon icon Default value is null
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
-     */
-    public void setIcon(String icon) {
-        if(tabSet == null || !tabSet.isDrawn()) {
-            setAttribute("icon", icon);
-        } else {
-            tabSet.setTabIcon(getID(), icon);
-        }
-    }
-
-    /**
-     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
-     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
-     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
-     * takes a single parameter <code>tab</code>, a pointer to the tab object.
-     *
-     * @param icon icon Default value is null
-     * @param iconWidth the icon width
-     * @param iconHeight the icon height
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
-     */
-    public void setIcon(String icon, int iconWidth, int iconHeight) {
-        setIcon(icon);
-        setIconWidth(iconWidth);
-        setIconHeight(iconHeight);
-    }
-
-    /**
-     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
-     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
-     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
-     * takes a single parameter <code>tab</code>, a pointer to the tab object.
-     *
-     * @param icon icon Default value is null
-     * @param iconSize the icon size
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
-     */
-    public void setIcon(String icon, int iconSize) {
-        setIcon(icon);
-        setIconSize(iconSize);
-    }
-
-    /**
-     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
-     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
-     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
-     * takes a single parameter <code>tab</code>, a pointer to the tab object.
-     *
-     *
-     * @return String
-     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
-     */
+//
+//    /**
+//     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
+//     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
+//     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
+//     * takes a single parameter <code>tab</code>, a pointer to the tab object.
+//     *
+//     * @param icon icon Default value is null
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
+//     */
+//    public void setIcon(String icon) {
+//        if(tabSet == null || !tabSet.isDrawn()) {
+//            setAttribute("icon", icon);
+//        } else {
+//            tabSet.setTabIcon(getID(), icon);
+//        }
+//    }
+//
+//    /**
+//     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
+//     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
+//     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
+//     * takes a single parameter <code>tab</code>, a pointer to the tab object.
+//     *
+//     * @param icon icon Default value is null
+//     * @param iconWidth the icon width
+//     * @param iconHeight the icon height
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
+//     */
+//    public void setIcon(String icon, int iconWidth, int iconHeight) {
+//        setIcon(icon);
+//        setIconWidth(iconWidth);
+//        setIconHeight(iconHeight);
+//    }
+//
+//    /**
+//     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
+//     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
+//     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
+//     * takes a single parameter <code>tab</code>, a pointer to the tab object.
+//     *
+//     * @param icon icon Default value is null
+//     * @param iconSize the icon size
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
+//     */
+//    public void setIcon(String icon, int iconSize) {
+//        setIcon(icon);
+//        setIconSize(iconSize);
+//    }
+//
+//    /**
+//     * If specified, this tab will show an icon next to the tab title.  Note that as with  {@link
+//     * com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a tabs icon will be updated to reflect disabled state.<br>
+//     * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method
+//     * takes a single parameter <code>tab</code>, a pointer to the tab object.
+//     *
+//     *
+//     * @return String
+//     * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
+//     */
 //    public String getIcon()  {
 //        if(tabSet == null || !tabSet.isDrawn()) {
 //            return getAttributeAsString("icon");
@@ -625,19 +620,19 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //            return null;
 //        }
 //    }
-
-    /**
-     * Returns the live Canvas used to represent this tab in a tabSet.
-     * Will return null if this Tab has not been added to a TabSet or if the tabset is not yet drawn.
-     * <P>
-     * The underlying SmartClient class of the returned canvas depends on {@link #getUseSimpleTabs}.
-     * If this property is false, the returned canvas will be a {@link com.smartgwt.client.widgets.tab.ImgTab} 
-     * instance. If true the canvas will be a {@link com.smartgwt.client.widgets.tab.Button} instance. 
-     * Note that you can make use of ImgTab APIs by using the <code>getJsObj()</code> and <code>create()</code>
-     * APIs to "cast" to the appropriate type - for example:<br>
-     * <code>ImgTab liveTab = ImgTab.create(myTabSet.getTabCanvas(2).getJsObj());</code>
-     * @return live Canvas for this tab in a tabSet.
-     */
+//
+//    /**
+//     * Returns the live Canvas used to represent this tab in a tabSet.
+//     * Will return null if this Tab has not been added to a TabSet or if the tabset is not yet drawn.
+//     * <P>
+//     * The underlying SmartClient class of the returned canvas depends on {@link #getUseSimpleTabs}.
+//     * If this property is false, the returned canvas will be a {@link com.smartgwt.client.widgets.tab.ImgTab} 
+//     * instance. If true the canvas will be a {@link com.smartgwt.client.widgets.tab.Button} instance. 
+//     * Note that you can make use of ImgTab APIs by using the <code>getJsObj()</code> and <code>create()</code>
+//     * APIs to "cast" to the appropriate type - for example:<br>
+//     * <code>ImgTab liveTab = ImgTab.create(myTabSet.getTabCanvas(2).getJsObj());</code>
+//     * @return live Canvas for this tab in a tabSet.
+//     */
 //    public StatefulCanvas getTabCanvas () {
 //        if (tabSet == null) return null;
 //        JavaScriptObject canvasJS = this.getTabCanvasJS(tabSet.getJsObj(), this.getJsObj());
@@ -645,12 +640,12 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //        
 //        return StatefulCanvas.getOrCreateRef(canvasJS);
 //    }
-    private native JavaScriptObject getTabCanvasJS (JavaScriptObject tabSet, JavaScriptObject tabConfig) /*-{
-        if (tabSet == null || tabConfig == null) return null;
-        var tab = tabSet.getTab(tabConfig);
-        if ($wnd.isc.isA.Canvas(tab)) return tab;
-        return null;
-    }-*/;
+//    private native JavaScriptObject getTabCanvasJS (JavaScriptObject tabSet, JavaScriptObject tabConfig) /*-{
+//        if (tabSet == null || tabConfig == null) return null;
+//        var tab = tabSet.getTab(tabConfig);
+//        if ($wnd.isc.isA.Canvas(tab)) return tab;
+//        return null;
+//    }-*/;
 
     // @formatter:on
 
@@ -666,15 +661,15 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 	public void setPane(Canvas pane)
 	{
 		pane.setParent(this);
-		
-		if (tabSet == null || !tabSet.isCreated())
-		{
+//
+//		if (tabSet == null || !tabSet.isCreated())
+//		{
 			setAttribute("pane", pane);
-		}
-		else
-		{
-			tabSet.updateTab(this, pane);
-		}
+//		}
+//		else
+//		{
+//			tabSet.updateTab(this, pane);
+//		}
 	}
 
 	/**
@@ -686,5 +681,28 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 	{
 		return getAttributeAsObject("pane");
 	}
+
+	/**
+	 * If specified, this tab will show an icon next to the tab title. Note that as with {@link com.smartgwt.client.widgets.Button#getIcon icon}, the URL of a
+	 * tabs icon will be updated to reflect disabled state.<br>
+	 * If desired a click handler may be assigned to the icon, which will be fired when the user clicks the tab. This method takes a single parameter
+	 * <code>tab</code>, a pointer to the tab object.
+	 * 
+	 * @param icon
+	 *            icon Default value is null
+	 * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
+	 */
+	public void setIcon(String icon)
+	{
+		setAttribute("icon", icon);
+	}
+
+	public void setTitle(String title) {
+//        if(tabSet == null || !tabSet.isDrawn()) {
+            setAttribute("title", title);
+//        } else {
+//            tabSet.setTabTitle(this, title);
+//        }
+    }
 
 }

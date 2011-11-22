@@ -1,7 +1,5 @@
 package org.vaadin.smartgwt.server.core;
 
-import com.smartgwt.client.core.DataClass;
-
 public class KeyIdentifier extends DataClass {
     /**
      * Set the keyName.

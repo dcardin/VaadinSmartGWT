@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.server;
 
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.widgets.Label;
+import org.vaadin.smartgwt.server.types.Alignment;
+
 
 class BlueBox extends Label
 {

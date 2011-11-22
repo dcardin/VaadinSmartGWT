@@ -1,5 +1,8 @@
 package org.vaadin.smartgwt.server;
 
+import org.vaadin.smartgwt.server.types.ImageStyle;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -16,9 +19,6 @@ package org.vaadin.smartgwt.server;
  * Lesser General Public License for more details.
  */
  
-import com.smartgwt.client.types.ImageStyle;
-import com.smartgwt.client.util.EnumUtil;
-
 /**
  * The Img widget class implements a simple widget that displays a single image.
  */

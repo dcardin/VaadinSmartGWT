@@ -17,10 +17,7 @@ package org.vaadin.smartgwt.server.toolbar;
  */
 
 import org.vaadin.smartgwt.server.menu.IMenuButton;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.smartgwt.client.widgets.BaseWidget;
-import com.smartgwt.client.widgets.menu.Menu;
+import org.vaadin.smartgwt.server.menu.Menu;
 
 /**
  * Simple Menu Button subclass of {@link com.smartgwt.client.widgets.menu.IMenuButton} with an appearance appropriate for a ToolStrip menu button.
@@ -60,10 +57,10 @@ public class ToolStripMenuButton extends IMenuButton {
 //        super(jsObj);
 //    }
 
-    protected native JavaScriptObject create()/*-{
-        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-        var widget = $wnd.isc.ToolStripMenuButton.create(config);
-        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
-        return widget;
-    }-*/;
+//    protected native JavaScriptObject create()/*-{
+//        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//        var widget = $wnd.isc.ToolStripMenuButton.create(config);
+//        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
+//        return widget;
+//    }-*/;
 }

@@ -6,8 +6,6 @@ import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.LayoutSpacer;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 public class ToolStrip extends Layout
 {
 
@@ -208,10 +206,10 @@ public class ToolStrip extends Layout
 		addMember(dynamicForm, position);
 	}
 
-	// set the width of the form to match that of the form item. using native method because width can be int or String
-	private static native void applyWidth(JavaScriptObject formJS, JavaScriptObject itemJS)/*-{
-																							formJS.width = itemJS.width;
-																							}-*/;
+//	// set the width of the form to match that of the form item. using native method because width can be int or String
+//	private static native void applyWidth(JavaScriptObject formJS, JavaScriptObject itemJS)/*-{
+//																							formJS.width = itemJS.width;
+//																							}-*/;
 
 	/**
 	 * Add a button to the ToolStrip.

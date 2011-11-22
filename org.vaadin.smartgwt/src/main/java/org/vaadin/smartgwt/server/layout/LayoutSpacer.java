@@ -17,8 +17,6 @@ package org.vaadin.smartgwt.server.layout;
  
 import org.vaadin.smartgwt.server.Canvas;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 /**
  * Add a LayoutSpacer to a Layout to take up space just like a normal member, without actually drawing anything. 
  * Semantically equivalent to using an empty canvas, but higher performance for this particular use case.
@@ -43,13 +41,13 @@ public class LayoutSpacer extends Canvas {
 //        super(jsObj);
 //    }
 
-    protected native JavaScriptObject create()/*-{
-        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
-        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
-        var widget = $wnd.isc[scClassName].create(config);
-        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
-        return widget;
-    }-*/;
+//    protected native JavaScriptObject create()/*-{
+//        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
+//        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
+//        var widget = $wnd.isc[scClassName].create(config);
+//        this.@com.smartgwt.client.widgets.BaseWidget::doInit()();
+//        return widget;
+//    }-*/;
     // ********************* Properties / Attributes ***********************
 
     // ********************* Methods ***********************

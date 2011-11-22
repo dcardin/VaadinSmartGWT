@@ -16,12 +16,8 @@ package org.vaadin.smartgwt.server.data;
  * Lesser General Public License for more details.
  */
 
-import java.util.Map;
-
 import org.vaadin.smartgwt.server.core.RefDataClass;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.smartgwt.client.util.JSOHelper;
 
 /**
  * A Record contains attributes that are displayed and edited by a {@link com.smartgwt.client.widgets.DataBoundComponent}.
@@ -133,24 +129,24 @@ public class Record extends RefDataClass {
 
 
     // Vaadin integration
-  public static Record[] convertToRecordArray(JavaScriptObject nativeArray) {
-  if (nativeArray == null) {
-      return new Record[]{};
-  }
-//  if (JSOHelper.isArray(nativeArray)) {
-//      JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
-//      Record[] objects = new Record[componentsj.length];
-//      for (int i = 0; i < componentsj.length; i++) {
-//          JavaScriptObject componentJS = componentsj[i];
-//          Record obj = (Record) RefDataClass.getRef(componentJS);
-//          if (obj == null) obj = new Record(componentJS);
-//          objects[i] = obj;
-//      }
-//      return objects;
-//  } else {
-      Record[] ret = new Record[1];
-//      ret[0] = Record.getOrCreateRef(nativeArray);
-      return ret;
-  }
+//  public static Record[] convertToRecordArray(JavaScriptObject nativeArray) {
+//  if (nativeArray == null) {
+//      return new Record[]{};
+//  }
+////  if (JSOHelper.isArray(nativeArray)) {
+////      JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
+////      Record[] objects = new Record[componentsj.length];
+////      for (int i = 0; i < componentsj.length; i++) {
+////          JavaScriptObject componentJS = componentsj[i];
+////          Record obj = (Record) RefDataClass.getRef(componentJS);
+////          if (obj == null) obj = new Record(componentJS);
+////          objects[i] = obj;
+////      }
+////      return objects;
+////  } else {
+//      Record[] ret = new Record[1];
+////      ret[0] = Record.getOrCreateRef(nativeArray);
+//      return ret;
+//  }
 }
 

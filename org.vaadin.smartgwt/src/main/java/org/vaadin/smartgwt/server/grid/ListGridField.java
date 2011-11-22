@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.grid.VListGridField;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.AutoFitWidthApproach;
 import org.vaadin.smartgwt.server.types.DateDisplayFormat;
@@ -29,34 +30,13 @@ import org.vaadin.smartgwt.server.types.EscapeKeyEditAction;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.OperatorId;
 import org.vaadin.smartgwt.server.types.RecordSummaryFunctionType;
-import org.vaadin.smartgwt.server.types.SortDirection;
 import org.vaadin.smartgwt.server.types.SummaryFunctionType;
 import org.vaadin.smartgwt.server.types.TextMatchStyle;
 import org.vaadin.smartgwt.server.types.TimeDisplayFormat;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.data.Criteria;
-import com.smartgwt.client.data.DSRequest;
-import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.form.fields.FormItemIcon;
-import com.smartgwt.client.widgets.form.validator.Validator;
-import com.smartgwt.client.widgets.grid.CellEditValueFormatter;
-import com.smartgwt.client.widgets.grid.CellEditValueParser;
-import com.smartgwt.client.widgets.grid.EditorValueMapFunction;
-import com.smartgwt.client.widgets.grid.GroupNode;
-import com.smartgwt.client.widgets.grid.GroupTitleRenderer;
-import com.smartgwt.client.widgets.grid.GroupValueFunction;
-import com.smartgwt.client.widgets.grid.HoverCustomizer;
-import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridFieldIfFunction;
-import com.smartgwt.client.widgets.grid.RecordSummaryFunction;
-import com.smartgwt.client.widgets.grid.SortNormalizer;
-import com.smartgwt.client.widgets.grid.SummaryFunction;
-import com.smartgwt.client.widgets.grid.events.EditorExitHandler;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.vaadin.ui.ClientWidget;
+
 
 /**
  * An ordinary JavaScript object containing properties that configures the display of and interaction with the columns of a
@@ -1797,9 +1777,9 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
      *
      * @param optionCriteria optionCriteria Default value is null
      */
-    public void setOptionCriteria(Criteria optionCriteria) {
-        setAttribute("optionCriteria", optionCriteria.getJsObj());
-    }
+//    public void setOptionCriteria(Criteria optionCriteria) {
+//        setAttribute("optionCriteria", optionCriteria.getJsObj());
+//    }
 
     /**
      * If {@link com.smartgwt.client.widgets.grid.ListGridField#getOptionDataSource optionDataSource} is set for this
@@ -1809,9 +1789,9 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
      *
      * @return Criteria
      */
-    public Criteria getOptionCriteria()  {
-        return new Criteria(getAttributeAsJavaScriptObject("optionCriteria"));
-    }
+//    public Criteria getOptionCriteria()  {
+//        return new Criteria(getAttributeAsJavaScriptObject("optionCriteria"));
+//    }
 
     /**
      * If this field has an optionDataSource specified and  {@link
@@ -2694,100 +2674,100 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
     }
 
     // ********************* Methods ***********************
-    /**
-     * Add a editorEnter handler.
-     * <p>
-     * Callback fired when the user first starts editing a cell. <P> This callback is typically used to establish dynamic
-     * default values via {@link com.smartgwt.client.widgets.grid.ListGrid#setEditValue ListGrid.setEditValue} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#setEditValues ListGrid.setEditValues}.
-     *
-     * @param handler the editorEnter handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addEditorEnterHandler(com.smartgwt.client.widgets.grid.events.EditorEnterHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.EditorEnterEvent.getType()) == 0) setupEditorEnterEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.EditorEnterEvent.getType());
-    }
-
-    private native void setupEditorEnterEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.editorEnter = $entry(function(){
-                var param = {"record" : arguments[0], "value" : arguments[1], "rowNum" : arguments[2], "colNum" : arguments[3], "grid" : arguments[4]};
-                var event = @com.smartgwt.client.widgets.grid.events.EditorEnterEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-            });
-   }-*/;
-    /**
-     * Add a editorExit handler.
-     * <p>
-     * Callback fired when the user attempts to navigate away from the current edit cell,  or complete the current edit.<br>
-     * Call {@link com.smartgwt.client.widgets.grid.events.EditorExitEvent#cancel()} from within {@link EditorExitHandler#onEditorExit} from this method to cancel the default behavior (Saving / cancelling the current edit / moving to the next
-     * edit cell)
-     *
-     * @param handler the editorExit handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addEditorExitHandler(com.smartgwt.client.widgets.grid.events.EditorExitHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.EditorExitEvent.getType()) == 0) setupEditorExitEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.EditorExitEvent.getType());
-    }
-
-    private native void setupEditorExitEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.editorExit = $debox($entry(function(){
-                var param = {"editCompletionEvent" : arguments[0], "record" : arguments[1], "newValue" : arguments[2], "rowNum" : arguments[3], "colNum" : arguments[4], "grid" : arguments[5]};
-                var event = @com.smartgwt.client.widgets.grid.events.EditorExitEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                return !ret;
-            }));
-   }-*/;
-            
-    /**
-     * If your derivation of the field title is more complex than specifying a static string, you can specify a getFieldTitle()
-     * method on your field to return the title string. Otherwise you can use the {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#getTitle title} attribute on the field to specify the title. <P> You can
-     * use {@link com.smartgwt.client.widgets.grid.ListGrid#setFieldProperties setFieldProperties()} to dynamically update the
-     * title.
-     * @param viewer pointer back to the ListGrid
-     * @param fieldNum index of this field in the grid's fields array.
-     */
-    public native void getFieldTitle(ListGrid viewer, int fieldNum) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.getFieldTitle(viewer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), fieldNum);
-    }-*/;
-    /**
-     * Add a recordClick handler.
-     * <p>
-     * Executed when this field is clicked on.  Note that if {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#addRecordClickHandler ListGrid.recordClick} is also defined, it will be fired
-     * for fields that define a recordClick handler if the field-level handler returns true. Call {@link com.smartgwt.client.widgets.grid.events.RecordClickEvent#cancel()} from within {@link RecordClickHandler#onRecordClick} to prevent the
-     * grid-level handler from firing.
-     *
-     * @param handler the recordClick handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addRecordClickHandler(com.smartgwt.client.widgets.grid.events.RecordClickHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.RecordClickEvent.getType()) == 0) setupRecordClickEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.RecordClickEvent.getType());
-    }
-
-    private native void setupRecordClickEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.recordClick = $debox($entry(function(){
-                var param = {"viewer" : arguments[0], "record" : arguments[1], "recordNum" : arguments[2], "field" : arguments[3], "fieldNum" : arguments[4], "value" : arguments[5], "rawValue" : arguments[6]};
-                var event = @com.smartgwt.client.widgets.grid.events.RecordClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                return !ret;
-            }));
-   }-*/;
+//    /**
+//     * Add a editorEnter handler.
+//     * <p>
+//     * Callback fired when the user first starts editing a cell. <P> This callback is typically used to establish dynamic
+//     * default values via {@link com.smartgwt.client.widgets.grid.ListGrid#setEditValue ListGrid.setEditValue} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#setEditValues ListGrid.setEditValues}.
+//     *
+//     * @param handler the editorEnter handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addEditorEnterHandler(com.smartgwt.client.widgets.grid.events.EditorEnterHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.EditorEnterEvent.getType()) == 0) setupEditorEnterEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.EditorEnterEvent.getType());
+//    }
+//
+//    private native void setupEditorEnterEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.editorEnter = $entry(function(){
+//                var param = {"record" : arguments[0], "value" : arguments[1], "rowNum" : arguments[2], "colNum" : arguments[3], "grid" : arguments[4]};
+//                var event = @com.smartgwt.client.widgets.grid.events.EditorEnterEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//            });
+//   }-*/;
+//    /**
+//     * Add a editorExit handler.
+//     * <p>
+//     * Callback fired when the user attempts to navigate away from the current edit cell,  or complete the current edit.<br>
+//     * Call {@link com.smartgwt.client.widgets.grid.events.EditorExitEvent#cancel()} from within {@link EditorExitHandler#onEditorExit} from this method to cancel the default behavior (Saving / cancelling the current edit / moving to the next
+//     * edit cell)
+//     *
+//     * @param handler the editorExit handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addEditorExitHandler(com.smartgwt.client.widgets.grid.events.EditorExitHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.EditorExitEvent.getType()) == 0) setupEditorExitEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.EditorExitEvent.getType());
+//    }
+//
+//    private native void setupEditorExitEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.editorExit = $debox($entry(function(){
+//                var param = {"editCompletionEvent" : arguments[0], "record" : arguments[1], "newValue" : arguments[2], "rowNum" : arguments[3], "colNum" : arguments[4], "grid" : arguments[5]};
+//                var event = @com.smartgwt.client.widgets.grid.events.EditorExitEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                return !ret;
+//            }));
+//   }-*/;
+//            
+//    /**
+//     * If your derivation of the field title is more complex than specifying a static string, you can specify a getFieldTitle()
+//     * method on your field to return the title string. Otherwise you can use the {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#getTitle title} attribute on the field to specify the title. <P> You can
+//     * use {@link com.smartgwt.client.widgets.grid.ListGrid#setFieldProperties setFieldProperties()} to dynamically update the
+//     * title.
+//     * @param viewer pointer back to the ListGrid
+//     * @param fieldNum index of this field in the grid's fields array.
+//     */
+//    public native void getFieldTitle(ListGrid viewer, int fieldNum) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.getFieldTitle(viewer.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), fieldNum);
+//    }-*/;
+//    /**
+//     * Add a recordClick handler.
+//     * <p>
+//     * Executed when this field is clicked on.  Note that if {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#addRecordClickHandler ListGrid.recordClick} is also defined, it will be fired
+//     * for fields that define a recordClick handler if the field-level handler returns true. Call {@link com.smartgwt.client.widgets.grid.events.RecordClickEvent#cancel()} from within {@link RecordClickHandler#onRecordClick} to prevent the
+//     * grid-level handler from firing.
+//     *
+//     * @param handler the recordClick handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addRecordClickHandler(com.smartgwt.client.widgets.grid.events.RecordClickHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.RecordClickEvent.getType()) == 0) setupRecordClickEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.RecordClickEvent.getType());
+//    }
+//
+//    private native void setupRecordClickEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.recordClick = $debox($entry(function(){
+//                var param = {"viewer" : arguments[0], "record" : arguments[1], "recordNum" : arguments[2], "field" : arguments[3], "fieldNum" : arguments[4], "value" : arguments[5], "rawValue" : arguments[6]};
+//                var event = @com.smartgwt.client.widgets.grid.events.RecordClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                return !ret;
+//            }));
+//   }-*/;
 
     // ********************* Static Methods ***********************
         
@@ -2845,113 +2825,113 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
      *
      * @param icons icons Default value is null
      */
-    public void setIcons(FormItemIcon... icons) {
-        setAttribute("icons", icons);
-    }
-
-    /**
-     * If set, provides several possible styles of grouping that are valid for this field.  For&#010 example, a field of type:"date" might be able to be grouped by week, month, or by day of&#010 week.&#010 <P>&#010 If <code>groupingModes</code> are present and&#010 {@link com.smartgwt.client.widgets.grid.ListGrid#getCanGroupBy canGroupBy}, the menu for this field includes a&#010 submenu of possible grouping modes generated from the <code>groupingModes</code> valueMap.&#010 When the user selects a particular grouping mode,&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupingMode groupingMode} is set to the user's chosen mode,&#010 and this choice can be detected via the <code>field</code> parameter to&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupValue} in order to provide different modes of grouping.&#010 <P>&#010 The user may also choose to group records without specifying a grouping mode, in this case,&#010 the {@link com.smartgwt.client.widgets.grid.ListGridField#getDefaultGroupingMode defaultGroupingMode} is used.&#010 <P>&#010 Note that <code>getGroupValue</code>, <code>groupingModes</code> et al can be specified on&#010 {@link com.smartgwt.client.data.SimpleType} declaration, and the different grouping modes that are offered&#010 automatically for various common types are defined this way.
-     *
-     * @param groupingModes groupingModes Default value is null
-     */
-    public void setGroupingModes(Map groupingModes) {
-        setAttribute("groupingModes", groupingModes);
-    }
-
-    /**
-     * If set, provides several possible styles of grouping that are valid for this field.  For&#010 example, a field of type:"date" might be able to be grouped by week, month, or by day of&#010 week.&#010 <P>&#010 If <code>groupingModes</code> are present and&#010 {@link com.smartgwt.client.widgets.grid.ListGrid#getCanGroupBy canGroupBy}, the menu for this field includes a&#010 submenu of possible grouping modes generated from the <code>groupingModes</code> valueMap.&#010 When the user selects a particular grouping mode,&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupingMode groupingMode} is set to the user's chosen mode,&#010 and this choice can be detected via the <code>field</code> parameter to&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupValue} in order to provide different modes of grouping.&#010 <P>&#010 The user may also choose to group records without specifying a grouping mode, in this case,&#010 the {@link com.smartgwt.client.widgets.grid.ListGridField#getDefaultGroupingMode defaultGroupingMode} is used.&#010 <P>&#010 Note that <code>getGroupValue</code>, <code>groupingModes</code> et al can be specified on&#010 {@link com.smartgwt.client.data.SimpleType} declaration, and the different grouping modes that are offered&#010 automatically for various common types are defined this way.
-     *
-     * @return the value map
-     */
-    public Map getGroupingModes() {
-        return getAttributeAsMap("groupingModes");
-    }
-
-    /**
-     * Return the HTML to display in cells of this field. <P> Given the raw value for this field as taken from the
-     * record Formatter to apply to the static values displayed in cells for this field. <P> <i>Example usage</i>:
-     * formatting a currency value stored in cents (so "100" to "$1.00")<br> The value passed to this method is the raw
-     * value for the cell.<br> Takes precedence over <code>formatCellValue</code> defined at the grid level for cells in
-     * this field. <P> Note: this formatter will not be applied to the values displayed in cells being edited. The
-     * {@link com.smartgwt.client.widgets.grid.ListGridField#setEditValueFormatter} is provided for that purpose.
-     *
-     * @param formatter the formatter
-     */
-    public native void setCellFormatter(CellFormatter formatter) /*-{
-            var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            self.formatCellValue = $debox($entry(function(value, record, rowNum, colNum) {
-                var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-                var valueJ = $wnd.SmartGWT.convertToJavaType(value);
-                return formatter.@com.smartgwt.client.widgets.grid.CellFormatter::format(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
-            }));
-    }-*/;
-
-    /**
-     * Return the value to display in cells of this field which are being edited. <P> <i>Example usage</i>: converting a stored
-     * value in cents (100) to a dollar-and-cents  value in the editor (1.00) <P> The value passed to this method is the raw
-     * value for the cell.<P> To convert the formatted value displayed within an editor back to a raw value, implement {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#setEditorValueParser} as well.
-     * @see com.smartgwt.client.docs.Editing Editing overview and related methods
-     *
-     * @param formatter the CellEditValueFormatter
-     */
-    public native void setEditValueFormatter(CellEditValueFormatter formatter) /*-{
-	    var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-	    self.formatEditorValue = $debox($entry(function(value, record, rowNum, colNum) {
-	        var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-	        var valueJ = $wnd.SmartGWT.convertToJavaType(value);
-	        var val = formatter.@com.smartgwt.client.widgets.grid.CellEditValueFormatter::format(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
-            return $wnd.SmartGWT.convertToPrimitiveType(val);
-	    }));
-	}-*/;
-
-
-    /**
-     * Method used to convert the value displayed in an editor for some cell in this field into a raw value for saving.
-     * @see com.smartgwt.client.docs.Editing Editing overview and related methods
-     *
-     * @param parser the CellEditValueParser
-     */
-    public native void setEditValueParser(CellEditValueParser parser) /*-{
-	    var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-	    self.parseEditorValue = $debox($entry(function(value, record, rowNum, colNum) {
-	        var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-	        var valueJ = $wnd.SmartGWT.convertToJavaType(value);
-	        var val = parser.@com.smartgwt.client.widgets.grid.CellEditValueParser::parse(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
-            return $wnd.SmartGWT.convertToPrimitiveType(val);
-	    }));
-	}-*/;
-
-
-    /**
-     * Optional function to return the value that should be used when sorting this field. <P> Note that, if the dataset
-     * exceeds {@link com.smartgwt.client.widgets.grid.ListGrid#getDataPageSize dataPageSize} and hence paging is
-     * introduced, the grid relies on the server to provide sorting, and the sortNormalizer will no longer be called.
-     *
-     * @param normalizer the sort normalizer
-     */
-    public native void setSortNormalizer(SortNormalizer normalizer) /*-{
-            var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            self.sortNormalizer = $debox($entry(function(record, fieldName) {
-                var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-                var val = normalizer.@com.smartgwt.client.widgets.grid.SortNormalizer::normalize(Lcom/smartgwt/client/widgets/grid/ListGridRecord;Ljava/lang/String;)(recordJ, fieldName);
-                return $wnd.SmartGWT.convertToPrimitiveType(val);
-            }));
-    }-*/;
-
-    /**
-     * * HTML to be shown in hovers over cells in the column described by this field.
-     *
-     * @param hoverCustomizer the hover customizer
-     */
-    public native void setHoverCustomizer(HoverCustomizer hoverCustomizer) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.hoverHTML = $debox($entry(function(record, value, rowNum, colNum, grid) {
-            var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);            
-            var valueJ = $wnd.SmartGWT.convertToJavaType(value);
-            return hoverCustomizer.@com.smartgwt.client.widgets.grid.HoverCustomizer::hoverHTML(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
-        }));
-    }-*/;
+//    public void setIcons(FormItemIcon... icons) {
+//        setAttribute("icons", icons);
+//    }
+//
+//    /**
+//     * If set, provides several possible styles of grouping that are valid for this field.  For&#010 example, a field of type:"date" might be able to be grouped by week, month, or by day of&#010 week.&#010 <P>&#010 If <code>groupingModes</code> are present and&#010 {@link com.smartgwt.client.widgets.grid.ListGrid#getCanGroupBy canGroupBy}, the menu for this field includes a&#010 submenu of possible grouping modes generated from the <code>groupingModes</code> valueMap.&#010 When the user selects a particular grouping mode,&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupingMode groupingMode} is set to the user's chosen mode,&#010 and this choice can be detected via the <code>field</code> parameter to&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupValue} in order to provide different modes of grouping.&#010 <P>&#010 The user may also choose to group records without specifying a grouping mode, in this case,&#010 the {@link com.smartgwt.client.widgets.grid.ListGridField#getDefaultGroupingMode defaultGroupingMode} is used.&#010 <P>&#010 Note that <code>getGroupValue</code>, <code>groupingModes</code> et al can be specified on&#010 {@link com.smartgwt.client.data.SimpleType} declaration, and the different grouping modes that are offered&#010 automatically for various common types are defined this way.
+//     *
+//     * @param groupingModes groupingModes Default value is null
+//     */
+//    public void setGroupingModes(Map groupingModes) {
+//        setAttribute("groupingModes", groupingModes);
+//    }
+//
+//    /**
+//     * If set, provides several possible styles of grouping that are valid for this field.  For&#010 example, a field of type:"date" might be able to be grouped by week, month, or by day of&#010 week.&#010 <P>&#010 If <code>groupingModes</code> are present and&#010 {@link com.smartgwt.client.widgets.grid.ListGrid#getCanGroupBy canGroupBy}, the menu for this field includes a&#010 submenu of possible grouping modes generated from the <code>groupingModes</code> valueMap.&#010 When the user selects a particular grouping mode,&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupingMode groupingMode} is set to the user's chosen mode,&#010 and this choice can be detected via the <code>field</code> parameter to&#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getGroupValue} in order to provide different modes of grouping.&#010 <P>&#010 The user may also choose to group records without specifying a grouping mode, in this case,&#010 the {@link com.smartgwt.client.widgets.grid.ListGridField#getDefaultGroupingMode defaultGroupingMode} is used.&#010 <P>&#010 Note that <code>getGroupValue</code>, <code>groupingModes</code> et al can be specified on&#010 {@link com.smartgwt.client.data.SimpleType} declaration, and the different grouping modes that are offered&#010 automatically for various common types are defined this way.
+//     *
+//     * @return the value map
+//     */
+//    public Map getGroupingModes() {
+//        return getAttributeAsMap("groupingModes");
+//    }
+//
+//    /**
+//     * Return the HTML to display in cells of this field. <P> Given the raw value for this field as taken from the
+//     * record Formatter to apply to the static values displayed in cells for this field. <P> <i>Example usage</i>:
+//     * formatting a currency value stored in cents (so "100" to "$1.00")<br> The value passed to this method is the raw
+//     * value for the cell.<br> Takes precedence over <code>formatCellValue</code> defined at the grid level for cells in
+//     * this field. <P> Note: this formatter will not be applied to the values displayed in cells being edited. The
+//     * {@link com.smartgwt.client.widgets.grid.ListGridField#setEditValueFormatter} is provided for that purpose.
+//     *
+//     * @param formatter the formatter
+//     */
+//    public native void setCellFormatter(CellFormatter formatter) /*-{
+//            var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            self.formatCellValue = $debox($entry(function(value, record, rowNum, colNum) {
+//                var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//                var valueJ = $wnd.SmartGWT.convertToJavaType(value);
+//                return formatter.@com.smartgwt.client.widgets.grid.CellFormatter::format(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
+//            }));
+//    }-*/;
+//
+//    /**
+//     * Return the value to display in cells of this field which are being edited. <P> <i>Example usage</i>: converting a stored
+//     * value in cents (100) to a dollar-and-cents  value in the editor (1.00) <P> The value passed to this method is the raw
+//     * value for the cell.<P> To convert the formatted value displayed within an editor back to a raw value, implement {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#setEditorValueParser} as well.
+//     * @see com.smartgwt.client.docs.Editing Editing overview and related methods
+//     *
+//     * @param formatter the CellEditValueFormatter
+//     */
+//    public native void setEditValueFormatter(CellEditValueFormatter formatter) /*-{
+//	    var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//	    self.formatEditorValue = $debox($entry(function(value, record, rowNum, colNum) {
+//	        var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//	        var valueJ = $wnd.SmartGWT.convertToJavaType(value);
+//	        var val = formatter.@com.smartgwt.client.widgets.grid.CellEditValueFormatter::format(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
+//            return $wnd.SmartGWT.convertToPrimitiveType(val);
+//	    }));
+//	}-*/;
+//
+//
+//    /**
+//     * Method used to convert the value displayed in an editor for some cell in this field into a raw value for saving.
+//     * @see com.smartgwt.client.docs.Editing Editing overview and related methods
+//     *
+//     * @param parser the CellEditValueParser
+//     */
+//    public native void setEditValueParser(CellEditValueParser parser) /*-{
+//	    var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//	    self.parseEditorValue = $debox($entry(function(value, record, rowNum, colNum) {
+//	        var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//	        var valueJ = $wnd.SmartGWT.convertToJavaType(value);
+//	        var val = parser.@com.smartgwt.client.widgets.grid.CellEditValueParser::parse(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
+//            return $wnd.SmartGWT.convertToPrimitiveType(val);
+//	    }));
+//	}-*/;
+//
+//
+//    /**
+//     * Optional function to return the value that should be used when sorting this field. <P> Note that, if the dataset
+//     * exceeds {@link com.smartgwt.client.widgets.grid.ListGrid#getDataPageSize dataPageSize} and hence paging is
+//     * introduced, the grid relies on the server to provide sorting, and the sortNormalizer will no longer be called.
+//     *
+//     * @param normalizer the sort normalizer
+//     */
+//    public native void setSortNormalizer(SortNormalizer normalizer) /*-{
+//            var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            self.sortNormalizer = $debox($entry(function(record, fieldName) {
+//                var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//                var val = normalizer.@com.smartgwt.client.widgets.grid.SortNormalizer::normalize(Lcom/smartgwt/client/widgets/grid/ListGridRecord;Ljava/lang/String;)(recordJ, fieldName);
+//                return $wnd.SmartGWT.convertToPrimitiveType(val);
+//            }));
+//    }-*/;
+//
+//    /**
+//     * * HTML to be shown in hovers over cells in the column described by this field.
+//     *
+//     * @param hoverCustomizer the hover customizer
+//     */
+//    public native void setHoverCustomizer(HoverCustomizer hoverCustomizer) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.hoverHTML = $debox($entry(function(record, value, rowNum, colNum, grid) {
+//            var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);            
+//            var valueJ = $wnd.SmartGWT.convertToJavaType(value);
+//            return hoverCustomizer.@com.smartgwt.client.widgets.grid.HoverCustomizer::hoverHTML(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;II)(valueJ, recordJ, rowNum, colNum);
+//        }));
+//    }-*/;
 
     /**
      * Horizontal alignment for field's column header: "left", "right" or "center". Applied to the column header title
@@ -3069,56 +3049,56 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
      *
      * @param editorType the editor type
      */
-    public void setEditorType(FormItem editorType) {
-        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
-        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
-            String fiEditorType = editorType.getAttribute("editorType");
-            //fallback to type if editorType is not specified
-            if(fiEditorType == null) fiEditorType = editorType.getType();
-            if (fiEditorType != null) setAttribute("editorType", fiEditorType);
-        }
-        JavaScriptObject editorConfig = editorType.getConfig();
-        setAttribute("editorProperties", editorConfig);
-    }
-
-    /**
-     * If this ListGrid is showing a filter row, this property can be used to specify the form item class to use
-     * for the filter form item associated with this field (Only used if this field is not canFilter:false).
-     * <br>
-     * <p/>
-     * <b>Note</b>: If this is not specified, the edit-form item type may be derived from the 'editorType' property,
-     * typically inherited from datasource fields, or from the 'type' of the field (showing the appropriate form item for the data-type).
-     *
-     * @param filterEditorType the filter editor type
-     */
-    public void setFilterEditorType(FormItem filterEditorType) {
-        String type = filterEditorType.getAttribute("editorType");
-        if (type == null) type = filterEditorType.getType();
-        setAttribute("filterEditorType", type);
-        JavaScriptObject editorConfig = filterEditorType.getConfig();
-        setAttribute("filterEditorProperties", editorConfig);
-    }
-
-    /**
-     * If this ListGrid is showing a filter row (showFilterEditor : true), this property can be used to specify properties for the
-     * appropriate filter form item.
-     *
-     * @param filterEditorProperties the filter editor properties
-     */
-    public void setFilterEditorProperties(FormItem filterEditorProperties) {
-        JavaScriptObject editorConfig = filterEditorProperties.getConfig();
-        setAttribute("filterEditorProperties", editorConfig);
-    }
-
-    /**
-     * If this listGrid is showing a filter row, this property can be used to specify a mapping of internal data to/from display
-     * values to be in the appropriate filter row form item.
-     *
-     * @param filterEditorValueMap the filter editor value map
-     */
-    public void setFilterEditorValueMap(Map filterEditorValueMap) {
-        setAttribute("filterEditorValueMap", filterEditorValueMap);
-    }
+//    public void setEditorType(FormItem editorType) {
+//        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
+//        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
+//            String fiEditorType = editorType.getAttribute("editorType");
+//            //fallback to type if editorType is not specified
+//            if(fiEditorType == null) fiEditorType = editorType.getType();
+//            if (fiEditorType != null) setAttribute("editorType", fiEditorType);
+//        }
+//        JavaScriptObject editorConfig = editorType.getConfig();
+//        setAttribute("editorProperties", editorConfig);
+//    }
+//
+//    /**
+//     * If this ListGrid is showing a filter row, this property can be used to specify the form item class to use
+//     * for the filter form item associated with this field (Only used if this field is not canFilter:false).
+//     * <br>
+//     * <p/>
+//     * <b>Note</b>: If this is not specified, the edit-form item type may be derived from the 'editorType' property,
+//     * typically inherited from datasource fields, or from the 'type' of the field (showing the appropriate form item for the data-type).
+//     *
+//     * @param filterEditorType the filter editor type
+//     */
+//    public void setFilterEditorType(FormItem filterEditorType) {
+//        String type = filterEditorType.getAttribute("editorType");
+//        if (type == null) type = filterEditorType.getType();
+//        setAttribute("filterEditorType", type);
+//        JavaScriptObject editorConfig = filterEditorType.getConfig();
+//        setAttribute("filterEditorProperties", editorConfig);
+//    }
+//
+//    /**
+//     * If this ListGrid is showing a filter row (showFilterEditor : true), this property can be used to specify properties for the
+//     * appropriate filter form item.
+//     *
+//     * @param filterEditorProperties the filter editor properties
+//     */
+//    public void setFilterEditorProperties(FormItem filterEditorProperties) {
+//        JavaScriptObject editorConfig = filterEditorProperties.getConfig();
+//        setAttribute("filterEditorProperties", editorConfig);
+//    }
+//
+//    /**
+//     * If this listGrid is showing a filter row, this property can be used to specify a mapping of internal data to/from display
+//     * values to be in the appropriate filter row form item.
+//     *
+//     * @param filterEditorValueMap the filter editor value map
+//     */
+//    public void setFilterEditorValueMap(Map filterEditorValueMap) {
+//        setAttribute("filterEditorValueMap", filterEditorValueMap);
+//    }
 
     /**
      * When using a valueMap, set multiple to true if a select list box is desired instead of a combobox when editing the cell.
@@ -3149,9 +3129,9 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
      *
      * @param validators validators Default value is null
      */
-    public void setValidators(Validator... validators) {
-        setAttribute("validators", validators);
-    }
+//    public void setValidators(Validator... validators) {
+//        setAttribute("validators", validators);
+//    }
 
     /**
      * Array of legal values for this field, or an Object where each property maps a stored value to a user-displayable
@@ -3241,220 +3221,220 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
 //        setAttribute("optionDataSource", optionDataSource.getID());
 //    }
 
-    /**
-     * A function, if provided, is evaluated to conditionally determine whether this field should be displayed. Evaluated on initial draw,
-     * then reevaluated on explicit calls to listGrid.refreshFields() or listGrid.setFields().
-     * <p/>
-     * Use 'showIf:"false"' to set a ListGrid field to initially hidden.
-     * <p/>
-     * Note that explicit calls to grid.showField() or hideField() will wipe out the showIf expression, as will the end
-     * user showing and hiding columns via the header contextMenu.
-     * <p/>
-     * Also note that fields marked as detail:true will be hidden by default even if ListGrid.showDetailFields is true. To show detail fields inherited from a DataSource, include an explicit field definition for the field and set this property to return true.
-     *
-     * @param showIf showIf criteria
-     */
-    public native void setShowIfCondition(ListGridFieldIfFunction showIf) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.showIf = $debox($entry(function(grid, field, fieldNum) {
-            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
-            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);        
-            return showIf.@com.smartgwt.client.widgets.grid.ListGridFieldIfFunction::execute(Lcom/smartgwt/client/widgets/grid/ListGrid;Lcom/smartgwt/client/widgets/grid/ListGridField;I)(gridJ, fieldJ, fieldNum);
-        }));
-    }-*/;
-
-    /**
-     * Specifies the default sorting direction for this column. If specified on the {@link com.smartgwt.client.widgets.grid.ListGrid#getSortField sortField} for the listGrid, sorting occurs automatically, otherwise this will be the default direction when the user clicks the field header, or calls {@link com.smartgwt.client.widgets.grid.ListGrid#sort} without specifying an explicit sort direction. <P> Overrides ListGrid.sortDirection
-     *
-     * @param sortDirection sortDirection Default value is null
-     */
-    public void setSortDirection(SortDirection sortDirection) {
-        if (sortDirection == null) {
-            setAttribute("sortDirection", (Boolean) null);
-        } else {
-            setAttribute("sortDirection", sortDirection == SortDirection.ASCENDING);
-        }
-    }
-
-    /**
-     * Specifies the default sorting direction for this column. If specified on the {@link com.smartgwt.client.widgets.grid.ListGrid#getSortField sortField} for the listGrid, sorting occurs automatically, otherwise this will be the default direction when the user clicks the field header, or calls {@link com.smartgwt.client.widgets.grid.ListGrid#sort} without specifying an explicit sort direction. <P> Overrides ListGrid.sortDirection
-     *
-     * @return SortDirection
-     */
-    public SortDirection getSortDirection() {
-        Boolean sortDir = getAttributeAsBoolean("sortDirection");
-        if (sortDir == null) return null;
-        return sortDir ? SortDirection.ASCENDING : SortDirection.DESCENDING;
-    }
-
-    /**
-     * If this field has an optionDataSource specified and &#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getAutoFetchDisplayMap autoFetchDisplayMap} is set, this attribute&#010 provides a way to customize the dataSource request issued to fetch the display map from&#010 the option dataSource.
-     *
-     * @param optionFilterContext optionFilterContext Default value is null
-     */
-    public void setOptionFilterContext(DSRequest optionFilterContext) {
-        setAttribute("optionFilterContext", optionFilterContext);
-    }
-
-    /**
-     * If this field has an optionDataSource specified and &#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getAutoFetchDisplayMap autoFetchDisplayMap} is set, this attribute&#010 provides a way to customize the dataSource request issued to fetch the display map from&#010 the option dataSource.
-     *
-     * @return DSRequest Properties
-     */
-    public DSRequest getOptionFilterContext() {
-        JavaScriptObject jsObj = getAttributeAsJavaScriptObject("optionFilterContext");
-        return jsObj == null ? null : new DSRequest(jsObj);
-    }
-
-    /**
-     * Add a cellSaved handler.
-     * <p/>
-     * Callback fired when field changes value as the result of a cell edit.  Fired only on&#010  successful save of edit, when the new value doesn't match the value before editing.<br>&#010  <p>&#010  Same signature as {@link com.smartgwt.client.widgets.grid.ListGrid#addCellChangedHandler}, but defined on a per-field basis.&#010&#010
-     *
-     * @param handler the cellSaved handler
-     * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addCellSavedHandler(com.smartgwt.client.widgets.grid.events.CellSavedHandler handler) {
-        if (getHandlerCount(com.smartgwt.client.widgets.grid.events.CellSavedEvent.getType()) == 0)
-            setupCellSavedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.CellSavedEvent.getType());
-    }
-
-    private native void setupCellSavedEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.cellChanged = $debox($entry(function(){
-                var param = {"record" : arguments[0], "newValue" : arguments[1], "oldValue" : arguments[2], "rowNum" : arguments[3], "colNum" : arguments[4]};
-                var event = @com.smartgwt.client.widgets.grid.events.CellSavedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-            }));
-    }-*/;
-
-    /**
-     * Add a change handler.
-     * <p>
-     * If this field is editable, any {@link com.smartgwt.client.widgets.form.fields.FormItem#addChangeHandler change} handler
-     * specified on the ListGridField will be passed onto the editors for this field. <P> Note that if {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#getCanToggle canToggle} is true, the user may change the value of a
-     * boolean field without going into edit mode by single clicking on the field. In this  case the {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#addChangeHandler ListGridField.change} and {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#addChangedHandler ListGridField.changed} handlers will fire but the
-     * <code>form</code> and <code>item</code> parameters will be null.
-     *
-     * @param handler the change handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addChangeHandler(com.smartgwt.client.widgets.grid.events.ChangeHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.ChangeEvent.getType()) == 0) setupChangeEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.ChangeEvent.getType());
-    }
-
-    private native void setupChangeEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.change = $debox($entry(function(){
-                var param = {"form" : arguments[0], "item" : arguments[1], "value" : arguments[2], "oldValue" : arguments[3], "sourceJSO" : this};
-                var event = @com.smartgwt.client.widgets.grid.events.ChangeEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
-                return !ret;
-            }));
-   }-*/;
-    /**
-     * Add a changed handler.
-     * <p>
-     * If this field is editable, any {@link com.smartgwt.client.widgets.form.fields.FormItem#addChangedHandler changed}
-     * handler specified on the ListGridField will be passed onto the editors for this field. Note that if {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#getCanToggle canToggle} is true, the user may change the value of a
-     * boolean field without going into edit mode by single clicking on the field. In this  case the {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#addChangeHandler ListGridField.change} and {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#addChangedHandler ListGridField.changed} handlers will fire but the
-     * <code>form</code> and <code>item</code> parameters will be null.
-     *
-     * @param handler the changed handler
-     * @return {@link HandlerRegistration} used to remove this handler
-     */
-    public HandlerRegistration addChangedHandler(com.smartgwt.client.widgets.grid.events.ChangedHandler handler) {
-        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.ChangedEvent.getType()) == 0) setupChangedEvent();
-        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.ChangedEvent.getType());
-    }
-
-    private native void setupChangedEvent() /*-{
-        var obj = null;
-            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-            var selfJ = this;
-            obj.changed = $entry(function(){
-                var param = {"form" : arguments[0], "item" : arguments[1], "value" : arguments[2], "sourceJSO" : this};
-                var event = @com.smartgwt.client.widgets.grid.events.ChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-            });
-   }-*/;
-
-    /**
-     * Renderer that returns the title that should be shown to the user for the group with the groupValue passed as a parameter.
-     * <p/>
-     * Default title is the groupValue itself.
-     *
-     * @param groupTitleRenderer the group title renderer
-     */
-    public native void setGroupTitleRenderer(GroupTitleRenderer groupTitleRenderer) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.getGroupTitle = $debox($entry(function(groupValue, groupNode, field, fieldName, grid) {
-            var groupValueJ =  $wnd.SmartGWT.convertToJavaType(groupValue);
-            var groupNodeJ = @com.smartgwt.client.widgets.grid.GroupNode::new(Lcom/google/gwt/core/client/JavaScriptObject;)(groupNode);
-            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
-            return groupTitleRenderer.@com.smartgwt.client.widgets.grid.GroupTitleRenderer::getGroupTitle(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/GroupNode;Lcom/smartgwt/client/widgets/grid/ListGridField;Ljava/lang/String;Lcom/smartgwt/client/widgets/grid/ListGrid;)(groupValueJ, groupNodeJ, fieldJ, fieldName, gridJ);
-        }));
-    }-*/;
-
-    /**
-     * Function that returns the value which records should be grouped by.
-     * <p/>
-     * All records that for which getGroupValue() returns the same value appear in the same group. Default is the result
-     * of ListGrid.getCellValue().
-     * <p/>
-     * While any type of value may be returned, avoiding the use of string values may result in improved performance.
-     * In this case, {@link GroupTitleRenderer#getGroupTitle(Object, GroupNode, ListGridField, String, ListGrid)}  may be implemented to map a numeric group value into a
-     * legible string.
-     *
-     * @param groupValueFunction the group value function
-     */
-    public native void setGroupValueFunction(GroupValueFunction groupValueFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.getGroupValue = $debox($entry(function(value, record, field, fieldName, grid) {
-            var valueJ =  $wnd.SmartGWT.convertToJavaType(value);
-            var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
-            var val = groupValueFunction.@com.smartgwt.client.widgets.grid.GroupValueFunction::getGroupValue(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;Lcom/smartgwt/client/widgets/grid/ListGridField;Ljava/lang/String;Lcom/smartgwt/client/widgets/grid/ListGrid;)(valueJ, recordJ, fieldJ, fieldName, gridJ);
-            return $wnd.SmartGWT.convertToPrimitiveType(val);
-        }));
-    }-*/;
-
-    /**
-     * This function method will be called from ListGrid.getEditorValueMap() and the resulting valueMap will be used instead of any static specified valueMap for the field.
-     *
-     * @param editorValueMapFunction the editor value map function
-     */
-    public native void setEditorValueMapFunction(EditorValueMapFunction editorValueMapFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.getEditorValueMap = $entry(function(values, field, grid) {
-            var valuesJ =  @com.smartgwt.client.util.JSOHelper::convertToMap(Lcom/google/gwt/core/client/JavaScriptObject;)(values);
-            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
-            var map = editorValueMapFunction.@com.smartgwt.client.widgets.grid.EditorValueMapFunction::getEditorValueMap(Ljava/util/Map;Lcom/smartgwt/client/widgets/grid/ListGridField;Lcom/smartgwt/client/widgets/grid/ListGrid;)(valuesJ, fieldJ, gridJ);
-            return @com.smartgwt.client.util.JSOHelper::convertMapToJavascriptObject(Ljava/util/Map;)(map);
-        });
-    }-*/;
-
-    /**
-     * Set the properties of the header button used for this field.
-     *
-     * @param buttonProperties the header button properties
-     */
+//    /**
+//     * A function, if provided, is evaluated to conditionally determine whether this field should be displayed. Evaluated on initial draw,
+//     * then reevaluated on explicit calls to listGrid.refreshFields() or listGrid.setFields().
+//     * <p/>
+//     * Use 'showIf:"false"' to set a ListGrid field to initially hidden.
+//     * <p/>
+//     * Note that explicit calls to grid.showField() or hideField() will wipe out the showIf expression, as will the end
+//     * user showing and hiding columns via the header contextMenu.
+//     * <p/>
+//     * Also note that fields marked as detail:true will be hidden by default even if ListGrid.showDetailFields is true. To show detail fields inherited from a DataSource, include an explicit field definition for the field and set this property to return true.
+//     *
+//     * @param showIf showIf criteria
+//     */
+//    public native void setShowIfCondition(ListGridFieldIfFunction showIf) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.showIf = $debox($entry(function(grid, field, fieldNum) {
+//            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
+//            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);        
+//            return showIf.@com.smartgwt.client.widgets.grid.ListGridFieldIfFunction::execute(Lcom/smartgwt/client/widgets/grid/ListGrid;Lcom/smartgwt/client/widgets/grid/ListGridField;I)(gridJ, fieldJ, fieldNum);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Specifies the default sorting direction for this column. If specified on the {@link com.smartgwt.client.widgets.grid.ListGrid#getSortField sortField} for the listGrid, sorting occurs automatically, otherwise this will be the default direction when the user clicks the field header, or calls {@link com.smartgwt.client.widgets.grid.ListGrid#sort} without specifying an explicit sort direction. <P> Overrides ListGrid.sortDirection
+//     *
+//     * @param sortDirection sortDirection Default value is null
+//     */
+//    public void setSortDirection(SortDirection sortDirection) {
+//        if (sortDirection == null) {
+//            setAttribute("sortDirection", (Boolean) null);
+//        } else {
+//            setAttribute("sortDirection", sortDirection == SortDirection.ASCENDING);
+//        }
+//    }
+//
+//    /**
+//     * Specifies the default sorting direction for this column. If specified on the {@link com.smartgwt.client.widgets.grid.ListGrid#getSortField sortField} for the listGrid, sorting occurs automatically, otherwise this will be the default direction when the user clicks the field header, or calls {@link com.smartgwt.client.widgets.grid.ListGrid#sort} without specifying an explicit sort direction. <P> Overrides ListGrid.sortDirection
+//     *
+//     * @return SortDirection
+//     */
+//    public SortDirection getSortDirection() {
+//        Boolean sortDir = getAttributeAsBoolean("sortDirection");
+//        if (sortDir == null) return null;
+//        return sortDir ? SortDirection.ASCENDING : SortDirection.DESCENDING;
+//    }
+//
+//    /**
+//     * If this field has an optionDataSource specified and &#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getAutoFetchDisplayMap autoFetchDisplayMap} is set, this attribute&#010 provides a way to customize the dataSource request issued to fetch the display map from&#010 the option dataSource.
+//     *
+//     * @param optionFilterContext optionFilterContext Default value is null
+//     */
+//    public void setOptionFilterContext(DSRequest optionFilterContext) {
+//        setAttribute("optionFilterContext", optionFilterContext);
+//    }
+//
+//    /**
+//     * If this field has an optionDataSource specified and &#010 {@link com.smartgwt.client.widgets.grid.ListGridField#getAutoFetchDisplayMap autoFetchDisplayMap} is set, this attribute&#010 provides a way to customize the dataSource request issued to fetch the display map from&#010 the option dataSource.
+//     *
+//     * @return DSRequest Properties
+//     */
+//    public DSRequest getOptionFilterContext() {
+//        JavaScriptObject jsObj = getAttributeAsJavaScriptObject("optionFilterContext");
+//        return jsObj == null ? null : new DSRequest(jsObj);
+//    }
+//
+//    /**
+//     * Add a cellSaved handler.
+//     * <p/>
+//     * Callback fired when field changes value as the result of a cell edit.  Fired only on&#010  successful save of edit, when the new value doesn't match the value before editing.<br>&#010  <p>&#010  Same signature as {@link com.smartgwt.client.widgets.grid.ListGrid#addCellChangedHandler}, but defined on a per-field basis.&#010&#010
+//     *
+//     * @param handler the cellSaved handler
+//     * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addCellSavedHandler(com.smartgwt.client.widgets.grid.events.CellSavedHandler handler) {
+//        if (getHandlerCount(com.smartgwt.client.widgets.grid.events.CellSavedEvent.getType()) == 0)
+//            setupCellSavedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.CellSavedEvent.getType());
+//    }
+//
+//    private native void setupCellSavedEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.cellChanged = $debox($entry(function(){
+//                var param = {"record" : arguments[0], "newValue" : arguments[1], "oldValue" : arguments[2], "rowNum" : arguments[3], "colNum" : arguments[4]};
+//                var event = @com.smartgwt.client.widgets.grid.events.CellSavedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//            }));
+//    }-*/;
+//
+//    /**
+//     * Add a change handler.
+//     * <p>
+//     * If this field is editable, any {@link com.smartgwt.client.widgets.form.fields.FormItem#addChangeHandler change} handler
+//     * specified on the ListGridField will be passed onto the editors for this field. <P> Note that if {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#getCanToggle canToggle} is true, the user may change the value of a
+//     * boolean field without going into edit mode by single clicking on the field. In this  case the {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#addChangeHandler ListGridField.change} and {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#addChangedHandler ListGridField.changed} handlers will fire but the
+//     * <code>form</code> and <code>item</code> parameters will be null.
+//     *
+//     * @param handler the change handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addChangeHandler(com.smartgwt.client.widgets.grid.events.ChangeHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.ChangeEvent.getType()) == 0) setupChangeEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.ChangeEvent.getType());
+//    }
+//
+//    private native void setupChangeEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.change = $debox($entry(function(){
+//                var param = {"form" : arguments[0], "item" : arguments[1], "value" : arguments[2], "oldValue" : arguments[3], "sourceJSO" : this};
+//                var event = @com.smartgwt.client.widgets.grid.events.ChangeEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//                var ret = event.@com.smartgwt.client.event.Cancellable::isCancelled()();
+//                return !ret;
+//            }));
+//   }-*/;
+//    /**
+//     * Add a changed handler.
+//     * <p>
+//     * If this field is editable, any {@link com.smartgwt.client.widgets.form.fields.FormItem#addChangedHandler changed}
+//     * handler specified on the ListGridField will be passed onto the editors for this field. Note that if {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#getCanToggle canToggle} is true, the user may change the value of a
+//     * boolean field without going into edit mode by single clicking on the field. In this  case the {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#addChangeHandler ListGridField.change} and {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#addChangedHandler ListGridField.changed} handlers will fire but the
+//     * <code>form</code> and <code>item</code> parameters will be null.
+//     *
+//     * @param handler the changed handler
+//     * @return {@link HandlerRegistration} used to remove this handler
+//     */
+//    public HandlerRegistration addChangedHandler(com.smartgwt.client.widgets.grid.events.ChangedHandler handler) {
+//        if(getHandlerCount(com.smartgwt.client.widgets.grid.events.ChangedEvent.getType()) == 0) setupChangedEvent();
+//        return doAddHandler(handler, com.smartgwt.client.widgets.grid.events.ChangedEvent.getType());
+//    }
+//
+//    private native void setupChangedEvent() /*-{
+//        var obj = null;
+//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//            var selfJ = this;
+//            obj.changed = $entry(function(){
+//                var param = {"form" : arguments[0], "item" : arguments[1], "value" : arguments[2], "sourceJSO" : this};
+//                var event = @com.smartgwt.client.widgets.grid.events.ChangedEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
+//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
+//            });
+//   }-*/;
+//
+//    /**
+//     * Renderer that returns the title that should be shown to the user for the group with the groupValue passed as a parameter.
+//     * <p/>
+//     * Default title is the groupValue itself.
+//     *
+//     * @param groupTitleRenderer the group title renderer
+//     */
+//    public native void setGroupTitleRenderer(GroupTitleRenderer groupTitleRenderer) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.getGroupTitle = $debox($entry(function(groupValue, groupNode, field, fieldName, grid) {
+//            var groupValueJ =  $wnd.SmartGWT.convertToJavaType(groupValue);
+//            var groupNodeJ = @com.smartgwt.client.widgets.grid.GroupNode::new(Lcom/google/gwt/core/client/JavaScriptObject;)(groupNode);
+//            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
+//            return groupTitleRenderer.@com.smartgwt.client.widgets.grid.GroupTitleRenderer::getGroupTitle(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/GroupNode;Lcom/smartgwt/client/widgets/grid/ListGridField;Ljava/lang/String;Lcom/smartgwt/client/widgets/grid/ListGrid;)(groupValueJ, groupNodeJ, fieldJ, fieldName, gridJ);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * Function that returns the value which records should be grouped by.
+//     * <p/>
+//     * All records that for which getGroupValue() returns the same value appear in the same group. Default is the result
+//     * of ListGrid.getCellValue().
+//     * <p/>
+//     * While any type of value may be returned, avoiding the use of string values may result in improved performance.
+//     * In this case, {@link GroupTitleRenderer#getGroupTitle(Object, GroupNode, ListGridField, String, ListGrid)}  may be implemented to map a numeric group value into a
+//     * legible string.
+//     *
+//     * @param groupValueFunction the group value function
+//     */
+//    public native void setGroupValueFunction(GroupValueFunction groupValueFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.getGroupValue = $debox($entry(function(value, record, field, fieldName, grid) {
+//            var valueJ =  $wnd.SmartGWT.convertToJavaType(value);
+//            var recordJ = @com.smartgwt.client.widgets.grid.ListGridRecord::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
+//            var val = groupValueFunction.@com.smartgwt.client.widgets.grid.GroupValueFunction::getGroupValue(Ljava/lang/Object;Lcom/smartgwt/client/widgets/grid/ListGridRecord;Lcom/smartgwt/client/widgets/grid/ListGridField;Ljava/lang/String;Lcom/smartgwt/client/widgets/grid/ListGrid;)(valueJ, recordJ, fieldJ, fieldName, gridJ);
+//            return $wnd.SmartGWT.convertToPrimitiveType(val);
+//        }));
+//    }-*/;
+//
+//    /**
+//     * This function method will be called from ListGrid.getEditorValueMap() and the resulting valueMap will be used instead of any static specified valueMap for the field.
+//     *
+//     * @param editorValueMapFunction the editor value map function
+//     */
+//    public native void setEditorValueMapFunction(EditorValueMapFunction editorValueMapFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.getEditorValueMap = $entry(function(values, field, grid) {
+//            var valuesJ =  @com.smartgwt.client.util.JSOHelper::convertToMap(Lcom/google/gwt/core/client/JavaScriptObject;)(values);
+//            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//            var gridJ = @com.smartgwt.client.widgets.grid.ListGrid::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(grid);
+//            var map = editorValueMapFunction.@com.smartgwt.client.widgets.grid.EditorValueMapFunction::getEditorValueMap(Ljava/util/Map;Lcom/smartgwt/client/widgets/grid/ListGridField;Lcom/smartgwt/client/widgets/grid/ListGrid;)(valuesJ, fieldJ, gridJ);
+//            return @com.smartgwt.client.util.JSOHelper::convertMapToJavascriptObject(Ljava/util/Map;)(map);
+//        });
+//    }-*/;
+//
+//    /**
+//     * Set the properties of the header button used for this field.
+//     *
+//     * @param buttonProperties the header button properties
+//     */
 //    public void setHeaderButtonProperties(Button buttonProperties) {
 //        buttonProperties.setConfigOnly(true);
 //        JSOHelper.addProperties(getJsObj(), buttonProperties.getConfig());
@@ -3487,102 +3467,102 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
         setAttribute("summaryFunction", summaryFunction);
     }
     
-    /**
-     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
-     * this method can be used to
-     * specify a {@link com.smartgwt.client.widgets.grid#SummaryFunction}
-     * for calculating the summary value to display.
-     *
-     * @param summaryFunction summaryFunctio
-     */
-    public native void setSummaryFunction(SummaryFunction summaryFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        if (summaryFunction == null) self.summaryFunction = null;
-        else {
-            
-            self.summaryFunction = $debox($entry(function(records, field) {
-                var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
-                var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-                var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
-                if(val == null || $wnd.isc.isA.String(val) || $wnd.isc.isA.Number(val)) return val;
-                if(@com.smartgwt.client.util.JSOHelper::isJavaNumber(Ljava/lang/Object;)(val)) return val.@java.lang.Number::doubleValue()();
-                if(@com.smartgwt.client.util.JSOHelper::isJavaDate(Ljava/lang/Object;)(val)) return @com.smartgwt.client.util.JSOHelper::convertToJavaScriptDate(Ljava/util/Date;)(val);
-                $wnd.isc.logWarn('Unrecognized type of value ' + val + ' returned by the summaryFunction');
-            }));
-        }
-    }-*/;
-
-    /**
-     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
-     * this method can be used to specify a {@link com.smartgwt.client.widgets.grid#SummaryFunction}
-     * for calculating the summary value to display.
-     * Note that by calling this method repeatedly, you can apply more than one summary function to a field. This allows
-     * the developer to set up multi-line summaries - each specified summary function result will show up in a separate
-     * summary row (either at the bottom of the grid or at the end of each group).
-     * <P>
-     * Note also that multiple-line summary functions are not compatible with the
-     * {@link com.smartgwt.client.widgets.grid#setShowGroupSummaryInHeader()} feature. If this property is set only the
-     * first summary value will be visible to the user (displayed in the group header node).
-     *
-     * @param summaryFunction
-     */
-    public native void addSummaryFunction(SummaryFunction summaryFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        if (self.summaryFunction == null) {
-            self.summaryFunction = new $wnd.Array(self.summaryFunction);
-        } else if (!$wnd.isc.isAn.Array(self.summaryFunction)) {
-            self.summaryFunction = new $wnd.Array(self.summaryFunction);
-        }
-        // support being passed null - this will allow multi line summaries with gaps in some rows for some fields.
-        if (summaryFunction == null) {
-            self.summaryFunction[self.summaryFunction.length] = null;
-        } else {
-            self.summaryFunction[self.summaryFunction.length] = $debox($entry(function(records, field) {
-                var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
-                var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);            
-                var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
-                if(val == null || $wnd.isc.isA.String(val) || $wnd.isc.isA.Number(val)) return val;
-                if(@com.smartgwt.client.util.JSOHelper::isJavaNumber(Ljava/lang/Object;)(val)) return val.@java.lang.Number::doubleValue()();
-                if(@com.smartgwt.client.util.JSOHelper::isJavaDate(Ljava/lang/Object;)(val)) return @com.smartgwt.client.util.JSOHelper::convertToJavaScriptDate(Ljava/util/Date;)(val);
-                $wnd.isc.logWarn('Unrecognized type of value ' + val + ' returned by the summaryFunction');
-            }));
-        }
-    }-*/;
-    
-    /**
-     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
-     * this method can be used to specify a {@link com.smartgwt.client.types#SummaryFunctionType}
-     * for calculating the summary value to display.
-     * Note that by calling this method repeatedly, you can apply more than one summary function to a field. This allows
-     * the developer to set up multi-line summaries - each specified summary function result will show up in a separate
-     * summary row (either at the bottom of the grid or at the end of each group).
-     * <P>
-     * Note also that multiple-line summary functions are not compatible with the
-     * {@link com.smartgwt.client.widgets.grid#setShowGroupSummaryInHeader()} feature. If this property is set only the
-     * first summary value will be visible to the user (displayed in the group header node).
-     *
-     * @param summaryFunction
-     */
-    public native void addSummaryFunction(SummaryFunctionType summaryFunction) /*-{
-    
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-
-        if (self.summaryFunction == null) {
-            self.summaryFunction = new $wnd.Array(self.summaryFunction);
-        } else if (!$wnd.isc.isAn.Array(self.summaryFunction)) {
-            self.summaryFunction = new $wnd.Array(self.summaryFunction);
-        }
-        // support being passed null - this will allow multi line summaries with gaps in some rows for some fields.
-        if (summaryFunction == null) {
-            self.summaryFunction[self.summaryFunction.length] = null;
-        } else {
-            self.summaryFunction[self.summaryFunction.length] = summaryFunction.@com.smartgwt.client.types.SummaryFunctionType::value;
-        }
-
-    }-*/;
+//    /**
+//     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
+//     * this method can be used to
+//     * specify a {@link com.smartgwt.client.widgets.grid#SummaryFunction}
+//     * for calculating the summary value to display.
+//     *
+//     * @param summaryFunction summaryFunctio
+//     */
+//    public native void setSummaryFunction(SummaryFunction summaryFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        if (summaryFunction == null) self.summaryFunction = null;
+//        else {
+//            
+//            self.summaryFunction = $debox($entry(function(records, field) {
+//                var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
+//                var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//                var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
+//                if(val == null || $wnd.isc.isA.String(val) || $wnd.isc.isA.Number(val)) return val;
+//                if(@com.smartgwt.client.util.JSOHelper::isJavaNumber(Ljava/lang/Object;)(val)) return val.@java.lang.Number::doubleValue()();
+//                if(@com.smartgwt.client.util.JSOHelper::isJavaDate(Ljava/lang/Object;)(val)) return @com.smartgwt.client.util.JSOHelper::convertToJavaScriptDate(Ljava/util/Date;)(val);
+//                $wnd.isc.logWarn('Unrecognized type of value ' + val + ' returned by the summaryFunction');
+//            }));
+//        }
+//    }-*/;
+//
+//    /**
+//     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
+//     * this method can be used to specify a {@link com.smartgwt.client.widgets.grid#SummaryFunction}
+//     * for calculating the summary value to display.
+//     * Note that by calling this method repeatedly, you can apply more than one summary function to a field. This allows
+//     * the developer to set up multi-line summaries - each specified summary function result will show up in a separate
+//     * summary row (either at the bottom of the grid or at the end of each group).
+//     * <P>
+//     * Note also that multiple-line summary functions are not compatible with the
+//     * {@link com.smartgwt.client.widgets.grid#setShowGroupSummaryInHeader()} feature. If this property is set only the
+//     * first summary value will be visible to the user (displayed in the group header node).
+//     *
+//     * @param summaryFunction
+//     */
+//    public native void addSummaryFunction(SummaryFunction summaryFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        if (self.summaryFunction == null) {
+//            self.summaryFunction = new $wnd.Array(self.summaryFunction);
+//        } else if (!$wnd.isc.isAn.Array(self.summaryFunction)) {
+//            self.summaryFunction = new $wnd.Array(self.summaryFunction);
+//        }
+//        // support being passed null - this will allow multi line summaries with gaps in some rows for some fields.
+//        if (summaryFunction == null) {
+//            self.summaryFunction[self.summaryFunction.length] = null;
+//        } else {
+//            self.summaryFunction[self.summaryFunction.length] = $debox($entry(function(records, field) {
+//                var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
+//                var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);            
+//                var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
+//                if(val == null || $wnd.isc.isA.String(val) || $wnd.isc.isA.Number(val)) return val;
+//                if(@com.smartgwt.client.util.JSOHelper::isJavaNumber(Ljava/lang/Object;)(val)) return val.@java.lang.Number::doubleValue()();
+//                if(@com.smartgwt.client.util.JSOHelper::isJavaDate(Ljava/lang/Object;)(val)) return @com.smartgwt.client.util.JSOHelper::convertToJavaScriptDate(Ljava/util/Date;)(val);
+//                $wnd.isc.logWarn('Unrecognized type of value ' + val + ' returned by the summaryFunction');
+//            }));
+//        }
+//    }-*/;
+//    
+//    /**
+//     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, 
+//     * this method can be used to specify a {@link com.smartgwt.client.types#SummaryFunctionType}
+//     * for calculating the summary value to display.
+//     * Note that by calling this method repeatedly, you can apply more than one summary function to a field. This allows
+//     * the developer to set up multi-line summaries - each specified summary function result will show up in a separate
+//     * summary row (either at the bottom of the grid or at the end of each group).
+//     * <P>
+//     * Note also that multiple-line summary functions are not compatible with the
+//     * {@link com.smartgwt.client.widgets.grid#setShowGroupSummaryInHeader()} feature. If this property is set only the
+//     * first summary value will be visible to the user (displayed in the group header node).
+//     *
+//     * @param summaryFunction
+//     */
+//    public native void addSummaryFunction(SummaryFunctionType summaryFunction) /*-{
+//    
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//
+//        if (self.summaryFunction == null) {
+//            self.summaryFunction = new $wnd.Array(self.summaryFunction);
+//        } else if (!$wnd.isc.isAn.Array(self.summaryFunction)) {
+//            self.summaryFunction = new $wnd.Array(self.summaryFunction);
+//        }
+//        // support being passed null - this will allow multi line summaries with gaps in some rows for some fields.
+//        if (summaryFunction == null) {
+//            self.summaryFunction[self.summaryFunction.length] = null;
+//        } else {
+//            self.summaryFunction[self.summaryFunction.length] = summaryFunction.@com.smartgwt.client.types.SummaryFunctionType::value;
+//        }
+//
+//    }-*/;
     
     /**
      * Only applies to fields of type <code>"summary"</code>. Fields of this type will display a calculated value based on the
@@ -3603,31 +3583,31 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
         setAttribute("recordSummaryFunction", recordSummaryFunction.getValue());
     }
 
-    /**
-     * Only applies to fields of type <code>"summary"</code>. Fields of this type will display a calculated value based on the
-     * other field values within the current record. <P> This attribute specifies how the summary field value will be
-     * calculated. See  {@link com.smartgwt.client.types.RecordSummaryFunctionType} for valid options. <P> A subset of the
-     * ListGrid's fields will be passed to the RecordSummaryFunction.  Which fields to include is determined based on {@link
-     * com.smartgwt.client.widgets.grid.ListGridField#getIncludeInRecordSummary includeInRecordSummary} <P> If {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, this field's value in the
-     * summary row[s] will still be calculated by calling this method. In this case, the record object passed in will contain
-     * summary values for each field. If custom handling is required for this case, it may be detected by checking the record
-     * object's {@link com.smartgwt.client.widgets.grid.ListGridRecord#getIsGroupSummary isGroupSummary} and {@link
-     * com.smartgwt.client.widgets.grid.ListGridRecord#getIsGridSummary isGridSummary} attributes.
-     *
-     * @param recordSummaryFunction recordSummaryFunction Default value is null
-     */
-    public native void setRecordSummaryFunction(RecordSummaryFunction recordSummaryFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.recordSummaryFunction = $debox($entry(function(record, fields, summaryField) {
-            var recordJ =  @com.smartgwt.client.data.Record::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
-            var fieldsJ = @com.smartgwt.client.widgets.grid.ListGrid::convertToListGridFieldArray(Lcom/google/gwt/core/client/JavaScriptObject;)(fields);
-            var summaryFieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(summaryField);
-            var val = recordSummaryFunction.@com.smartgwt.client.widgets.grid.RecordSummaryFunction::getSummaryValue(Lcom/smartgwt/client/data/Record;[Lcom/smartgwt/client/widgets/grid/ListGridField;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordJ, fieldsJ, summaryFieldJ);
-            return $wnd.SmartGWT.convertToPrimitiveType(val);
-        }));
-    }-*/;
+//    /**
+//     * Only applies to fields of type <code>"summary"</code>. Fields of this type will display a calculated value based on the
+//     * other field values within the current record. <P> This attribute specifies how the summary field value will be
+//     * calculated. See  {@link com.smartgwt.client.types.RecordSummaryFunctionType} for valid options. <P> A subset of the
+//     * ListGrid's fields will be passed to the RecordSummaryFunction.  Which fields to include is determined based on {@link
+//     * com.smartgwt.client.widgets.grid.ListGridField#getIncludeInRecordSummary includeInRecordSummary} <P> If {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true, this field's value in the
+//     * summary row[s] will still be calculated by calling this method. In this case, the record object passed in will contain
+//     * summary values for each field. If custom handling is required for this case, it may be detected by checking the record
+//     * object's {@link com.smartgwt.client.widgets.grid.ListGridRecord#getIsGroupSummary isGroupSummary} and {@link
+//     * com.smartgwt.client.widgets.grid.ListGridRecord#getIsGridSummary isGridSummary} attributes.
+//     *
+//     * @param recordSummaryFunction recordSummaryFunction Default value is null
+//     */
+//    public native void setRecordSummaryFunction(RecordSummaryFunction recordSummaryFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.recordSummaryFunction = $debox($entry(function(record, fields, summaryField) {
+//            var recordJ =  @com.smartgwt.client.data.Record::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(record);
+//            var fieldsJ = @com.smartgwt.client.widgets.grid.ListGrid::convertToListGridFieldArray(Lcom/google/gwt/core/client/JavaScriptObject;)(fields);
+//            var summaryFieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(summaryField);
+//            var val = recordSummaryFunction.@com.smartgwt.client.widgets.grid.RecordSummaryFunction::getSummaryValue(Lcom/smartgwt/client/data/Record;[Lcom/smartgwt/client/widgets/grid/ListGridField;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordJ, fieldsJ, summaryFieldJ);
+//            return $wnd.SmartGWT.convertToPrimitiveType(val);
+//        }));
+//    }-*/;
 
     /**
      * Only applies to fields of type <code>"summary"</code>. Fields of this type will display a calculated value based on the
@@ -3648,5 +3628,18 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
     public RecordSummaryFunctionType getRecordSummaryFunction()  {
         return EnumUtil.getEnum(RecordSummaryFunctionType.values(), getAttribute("recordSummaryFunction"));
     }
+    
+    // vaadin integration
+    public void setEditorType(FormItem editorType) {
+        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
+        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
+            String fiEditorType = editorType.getAttribute("editorType");
+            //fallback to type if editorType is not specified
+            if(fiEditorType == null) fiEditorType = editorType.getType();
+            if (fiEditorType != null) setAttribute("editorType", fiEditorType);
+        }
+        setAttribute("editorProperties", editorType);
+    }
+
 
 }

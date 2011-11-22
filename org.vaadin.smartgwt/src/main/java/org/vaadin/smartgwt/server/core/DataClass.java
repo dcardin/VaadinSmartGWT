@@ -1,18 +1,6 @@
 package org.vaadin.smartgwt.server.core;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.vaadin.smartgwt.server.BaseWidget;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 /*
  * SmartGWT (GWT for SmartClient)

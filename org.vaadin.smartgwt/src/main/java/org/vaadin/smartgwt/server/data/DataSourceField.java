@@ -13,28 +13,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
+
 package org.vaadin.smartgwt.server.data;
 
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.fields.VDataSourceField;
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.types.DateDisplayFormat;
 import org.vaadin.smartgwt.server.types.FieldType;
 import org.vaadin.smartgwt.server.types.OperatorId;
 import org.vaadin.smartgwt.server.types.SummaryFunctionType;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.smartgwt.client.data.FieldValueExtractor;
-import com.smartgwt.client.util.JSOHelper;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.form.validator.Validator;
-import com.smartgwt.client.widgets.grid.SummaryFunction;
 import com.vaadin.ui.ClientWidget;
-
 
 // @formatter:off
 /**
@@ -1173,9 +1165,9 @@ public class DataSourceField extends Canvas { //DataClass {
      * @see com.smartgwt.client.widgets.form.validator.Validator
      * @see com.smartgwt.client.docs.Validation Validation overview and related methods
      */
-    public void setValidators(Validator... validators) {
-        setAttribute("validators", validators);
-    }
+//    public void setValidators(Validator... validators) {
+//        setAttribute("validators", validators);
+//    }
 
     /**
      * Validators to be applied to this field. <p> Validators are applied whenever there is an attempt to save changes to a
@@ -1187,9 +1179,9 @@ public class DataSourceField extends Canvas { //DataClass {
      * @see com.smartgwt.client.widgets.form.validator.Validator
      * @see com.smartgwt.client.docs.Validation Validation overview and related methods
      */
-    public Validator[] getValidators()  {
-        return Validator.convertToValidatorArray(getAttributeAsJavaScriptObject("validators"));
-    }
+//    public Validator[] getValidators()  {
+//        return Validator.convertToValidatorArray(getAttributeAsJavaScriptObject("validators"));
+//    }
 
     /**
      * List of operators valid on this field.   <P> If not specified, all operators that are valid for the field type are
@@ -1530,89 +1522,89 @@ public class DataSourceField extends Canvas { //DataClass {
     }
 
 
-    /**
-     * Sets the default FormItem to be used whenever this field is edited (whether in a grid, form, or other component).
-     * <P> If unset, a FormItem will be automatically chosen based on the type of the field.
-     * <p><br>
-     * Note: the FormItem passed to setEditorType() is used as a "template" to create a FormItem whenever
-     * a DataBoundComponent needs to show an interface for editing this field.  This means you need to 
-     * follow special rules:
-     * <ol>
-     * <li>In event handler code, you must obtain the current FormItem instance from the provided
-     *   Event object via getItem().  You cannot make method calls via "this" or via implicit instance 
-     *   scope: both "clearValue()" and "this.clearValue()" need to be written as "item.clearValue()" 
-     *   instead (where "item" is the result of event.getItem()).</li>
-     * <li>To store custom instance variables, you must use FormItem.getAttribute()/setAttribute()
-     *   (or their type-specific variants).  You cannot store and retrieve instance variables 
-     *   via "this" - "this.someVariable = 5" will not work.</li>
-     * <li>You may not override superclass methods - your behaviors have to be implemented via event handlers</li>
-     * <li>If you create a custom subclass, the FormItem you receive in an event handler will be of a generic
-     *   type and must be converted before you can call custom methods.  Conversion is done via 
-     *   <code>new MyCustomItem(item.getJsObj());</code> (complete code sample below).<br>
-     *   Note that this conversion does not actually cause creation or rendering of a new 
-     *   widget and is comparable in cost to a typecast.</li>
-     * </ol>
-     * Example code demonstrating using an eventHandler to call a method on custom subclass of TextItem:
-     * <pre>
-     * class MyCustomItem extends TextItem {
-     *      MyCustomItem (JavaScriptObject config) {
-     *      }
-     *      
-     *      MyCustomItem(String name) {
-     *          setInitHandler(new FormItemInitHandler() {
-     *              public void onInit(FormItem item) {
-     *                  // correct
-     *                  new MyCustomItem(item.getJsObj()).customMethod();
-     *                  
-     *                  // incorrect, will throw an error
-     *                  // ((MyCustomItem)item).customMethod();
-     *              }
-     *          }
-     *      }
-     *      
-     *      void customMethod() { ... }
-     *  }
-     *  
-     *  ...
-     *  
-     *  myDataSource.setEditorType(new MyCustomItem("field1"));
-     *  </pre>
-     *
-     * @param editorType editorType Default value is null
-     */
-    public void setEditorType(FormItem editorType) {
-        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
-        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
-            String fiEditorType = editorType.getAttribute("editorType");
-            //fallback to type if editorType is not specified
-            if(fiEditorType == null) fiEditorType = editorType.getType();
-            if (fiEditorType != null) setAttribute("editorType", fiEditorType);
-        }
-        JavaScriptObject editorConfig = editorType.getConfig();
-        setAttribute("editorProperties", editorConfig);
-    }
-
-    /**
-     * 
-     * Sets the default FormItem to be used if this field is marked as 
-     * {@link #setCanEdit,canEdit false} and displayed in an editor component such as a DynamicForm.
-     * <P>
-     * This property may also be specified at the type level by specifying 
-     * {@link SimpleType.setReadOnlyEditorType()}.
-     * 
-     * @param editorType editorType Default value is null
-     */
-    public void setReadOnlyEditorType(FormItem editorType) {
-        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
-        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
-            String fiEditorType = editorType.getAttribute("editorType");
-            //fallback to type if editorType is not specified
-            if(fiEditorType == null) fiEditorType = editorType.getType();
-            if (fiEditorType != null) setAttribute("readOnlyEditorType", fiEditorType);
-        }
-        JavaScriptObject editorConfig = editorType.getConfig();
-        setAttribute("readOnlyEditorProperties", editorConfig);
-    }
+//    /**
+//     * Sets the default FormItem to be used whenever this field is edited (whether in a grid, form, or other component).
+//     * <P> If unset, a FormItem will be automatically chosen based on the type of the field.
+//     * <p><br>
+//     * Note: the FormItem passed to setEditorType() is used as a "template" to create a FormItem whenever
+//     * a DataBoundComponent needs to show an interface for editing this field.  This means you need to 
+//     * follow special rules:
+//     * <ol>
+//     * <li>In event handler code, you must obtain the current FormItem instance from the provided
+//     *   Event object via getItem().  You cannot make method calls via "this" or via implicit instance 
+//     *   scope: both "clearValue()" and "this.clearValue()" need to be written as "item.clearValue()" 
+//     *   instead (where "item" is the result of event.getItem()).</li>
+//     * <li>To store custom instance variables, you must use FormItem.getAttribute()/setAttribute()
+//     *   (or their type-specific variants).  You cannot store and retrieve instance variables 
+//     *   via "this" - "this.someVariable = 5" will not work.</li>
+//     * <li>You may not override superclass methods - your behaviors have to be implemented via event handlers</li>
+//     * <li>If you create a custom subclass, the FormItem you receive in an event handler will be of a generic
+//     *   type and must be converted before you can call custom methods.  Conversion is done via 
+//     *   <code>new MyCustomItem(item.getJsObj());</code> (complete code sample below).<br>
+//     *   Note that this conversion does not actually cause creation or rendering of a new 
+//     *   widget and is comparable in cost to a typecast.</li>
+//     * </ol>
+//     * Example code demonstrating using an eventHandler to call a method on custom subclass of TextItem:
+//     * <pre>
+//     * class MyCustomItem extends TextItem {
+//     *      MyCustomItem (JavaScriptObject config) {
+//     *      }
+//     *      
+//     *      MyCustomItem(String name) {
+//     *          setInitHandler(new FormItemInitHandler() {
+//     *              public void onInit(FormItem item) {
+//     *                  // correct
+//     *                  new MyCustomItem(item.getJsObj()).customMethod();
+//     *                  
+//     *                  // incorrect, will throw an error
+//     *                  // ((MyCustomItem)item).customMethod();
+//     *              }
+//     *          }
+//     *      }
+//     *      
+//     *      void customMethod() { ... }
+//     *  }
+//     *  
+//     *  ...
+//     *  
+//     *  myDataSource.setEditorType(new MyCustomItem("field1"));
+//     *  </pre>
+//     *
+//     * @param editorType editorType Default value is null
+//     */
+//    public void setEditorType(FormItem editorType) {
+//        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
+//        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
+//            String fiEditorType = editorType.getAttribute("editorType");
+//            //fallback to type if editorType is not specified
+//            if(fiEditorType == null) fiEditorType = editorType.getType();
+//            if (fiEditorType != null) setAttribute("editorType", fiEditorType);
+//        }
+//        JavaScriptObject editorConfig = editorType.getConfig();
+//        setAttribute("editorProperties", editorConfig);
+//    }
+//
+//    /**
+//     * 
+//     * Sets the default FormItem to be used if this field is marked as 
+//     * {@link #setCanEdit,canEdit false} and displayed in an editor component such as a DynamicForm.
+//     * <P>
+//     * This property may also be specified at the type level by specifying 
+//     * {@link SimpleType.setReadOnlyEditorType()}.
+//     * 
+//     * @param editorType editorType Default value is null
+//     */
+//    public void setReadOnlyEditorType(FormItem editorType) {
+//        //only set the editorType attribute if the passed editorType is a concrete subclass of FormItem
+//        if(!editorType.getClass().getName().equals(FormItem.class.getName())) {
+//            String fiEditorType = editorType.getAttribute("editorType");
+//            //fallback to type if editorType is not specified
+//            if(fiEditorType == null) fiEditorType = editorType.getType();
+//            if (fiEditorType != null) setAttribute("readOnlyEditorType", fiEditorType);
+//        }
+//        JavaScriptObject editorConfig = editorType.getConfig();
+//        setAttribute("readOnlyEditorProperties", editorConfig);
+//    }
 
     /**
      * For a field that is a foreignKey establishing a tree relationship, what value indicates a root-level node.
@@ -1644,59 +1636,59 @@ public class DataSourceField extends Canvas { //DataClass {
         setAttribute("rootValue", rootValue);
     }
 
-    /**
-     * Function to retrieve the field's value from the XML element or JSON record returned
-     * from a web service. <P> This is an advanced API for use when a {@link com.smartgwt.client.data.DataSourceField#getValueXPath
-     * valueXPath} setting is insufficient to derive a field's value, yet an implementation of {@link
-     * com.smartgwt.client.data.DataSource#transformResponse} is overkill.
-     *
-     * @param extractor the field value extractor
-     */
-    public native void setFieldValueExtractor(FieldValueExtractor extractor) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.getFieldValue = $debox($entry(function(record, value, field, fieldName) {
-            var valueJ =  $wnd.SmartGWT.convertToJavaType(value);
-            var fieldJ = @com.smartgwt.client.data.DataSourceField::new(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-
-            var extractedVal = extractor.@com.smartgwt.client.data.FieldValueExtractor::execute(Ljava/lang/Object;Ljava/lang/Object;Lcom/smartgwt/client/data/DataSourceField;Ljava/lang/String;)(record, valueJ, fieldJ, fieldName);
-            return $wnd.SmartGWT.convertToPrimitiveType(extractedVal);
-
-        }));
-    }-*/;
-
-    /**
-     * The type can also be the another DataSource, which allows you to model nested structures such as XML documents (in fact, XMLTools.loadXMLSchema()
-     * models XML schema in this way). Nested DataSource declarations affect how XML and JSON data is deserialized into JavaScript objects in the
-     * client-side integration pipeline, so that you can load complex XML documents and have them deserialized into a correctly typed JavaScript object model.
-     *
-     * @param dataSource the data source
-     * @deprecated use #setTypeAsDataSource 
-     */
+//    /**
+//     * Function to retrieve the field's value from the XML element or JSON record returned
+//     * from a web service. <P> This is an advanced API for use when a {@link com.smartgwt.client.data.DataSourceField#getValueXPath
+//     * valueXPath} setting is insufficient to derive a field's value, yet an implementation of {@link
+//     * com.smartgwt.client.data.DataSource#transformResponse} is overkill.
+//     *
+//     * @param extractor the field value extractor
+//     */
+//    public native void setFieldValueExtractor(FieldValueExtractor extractor) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.getFieldValue = $debox($entry(function(record, value, field, fieldName) {
+//            var valueJ =  $wnd.SmartGWT.convertToJavaType(value);
+//            var fieldJ = @com.smartgwt.client.data.DataSourceField::new(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//
+//            var extractedVal = extractor.@com.smartgwt.client.data.FieldValueExtractor::execute(Ljava/lang/Object;Ljava/lang/Object;Lcom/smartgwt/client/data/DataSourceField;Ljava/lang/String;)(record, valueJ, fieldJ, fieldName);
+//            return $wnd.SmartGWT.convertToPrimitiveType(extractedVal);
+//
+//        }));
+//    }-*/;
+//
+//    /**
+//     * The type can also be the another DataSource, which allows you to model nested structures such as XML documents (in fact, XMLTools.loadXMLSchema()
+//     * models XML schema in this way). Nested DataSource declarations affect how XML and JSON data is deserialized into JavaScript objects in the
+//     * client-side integration pipeline, so that you can load complex XML documents and have them deserialized into a correctly typed JavaScript object model.
+//     *
+//     * @param dataSource the data source
+//     * @deprecated use #setTypeAsDataSource 
+//     */
 //    public void setType(DataSource dataSource) {
 //        dataSource.getOrCreateJsObj();
 //        setAttribute("type", dataSource.getID());
 //    }
-
-    /**
-     * The type can also be the another DataSource, which allows you to model nested structures such as XML documents (in fact, XMLTools.loadXMLSchema()
-     * models XML schema in this way). Nested DataSource declarations affect how XML and JSON data is deserialized into JavaScript objects in the
-     * client-side integration pipeline, so that you can load complex XML documents and have them deserialized into a correctly typed JavaScript object model.
-     *
-     * @param dataSource the data source
-     */
-    public void setTypeAsDataSource(DataSource dataSource) {
-        dataSource.getOrCreateJsObj();
-        setAttribute("type", dataSource.getID());
-    }
-
-    /**
-     * Return the type of the assigned DataSource
-     *
-     * @return the DataSource
-     */
-    public DataSource getTypeAsDataSource() {
-        return DataSource.get(getAttribute("type"));
-    }
+//
+//    /**
+//     * The type can also be the another DataSource, which allows you to model nested structures such as XML documents (in fact, XMLTools.loadXMLSchema()
+//     * models XML schema in this way). Nested DataSource declarations affect how XML and JSON data is deserialized into JavaScript objects in the
+//     * client-side integration pipeline, so that you can load complex XML documents and have them deserialized into a correctly typed JavaScript object model.
+//     *
+//     * @param dataSource the data source
+//     */
+//    public void setTypeAsDataSource(DataSource dataSource) {
+//        dataSource.getOrCreateJsObj();
+//        setAttribute("type", dataSource.getID());
+//    }
+//
+//    /**
+//     * Return the type of the assigned DataSource
+//     *
+//     * @return the DataSource
+//     */
+//    public DataSource getTypeAsDataSource() {
+//        return DataSource.get(getAttribute("type"));
+//    }
 
 //    public static DataSourceField[] convertToDataSourceFieldArray(JavaScriptObject nativeArray) {
 //        if (nativeArray == null) {
@@ -1752,27 +1744,27 @@ public class DataSourceField extends Canvas { //DataClass {
     }
     
     
-    /**
-     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
-     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true,  this attribute can be used to
-     * specify an explicit {@link com.smartgwt.client.widgets.grid.SummaryFunction} for calculating the summary value to display.
-     *
-     * @param summaryFunction summaryFunction Default value is null
-     */
-    public native void setSummaryFunction(SummaryFunction summaryFunction) /*-{
-        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-        self.summaryFunction = $entry(function(records, field) {
-            var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
-            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
-            var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
-            return $wnd.SmartGWT.convertToPrimitiveType(val);
-        });
-    }-*/;
-
-    private static boolean isDataSourceField(JavaScriptObject jsObj) {
-        Object ref = JSOHelper.getAttributeAsObject(jsObj, SC.REF);
-        return ref != null && ref instanceof DataSourceField;
-    }
+//    /**
+//     * If {@link com.smartgwt.client.widgets.grid.ListGrid#getShowGridSummary showGridSummary} or {@link
+//     * com.smartgwt.client.widgets.grid.ListGrid#getShowGroupSummary showGroupSummary} is true,  this attribute can be used to
+//     * specify an explicit {@link com.smartgwt.client.widgets.grid.SummaryFunction} for calculating the summary value to display.
+//     *
+//     * @param summaryFunction summaryFunction Default value is null
+//     */
+//    public native void setSummaryFunction(SummaryFunction summaryFunction) /*-{
+//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
+//        self.summaryFunction = $entry(function(records, field) {
+//            var recordsJ =  @com.smartgwt.client.data.Record::convertToRecordArray(Lcom/google/gwt/core/client/JavaScriptObject;)(records);
+//            var fieldJ = @com.smartgwt.client.widgets.grid.ListGridField::getOrCreateRef(Lcom/google/gwt/core/client/JavaScriptObject;)(field);
+//            var val = summaryFunction.@com.smartgwt.client.widgets.grid.SummaryFunction::getSummaryValue([Lcom/smartgwt/client/data/Record;Lcom/smartgwt/client/widgets/grid/ListGridField;)(recordsJ, fieldJ);
+//            return $wnd.SmartGWT.convertToPrimitiveType(val);
+//        });
+//    }-*/;
+//
+//    private static boolean isDataSourceField(JavaScriptObject jsObj) {
+//        Object ref = JSOHelper.getAttributeAsObject(jsObj, SC.REF);
+//        return ref != null && ref instanceof DataSourceField;
+//    }
 
     /**
      * Height of the image-content of this field.  If set as a string, represents the name of  another field in the record that

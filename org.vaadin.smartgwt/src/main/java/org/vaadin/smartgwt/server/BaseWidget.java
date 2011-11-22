@@ -1,6 +1,5 @@
 package org.vaadin.smartgwt.server;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,18 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.HasHandlers;
-import com.google.gwt.user.client.Window;
-import com.smartgwt.client.util.JSOHelper;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
@@ -28,7 +15,7 @@ import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.AbstractComponent;
 
 // @formatter:off
-public abstract class BaseWidget extends AbstractComponent implements HasHandlers, Serializable {
+public abstract class BaseWidget extends AbstractComponent { // implements HasHandlers, Serializable {
 //	private Function onRenderFn;
 
 //    static {
@@ -40,7 +27,7 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //    }-*/;
 
 	protected String id;
-    protected JavaScriptObject config = null; // JSOHelper.createObject();
+//    protected JavaScriptObject config = null; // JSOHelper.createObject();
 //    protected boolean isElementSet = false;
     protected String scClassName;
     protected boolean configOnly;
@@ -48,13 +35,13 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
     //event handling code
     //can be removed when GWT issue http://code.google.com/p/google-web-toolkit/issues/detail?id=3378
     //is fixed
-    private HandlerManager manager;
+//    private HandlerManager manager;
 
-    public void fireEvent(GwtEvent<?> event) {
-        if (manager != null) {
-            manager.fireEvent(event);
-        }
-    }
+//    public void fireEvent(GwtEvent<?> event) {
+//        if (manager != null) {
+//            manager.fireEvent(event);
+//        }
+//    }
 
     /**
      * Adds this handler to the widget.
@@ -64,28 +51,28 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
      * @param handler the handler
      * @return {@link HandlerRegistration} used to remove the handler
      */
-    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
-            final H handler, GwtEvent.Type<H> type) {
-        return ensureHandlers().addHandler(type, handler);
-    }
+//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
+//            final H handler, GwtEvent.Type<H> type) {
+//        return ensureHandlers().addHandler(type, handler);
+//    }
 
     /**
      * Ensures the existence of the handler manager.
      *
      * @return the handler manager
      */
-    HandlerManager ensureHandlers() {
-        return manager == null ? manager = new HandlerManager(this)
-                : manager;
-    }
-
-    HandlerManager getManager() {
-        return manager;
-    }
-
-    public int getHandlerCount(GwtEvent.Type<?> type) {
-        return manager == null ? 0 : manager.getHandlerCount(type);
-    }
+//    HandlerManager ensureHandlers() {
+//        return manager == null ? manager = new HandlerManager(this)
+//                : manager;
+//    }
+//
+//    HandlerManager getManager() {
+//        return manager;
+//    }
+//
+//    public int getHandlerCount(GwtEvent.Type<?> type) {
+//        return manager == null ? 0 : manager.getHandlerCount(type);
+//    }
 
     public BaseWidget() {        
 //        String id = SC.generateID(getClass().getName());
@@ -100,9 +87,9 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        setID(id);
 //    }
 
-    public static BaseWidget getRef(JavaScriptObject jsObj) {
-        return jsObj == null ? null : (BaseWidget) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
-    }
+//    public static BaseWidget getRef(JavaScriptObject jsObj) {
+//        return jsObj == null ? null : (BaseWidget) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
+//    }
 
 //    protected void setElement(Element elem) {
 //        super.setElement(elem);
@@ -236,9 +223,9 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        }
 //    }
 
-    public HandlerRegistration addDrawHandler(DrawHandler handler) {
-        return doAddHandler(handler, DrawEvent.getType());
-    }
+//    public HandlerRegistration addDrawHandler(DrawHandler handler) {
+//        return doAddHandler(handler, DrawEvent.getType());
+//    }
 
 //    protected void onDraw() {
 //
@@ -312,9 +299,9 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 //        this.id = id;
 //    }
 
-    public JavaScriptObject getConfig() {
-        return config;
-    }
+//    public JavaScriptObject getConfig() {
+//        return config;
+//    }
 //
 //    public void setConfig(JavaScriptObject config) {
 //        this.config = config;
@@ -578,12 +565,12 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
         }
     }
 
-    protected void error(String message) throws IllegalStateException {
-        if (!GWT.isScript()) {
-            Window.alert("Error :" + message);
-            throw new IllegalStateException(message);
-        }
-    }
+//    protected void error(String message) throws IllegalStateException {
+//        if (!GWT.isScript()) {
+//            Window.alert("Error :" + message);
+//            throw new IllegalStateException(message);
+//        }
+//    }
 
 //    protected void setAttribute(String attribute, String value, boolean allowPostCreate) {
 //        if (!isCreated()) {
@@ -1009,10 +996,10 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 			return (String[]) value;
 	}
 
-	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
-	{
-		throw new IllegalStateException();
-	}
+//	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
+//	{
+//		throw new IllegalStateException();
+//	}
 
 	public <T> T getAttributeAsObject(String attribute)
 	{
@@ -1098,6 +1085,14 @@ public abstract class BaseWidget extends AbstractComponent implements HasHandler
 
 	public BaseWidget getOrCreateJsObj() {
 		return this;
+	}
+
+	public BaseWidget getConfig() {
+        return this;
+    }
+
+	protected void error(String message) throws IllegalStateException {
+		throw new IllegalStateException(message);
 	}
 
 }
