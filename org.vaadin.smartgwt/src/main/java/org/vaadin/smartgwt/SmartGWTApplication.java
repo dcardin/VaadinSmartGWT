@@ -26,14 +26,15 @@ import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
+import org.vaadin.smartgwt.server.toolbar.ToolStrip;
+import org.vaadin.smartgwt.server.toolbar.ToolStripButton;
+import org.vaadin.smartgwt.server.toolbar.ToolStripResizer;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.ListGridEditEvent;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.SelectionType;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.vaadin.Application;
 import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Window;
@@ -92,10 +93,55 @@ public class SmartGWTApplication extends Application
 
 	private Canvas getEditableListGrid()
 	{
+		VLayout surrounding = new VLayout();
+		surrounding.setSizeFull();
+		
+		ToolStrip toolStrip = new ToolStrip();
+		toolStrip.setWidth100();
+		
+        ToolStripButton boldButton = new ToolStripButton();  
+        boldButton.setIcon("[SKIN]/RichTextEditor/text_bold.png");  
+        boldButton.setActionType(SelectionType.CHECKBOX);  
+        toolStrip.addButton(boldButton);  
+        
+        toolStrip.addResizer();
+        ToolStripButton italicsButton = new ToolStripButton();  
+        italicsButton.setIcon("[SKIN]/RichTextEditor/text_italic.png");  
+        italicsButton.setActionType(SelectionType.CHECKBOX);  
+        toolStrip.addButton(italicsButton);  
+          
+        ToolStripButton underlineButton = new ToolStripButton();  
+        underlineButton.setIcon("[SKIN]/RichTextEditor/text_underline.png");  
+        underlineButton.setActionType(SelectionType.CHECKBOX);  
+        toolStrip.addButton(underlineButton);  
+  
+        toolStrip.addSeparator();  
+          
+        ToolStripButton alignLeftButton = new ToolStripButton();  
+        alignLeftButton.setIcon("[SKIN]/RichTextEditor/text_align_left.png");  
+        alignLeftButton.setActionType(SelectionType.RADIO);  
+        alignLeftButton.setRadioGroup("textAlign");  
+        toolStrip.addButton(alignLeftButton);  
+          
+        ToolStripButton alignRightButton = new ToolStripButton();  
+        alignRightButton.setIcon("[SKIN]/RichTextEditor/text_align_right.png");  
+        alignRightButton.setActionType(SelectionType.RADIO);  
+        alignRightButton.setRadioGroup("textAlign");  
+        toolStrip.addButton(alignRightButton);  
+          
+        ToolStripButton alignCenterButton = new ToolStripButton();  
+        alignCenterButton.setIcon("[SKIN]/RichTextEditor/text_align_center.png");  
+        alignCenterButton.setActionType(SelectionType.RADIO);  
+        alignCenterButton.setRadioGroup("textAlign");  
+        toolStrip.addButton(alignCenterButton);  
+  
+        toolStrip.addSeparator();  
+		
 		HLayout layout = new HLayout();
 		layout.setSizeFull();
 		
         final ListGrid countryGrid = new ListGrid();  
+        countryGrid.setMargin(5);
         countryGrid.setWidth(550);  
         countryGrid.setHeight(224);  
         countryGrid.setShowAllRecords(true);  
@@ -125,8 +171,10 @@ public class SmartGWTApplication extends Application
         countryGrid.setEditByCell(true);  
         
         layout.addMember(countryGrid);
+        surrounding.addMember(toolStrip);
+        surrounding.addMember(layout);
         
-        return layout;
+        return surrounding;
 	}
 
 	@ClientWidget(value=VLabel.class)
@@ -394,7 +442,7 @@ public class SmartGWTApplication extends Application
 	public VLayout getSpecial()
 	{
 		VLayout vlayout = new VLayout();
-		vlayout.setMargin(10);
+		vlayout.setMargin(15);
 		vlayout.setWidth("100%");
 		vlayout.setMembersMargin(30);
 

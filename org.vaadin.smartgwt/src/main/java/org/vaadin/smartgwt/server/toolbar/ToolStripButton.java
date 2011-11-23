@@ -1,8 +1,7 @@
 package org.vaadin.smartgwt.server.toolbar;
 
+import org.vaadin.smartgwt.client.ui.toolbar.VToolStripButton;
 import org.vaadin.smartgwt.server.StretchImgButton;
-
-
 
 /**
  * Simple button subclass of StretchImgButton with appearance appropriate for a ToolStrip button.
@@ -11,6 +10,7 @@ import org.vaadin.smartgwt.server.StretchImgButton;
  *
  * @see ToolStrip#addButton(ToolStripButton)
  */
+@com.vaadin.ui.ClientWidget(VToolStripButton.class)
 public class ToolStripButton extends StretchImgButton {
 
 //    public static ToolStripButton getOrCreateRef(JavaScriptObject jsObj) {

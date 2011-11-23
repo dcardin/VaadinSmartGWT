@@ -1,11 +1,13 @@
 package org.vaadin.smartgwt.server.toolbar;
 
+import org.vaadin.smartgwt.client.ui.toolbar.VToolStrip;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.LayoutSpacer;
 
+@com.vaadin.ui.ClientWidget(VToolStrip.class)
 public class ToolStrip extends Layout
 {
 

@@ -1,6 +1,9 @@
 package org.vaadin.smartgwt.server.toolbar;
 
+import org.vaadin.smartgwt.client.ui.toolbar.VToolStripSeparator;
 import org.vaadin.smartgwt.server.Img;
+
+import com.vaadin.ui.ClientWidget;
 
 
 /*
@@ -22,6 +25,7 @@ import org.vaadin.smartgwt.server.Img;
 /**
  * Simple subclass of Img with appearance appropriate for a ToolStrip separator
  */
+@ClientWidget(value=VToolStripSeparator.class)
 public class ToolStripSeparator extends Img {
 
 //    public static ToolStripSeparator getOrCreateRef(JavaScriptObject jsObj) {

@@ -1,6 +1,9 @@
 package org.vaadin.smartgwt.server.toolbar;
 
+import org.vaadin.smartgwt.client.ui.toolbar.VToolStripResizer;
 import org.vaadin.smartgwt.server.ImgSplitbar;
+
+import com.vaadin.ui.ClientWidget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -21,6 +24,7 @@ import org.vaadin.smartgwt.server.ImgSplitbar;
 /**
  * Simple subclass of ImgSplitbar with appearance appropriate for a ToolStrip resizer.
  */
+@ClientWidget(value=VToolStripResizer.class)
 public class ToolStripResizer extends ImgSplitbar {
 
 //    public static ToolStripResizer getOrCreateRef(JavaScriptObject jsObj) {
