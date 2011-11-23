@@ -13,11 +13,11 @@ import com.vaadin.ui.Component;
 public class BorderLayout extends VLayout
 {
 	private final HLayout centerLayout = new HLayout();
-	private Canvas center = new NullComponent();
-	private Canvas north = new NullComponent();
-	private Canvas south = new NullComponent();
-	private Canvas west = new NullComponent();
-	private Canvas east = new NullComponent();
+	private Canvas center = new NullMember();
+	private Canvas north = new NullMember();
+	private Canvas south = new NullMember();
+	private Canvas west = new NullMember();
+	private Canvas east = new NullMember();
 
 	public BorderLayout()
 	{
@@ -30,101 +30,101 @@ public class BorderLayout extends VLayout
 		super.addMember(south);
 	}
 
-	public Canvas getCenterComponent()
+	public Canvas getCenterMember()
 	{
-		return center instanceof NullComponent ? null : center;
+		return center instanceof NullMember ? null : center;
 	}
 
-	public void setCenterComponent(Canvas component)
+	public void setCenterMember(Canvas member)
 	{
-		if (component == null)
+		if (member == null)
 		{
-			centerLayout.replaceMember(this.center, this.center = new NullComponent());
+			centerLayout.replaceMember(this.center, this.center = new NullMember());
 		}
 		else
 		{
-			component.setWidth("100%");
-			component.setHeight("100%");
-			centerLayout.replaceMember(this.center, this.center = component);
+			member.setWidth("100%");
+			member.setHeight("100%");
+			centerLayout.replaceMember(this.center, this.center = member);
 		}
 	}
 
-	public Canvas getNorthComponent()
+	public Canvas getNorthMember()
 	{
-		return north instanceof NullComponent ? null : north;
+		return north instanceof NullMember ? null : north;
 	}
 
-	public void setNorthComponent(Canvas component)
+	public void setNorthMember(Canvas member)
 	{
-		if (component == null)
+		if (member == null)
 		{
-			super.replaceMember(this.north, this.north = new NullComponent());
-		}
-		else
-		{
-			component.setWidth("100%");
-			super.replaceMember(this.north, this.north = component);
-		}
-	}
-
-	public Canvas getSouthComponent()
-	{
-		return south instanceof NullComponent ? null : south;
-	}
-
-	public void setSouthComponent(Canvas component)
-	{
-		if (component == null)
-		{
-			super.replaceMember(this.south, this.south = new NullComponent());
+			super.replaceMember(this.north, this.north = new NullMember());
 		}
 		else
 		{
-			component.setWidth("100%");
-			super.replaceMember(this.south, this.south = component);
+			member.setWidth("100%");
+			super.replaceMember(this.north, this.north = member);
 		}
 	}
 
-	public Canvas getWestComponent()
+	public Canvas getSouthMember()
 	{
-		return west instanceof NullComponent ? null : west;
+		return south instanceof NullMember ? null : south;
 	}
 
-	public void setWestComponent(Canvas component)
+	public void setSouthMember(Canvas member)
 	{
-		if (component == null)
+		if (member == null)
 		{
-			centerLayout.replaceMember(this.west, this.west = new NullComponent());
-		}
-		else
-		{
-			component.setHeight("100%");
-			centerLayout.replaceMember(this.west, this.west = component);
-		}
-	}
-
-	public Canvas getEastComponent()
-	{
-		return east instanceof NullComponent ? null : east;
-	}
-
-	public void setEastComponent(Canvas component)
-	{
-		if (component == null)
-		{
-			centerLayout.replaceMember(this.east, this.east = new NullComponent());
+			super.replaceMember(this.south, this.south = new NullMember());
 		}
 		else
 		{
-			component.setHeight("100%");
-			centerLayout.replaceMember(this.east, this.east = component);
+			member.setWidth("100%");
+			super.replaceMember(this.south, this.south = member);
+		}
+	}
+
+	public Canvas getWestMember()
+	{
+		return west instanceof NullMember ? null : west;
+	}
+
+	public void setWestMember(Canvas member)
+	{
+		if (member == null)
+		{
+			centerLayout.replaceMember(this.west, this.west = new NullMember());
+		}
+		else
+		{
+			member.setHeight("100%");
+			centerLayout.replaceMember(this.west, this.west = member);
+		}
+	}
+
+	public Canvas getEastMember()
+	{
+		return east instanceof NullMember ? null : east;
+	}
+
+	public void setEastMember(Canvas member)
+	{
+		if (member == null)
+		{
+			centerLayout.replaceMember(this.east, this.east = new NullMember());
+		}
+		else
+		{
+			member.setHeight("100%");
+			centerLayout.replaceMember(this.east, this.east = member);
 		}
 	}
 
 	@Override
-	public Boolean hasMember(Canvas canvas)
+	public Boolean hasMember(Canvas member)
 	{
-		return super.hasMember(canvas) || centerLayout.hasMember(canvas);
+		return super.hasMember(member) || centerLayout.hasMember(member);
 	}
 
 	@Override
@@ -184,23 +184,23 @@ public class BorderLayout extends VLayout
 	private Set<Component> newMembersSet()
 	{
 		final Set<Component> members = new HashSet<Component>();
-		members.add(getNorthComponent());
-		members.add(getSouthComponent());
-		members.add(getWestComponent());
-		members.add(getEastComponent());
-		members.add(getCenterComponent());
+		members.add(getNorthMember());
+		members.add(getSouthMember());
+		members.add(getWestMember());
+		members.add(getEastMember());
+		members.add(getCenterMember());
 		members.remove(null);
 		return members;
 	}
 
 	private UnsupportedOperationException newUnsupportedOperationException()
 	{
-		return new UnsupportedOperationException("Member operation not supported in BorderLayout.  Use constrainted component getters and setters instead.");
+		return new UnsupportedOperationException("Member operation not supported in BorderLayout.  Use constrainted member getters and setters instead.");
 	}
 
-	private static class NullComponent extends Label
+	private static class NullMember extends Label
 	{
-		public NullComponent()
+		public NullMember()
 		{
 			super("");
 			setVisible(false);

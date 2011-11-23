@@ -21,11 +21,11 @@ public class BorderLayoutApplication extends Application
 
 		bl = new BorderLayout();
 		bl.setSizeFull();
-		bl.setNorthComponent(new IButton("north"));
-		bl.setSouthComponent(new IButton("south"));
-		bl.setCenterComponent(new IButton("center"));
-		bl.setEastComponent(new IButton("east"));
-		bl.setWestComponent(new IButton("west"));
+		bl.setNorthMember(new IButton("north"));
+		bl.setSouthMember(new IButton("south"));
+		bl.setCenterMember(new IButton("center"));
+		bl.setEastMember(new IButton("east"));
+		bl.setWestMember(new IButton("west"));
 
 		// mainWindow.setContent(bl);
 		setMainWindow(mainWindow);
