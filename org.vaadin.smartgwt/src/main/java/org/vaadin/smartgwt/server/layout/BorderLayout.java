@@ -37,16 +37,7 @@ public class BorderLayout extends VLayout
 
 	public void setCenterMember(Canvas member)
 	{
-		if (member == null)
-		{
-			centerLayout.replaceMember(this.center, this.center = new NullMember());
-		}
-		else
-		{
-			member.setWidth("100%");
-			member.setHeight("100%");
-			centerLayout.replaceMember(this.center, this.center = member);
-		}
+		centerLayout.replaceMember(this.center, this.center = configureCenterMember(member));
 	}
 
 	public Canvas getNorthMember()
@@ -56,15 +47,7 @@ public class BorderLayout extends VLayout
 
 	public void setNorthMember(Canvas member)
 	{
-		if (member == null)
-		{
-			super.replaceMember(this.north, this.north = new NullMember());
-		}
-		else
-		{
-			member.setWidth("100%");
-			super.replaceMember(this.north, this.north = member);
-		}
+		super.replaceMember(this.north, this.north = configureVerticalMember(member));
 	}
 
 	public Canvas getSouthMember()
@@ -74,15 +57,7 @@ public class BorderLayout extends VLayout
 
 	public void setSouthMember(Canvas member)
 	{
-		if (member == null)
-		{
-			super.replaceMember(this.south, this.south = new NullMember());
-		}
-		else
-		{
-			member.setWidth("100%");
-			super.replaceMember(this.south, this.south = member);
-		}
+		super.replaceMember(this.south, this.south = configureVerticalMember(member));
 	}
 
 	public Canvas getWestMember()
@@ -92,15 +67,7 @@ public class BorderLayout extends VLayout
 
 	public void setWestMember(Canvas member)
 	{
-		if (member == null)
-		{
-			centerLayout.replaceMember(this.west, this.west = new NullMember());
-		}
-		else
-		{
-			member.setHeight("100%");
-			centerLayout.replaceMember(this.west, this.west = member);
-		}
+		centerLayout.replaceMember(this.west, this.west = configureHorizontalMember(member));
 	}
 
 	public Canvas getEastMember()
@@ -110,15 +77,7 @@ public class BorderLayout extends VLayout
 
 	public void setEastMember(Canvas member)
 	{
-		if (member == null)
-		{
-			centerLayout.replaceMember(this.east, this.east = new NullMember());
-		}
-		else
-		{
-			member.setHeight("100%");
-			centerLayout.replaceMember(this.east, this.east = member);
-		}
+		centerLayout.replaceMember(this.east, this.east = configureHorizontalMember(member));
 	}
 
 	@Override
@@ -179,6 +138,56 @@ public class BorderLayout extends VLayout
 	public void replaceMember(Canvas oldComponent, Canvas newComponent)
 	{
 		throw newUnsupportedOperationException();
+	}
+
+	private Canvas configureCenterMember(Canvas member)
+	{
+		if (member == null)
+		{
+			return new NullMember();
+		}
+		else
+		{
+			member.setHeight("100%");
+			member.setWidth("100%");
+			return member;
+		}
+	}
+
+	private Canvas configureVerticalMember(Canvas member)
+	{
+		if (member == null)
+		{
+			return new NullMember();
+		}
+		else
+		{
+			if (member.getHeightAsString() == null)
+			{
+				member.setAutoHeight();
+			}
+
+			member.setWidth("100%");
+			return member;
+		}
+	}
+
+	private Canvas configureHorizontalMember(Canvas member)
+	{
+		if (member == null)
+		{
+			return new NullMember();
+		}
+		else
+		{
+			if (member.getWidthAsString() == null)
+			{
+				member.setAutoWidth();
+			}
+
+			member.setHeight("100%");
+			return member;
+		}
 	}
 
 	private Set<Component> newMembersSet()
