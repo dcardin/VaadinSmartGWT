@@ -1,342 +1,209 @@
 package org.vaadin.smartgwt.server.layout;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
 
-import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
 import com.vaadin.ui.Component;
 
 public class BorderLayout extends VLayout
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private final HLayout centerLayout = new HLayout();
+	private Canvas center = new NullComponent();
+	private Canvas north = new NullComponent();
+	private Canvas south = new NullComponent();
+	private Canvas west = new NullComponent();
+	private Canvas east = new NullComponent();
 
-	public enum Constraint
-	{
-		NORTH, WEST, CENTER, EAST, SOUTH;
-	}
-
-	public static final String DEFAULT_MINIMUM_HEIGHT = "50px";
-
-	private final HLayout centerLayout;
-
-	private String minimumNorthHeight = DEFAULT_MINIMUM_HEIGHT;
-	private String minimumSouthHeight = DEFAULT_MINIMUM_HEIGHT;
-	private String minimumWestWidth = DEFAULT_MINIMUM_HEIGHT;
-	private String minimumEastWidth = DEFAULT_MINIMUM_HEIGHT;
-
-	protected BaseWidget north = new Label("");
-	protected BaseWidget west = new Label("");
-	protected BaseWidget center = new Label("");
-	protected BaseWidget east = new Label("");
-	protected BaseWidget south = new Label("");
-
-	/**
-	 * Create a layout structure that mimics the traditional {@link java.awt.BorderLayout}.
-	 */
 	public BorderLayout()
 	{
-		// default components are present but not visible
-		north.setVisible(false);
-		south.setVisible(false);
-		east.setVisible(false);
-		west.setVisible(false);
-
-		center.setWidth("*");
-
-		centerLayout = new HLayout();
-		centerLayout.setSizeFull();
-
-//		centerLayout.addMember(west);
-//		centerLayout.addComponent(center);
-//		centerLayout.addComponent(east);
-//
-//		addMember(north);
-//		addMember(centerLayout);
-//		addMember(south);
+		centerLayout.setHeight("*");
+		centerLayout.addMember(west);
+		centerLayout.addMember(center);
+		centerLayout.addMember(east);
+		super.addMember(north);
+		super.addMember(centerLayout);
+		super.addMember(south);
 	}
 
-	private void resizingtemp()
+	public Canvas getCenterComponent()
 	{
-		// setDefaultResizeBars(LayoutResizeBarPolicy.MARKED);
-		// ((Label) north).setShowResizeBar(true);
-		// ((Label) west).setShowResizeBar(true);
-		// ((Label) center).setShowResizeBar(true);
-		// ((Label) center).setResizeBarTarget("next");
-		centerLayout.setDefaultResizeBars(LayoutResizeBarPolicy.MARKED);
-		centerLayout.setShowResizeBar(true);
-		centerLayout.setResizeBarTarget("next");
+		return center instanceof NullComponent ? null : center;
 	}
 
-//	@Override
-//	public void removeComponent(Component c)
-//	{
-//		replaceComponent(c, new Label(""));
-//	}
-
-	/**
-	 * Add component into borderlayout
-	 * 
-	 * @param c
-	 *            component to be added into layout
-	 * @param constraint
-	 *            place of the component (have to be on of BorderLayout.NORTH, BorderLayout.WEST, BorderLayout.CENTER, BorderLayout.EAST, or BorderLayout.SOUTH
-	 */
-	public void addComponent(BaseWidget c, Constraint constraint)
+	public void setCenterComponent(Canvas component)
 	{
-		if (constraint == Constraint.NORTH)
+		if (component == null)
 		{
-//			replaceComponent(north, c);
-			north = c;
-			// if (north.getHeight() < 0 || north.getHeightUnits() == UNITS_PERCENTAGE)
-			// {
-			// north.setHeight(minimumNorthHeight);
-			// }
-		}
-		else if (constraint == Constraint.WEST)
-		{
-//			centerLayout.replaceComponent(west, c);
-			west = c;
-			// if (west.getWidth() < 0 || west.getWidthUnits() == UNITS_PERCENTAGE)
-			// {
-			// west.setWidth(minimumWestWidth);
-			// }
-		}
-		else if (constraint == Constraint.CENTER)
-		{
-//			centerLayout.replaceComponent(center, c);
-			center = c;
-			center.setHeight("100%"); // centerLayout.getHeight(), centerLayout.getHeightUnits());
-			center.setWidth("100%");
-		}
-		else if (constraint == Constraint.EAST)
-		{
-//			centerLayout.replaceComponent(east, c);
-			east = c;
-			// if (east.getWidth() < 0 || east.getWidthUnits() == UNITS_PERCENTAGE)
-			// {
-			// east.setWidth(minimumEastWidth);
-			// }
-		}
-		else if (constraint == Constraint.SOUTH)
-		{
-//			replaceComponent(south, c);
-			south = c;
-			// if (south.getHeight() < 0 || south.getHeightUnits() == UNITS_PERCENTAGE)
-			// {
-			// south.setHeight(minimumSouthHeight);
-			// }
+			centerLayout.replaceMember(this.center, this.center = new NullComponent());
 		}
 		else
 		{
-			throw new IllegalArgumentException("Invalid BorderLayout constraint.");
+			component.setWidth("100%");
+			component.setHeight("100%");
+			centerLayout.replaceMember(this.center, this.center = component);
 		}
-		requestRepaint();
 	}
 
-//	@Override
-//	public void addComponent(Component c)
-//	{
-//		throw new IllegalArgumentException("Component constraint have to be specified");
-//	}
-//
-//	@Override
-//	public void replaceComponent(Component oldComponent, Component newComponent)
-//	{
-//		if (oldComponent == north)
-//		{
-//			super.replaceComponent(north, newComponent);
-//			north = (BaseWidget) newComponent;
-//		}
-//		else if (oldComponent == west)
-//		{
-//			centerLayout.replaceComponent(west, newComponent);
-//			west = (BaseWidget) newComponent;
-//		}
-//		else if (oldComponent == center)
-//		{
-//			centerLayout.replaceComponent(center, newComponent);
-//			center = (BaseWidget) newComponent;
-//		}
-//		else if (oldComponent == east)
-//		{
-//			centerLayout.replaceComponent(east, newComponent);
-//			east = (BaseWidget) newComponent;
-//		}
-//		else if (oldComponent == south)
-//		{
-//			super.replaceComponent(south, newComponent);
-//			south = (BaseWidget) newComponent;
-//		}
-//		requestRepaint();
-//	}
-
-	/**
-	 * Set minimum height of the component in the BorderLayout.NORTH
-	 * 
-	 * @param minimumNorthHeight
-	 */
-	public void setMinimumNorthHeight(String minimumNorthHeight)
+	public Canvas getNorthComponent()
 	{
-		this.minimumNorthHeight = minimumNorthHeight;
+		return north instanceof NullComponent ? null : north;
 	}
 
-	/**
-	 * Get minimum height of the component in the BorderLayout.NORTH
-	 */
-	public String getMinimumNorthHeight()
+	public void setNorthComponent(Canvas component)
 	{
-		return minimumNorthHeight;
-	}
-
-	/**
-	 * Set minimum height of the component in the BorderLayout.SOUTH
-	 * 
-	 * @param minimumNorthHeight
-	 */
-	public void setMinimumSouthHeight(String minimumSouthHeight)
-	{
-		this.minimumSouthHeight = minimumSouthHeight;
-	}
-
-	/**
-	 * Get minimum height of the component in the BorderLayout.SOUTH
-	 */
-	public String getMinimumSouthHeight()
-	{
-		return minimumSouthHeight;
-	}
-
-	/**
-	 * Set minimum height of the component in the BorderLayout.WEST
-	 * 
-	 * @param minimumNorthHeight
-	 */
-	public void setMinimumWestWidth(String minimumWestWidth)
-	{
-		this.minimumWestWidth = minimumWestWidth;
-	}
-
-	/**
-	 * Get minimum height of the component in the BorderLayout.WEST
-	 */
-	public String getMinimumWestWidth()
-	{
-		return minimumWestWidth;
-	}
-
-	/**
-	 * Set minimum height of the component in the BorderLayout.EAST
-	 * 
-	 * @param minimumNorthHeight
-	 */
-	public void setMinimumEastWidth(String minimumEastWidth)
-	{
-		this.minimumEastWidth = minimumEastWidth;
-	}
-
-	/**
-	 * Get minimum height of the component in the BorderLayout.EAST
-	 */
-	public String getMinimumEastWidth()
-	{
-		return minimumEastWidth;
-	}
-
-	/**
-	 * Return component from specific position
-	 * 
-	 * @param constraint
-	 * @return
-	 */
-	public Component getComponent(Constraint position)
-	{
-		if (position == Constraint.NORTH)
+		if (component == null)
 		{
-			return north;
-		}
-		else if (position == Constraint.WEST)
-		{
-			return west;
-		}
-		else if (position == Constraint.CENTER)
-		{
-			return center;
-		}
-		else if (position == Constraint.EAST)
-		{
-			return east;
-		}
-		else if (position == Constraint.SOUTH)
-		{
-			return south;
+			super.replaceMember(this.north, this.north = new NullComponent());
 		}
 		else
 		{
-			throw new IllegalArgumentException("Invalid BorderLayout constraint.");
+			component.setWidth("100%");
+			super.replaceMember(this.north, this.north = component);
 		}
 	}
 
-	public BorderLayoutIterator<Component> getBorderLayoutComponentIterator()
+	public Canvas getSouthComponent()
 	{
-		return null; //new BorderLayoutIterator<Component>(getComponentIterator(), centerLayout.getComponentIterator());
+		return south instanceof NullComponent ? null : south;
 	}
 
-	/**
-	 * Iterate through the components of the borderlayout
-	 * 
-	 * TODO: Determine if the end user need to iterate components added into N/S/E/W locations??
-	 * 
-	 * @param <Component>
-	 */
-	@SuppressWarnings("hiding")
-	private class BorderLayoutIterator<Component> implements Iterator<Component>
+	public void setSouthComponent(Canvas component)
 	{
-
-		Iterator<Component> mainLayoutIter;
-		Iterator<Component> centerLayoutIter;
-
-		BorderLayoutIterator(Iterator<Component> mainLayoutIter, Iterator<Component> centerLayoutIter)
+		if (component == null)
 		{
-			this.mainLayoutIter = mainLayoutIter;
-			this.centerLayoutIter = centerLayoutIter;
+			super.replaceMember(this.south, this.south = new NullComponent());
 		}
-
-		@Override
-		public boolean hasNext()
+		else
 		{
-			return (mainLayoutIter.hasNext() || centerLayoutIter.hasNext());
+			component.setWidth("100%");
+			super.replaceMember(this.south, this.south = component);
 		}
+	}
 
-		@Override
-		public Component next()
+	public Canvas getWestComponent()
+	{
+		return west instanceof NullComponent ? null : west;
+	}
+
+	public void setWestComponent(Canvas component)
+	{
+		if (component == null)
 		{
-			if (mainLayoutIter.hasNext())
-			{
-				return mainLayoutIter.next();
-			}
-			else
-			{
-				return centerLayoutIter.next();
-			}
+			centerLayout.replaceMember(this.west, this.west = new NullComponent());
 		}
-
-		@Override
-		public void remove()
+		else
 		{
-			if (mainLayoutIter.hasNext())
-			{
-				mainLayoutIter.remove();
-			}
-			else
-			{
-				centerLayoutIter.remove();
-			}
+			component.setHeight("100%");
+			centerLayout.replaceMember(this.west, this.west = component);
 		}
+	}
 
+	public Canvas getEastComponent()
+	{
+		return east instanceof NullComponent ? null : east;
+	}
+
+	public void setEastComponent(Canvas component)
+	{
+		if (component == null)
+		{
+			centerLayout.replaceMember(this.east, this.east = new NullComponent());
+		}
+		else
+		{
+			component.setHeight("100%");
+			centerLayout.replaceMember(this.east, this.east = component);
+		}
+	}
+
+	@Override
+	public Boolean hasMember(Canvas canvas)
+	{
+		return super.hasMember(canvas) || centerLayout.hasMember(canvas);
+	}
+
+	@Override
+	public Canvas[] getMembers()
+	{
+		return newMembersSet().toArray(new Canvas[0]);
+	}
+
+	@Override
+	public Iterator<Component> getComponentIterator()
+	{
+		return newMembersSet().iterator();
+	}
+
+	@Override
+	public void addMember(Canvas component)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void addMember(Canvas component, int position)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void removeMember(Canvas member)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void setMembers(Canvas... newMembers)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void setMembers(List<Canvas> members)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void removeMemberAt(int pos)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	@Override
+	public void replaceMember(Canvas oldComponent, Canvas newComponent)
+	{
+		throw newUnsupportedOperationException();
+	}
+
+	private Set<Component> newMembersSet()
+	{
+		final Set<Component> members = new HashSet<Component>();
+		members.add(getNorthComponent());
+		members.add(getSouthComponent());
+		members.add(getWestComponent());
+		members.add(getEastComponent());
+		members.add(getCenterComponent());
+		members.remove(null);
+		return members;
+	}
+
+	private UnsupportedOperationException newUnsupportedOperationException()
+	{
+		return new UnsupportedOperationException("Member operation not supported in BorderLayout.  Use constrainted component getters and setters instead.");
+	}
+
+	private static class NullComponent extends Label
+	{
+		public NullComponent()
+		{
+			super("");
+			setVisible(false);
+		}
 	}
 }
