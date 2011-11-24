@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
@@ -871,6 +873,7 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 	// ------------ Vaadin integration methods
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOGGER = Logger.getLogger(BaseWidget.class);
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
 	private boolean isCreated = false;
 
@@ -996,10 +999,10 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return (String[]) value;
 	}
 
-//	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
-//	{
-//		throw new IllegalStateException();
-//	}
+	// public JavaScriptObject getAttributeAsJavaScriptObject(String property)
+	// {
+	// throw new IllegalStateException();
+	// }
 
 	public <T> T getAttributeAsObject(String attribute)
 	{
@@ -1018,63 +1021,74 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			String name = entry.getKey();
 
 			if (value == null)
-				target.addAttribute(name, "null");
-
-			if (value instanceof Boolean)
 			{
+				logPaintContentAttribute(name, null);
+				target.addAttribute(name, "null");
+			}
+			else if (value instanceof Boolean)
+			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "b" + String.valueOf(value));
 			}
 			else if (value instanceof Integer)
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "i" + String.valueOf(value));
 			}
 			else if (value instanceof Float)
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "f" + String.valueOf(value));
 			}
 			else if (value instanceof Long)
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "l" + String.valueOf(value));
 			}
 			else if (value instanceof Double)
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "d" + String.valueOf(value));
 			}
 			else if (value instanceof String)
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute(name, "s" + String.valueOf(value));
 			}
 			else if (value instanceof String[])
 			{
+				logPaintContentAttribute(name, value);
 				target.addAttribute("!" + name, (String[]) value);
 			}
 			else if (value instanceof Paintable[])
 			{
+				logPaintContentAttribute(name, value);
 				List<String> references = new ArrayList<String>();
 
 				for (Paintable p : (Paintable[]) value)
 				{
 					if (jspt.needsToBePainted(p))
 						p.paint(target);
-					
+
 					references.add(jspt.getPaintIdentifier(p));
 				}
-				
+
 				if (name.charAt(0) != '*')
 					name = "[" + name;
-				
+
 				target.addAttribute(name, references.toArray()); // [ = array
 			}
 			else if (value instanceof Paintable)
 			{
-				String ref = jspt.getPaintIdentifier( (Paintable) value);
+				logPaintContentAttribute(name, value);
+				String ref = jspt.getPaintIdentifier((Paintable) value);
 
 				if (jspt.needsToBePainted((Paintable) value))
-					((Paintable)value).paint(target);
+					((Paintable) value).paint(target);
 
 				if (name.charAt(0) != '*')
 					name = "#" + name;
-				
+
 				target.addAttribute(name, ref); // # = reference
 			}
 		}
@@ -1083,16 +1097,28 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 		isCreated = true;
 	}
 
-	public BaseWidget getOrCreateJsObj() {
+	public BaseWidget getOrCreateJsObj()
+	{
 		return this;
 	}
 
-	public BaseWidget getConfig() {
-        return this;
-    }
+	public BaseWidget getConfig()
+	{
+		return this;
+	}
 
-	protected void error(String message) throws IllegalStateException {
+	protected void error(String message) throws IllegalStateException
+	{
 		throw new IllegalStateException(message);
 	}
 
+	private void logPaintContentAttribute(String name, Object value)
+	{
+		if (LOGGER.isDebugEnabled())
+		{
+			final String type = value == null ? "null" : value.getClass().getSimpleName();
+			final String stringValue = value == null ? "null" : String.valueOf(value);
+			LOGGER.debug("widget: " + getClass().getSimpleName() + " { attribute { name: " + name + ", type: " + type + ", value: " + stringValue + " }}");
+		}
+	}
 }
