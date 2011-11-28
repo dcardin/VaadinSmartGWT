@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.vaadin.smartgwt.SmartGWTApplication;
+import org.vaadin.smartgwt.server.data.Record;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -1124,6 +1126,11 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	 * 
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#paintContent(com.vaadin.terminal.PaintTarget)
 	 */
+	public Map<String, Object> getAttributes()
+	{
+		return attributes;
+	}
+	
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
@@ -1173,6 +1180,10 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			{
 				logPaintContentAttribute(name, value);
 				target.addAttribute("!" + name, (String[]) value);
+			}
+			else if (value instanceof Record[])
+			{
+				target.addAttribute(name, "j" + SmartGWTApplication.getJsonString((Record[]) value));
 			}
 			else if (value instanceof Paintable[])
 			{

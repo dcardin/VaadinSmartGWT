@@ -8,10 +8,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.core.BaseClass;
 import com.smartgwt.client.core.DataClass;
 import com.smartgwt.client.util.JSOHelper;
+import com.smartgwt.client.util.JSON;
 import com.smartgwt.client.widgets.BaseWidget;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.form.fields.FormItem;
-import com.smartgwt.client.widgets.tab.Tab;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -40,6 +39,13 @@ public class PainterHelper
 		}
 	}
 
+	/**
+	 * Identifies the Paintable children and when associated with a widget, update them from the uidl
+	 * 
+	 * @param uidl
+	 * @param client
+	 * @return
+	 */
 	public static List<WidgetInfo> paintChildren(UIDL uidl, ApplicationConnection client)
 	{
 		List<WidgetInfo> childWidgets = new ArrayList<WidgetInfo>();
@@ -62,6 +68,13 @@ public class PainterHelper
 		return childWidgets;
 	}
 
+	/**
+	 * Provides automatic processing of a Widget's property, coming from properties in uidl
+	 * 
+	 * @param client
+	 * @param component
+	 * @param uidl
+	 */
 	public static void updateSmartGWTComponent(ApplicationConnection client, Widget component, UIDL uidl)
 	{
 		if (uidl.hasAttribute("cached"))
@@ -69,12 +82,13 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			if (!att.startsWith("*"))// && !att.equals("id"))
+			if (!att.startsWith("*") && !att.equals("id"))
 			{
 				if (component instanceof BaseWidget)
 				{
 					BaseWidget widget = (BaseWidget) component;
 
+					// Names starting with the character '[' indicate an array of paintables references (String)
 					if (att.startsWith("["))
 					{
 						String[] refs = uidl.getStringArrayAttribute(att);
@@ -95,6 +109,7 @@ public class PainterHelper
 
 						// component.setAttribute(att.substring(1), toSet);
 					}
+					// Names starting with the character '#' indicate a reference to a Paintable
 					else if (att.startsWith("#"))
 					{
 						Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
@@ -118,6 +133,7 @@ public class PainterHelper
 							}
 						}
 					}
+					// Names starting with '!' indicate a String[] 
 					else if (att.startsWith("!"))
 					{
 						String[] value = uidl.getStringArrayAttribute(att);
@@ -302,6 +318,17 @@ public class PainterHelper
 			case 'b':
 			{
 				Boolean value = Boolean.valueOf(sValue.substring(1));
+				if (!widget.isCreated())
+					JSOHelper.setAttribute(widget.getConfig(), att, value);
+				else
+					widget.setProperty(att, value);
+			}
+				break;
+
+			case 'j':
+			{
+				JavaScriptObject value = JSON.decode(sValue.substring(1));
+				
 				if (!widget.isCreated())
 					JSOHelper.setAttribute(widget.getConfig(), att, value);
 				else

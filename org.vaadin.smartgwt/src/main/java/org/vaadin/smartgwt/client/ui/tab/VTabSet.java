@@ -1,5 +1,8 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
+import org.vaadin.rpc.client.ClientSideHandler;
+import org.vaadin.rpc.client.ClientSideProxy;
+import org.vaadin.rpc.client.Method;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 import org.vaadin.smartgwt.client.ui.utils.Wrapper;
@@ -11,10 +14,23 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VTabSet extends TabSet implements Paintable
+public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 {
 	protected String paintableId;
 	private ApplicationConnection client;
+	private final ClientSideProxy rpc = new ClientSideProxy("VTabSet", this);
+
+	public VTabSet()
+	{
+		super();
+		rpc.register("selectTab", new Method()
+			{
+				public void invoke(final String methodName, final Object[] data)
+				{
+					selectTab((Integer) data[0]);
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
@@ -25,6 +41,8 @@ public class VTabSet extends TabSet implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
+		rpc.update(this, uidl, client);
+		
 		this.client = client;
 		paintableId = uidl.getId();
 
@@ -91,4 +109,18 @@ public class VTabSet extends TabSet implements Paintable
 			}
 		}
 	}
+
+	@Override
+	public boolean initWidget(Object[] params)
+	{
+		rpc.clientInitComplete();
+		return true;
+	}
+
+	@Override
+	public void handleCallFromServer(String method, Object[] params)
+	{
+		System.out.println("method call: " + method);
+	}
+
 }

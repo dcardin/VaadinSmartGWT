@@ -1,10 +1,16 @@
 package org.vaadin.smartgwt.server.tab;
 
+import java.util.Map;
+
+import org.vaadin.rpc.ServerSideHandler;
+import org.vaadin.rpc.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.types.Side;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -29,7 +35,7 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
  * <code>pane</code> property which will be displayed in the main pane when that tab is selected.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTabSet.class)
-public class TabSet extends Layout { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
+public class TabSet extends Layout implements ServerSideHandler { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
 
 //    public static TabSet getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -2102,6 +2108,8 @@ public class TabSet extends Layout { // implements com.smartgwt.client.widgets.t
     // @formatter:on
 	// **************** vaadin integration
 
+	private final ServerSideProxy client = new ServerSideProxy(this);
+
 	/**
 	 * Add a tab
 	 * 
@@ -2128,6 +2136,41 @@ public class TabSet extends Layout { // implements com.smartgwt.client.widgets.t
 		tab.setTabSet(this);
 		tab.setParent(this);
 		addMember(tab, position);
+	}
+
+	public void selectTab(int tabIndex)
+	{
+		client.call("selectTab", tabIndex);
+		client.call("generic", "kJSdf", "jaksdf", 2);
+	}
+
+	@Override
+	public Object[] initRequestFromClient()
+	{
+		return new Object[] { 80, 25, true, "Welcome to console demo",
+        "}> " };
+	}
+
+	@Override
+	public void callFromClient(String method, Object[] params)
+	{
+		int i = 0;
+
+	}
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		super.paintContent(target);
+		client.paintContent(target);
+	}
+
+	
+	@Override
+	public void changeVariables(final Object source, final Map variables)
+	{
+		super.changeVariables(source, variables);
+		client.changeVariables(source, variables);
 	}
 	
     /**

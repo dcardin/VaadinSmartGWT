@@ -32,6 +32,7 @@ import org.vaadin.smartgwt.server.types.AutoFitWidthApproach;
 import org.vaadin.smartgwt.server.types.Autofit;
 import org.vaadin.smartgwt.server.types.ChartType;
 import org.vaadin.smartgwt.server.types.DateDisplayFormat;
+import org.vaadin.smartgwt.server.types.DragDataAction;
 import org.vaadin.smartgwt.server.types.DragTrackerMode;
 import org.vaadin.smartgwt.server.types.EmbeddedPosition;
 import org.vaadin.smartgwt.server.types.EnterKeyEditAction;
@@ -49,6 +50,9 @@ import org.vaadin.smartgwt.server.types.SelectionStyle;
 import org.vaadin.smartgwt.server.types.SortArrow;
 import org.vaadin.smartgwt.server.types.TextMatchStyle;
 import org.vaadin.smartgwt.server.util.EnumUtil;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 
 //@formatter:off
 /**
@@ -13829,13 +13833,13 @@ public class ListGrid extends Layout  {
 //        return @com.smartgwt.client.data.Hilite::convertToHiliteArray(Lcom/google/gwt/core/client/JavaScriptObject;)(hilitesJS);
 //    }-*/;
 //
-//    public void setDragDataAction(DragDataAction dragDataAction) {
-//        setAttribute("dragDataAction", dragDataAction.getValue(), true);
-//    }
-//
-//    public DragDataAction getDragDataAction() {
-//        return EnumUtil.getEnum(DragDataAction.values(), getAttribute("dragDataAction"));
-//    }
+    public void setDragDataAction(DragDataAction dragDataAction) {
+        setAttribute("dragDataAction", dragDataAction.getValue(), true);
+    }
+
+    public DragDataAction getDragDataAction() {
+        return EnumUtil.getEnum(DragDataAction.values(), getAttribute("dragDataAction"));
+    }
 //
 //    public void setDragTrackerStyle(String dragTrackerStyle) {
 //        setAttribute("dragTrackerStyle", dragTrackerStyle, true);
@@ -14311,4 +14315,10 @@ public class ListGrid extends Layout  {
 		setAttribute("*dataSource", dataSource);
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		// TODO Auto-generated method stub
+		super.paintContent(target);
+	}
 }

@@ -1,5 +1,9 @@
 package org.vaadin.smartgwt;
 
+import static argo.jdom.JsonNodeBuilders.anArrayBuilder;
+import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
+import static argo.jdom.JsonNodeFactories.aJsonString;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +14,7 @@ import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
+import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
@@ -31,9 +36,16 @@ import org.vaadin.smartgwt.server.tab.TabSet;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
 import org.vaadin.smartgwt.server.toolbar.ToolStripButton;
 import org.vaadin.smartgwt.server.types.Alignment;
+import org.vaadin.smartgwt.server.types.DragDataAction;
 import org.vaadin.smartgwt.server.types.ListGridEditEvent;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.SelectionType;
+
+import argo.format.CompactJsonFormatter;
+import argo.format.JsonFormatter;
+import argo.jdom.JsonArrayNodeBuilder;
+import argo.jdom.JsonObjectNodeBuilder;
+import argo.jdom.JsonRootNode;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.vaadin.Application;
@@ -42,6 +54,9 @@ import com.vaadin.ui.Window;
 
 public class SmartGWTApplication extends Application
 {
+	private TabSet tabset;
+	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
+
 	/**
 	 * 
 	 */
@@ -85,10 +100,34 @@ public class SmartGWTApplication extends Application
 		sectionStack.addMember(section2);
 		return sectionStack;
 	}
+	
+	public static String getJsonString(Record[] records)
+	{
+		JsonObjectNodeBuilder builder = anObjectBuilder();
+		JsonArrayNodeBuilder recordBuilder = anArrayBuilder();
+
+		for (Record record : records)
+		{
+			JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
+
+			for (Map.Entry<String, Object> entry : record.getAttributes().entrySet())
+			{
+				nodeBuilder.withField(entry.getKey(), aJsonString(entry.getValue() == null ? "" : entry.getValue().toString()));
+			}
+			recordBuilder.withElement(nodeBuilder);
+		}
+		builder.withField("records", recordBuilder);
+
+		JsonRootNode jso = recordBuilder.build();
+		return JSON_FORMATTER.format(jso);
+	}
 
 	public static void main(String[] args)
 	{
-		new SmartGWTApplication().getListGrid();
+		SmartGWTApplication app = new SmartGWTApplication();
+		ListGridRecord[] records = CountryData.getRecords();
+		System.out.println(getJsonString(records));
+
 	}
 
 	private Canvas getListGrid()
@@ -97,6 +136,10 @@ public class SmartGWTApplication extends Application
 		countryGrid.setWidth(500);
 		countryGrid.setHeight(224);
 		countryGrid.setShowAllRecords(true);
+		countryGrid.setCanDragRecordsOut(true);
+		countryGrid.setCanAcceptDroppedRecords(true);
+		countryGrid.setCanReorderRecords(true);
+		countryGrid.setDragDataAction(DragDataAction.MOVE);
 
 		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
 		countryCodeField.setAlign(Alignment.CENTER);
@@ -384,7 +427,7 @@ public class SmartGWTApplication extends Application
 
 	private Layout getMainPanel()
 	{
-		TabSet tabset = new TabSet();
+		tabset = new TabSet();
 		tabset.setSizeFull();
 
 		Tab tab = new Tab("premier");
@@ -399,7 +442,16 @@ public class SmartGWTApplication extends Application
 		tab2.setPane(getEditableListGrid());
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
-		vl.addMember(new Button("Press me 1!"));
+		vl.addMember(new Button("Press me 1!")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+
+					tabset.selectTab(1);
+				}
+			});
 		vl.addMember(new Button("Press me 2!"));
 		vl.addMember(new Button("Press me 3!"));
 		vl.addMember(new Button("Press me 4!"));

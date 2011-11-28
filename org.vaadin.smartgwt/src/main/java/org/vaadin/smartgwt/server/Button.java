@@ -56,5 +56,6 @@ public class Button extends StatefulCanvas
 		setTitle("weird");
 		requestRepaint();
 	}
+	
 
 }

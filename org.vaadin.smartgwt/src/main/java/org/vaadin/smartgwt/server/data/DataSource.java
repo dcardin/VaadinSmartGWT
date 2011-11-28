@@ -3411,5 +3411,10 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 	{
 		return new String[0];
 	}
+	
+	public String getTag()
+	{
+		return "dataSource";
+	}
 
 }

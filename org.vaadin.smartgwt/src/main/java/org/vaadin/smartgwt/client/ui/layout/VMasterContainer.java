@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
+import com.vaadin.terminal.gwt.client.ui.VUnknownComponent;
 
 public class VMasterContainer extends VLayout implements Paintable
 {
@@ -72,7 +73,7 @@ public class VMasterContainer extends VLayout implements Paintable
 
 		for (WidgetInfo wi : widgetInfos)
 		{
-			if (wi.getWidget() instanceof VDataSource == false)
+			if ((wi.getWidget() instanceof VDataSource == false) && (wi.getWidget() instanceof VUnknownComponent == false))
 			{
 				((Paintable) wi.getWidget()).updateFromUIDL(wi.getUIDL(), client);
 				addMember(wi.getWidget());
