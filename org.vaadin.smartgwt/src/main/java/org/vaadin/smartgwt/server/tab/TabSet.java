@@ -2141,7 +2141,6 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 	public void selectTab(int tabIndex)
 	{
 		client.call("selectTab", tabIndex);
-		client.call("generic", "kJSdf", "jaksdf", 2);
 	}
 
 	@Override
