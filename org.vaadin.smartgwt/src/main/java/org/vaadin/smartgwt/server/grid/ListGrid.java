@@ -16,6 +16,7 @@ package org.vaadin.smartgwt.server.grid;
  * Lesser General Public License for more details.
  */
 
+import java.util.List;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
@@ -14290,6 +14291,14 @@ public class ListGrid extends Layout  {
 		{
 			field.setParent(this);
 		}
+	}
+
+	public void setFields(List<ListGridField> fields)
+	{
+		ListGridField[] fieldsArr = new ListGridField[0];
+		
+		fieldsArr = fields.toArray(fieldsArr);
+		setFields(fieldsArr);
 	}
 
 	public DataSource getDataSource()

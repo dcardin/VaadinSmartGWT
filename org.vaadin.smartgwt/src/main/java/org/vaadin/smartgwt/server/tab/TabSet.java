@@ -2136,7 +2136,13 @@ public class TabSet extends Layout { // implements com.smartgwt.client.widgets.t
      * @return the tabs
      */
     public Tab[] getTabs() {
-        return (Tab[]) getMembers();
+    	Tab[] tabs = new Tab[getMembers().length];
+    	
+    	for (int i=0; i < tabs.length; i++)
+    	{
+    		tabs[i] = (Tab) getMember(i);
+    	}
+        return tabs;
     }
 
 }

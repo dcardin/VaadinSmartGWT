@@ -40,6 +40,12 @@ public class VTab extends Canvas implements Paintable, Wrapper
 
 		PainterHelper.paintChildren(uidl, client);
 		PainterHelper.updateDataObject(client, tab, uidl);
+	
+		if (uidl.hasAttribute("title"))
+		{
+			if (tab.getIcon() != null)
+				tab.setTitle(Canvas.imgHTML(tab.getIcon()) + " <span class=\"tabTitle\" valign=\"center\" align=\"center\">" + uidl.getStringAttribute("title").substring(1));
+		}
 	}
 
 	@Override

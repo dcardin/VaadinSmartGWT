@@ -23,12 +23,13 @@ import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.server.layout.SectionStack;
+import org.vaadin.smartgwt.server.layout.SectionStackSection;
 import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
 import org.vaadin.smartgwt.server.toolbar.ToolStripButton;
-import org.vaadin.smartgwt.server.toolbar.ToolStripResizer;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.ListGridEditEvent;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
@@ -53,13 +54,36 @@ public class SmartGWTApplication extends Application
 		setMainWindow(mainWindow);
 		mainWindow.setStyleName(null);
 		mainWindow.setSizeFull();
-		
+
 		CountryXmlDS.reset();
 
 		MasterContainer layout = new MasterContainer();
-		layout.setPane(getMainPanel());
+		layout.setPane(getStackView()); // getMainPanel());
 
 		mainWindow.setContent(layout);
+	}
+
+	public SectionStack getStackView()
+	{
+		SectionStack sectionStack = new SectionStack();
+		sectionStack.setWidth(200);
+		final ListGrid listGrid = new ListGrid();
+		listGrid.setCanEdit(true);
+		listGrid.setEditEvent(ListGridEditEvent.CLICK);
+		listGrid.setFields(new ListGridField("system", "System"), new ListGridField("monitor", "Monitor"));
+
+		SectionStackSection section1 = new SectionStackSection("Monitors");
+		section1.addMember(listGrid);
+//		section1.setControls(addButton, removeButton);
+		section1.setExpanded(true);
+		
+		SectionStackSection section2 = new SectionStackSection("Monitors");
+		section2.addMember(getVertical());
+		section2.setExpanded(true);
+
+		sectionStack.addMember(section1);
+		sectionStack.addMember(section2);
+		return sectionStack;
 	}
 
 	public static void main(String[] args)
@@ -95,89 +119,89 @@ public class SmartGWTApplication extends Application
 	{
 		VLayout surrounding = new VLayout();
 		surrounding.setSizeFull();
-		
+
 		ToolStrip toolStrip = new ToolStrip();
 		toolStrip.setWidth100();
-		
-        ToolStripButton boldButton = new ToolStripButton();  
-        boldButton.setIcon("[SKIN]/RichTextEditor/text_bold.png");  
-        boldButton.setActionType(SelectionType.CHECKBOX);  
-        toolStrip.addButton(boldButton);  
-        
-        toolStrip.addResizer();
-        ToolStripButton italicsButton = new ToolStripButton();  
-        italicsButton.setIcon("[SKIN]/RichTextEditor/text_italic.png");  
-        italicsButton.setActionType(SelectionType.CHECKBOX);  
-        toolStrip.addButton(italicsButton);  
-          
-        ToolStripButton underlineButton = new ToolStripButton();  
-        underlineButton.setIcon("[SKIN]/RichTextEditor/text_underline.png");  
-        underlineButton.setActionType(SelectionType.CHECKBOX);  
-        toolStrip.addButton(underlineButton);  
-  
-        toolStrip.addSeparator();  
-          
-        ToolStripButton alignLeftButton = new ToolStripButton();  
-        alignLeftButton.setIcon("[SKIN]/RichTextEditor/text_align_left.png");  
-        alignLeftButton.setActionType(SelectionType.RADIO);  
-        alignLeftButton.setRadioGroup("textAlign");  
-        toolStrip.addButton(alignLeftButton);  
-          
-        ToolStripButton alignRightButton = new ToolStripButton();  
-        alignRightButton.setIcon("[SKIN]/RichTextEditor/text_align_right.png");  
-        alignRightButton.setActionType(SelectionType.RADIO);  
-        alignRightButton.setRadioGroup("textAlign");  
-        toolStrip.addButton(alignRightButton);  
-          
-        ToolStripButton alignCenterButton = new ToolStripButton();  
-        alignCenterButton.setIcon("[SKIN]/RichTextEditor/text_align_center.png");  
-        alignCenterButton.setActionType(SelectionType.RADIO);  
-        alignCenterButton.setRadioGroup("textAlign");  
-        toolStrip.addButton(alignCenterButton);  
-  
-        toolStrip.addSeparator();  
-		
+
+		ToolStripButton boldButton = new ToolStripButton();
+		boldButton.setIcon("[SKIN]/RichTextEditor/text_bold.png");
+		boldButton.setActionType(SelectionType.CHECKBOX);
+		toolStrip.addButton(boldButton);
+
+		toolStrip.addResizer();
+		ToolStripButton italicsButton = new ToolStripButton();
+		italicsButton.setIcon("[SKIN]/RichTextEditor/text_italic.png");
+		italicsButton.setActionType(SelectionType.CHECKBOX);
+		toolStrip.addButton(italicsButton);
+
+		ToolStripButton underlineButton = new ToolStripButton();
+		underlineButton.setIcon("[SKIN]/RichTextEditor/text_underline.png");
+		underlineButton.setActionType(SelectionType.CHECKBOX);
+		toolStrip.addButton(underlineButton);
+
+		toolStrip.addSeparator();
+
+		ToolStripButton alignLeftButton = new ToolStripButton();
+		alignLeftButton.setIcon("[SKIN]/RichTextEditor/text_align_left.png");
+		alignLeftButton.setActionType(SelectionType.RADIO);
+		alignLeftButton.setRadioGroup("textAlign");
+		toolStrip.addButton(alignLeftButton);
+
+		ToolStripButton alignRightButton = new ToolStripButton();
+		alignRightButton.setIcon("[SKIN]/RichTextEditor/text_align_right.png");
+		alignRightButton.setActionType(SelectionType.RADIO);
+		alignRightButton.setRadioGroup("textAlign");
+		toolStrip.addButton(alignRightButton);
+
+		ToolStripButton alignCenterButton = new ToolStripButton();
+		alignCenterButton.setIcon("[SKIN]/RichTextEditor/text_align_center.png");
+		alignCenterButton.setActionType(SelectionType.RADIO);
+		alignCenterButton.setRadioGroup("textAlign");
+		toolStrip.addButton(alignCenterButton);
+
+		toolStrip.addSeparator();
+
 		HLayout layout = new HLayout();
 		layout.setSizeFull();
-		
-        final ListGrid countryGrid = new ListGrid();  
-        countryGrid.setMargin(5);
-        countryGrid.setWidth(550);  
-        countryGrid.setHeight(224);  
-        countryGrid.setShowAllRecords(true);  
-        countryGrid.setCellHeight(22);  
-        // use server-side dataSource so edits are retained across page transitions  
-        countryGrid.setDataSource(CountryXmlDS.getInstance());  
-  
-        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
-        countryCodeField.setAlign(Alignment.CENTER);  
-        countryCodeField.setType(ListGridFieldType.IMAGE);  
-        countryCodeField.setImageURLPrefix("flags/16/");  
-        countryCodeField.setImageURLSuffix(".png");  
-        countryCodeField.setCanEdit(false);  
-  
-        ListGridField nameField = new ListGridField("countryName", "Pays");  
-        ListGridField continentField = new ListGridField("continent", "Continent");  
-        ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");  
-        ListGridField populationField = new ListGridField("population", "Population");  
-        populationField.setType(ListGridFieldType.INTEGER);  
-//        populationField.setCellFormatter(new  NumericFormatter());
-        ListGridField independenceField = new ListGridField("independence", "Independence");  
-        countryGrid.setFields(countryCodeField, nameField,continentField, memberG8Field, populationField, independenceField);  
-  
-        countryGrid.setAutoFetchData(true);  
-        countryGrid.setCanEdit(true);  
-        countryGrid.setEditEvent(ListGridEditEvent.CLICK);  
-        countryGrid.setEditByCell(true);  
-        
-        layout.addMember(countryGrid);
-        surrounding.addMember(toolStrip);
-        surrounding.addMember(layout);
-        
-        return surrounding;
+
+		final ListGrid countryGrid = new ListGrid();
+		countryGrid.setMargin(5);
+		countryGrid.setWidth(550);
+		countryGrid.setHeight(224);
+		countryGrid.setShowAllRecords(true);
+		countryGrid.setCellHeight(22);
+		// use server-side dataSource so edits are retained across page transitions
+		countryGrid.setDataSource(CountryXmlDS.getInstance());
+
+		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
+		countryCodeField.setAlign(Alignment.CENTER);
+		countryCodeField.setType(ListGridFieldType.IMAGE);
+		countryCodeField.setImageURLPrefix("flags/16/");
+		countryCodeField.setImageURLSuffix(".png");
+		countryCodeField.setCanEdit(false);
+
+		ListGridField nameField = new ListGridField("countryName", "Pays");
+		ListGridField continentField = new ListGridField("continent", "Continent");
+		ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");
+		ListGridField populationField = new ListGridField("population", "Population");
+		populationField.setType(ListGridFieldType.INTEGER);
+		// populationField.setCellFormatter(new NumericFormatter());
+		ListGridField independenceField = new ListGridField("independence", "Independence");
+		countryGrid.setFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
+
+		countryGrid.setAutoFetchData(true);
+		countryGrid.setCanEdit(true);
+		countryGrid.setEditEvent(ListGridEditEvent.CLICK);
+		countryGrid.setEditByCell(true);
+
+		layout.addMember(countryGrid);
+		surrounding.addMember(toolStrip);
+		surrounding.addMember(layout);
+
+		return surrounding;
 	}
 
-	@ClientWidget(value=VLabel.class)
+	@ClientWidget(value = VLabel.class)
 	private static class NumericFormatter implements CellFormatter
 	{
 		public String format(Object value, ListGridRecord record, int rowNum, int colNum)
@@ -493,23 +517,23 @@ public class SmartGWTApplication extends Application
 		SelectItem si = new SelectItem("blah" + i);
 		si.setTitle("Autre Field " + i++);
 		si.setWidth("100%");
-		
-        ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);  
-        countryCodeField.setAlign(Alignment.CENTER);  
-        countryCodeField.setType(ListGridFieldType.IMAGE);  
-        countryCodeField.setImageURLPrefix("flags/16/");  
-        countryCodeField.setImageURLSuffix(".png");  
-        countryCodeField.setCanEdit(false);  
-  
-        ListGridField nameField = new ListGridField("countryName", "Pays");  
-        ListGridField continentField = new ListGridField("continent", "Continent");  
-        ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");  
-        ListGridField populationField = new ListGridField("population", "Population");  
-        populationField.setType(ListGridFieldType.INTEGER);  
-//        populationField.setCellFormatter(new  NumericFormatter());
-        ListGridField independenceField = new ListGridField("independence", "Independence");  
-        si.setPickListFields(countryCodeField, nameField,continentField, memberG8Field, populationField, independenceField);  
-        si.setOptionDataSource(CountryXmlDS.getInstance()); 
+
+		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
+		countryCodeField.setAlign(Alignment.CENTER);
+		countryCodeField.setType(ListGridFieldType.IMAGE);
+		countryCodeField.setImageURLPrefix("flags/16/");
+		countryCodeField.setImageURLSuffix(".png");
+		countryCodeField.setCanEdit(false);
+
+		ListGridField nameField = new ListGridField("countryName", "Pays");
+		ListGridField continentField = new ListGridField("continent", "Continent");
+		ListGridField memberG8Field = new ListGridField("member_g8", "Member G8");
+		ListGridField populationField = new ListGridField("population", "Population");
+		populationField.setType(ListGridFieldType.INTEGER);
+		// populationField.setCellFormatter(new NumericFormatter());
+		ListGridField independenceField = new ListGridField("independence", "Independence");
+		si.setPickListFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
+		si.setOptionDataSource(CountryXmlDS.getInstance());
 		form.addField(si);
 
 		si = new SelectItem("blah" + i);

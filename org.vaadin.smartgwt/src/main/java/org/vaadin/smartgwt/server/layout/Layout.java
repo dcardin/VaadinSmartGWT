@@ -1522,6 +1522,14 @@ public class Layout extends Canvas implements ComponentContainer {
 
 		return members.toArray(tmp);
 	}
+	
+	public void removeAllMembers()
+	{
+		for (Canvas member : getMembers())
+		{
+			removeMember(member);
+		}
+	}
 
 	/**
 	 * Return the members in the Layout as a List.

@@ -3,6 +3,7 @@ package org.vaadin.smartgwt.server.form.fields;
 import java.util.Date;
 import java.util.Map;
 
+import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -12,6 +13,8 @@ import org.vaadin.smartgwt.server.types.TimeDisplayFormat;
 import org.vaadin.smartgwt.server.types.TitleOrientation;
 import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.util.EnumUtil;
+
+import com.vaadin.ui.ClientWidget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -36,6 +39,7 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
  * FormItem descriptors are passed to a DynamicForm.  See the {@link com.smartgwt.client.widgets.form.DynamicForm}
  * documentation for details.
  */
+@ClientWidget(value=VFormItem.class)
 public class FormItem extends BaseWidget { // RefDataClass  implements com.smartgwt.client.widgets.form.fields.events.HasFocusHandlers, com.smartgwt.client.widgets.form.fields.events.HasBlurHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangedHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyUpHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyDownHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasItemHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasDoubleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleDoubleClickHandlers {
 
 //    public static FormItem getOrCreateRef(JavaScriptObject jsObj) {

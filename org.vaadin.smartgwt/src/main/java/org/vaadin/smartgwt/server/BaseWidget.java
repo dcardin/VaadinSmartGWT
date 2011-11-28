@@ -17,7 +17,7 @@ import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.AbstractComponent;
 
 // @formatter:off
-public abstract class BaseWidget extends AbstractComponent { // implements HasHandlers, Serializable {
+public abstract class BaseWidget extends AbstractComponent implements PropertyAccessor { // implements HasHandlers, Serializable {
 //	private Function onRenderFn;
 
 //    static {
@@ -98,21 +98,19 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 //        isElementSet = true;
 //    }
 
-    /**
-     * Get the name of the underlying SmartClient class
-     *
-     * @return the SmartClient class name
-     */
-    public String getScClassName() {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getScClassName()
+	 */
+    @Override
+	public String getScClassName() {
         return scClassName;
     }
 
-    /**
-     * Set the name of the underlying SmartClient class. This is an advanced setting.
-     *
-     * @param scClassName the SmartClient class
-     */
-    public void setScClassName(String scClassName) {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setScClassName(java.lang.String)
+	 */
+    @Override
+	public void setScClassName(String scClassName) {
         this.scClassName = scClassName;
     }
 
@@ -170,11 +168,19 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 //
 //    }
 
-    public boolean isConfigOnly() {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#isConfigOnly()
+	 */
+    @Override
+	public boolean isConfigOnly() {
         return configOnly;
     }
 
-    public void setConfigOnly(boolean configOnly) {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setConfigOnly(boolean)
+	 */
+    @Override
+	public void setConfigOnly(boolean configOnly) {
         this.configOnly = configOnly;
     }
 
@@ -274,7 +280,11 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 //        return super.getElement();
 //    }
 
-    public void setPosition(String position) {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setPosition(java.lang.String)
+	 */
+    @Override
+	public void setPosition(String position) {
         setAttribute("position", position, false);
     }
 
@@ -288,7 +298,11 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 //    }-*/;
 
 
-    public String getID() {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getID()
+	 */
+    @Override
+	public String getID() {
         return id;
     }
 //
@@ -833,11 +847,19 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 //    }
 
     //override default behavior of setting title for SmartGWT widgets
-    public void setTitle(String title) {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setTitle(java.lang.String)
+	 */
+    @Override
+	public void setTitle(String title) {
         //do nothing
     }
 
-    public String getTitle() {
+    /* (non-Javadoc)
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getTitle()
+	 */
+    @Override
+	public String getTitle() {
         return "";
     }
 
@@ -877,16 +899,34 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
 	private boolean isCreated = false;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#isCreated()
+	 */
+	@Override
 	public boolean isCreated()
 	{
 		return isCreated;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#removeAttribute(java.lang.String)
+	 */
+	@Override
 	public void removeAttribute(String attribute)
 	{
 		attributes.remove(attribute);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setAttribute(java.lang.String, java.lang.Object, boolean)
+	 */
+	@Override
 	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
 	{
 		if (isCreated() && !allowPostCreate)
@@ -894,14 +934,29 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			throw new IllegalArgumentException("Cannot modify property " + attribute + " once created");
 		}
 
-		attributes.put(attribute, value);
+		if (value == null)
+			attributes.remove(attribute);
+		else
+			attributes.put(attribute, value);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setAttribute(java.lang.String, java.lang.Object)
+	 */
+	@Override
 	public void setAttribute(String attribute, Object value)
 	{
 		setAttribute(attribute, value, true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsString(java.lang.String)
+	 */
+	@Override
 	public String getAttributeAsString(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -912,11 +967,23 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return value.toString();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttribute(java.lang.String)
+	 */
+	@Override
 	public String getAttribute(String attribute)
 	{
 		return getAttributeAsString(attribute);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsInt(java.lang.String)
+	 */
+	@Override
 	public Integer getAttributeAsInt(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -927,6 +994,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return Integer.valueOf(value.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsBoolean(java.lang.String)
+	 */
+	@Override
 	public Boolean getAttributeAsBoolean(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -937,6 +1010,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return Boolean.valueOf(value.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsDouble(java.lang.String)
+	 */
+	@Override
 	public Double getAttributeAsDouble(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -947,6 +1026,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return Double.valueOf(value.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsFloat(java.lang.String)
+	 */
+	@Override
 	public Float getAttributeAsFloat(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -957,6 +1042,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return Float.valueOf(value.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsMap(java.lang.String)
+	 */
+	@Override
 	public Map<?, ?> getAttributeAsMap(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -967,6 +1058,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			return (Map<?, ?>) value;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsDate(java.lang.String)
+	 */
+	@Override
 	public Date getAttributeAsDate(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -989,6 +1086,12 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsStringArray(java.lang.String)
+	 */
+	@Override
 	public String[] getAttributeAsStringArray(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1004,12 +1107,23 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 	// throw new IllegalStateException();
 	// }
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsObject(java.lang.String)
+	 */
+	@Override
 	public <T> T getAttributeAsObject(String attribute)
 	{
 		Object value = attributes.get(attribute);
 		return (T) value;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#paintContent(com.vaadin.terminal.PaintTarget)
+	 */
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
@@ -1097,12 +1211,24 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 		isCreated = true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getOrCreateJsObj()
+	 */
+	@Override
 	public BaseWidget getOrCreateJsObj()
 	{
 		return this;
 	}
 
-	public BaseWidget getConfig()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getConfig()
+	 */
+	@Override
+	public PropertyAccessor getConfig()
 	{
 		return this;
 	}
@@ -1121,4 +1247,11 @@ public abstract class BaseWidget extends AbstractComponent { // implements HasHa
 			LOGGER.debug("widget: " + getClass().getSimpleName() + " { attribute { name: " + name + ", type: " + type + ", value: " + stringValue + " }}");
 		}
 	}
+	
+	@Override
+		public void setSizeFull()
+		{
+			setWidth("100%");
+			setHeight("100%");
+		}
 }

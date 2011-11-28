@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.server.PropertyAccessor;
 
 /**
  * Allows simple access / update of collections in base widgets
@@ -16,7 +16,7 @@ import org.vaadin.smartgwt.server.BaseWidget;
  * @param <T>
  */
 public class CollectionHandler<T> {
-	private BaseWidget baseWidget;
+	private PropertyAccessor baseWidget;
 	private String attributeName;
 	private List<T> values = new ArrayList<T>();
 	
