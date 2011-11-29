@@ -10561,6 +10561,7 @@ public class ListGrid extends Layout  {
      */
     public void setData(ListGridRecord[] records) {
         setAttribute("data", records, true);
+        requestRepaint();
     }
 
     /**
@@ -10571,6 +10572,7 @@ public class ListGrid extends Layout  {
      */
     public void setData(Record[] data) {
         setAttribute("data", data, true);
+        requestRepaint();
     }
 
     /**

@@ -340,6 +340,9 @@ public class PainterHelper
 
 	public static void updateBaseClass(ApplicationConnection client, BaseClass dataObject, UIDL uidl)
 	{
+		if (uidl.hasAttribute("cached"))
+			return;
+
 		for (String att : uidl.getAttributeNames())
 		{
 			if (att.startsWith("["))
@@ -385,6 +388,9 @@ public class PainterHelper
 
 	public static void updateDataObject(ApplicationConnection client, DataClass dataObject, UIDL uidl)
 	{
+		if (uidl.hasAttribute("cached"))
+			return;
+
 		for (String att : uidl.getAttributeNames())
 		{
 			if (att.startsWith("["))
