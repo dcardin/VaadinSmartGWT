@@ -82,7 +82,9 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			if (!att.startsWith("*") && !att.equals("id"))
+			System.out.println("Updating value: " + att);
+
+			if (!att.startsWith("*") && !att.equals("id") && !att.startsWith("_"))
 			{
 				if (component instanceof BaseWidget)
 				{
@@ -393,6 +395,7 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
+			System.out.println("Updating: " + att);
 			if (att.startsWith("["))
 			{
 				String[] refs = uidl.getStringArrayAttribute(att);

@@ -1,19 +1,17 @@
 package org.vaadin.smartgwt.client.ui.form.fields;
 
-import java.util.Date;
-
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.BlurEvent;
 import com.smartgwt.client.widgets.form.fields.events.BlurHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.form.validator.CustomValidator;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -24,7 +22,7 @@ public class VFormItem extends Canvas implements Paintable, Wrapper
 	protected ApplicationConnection client;
 
 	private final FormItem fi;
-	private final Object savedValue = null;
+	private Object savedValue = null;
 
 	@Override
 	public Element getElement()
@@ -36,7 +34,23 @@ public class VFormItem extends Canvas implements Paintable, Wrapper
 	{
 		super();
 
+//		CustomValidator validator = new CustomValidator()
+//			{
+//				@Override
+//				protected boolean condition(Object value)
+//				{
+//					if (fi.getAttribute("errorMessage") != null && fi.getAttribute("errorMessage").length() > 0)
+//					{
+//						setErrorMessage(fi.getAttribute("errorMessage"));
+//						return false;
+//					}
+//					return true;
+//				}
+//			};
+
 		fi = new FormItem();
+
+//		fi.setValidators(validator);
 
 		fi.addBlurHandler(new BlurHandler()
 			{
@@ -82,9 +96,25 @@ public class VFormItem extends Canvas implements Paintable, Wrapper
 
 		if (uidl.hasAttribute("value"))
 		{
+			savedValue = uidl.getStringAttribute("value");
 		}
 
 		PainterHelper.updateDataObject(client, fi, uidl);
+
+		if (uidl.hasAttribute("*errorMessages"))
+		{
+			if (fi.getForm() != null)
+			{
+				fi.getForm().setFieldErrors(fi.getName(), uidl.getStringArrayAttribute("*errorMessages"), true);
+			}
+		}
+		else
+		{
+			if (fi.getForm() != null)
+			{
+				fi.getForm().clearFieldErrors(fi.getName(), true);
+			}
+		}
 	}
 
 	@Override

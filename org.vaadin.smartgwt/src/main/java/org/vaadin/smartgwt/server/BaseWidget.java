@@ -1179,7 +1179,11 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			else if (value instanceof String[])
 			{
 				logPaintContentAttribute(name, value);
-				target.addAttribute("!" + name, (String[]) value);
+
+				if (name.charAt(0) != '*')
+					name = "!" + name;
+
+				target.addAttribute(name, (String[]) value);
 			}
 			else if (value instanceof Record[])
 			{
