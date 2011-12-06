@@ -3641,5 +3641,8 @@ public class ListGridField extends Canvas { // DataClass  implements com.smartgw
         setAttribute("editorProperties", editorType);
     }
 
-
+    public void setCellFormatter(String formatter) 
+    {
+    	setAttribute("*cellFormatter", formatter);
+    }
 }

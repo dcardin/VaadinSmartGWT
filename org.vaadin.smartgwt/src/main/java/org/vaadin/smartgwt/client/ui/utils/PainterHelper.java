@@ -450,4 +450,10 @@ public class PainterHelper
 			}
 		}
 	}
+	
+	public static Canvas getCanvasByRef(UIDL uidl, ApplicationConnection client, String refName)
+	{
+		String ref = uidl.getStringAttribute(refName);
+		return (Canvas) client.getPaintable(ref);
+	}
 }

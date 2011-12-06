@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.vaadin.smartgwt.SmartGWTApplication;
 import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -1126,6 +1128,7 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	 * 
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#paintContent(com.vaadin.terminal.PaintTarget)
 	 */
+	@JsonProperty
 	public Map<String, Object> getAttributes()
 	{
 		return attributes;
@@ -1136,6 +1139,9 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	{
 		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
+//		if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
+//			return;
+		
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
 			Object value = entry.getValue();
@@ -1187,7 +1193,17 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			}
 			else if (value instanceof Record[])
 			{
-				target.addAttribute(name, "j" + SmartGWTApplication.getJsonString((Record[]) value));
+				try
+				{
+					String json = SmartGWTApplication.getJsonString((Record[]) value);
+					System.out.println(json);
+					target.addAttribute(name, "j" + json);
+					
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 			else if (value instanceof Paintable[])
 			{

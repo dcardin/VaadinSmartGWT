@@ -660,6 +660,9 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 	 */
 	public void setPane(Canvas pane)
 	{
+		if (pane == null)
+			return;
+		
 		pane.setParent(this);
 //
 //		if (tabSet == null || !tabSet.isCreated())

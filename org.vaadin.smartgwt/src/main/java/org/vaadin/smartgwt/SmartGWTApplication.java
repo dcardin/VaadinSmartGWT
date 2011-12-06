@@ -5,10 +5,13 @@ import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
 import static argo.jdom.JsonNodeFactories.aJsonString;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.vaadin.smartgwt.client.ui.VLabel;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
@@ -31,6 +34,7 @@ import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.SectionStack;
 import org.vaadin.smartgwt.server.layout.SectionStackSection;
 import org.vaadin.smartgwt.server.layout.VLayout;
+import org.vaadin.smartgwt.server.layout.VSplitLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
@@ -73,9 +77,24 @@ public class SmartGWTApplication extends Application
 		CountryXmlDS.reset();
 
 		MasterContainer layout = new MasterContainer();
-		layout.setPane(getStackView()); // getMainPanel());
+		layout.setPane(getSplitTest()); // getMainPanel());
 
 		mainWindow.setContent(layout);
+	}
+
+	public Canvas getSplitTest()
+	{
+		VSplitLayout split = new VSplitLayout(true, true);
+		split.setWidth100();
+		split.setAutoHeight();
+
+		Label label2 = new Label("right");
+		label2.setBackgroundColor("yellow");
+
+		split.setTopCanvas(getListGrid());
+		split.setBottomCanvas(label2);
+
+		return split;
 	}
 
 	public SectionStack getStackView()
@@ -89,9 +108,8 @@ public class SmartGWTApplication extends Application
 
 		SectionStackSection section1 = new SectionStackSection("Monitors");
 		section1.addMember(listGrid);
-//		section1.setControls(addButton, removeButton);
 		section1.setExpanded(true);
-		
+
 		SectionStackSection section2 = new SectionStackSection("Monitors");
 		section2.addMember(getVertical());
 		section2.setExpanded(true);
@@ -100,8 +118,26 @@ public class SmartGWTApplication extends Application
 		sectionStack.addMember(section2);
 		return sectionStack;
 	}
-	
-	public static String getJsonString(Record[] records)
+
+	public static String getJsonString(Object object)
+	{
+		if (object instanceof Map == false)
+			return null;
+
+		JsonObjectNodeBuilder builder = anObjectBuilder();
+		
+		Map<String, Object> record = (Map<String, Object>) object;
+		JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
+
+		for (Map.Entry<String, Object> entry : record.entrySet())
+		{
+			nodeBuilder.withField(entry.getKey(), aJsonString(entry.getValue() == null ? "" : entry.getValue().toString()));
+		}
+
+		return JSON_FORMATTER.format(builder.build());
+	}
+
+	public static String getJsonString2(Record[] records)
 	{
 		JsonObjectNodeBuilder builder = anObjectBuilder();
 		JsonArrayNodeBuilder recordBuilder = anArrayBuilder();
@@ -122,17 +158,43 @@ public class SmartGWTApplication extends Application
 		return JSON_FORMATTER.format(jso);
 	}
 
-	public static void main(String[] args)
+	public static String getJsonString(Record[] records) throws Exception
 	{
-		SmartGWTApplication app = new SmartGWTApplication();
-		ListGridRecord[] records = CountryData.getRecords();
-		System.out.println(getJsonString(records));
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 
+		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append('[');
+		
+		for (Record record : records)
+		{
+			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
+			buffer.append(',');
+		}
+		
+		buffer.setLength(buffer.length()-1);
+		buffer.append(']');
+		
+		return buffer.toString();
 	}
 
 	private Canvas getListGrid()
 	{
-		final ListGrid countryGrid = new ListGrid();
+		final ListGrid countryGrid = new ListGrid()
+			{
+				@Override
+				public void selectionChanged(ListGridRecord[] selections)
+				{
+					System.out.print("records: ");
+					for (ListGridRecord record : selections)
+					{
+						System.out.print(record.getAttributeAsString("countryName") + ",");
+					}
+					System.out.println();
+				}
+			};
+
 		countryGrid.setWidth(500);
 		countryGrid.setHeight(224);
 		countryGrid.setShowAllRecords(true);
@@ -242,26 +304,6 @@ public class SmartGWTApplication extends Application
 		surrounding.addMember(layout);
 
 		return surrounding;
-	}
-
-	@ClientWidget(value = VLabel.class)
-	private static class NumericFormatter implements CellFormatter
-	{
-		public String format(Object value, ListGridRecord record, int rowNum, int colNum)
-		{
-			if (value == null)
-				return null;
-			try
-			{
-				NumberFormat nf = NumberFormat.getFormat("0,000");
-				return nf.format(((Number) value).longValue());
-			}
-			catch (Exception e)
-			{
-				return value.toString();
-			}
-		}
-
 	}
 
 	private Layout paintBorderLayout()

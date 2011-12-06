@@ -16,9 +16,13 @@ package org.vaadin.smartgwt.server.grid;
  * Lesser General Public License for more details.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.vaadin.rpc.ServerSideHandler;
+import org.vaadin.rpc.ServerSideProxy;
+import org.vaadin.rpc.client.Method;
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -51,6 +55,12 @@ import org.vaadin.smartgwt.server.types.SortArrow;
 import org.vaadin.smartgwt.server.types.TextMatchStyle;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import argo.jdom.JdomParser;
+import argo.jdom.JsonNode;
+import argo.jdom.JsonRootNode;
+import argo.jdom.JsonStringNode;
+import argo.saj.InvalidSyntaxException;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
@@ -60,7 +70,7 @@ import com.vaadin.terminal.PaintTarget;
  * each row represents one object and each cell in the row represents one property.
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
-public class ListGrid extends Layout  {
+public class ListGrid extends Layout implements ServerSideHandler  {
 //implements DataBoundComponent, com.smartgwt.client.widgets.grid.events.HasHeaderClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDropHandlers, com.smartgwt.client.widgets.grid.events.HasRecordExpandHandlers, com.smartgwt.client.widgets.grid.events.HasRecordCollapseHandlers, com.smartgwt.client.widgets.grid.events.HasDataArrivedHandlers, com.smartgwt.client.widgets.grid.events.HasDrawAreaChangedHandlers, com.smartgwt.client.widgets.grid.events.HasFieldStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasEditCompleteHandlers, com.smartgwt.client.widgets.grid.events.HasEditFailedHandlers, com.smartgwt.client.widgets.grid.events.HasEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasCellSavedHandlers, com.smartgwt.client.widgets.grid.events.HasCellOutHandlers, com.smartgwt.client.widgets.grid.events.HasCellOverHandlers, com.smartgwt.client.widgets.grid.events.HasCellContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasCellClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowOutHandlers, com.smartgwt.client.widgets.grid.events.HasRowOverHandlers, com.smartgwt.client.widgets.grid.events.HasRowContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellHoverHandlers, com.smartgwt.client.widgets.grid.events.HasRowHoverHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionUpdatedHandlers, com.smartgwt.client.widgets.grid.events.HasHeaderDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasFilterEditorSubmitHandlers, com.smartgwt.client.widgets.grid.events.HasGroupByHandlers, com.smartgwt.client.widgets.grid.events.HasViewStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasBodyKeyPressHandlers {
 
 //    public static ListGrid getOrCreateRef(JavaScriptObject jsObj) {
@@ -73,9 +83,9 @@ public class ListGrid extends Layout  {
 //        }
 //    }
 
-    public ListGrid(){
-        setModalEditing(true);scClassName = "ListGrid";
-    }
+//    public ListGrid(){
+//        setModalEditing(true);scClassName = "ListGrid";
+//    }
 
 //    public ListGrid(JavaScriptObject jsObj){
 //        super(jsObj);
@@ -14290,6 +14300,8 @@ public class ListGrid extends Layout  {
     // @formatter:on
 	// Vaaddin integration
 
+	private final ServerSideProxy client = new ServerSideProxy(this);
+
 	public void setFields(ListGridField... fields)
 	{
 		setAttribute("*fields", fields, true);
@@ -14299,10 +14311,66 @@ public class ListGrid extends Layout  {
 		}
 	}
 
+	public ListGrid()
+	{
+		setModalEditing(true);
+		scClassName = "ListGrid";
+		client.register("selectionChanged", new Method()
+			{
+				@Override
+				public void invoke(String methodName, Object[] params)
+				{
+					selectedRecords = parseRecords(params[0].toString());
+					selectionChanged(selectedRecords);
+				}
+			});
+	}
+
+	private ListGridRecord[] parseRecords(String json)
+	{
+		List<ListGridRecord> records = new ArrayList<ListGridRecord>();
+		
+		try
+		{
+			JdomParser parser = new JdomParser();
+			JsonRootNode root = parser.parse(json);
+			
+			for (JsonNode node : root.getArrayNode())
+			{
+				ListGridRecord record = new ListGridRecord();
+				for (Map.Entry<JsonStringNode, JsonNode> entry : node.getFields().entrySet())
+				{
+					if (entry.getValue().hasText())
+						record.setAttribute(entry.getKey().getText(), entry.getValue().getText());
+					else
+						System.out.println(entry.getValue());
+				}
+				records.add(record);
+			}
+		}
+		catch(InvalidSyntaxException e)
+		{
+			
+		}
+		
+		return records.toArray(new ListGridRecord[0]);
+	}
+	
+	private ListGridRecord[] selectedRecords;
+	
+	public ListGridRecord[] getSelectedRecords()
+	{
+		return selectedRecords;
+	}
+	
+	public void selectionChanged(ListGridRecord[] selections)
+	{
+	}
+
 	public void setFields(List<ListGridField> fields)
 	{
 		ListGridField[] fieldsArr = new ListGridField[0];
-		
+
 		fieldsArr = fields.toArray(fieldsArr);
 		setFields(fieldsArr);
 	}
@@ -14320,7 +14388,26 @@ public class ListGrid extends Layout  {
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		// TODO Auto-generated method stub
 		super.paintContent(target);
+		client.paintContent(target);
 	}
+
+	@Override
+	public Object[] initRequestFromClient()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void callFromClient(String method, Object[] params)
+	{}
+
+	@Override
+	public void changeVariables(Object source, Map<String, Object> variables)
+	{
+		super.changeVariables(source, variables);
+		client.changeVariables(source, variables);
+	}
+
 }
