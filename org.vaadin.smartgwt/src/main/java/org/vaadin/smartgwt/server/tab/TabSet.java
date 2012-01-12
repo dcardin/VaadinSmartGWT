@@ -2,8 +2,8 @@ package org.vaadin.smartgwt.server.tab;
 
 import java.util.Map;
 
-import org.vaadin.rpc.ServerSideHandler;
-import org.vaadin.rpc.ServerSideProxy;
+import org.vaadin.rpc.server.ServerSideHandler;
+import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.types.Side;

@@ -2,7 +2,7 @@ package org.vaadin.smartgwt.client.ui.tab;
 
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
-import org.vaadin.rpc.client.Method;
+import org.vaadin.rpc.shared.Method;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 import org.vaadin.smartgwt.client.ui.utils.Wrapper;
