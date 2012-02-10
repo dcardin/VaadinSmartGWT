@@ -90,6 +90,26 @@ public class PainterHelper
 				{
 					BaseWidget widget = (BaseWidget) component;
 
+					if (att.equals("disabled"))
+					{
+						String sValue = uidl.getStringAttribute(att).substring(1);
+
+						boolean disabled = Boolean.valueOf(sValue);
+						if (disabled)
+						{
+							if (component instanceof Canvas)
+							{
+								((Canvas) component).disable();
+							}
+							else
+							{
+								((Canvas) component).enable();
+							}
+						}
+						
+						continue;
+					}
+
 					// Names starting with the character '[' indicate an array of paintables references (String)
 					if (att.startsWith("["))
 					{
