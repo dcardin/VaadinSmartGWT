@@ -1133,15 +1133,15 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	{
 		return attributes;
 	}
-	
+
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
 		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-//		if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
-//			return;
-		
+		// if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
+		// return;
+
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
 			Object value = entry.getValue();
@@ -1198,9 +1198,9 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 					String json = SmartGWTApplication.getJsonString((Record[]) value);
 					System.out.println(json);
 					target.addAttribute(name, "j" + json);
-					
+
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -1278,11 +1278,27 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			LOGGER.debug("widget: " + getClass().getSimpleName() + " { attribute { name: " + name + ", type: " + type + ", value: " + stringValue + " }}");
 		}
 	}
-	
+
 	@Override
-		public void setSizeFull()
-		{
-			setWidth("100%");
-			setHeight("100%");
-		}
+	public void setSizeFull()
+	{
+		setWidth("100%");
+		setHeight("100%");
+	}
+
+	public void setEnabled(boolean enabled)
+	{
+		setAttribute("disabled", !enabled);
+	}
+
+	@Override
+	public void setReadOnly(boolean readOnly)
+	{
+		setAttribute("readonly", readOnly);
+	}
+
+	public void setVisible(boolean visible)
+	{
+		setAttribute("visible", visible);
+	};
 }
