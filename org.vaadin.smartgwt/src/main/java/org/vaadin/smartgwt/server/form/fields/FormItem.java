@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.server.form.fields;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Date;
 import java.util.Map;
 
@@ -31,7 +33,6 @@ import com.vaadin.ui.ClientWidget;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
 
 // @formatter:off
 /**
@@ -2427,7 +2428,8 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
      * @param title title Default value is null
      * @see com.smartgwt.client.docs.Basics Basics overview and related methods
      */
-    public void setTitle(String title) {
+    @Override
+	public void setTitle(String title) {
         setAttribute("title", title);
     }
 
@@ -2438,7 +2440,8 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
      * @return Return the title of this formItem
      * @see com.smartgwt.client.docs.Basics Basics overview and related methods
      */
-    public String getTitle()  {
+    @Override
+	public String getTitle()  {
         return getAttributeAsString("title");
     }
 
@@ -4112,13 +4115,15 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
         setAttribute("valueIcons", valueIcons);
     }
 
-    public void setWidth(String width) {
+    @Override
+	public void setWidth(String width) {
         if("100%".equals(width)) width = "*";
         assert width.indexOf("%") == -1 : "FormItems do not support percent sizing.";
         setAttribute("width", width);
     }
 
-    public void setHeight(String height) {
+    @Override
+	public void setHeight(String height) {
         if("100%".equals(height)) height = "*";
         assert height.indexOf("%") == -1 : "FormItems do not support percent sizing.";
         setAttribute("height", height);
@@ -4769,16 +4774,60 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
     }
     
     // @formatter:on
-    // vaadin integration
-    
-    public void setOptionDataSource(DataSource dataSource) {
-        setAttribute("optionDataSource", dataSource);
-    }
+	// vaadin integration
 
-    public void setValue(Object value)
+	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+	public void setOptionDataSource(DataSource dataSource)
 	{
-		setAttribute("value", value);
+		setAttribute("optionDataSource", dataSource);
+	}
+
+	public void setValue(Object value)
+	{
+		setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, value);
 		requestRepaint();
 	}
 
+	@Override
+	public void changeVariables(Object source, Map<String, Object> variables)
+	{
+		super.changeVariables(source, variables);
+
+		if (variables.containsKey(ATTRIBUTE_VALUE))
+		{
+			setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, variables.get(ATTRIBUTE_VALUE));
+		}
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	{
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	{
+		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	{
+		propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	{
+		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+	}
+
+	private void setPropertyAttribute(String attributeName, String propertyName, Object value)
+	{
+		final Object oldPropertyValue = getAttribute(attributeName);
+		setAttribute(attributeName, value);
+		propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
+	}
+
+	private static final String ATTRIBUTE_VALUE = "value";
+
+	public static final String PROPERTYNAME_VALUE = "value";
 }
