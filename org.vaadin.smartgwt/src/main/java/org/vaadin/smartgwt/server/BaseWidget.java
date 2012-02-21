@@ -1139,9 +1139,10 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	{
 		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-//		if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
-//			return;
-		
+		// if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
+		// return;
+
+		AttributesProtocol.paint(target, attributes);
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
 			Object value = entry.getValue();

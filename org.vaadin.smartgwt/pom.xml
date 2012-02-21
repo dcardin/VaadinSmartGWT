@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vaadin</groupId>
 	<artifactId>org.vaadin.smartgwt</artifactId>
@@ -35,8 +34,8 @@
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
-						<Export-Package>org.vaadin.smartgwt.server.*</Export-Package>
-						<Import-Package>!com.google.gwt.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
+						<Export-Package>org.vaadin.smartgwt.server.*,org.vaadin.smartgwt.shared.*</Export-Package>
+						<Import-Package>!org.vaadin.rpc.client.*,!com.google.gwt.*,!com.smartgwt.client.*,*</Import-Package>
 					</instructions>
 				</configuration>
 			</plugin>
@@ -50,8 +49,7 @@
 						<index>true</index>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<!-- Implementation-Title and Implementation-Version come from the 
-								POM by default -->
+							<!-- Implementation-Title and Implementation-Version come from the POM by default -->
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<manifestEntries>
@@ -60,8 +58,7 @@
 
 							<!-- Add-on specific fields to update -->
 
-							<!-- Implementation-Title and Implementation-Version come from the 
-								POM by default -->
+							<!-- Implementation-Title and Implementation-Version come from the POM by default -->
 							<!-- <Implementation-Title>${pom.name}</Implementation-Title> <Implementation-Version>${pom.version}</Implementation-Version> -->
 
 							<!-- Comma-separated list of widgetsets in the package -->
@@ -77,8 +74,7 @@
 				<version>1.0.2</version>
 			</plugin>
 
-			<!-- Compile custom GWT components or widget dependencies with the GWT 
-				compiler -->
+			<!-- Compile custom GWT components or widget dependencies with the GWT compiler -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -139,8 +135,7 @@
 
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -192,12 +187,9 @@
 		</repository>
 	</repositories>
 
-	<!-- <pluginRepositories> <pluginRepository> <id>codehaus-snapshots</id> 
-		<url>http://nexus.codehaus.org/snapshots</url> <snapshots> <enabled>true</enabled> 
-		</snapshots> <releases> <enabled>false</enabled> </releases> </pluginRepository> 
-		<pluginRepository> <id>vaadin-snapshots</id> <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url> 
-		<snapshots> <enabled>true</enabled> </snapshots> <releases> <enabled>false</enabled> 
-		</releases> </pluginRepository> </pluginRepositories> -->
+	<!-- <pluginRepositories> <pluginRepository> <id>codehaus-snapshots</id> <url>http://nexus.codehaus.org/snapshots</url> <snapshots> <enabled>true</enabled> </snapshots> 
+		<releases> <enabled>false</enabled> </releases> </pluginRepository> <pluginRepository> <id>vaadin-snapshots</id> <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url> 
+		<snapshots> <enabled>true</enabled> </snapshots> <releases> <enabled>false</enabled> </releases> </pluginRepository> </pluginRepositories> -->
 
 	<dependencies>
 		<dependency>
@@ -250,6 +242,23 @@
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>widget-rpc</artifactId>
 			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-gwt</artifactId>
+			<version>11.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

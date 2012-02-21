@@ -2,8 +2,11 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.7.0/distro-source/core/src/gwt-module.dtd">
 <module>
 	<inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
-
-	<script src="startup.js"/> 
+	<script src="startup.js"/>
+	<source path="client" />
+	<source path="shared" />
 	<inherits name="com.smartgwt.SmartGwt" />
     <inherits name="org.vaadin.rpc.WidgetRPC" />
+    <inherits name="com.google.common.base.Base" />
+    <inherits name="com.google.common.collect.Collect" />
 </module>

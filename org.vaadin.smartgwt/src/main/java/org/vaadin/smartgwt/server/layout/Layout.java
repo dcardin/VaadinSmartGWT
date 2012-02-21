@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.vaadin.smartgwt.server.AttributesProtocol;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
@@ -17,6 +18,7 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
+import com.vaadin.terminal.Paintable;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
@@ -602,7 +604,8 @@ public class Layout extends Canvas implements ComponentContainer {
      * @param overflow overflow Default value is "visible"
      * @throws IllegalStateException this property cannot be changed after the component has been created
      */
-    public void setOverflow(Overflow overflow)  throws IllegalStateException {
+    @Override
+	public void setOverflow(Overflow overflow)  throws IllegalStateException {
         setAttribute("overflow", overflow.getValue(), false);
     }
 
@@ -613,7 +616,8 @@ public class Layout extends Canvas implements ComponentContainer {
      *
      * @return Overflow
      */
-    public Overflow getOverflow()  {
+    @Override
+	public Overflow getOverflow()  {
         return EnumUtil.getEnum(Overflow.values(), getAttribute("overflow"));
     }
 
@@ -1205,7 +1209,8 @@ public class Layout extends Canvas implements ComponentContainer {
      *
      * @param alignment alignment Default value is null
      */
-    public void setAlign(Alignment alignment) {
+    @Override
+	public void setAlign(Alignment alignment) {
         setAttribute("align", alignment.getValue(), true);
     }
 
@@ -1360,10 +1365,10 @@ public class Layout extends Canvas implements ComponentContainer {
 	// ********************* Vaadin Integration ***********************
 	private static final long serialVersionUID = 1L;
 
-	private List<Canvas> members = new ArrayList<Canvas>();
-	private List<Canvas> membersAdded = new ArrayList<Canvas>();
-	private List<Canvas> membersRemoved = new ArrayList<Canvas>();
-	private List<Canvas[]> membersReplaced = new ArrayList<Canvas[]>();
+	private final List<Canvas> members = new ArrayList<Canvas>();
+	private final List<Canvas> membersAdded = new ArrayList<Canvas>();
+	private final List<Canvas> membersRemoved = new ArrayList<Canvas>();
+	private final List<Canvas[]> membersReplaced = new ArrayList<Canvas[]>();
 
 	/**
 	 * Returns true if the layout includes the specified canvas.
@@ -1522,7 +1527,7 @@ public class Layout extends Canvas implements ComponentContainer {
 
 		return members.toArray(tmp);
 	}
-	
+
 	public void removeAllMembers()
 	{
 		for (Canvas member : getMembers())
@@ -1610,6 +1615,8 @@ public class Layout extends Canvas implements ComponentContainer {
 
 		if (membersAdded.size() == 0 && membersReplaced.size() == 0 && membersRemoved.size() == 0)
 		{
+			AttributesProtocol.paint(target, "members", members.toArray(new Paintable[0]));
+
 			// full repaint since no "special" component list has been modified
 			List<String> references = new ArrayList<String>();
 
@@ -1619,7 +1626,7 @@ public class Layout extends Canvas implements ComponentContainer {
 					c.paint(target);
 				references.add(jspt.getPaintIdentifier(c));
 			}
-			
+
 			if (references.size() > 0)
 				target.addAttribute("*members", references.toArray());
 		}
@@ -1627,6 +1634,8 @@ public class Layout extends Canvas implements ComponentContainer {
 		{
 			if (membersAdded.size() > 0)
 			{
+				AttributesProtocol.paint(target, "membersAdded", membersAdded.toArray(new Paintable[0]));
+
 				List<String> references = new ArrayList<String>();
 
 				for (Canvas c : membersAdded)
@@ -1642,6 +1651,8 @@ public class Layout extends Canvas implements ComponentContainer {
 
 			if (membersRemoved.size() > 0)
 			{
+				AttributesProtocol.paint(target, "membersRemoved", membersRemoved.toArray(new Paintable[0]));
+
 				List<String> references = new ArrayList<String>();
 
 				for (Canvas c : membersRemoved)
@@ -1655,6 +1666,8 @@ public class Layout extends Canvas implements ComponentContainer {
 
 			if (membersReplaced.size() > 0)
 			{
+				AttributesProtocol.paint(target, "membersReplaced", membersReplaced.toArray(new Paintable[0]));
+
 				List<String> references = new ArrayList<String>();
 				for (Component[] c : membersReplaced)
 				{
@@ -1694,7 +1707,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	@Override
 	public void removeComponent(Component c)
 	{
-		removeComponent((Canvas) c);
+		removeComponent(c);
 	}
 
 	@Override

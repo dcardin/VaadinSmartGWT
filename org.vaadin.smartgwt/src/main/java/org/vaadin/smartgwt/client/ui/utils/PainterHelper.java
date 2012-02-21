@@ -1,7 +1,10 @@
 package org.vaadin.smartgwt.client.ui.utils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.vaadin.smartgwt.client.AttributesProtocol;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -80,6 +83,11 @@ public class PainterHelper
 		if (uidl.hasAttribute("cached"))
 			return;
 
+		if (component instanceof BaseWidget)
+		{
+			AttributesProtocol.update(client, uidl, (BaseWidget) component);
+		}
+
 		for (String att : uidl.getAttributeNames())
 		{
 			System.out.println("Updating value: " + att);
@@ -90,6 +98,25 @@ public class PainterHelper
 				{
 					BaseWidget widget = (BaseWidget) component;
 
+					if (att.equals("disabled"))
+					{
+						String sValue = uidl.getStringAttribute(att).substring(1);
+
+						boolean disabled = Boolean.valueOf(sValue);
+						if (disabled)
+						{
+							if (component instanceof Canvas)
+							{
+								((Canvas) component).disable();
+							}
+							else
+							{
+								((Canvas) component).enable();
+							}
+						}
+
+						continue;
+					}
 					// Names starting with the character '[' indicate an array of paintables references (String)
 					if (att.startsWith("["))
 					{
@@ -135,7 +162,7 @@ public class PainterHelper
 							}
 						}
 					}
-					// Names starting with '!' indicate a String[] 
+					// Names starting with '!' indicate a String[]
 					else if (att.startsWith("!"))
 					{
 						String[] value = uidl.getStringArrayAttribute(att);
@@ -267,70 +294,10 @@ public class PainterHelper
 	{
 		switch (sValue.charAt(0))
 		{
-			case 's':
-			{
-				String value = sValue.substring(1);
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
-			case 'i':
-			{
-				Integer value = Integer.valueOf(sValue.substring(1));
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
-			case 'f':
-			{
-				Float value = Float.valueOf(sValue.substring(1));
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
-			case 'l':
-			{
-				Long value = Long.valueOf(sValue.substring(1));
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
-			case 'd':
-			{
-				Double value = Double.valueOf(sValue.substring(1));
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
-			case 'b':
-			{
-				Boolean value = Boolean.valueOf(sValue.substring(1));
-				if (!widget.isCreated())
-					JSOHelper.setAttribute(widget.getConfig(), att, value);
-				else
-					widget.setProperty(att, value);
-			}
-				break;
-
 			case 'j':
 			{
 				JavaScriptObject value = JSON.decode(sValue.substring(1));
-				
+
 				if (!widget.isCreated())
 					JSOHelper.setAttribute(widget.getConfig(), att, value);
 				else
@@ -390,6 +357,19 @@ public class PainterHelper
 
 	public static void updateDataObject(ApplicationConnection client, DataClass dataObject, UIDL uidl)
 	{
+		for (Iterator<Object> iterator = uidl.getChildIterator(); iterator.hasNext();)
+		{
+			final Object child = iterator.next();
+
+			if (child instanceof UIDL)
+			{
+				if (((UIDL) child).getTag().equals("attribute"))
+				{
+					System.out.println(((UIDL) child).getStringAttribute("name") + " | " + ((UIDL) child).getStringAttribute("type"));
+				}
+			}
+		}
+
 		if (uidl.hasAttribute("cached"))
 			return;
 
@@ -443,14 +423,14 @@ public class PainterHelper
 				String[] value = uidl.getStringArrayAttribute(att);
 				dataObject.setAttribute(att.substring(1), value);
 			}
-			else if (!att.startsWith("*") && !att.equals("id"))
+			else if (!att.startsWith("*") && !att.equals("id") && !att.equals("error"))
 			{
 				String sValue = uidl.getStringAttribute(att);
 				setDataProperty(dataObject, att, sValue);
 			}
 		}
 	}
-	
+
 	public static Canvas getCanvasByRef(UIDL uidl, ApplicationConnection client, String refName)
 	{
 		String ref = uidl.getStringAttribute(refName);
