@@ -12,7 +12,8 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.vaadin.smartgwt.SmartGWTApplication;
 import org.vaadin.smartgwt.server.data.Record;
-import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.shared.json.JavaScriptObject;
+import org.vaadin.smartgwt.shared.json.TemplatableJavaScriptObject;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -21,7 +22,7 @@ import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.AbstractComponent;
 
 // @formatter:off
-public abstract class BaseWidget extends AbstractComponent implements PropertyAccessor { // implements HasHandlers, Serializable {
+public abstract class BaseWidget extends AbstractComponent { // implements HasHandlers, Serializable {
 //	private Function onRenderFn;
 
 //    static {
@@ -105,7 +106,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getScClassName()
 	 */
-    @Override
 	public String getScClassName() {
         return scClassName;
     }
@@ -113,7 +113,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setScClassName(java.lang.String)
 	 */
-    @Override
 	public void setScClassName(String scClassName) {
         this.scClassName = scClassName;
     }
@@ -175,7 +174,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#isConfigOnly()
 	 */
-    @Override
 	public boolean isConfigOnly() {
         return configOnly;
     }
@@ -183,7 +181,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setConfigOnly(boolean)
 	 */
-    @Override
 	public void setConfigOnly(boolean configOnly) {
         this.configOnly = configOnly;
     }
@@ -287,7 +284,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setPosition(java.lang.String)
 	 */
-    @Override
 	public void setPosition(String position) {
         setAttribute("position", position, false);
     }
@@ -305,7 +301,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
     /* (non-Javadoc)
 	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getID()
 	 */
-    @Override
 	public String getID() {
         return id;
     }
@@ -851,18 +846,10 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 //    }
 
     //override default behavior of setting title for SmartGWT widgets
-    /* (non-Javadoc)
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setTitle(java.lang.String)
-	 */
-    @Override
 	public void setTitle(String title) {
         //do nothing
     }
 
-    /* (non-Javadoc)
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getTitle()
-	 */
-    @Override
 	public String getTitle() {
         return "";
     }
@@ -901,41 +888,32 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(BaseWidget.class);
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
-	private boolean isCreated = false;
+	private final TemplatableJavaScriptObject javaScriptObject = new TemplatableJavaScriptObject();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#isCreated()
-	 */
-	@Override
 	public boolean isCreated()
 	{
-		return isCreated;
+		return javaScriptObject.isCreated();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#removeAttribute(java.lang.String)
-	 */
-	@Override
 	public void removeAttribute(String attribute)
 	{
 		attributes.remove(attribute);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setAttribute(java.lang.String, java.lang.Object, boolean)
-	 */
-	@Override
 	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
 	{
 		if (isCreated() && !allowPostCreate)
 		{
 			throw new IllegalArgumentException("Cannot modify property " + attribute + " once created");
+		}
+
+		if (value instanceof String)
+		{
+			javaScriptObject.put(attribute, (String) value);
+		}
+		else if (value instanceof Integer)
+		{
+			javaScriptObject.put(attribute, (Integer) value);
 		}
 
 		if (value == null)
@@ -944,66 +922,16 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			attributes.put(attribute, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#setAttribute(java.lang.String, java.lang.Object)
-	 */
-	@Override
 	public void setAttribute(String attribute, Object value)
 	{
 		setAttribute(attribute, value, true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsString(java.lang.String)
-	 */
-	@Override
-	public String getAttributeAsString(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return value.toString();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttribute(java.lang.String)
-	 */
-	@Override
 	public String getAttribute(String attribute)
 	{
 		return getAttributeAsString(attribute);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsInt(java.lang.String)
-	 */
-	@Override
-	public Integer getAttributeAsInt(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return Integer.valueOf(value.toString());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsBoolean(java.lang.String)
-	 */
-	@Override
 	public Boolean getAttributeAsBoolean(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1014,12 +942,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			return Boolean.valueOf(value.toString());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsDouble(java.lang.String)
-	 */
-	@Override
 	public Double getAttributeAsDouble(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1030,12 +952,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			return Double.valueOf(value.toString());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsFloat(java.lang.String)
-	 */
-	@Override
 	public Float getAttributeAsFloat(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1046,12 +962,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			return Float.valueOf(value.toString());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsMap(java.lang.String)
-	 */
-	@Override
 	public Map<?, ?> getAttributeAsMap(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1062,12 +972,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			return (Map<?, ?>) value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsDate(java.lang.String)
-	 */
-	@Override
 	public Date getAttributeAsDate(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1090,12 +994,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsStringArray(java.lang.String)
-	 */
-	@Override
 	public String[] getAttributeAsStringArray(String attribute)
 	{
 		Object value = attributes.get(attribute);
@@ -1106,43 +1004,25 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			return (String[]) value;
 	}
 
-	// public JavaScriptObject getAttributeAsJavaScriptObject(String property)
-	// {
-	// throw new IllegalStateException();
-	// }
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getAttributeAsObject(java.lang.String)
-	 */
-	@Override
 	public <T> T getAttributeAsObject(String attribute)
 	{
 		Object value = attributes.get(attribute);
 		return (T) value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#paintContent(com.vaadin.terminal.PaintTarget)
-	 */
 	@JsonProperty
 	public Map<String, Object> getAttributes()
 	{
 		return attributes;
 	}
-	
+
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
 		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-		// if (jspt.needsToBePainted(this) == false && (this instanceof MasterContainer == false))
-		// return;
-
 		AttributesProtocol.paint(target, attributes);
+
 		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
 			Object value = entry.getValue();
@@ -1199,9 +1079,9 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 					String json = SmartGWTApplication.getJsonString((Record[]) value);
 					System.out.println(json);
 					target.addAttribute(name, "j" + json);
-					
+
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -1240,27 +1120,10 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 		}
 
 		// Since the paint is finished, set the created attribute
-		isCreated = true;
+		javaScriptObject.create();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getOrCreateJsObj()
-	 */
-	@Override
 	public BaseWidget getOrCreateJsObj()
-	{
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.vaadin.smartgwt.server.PropertyAccessor#getConfig()
-	 */
-	@Override
-	public PropertyAccessor getConfig()
 	{
 		return this;
 	}
@@ -1279,11 +1142,70 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			LOGGER.debug("widget: " + getClass().getSimpleName() + " { attribute { name: " + name + ", type: " + type + ", value: " + stringValue + " }}");
 		}
 	}
-	
+
 	@Override
-		public void setSizeFull()
+	public void setSizeFull()
+	{
+		setWidth("100%");
+		setHeight("100%");
+	}
+
+	public JavaScriptObject getConfig()
+	{
+		return javaScriptObject;
+	}
+
+	public String getStringProperty(String property)
+	{
+		return javaScriptObject.getAsString(property);
+	}
+
+	public int getIntProperty(String property)
+	{
+		return javaScriptObject.getAsInt(property);
+	}
+
+	public void setProperty(String property, String value)
+	{
+		javaScriptObject.put(property, value);
+	}
+
+	public void setProperty(String property, int value)
+	{
+		javaScriptObject.put(property, value);
+	}
+
+	public String getAttributeAsString(String attribute)
+	{
+		return javaScriptObject.getAsString(attribute);
+	}
+
+	public int getAttributeAsInt(String attribute)
+	{
+		return javaScriptObject.getAsInt(attribute);
+	}
+
+	protected void setAttribute(String attribute, String value, boolean allowPostCreate)
+	{
+		if (allowPostCreate)
 		{
-			setWidth("100%");
-			setHeight("100%");
+			javaScriptObject.put(attribute, value);
 		}
+		else
+		{
+			javaScriptObject.template(attribute, value);
+		}
+	}
+
+	protected void setAttribute(String attribute, int value, boolean allowPostCreate)
+	{
+		if (allowPostCreate)
+		{
+			javaScriptObject.put(attribute, value);
+		}
+		else
+		{
+			javaScriptObject.template(attribute, value);
+		}
+	}
 }

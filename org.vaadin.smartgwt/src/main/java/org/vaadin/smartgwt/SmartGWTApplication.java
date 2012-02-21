@@ -1,18 +1,15 @@
 package org.vaadin.smartgwt;
 
-import static argo.jdom.JsonNodeBuilders.anArrayBuilder;
-import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
-import static argo.jdom.JsonNodeFactories.aJsonString;
+import static argo.jdom.JsonNodeBuilders.*;
+import static argo.jdom.JsonNodeFactories.*;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.vaadin.smartgwt.client.ui.VLabel;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -23,10 +20,8 @@ import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
-import org.vaadin.smartgwt.server.grid.CellFormatter;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
-import org.vaadin.smartgwt.server.grid.ListGridRecord;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
@@ -51,9 +46,7 @@ import argo.jdom.JsonArrayNodeBuilder;
 import argo.jdom.JsonObjectNodeBuilder;
 import argo.jdom.JsonRootNode;
 
-import com.google.gwt.i18n.client.NumberFormat;
 import com.vaadin.Application;
-import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Window;
 
 public class SmartGWTApplication extends Application
@@ -125,7 +118,7 @@ public class SmartGWTApplication extends Application
 			return null;
 
 		JsonObjectNodeBuilder builder = anObjectBuilder();
-		
+
 		Map<String, Object> record = (Map<String, Object>) object;
 		JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
@@ -164,36 +157,24 @@ public class SmartGWTApplication extends Application
 		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append('[');
-		
+
 		for (Record record : records)
 		{
 			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
 			buffer.append(',');
 		}
-		
-		buffer.setLength(buffer.length()-1);
+
+		buffer.setLength(buffer.length() - 1);
 		buffer.append(']');
-		
+
 		return buffer.toString();
 	}
 
 	private Canvas getListGrid()
 	{
-		final ListGrid countryGrid = new ListGrid()
-			{
-				@Override
-				public void selectionChanged(ListGridRecord[] selections)
-				{
-					System.out.print("records: ");
-					for (ListGridRecord record : selections)
-					{
-						System.out.print(record.getAttributeAsString("countryName") + ",");
-					}
-					System.out.println();
-				}
-			};
+		final ListGrid countryGrid = new ListGrid();
 
 		countryGrid.setWidth(500);
 		countryGrid.setHeight(224);
