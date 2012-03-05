@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
@@ -37,15 +38,15 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 //            return new Window(jsObj);
 //        }
 //    }
-
-    public Window(){
-        setShowHeaderIcon(false);scClassName = "Window";
-    }
-
+//
+//    public Window(){
+//        setShowHeaderIcon(false);scClassName = "Window";
+//    }
+//
 //    public Window(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
-
+//
 //    protected native JavaScriptObject create()/*-{
 //        var config = this.@com.smartgwt.client.widgets.BaseWidget::getConfig()();
 //        var scClassName = this.@com.smartgwt.client.widgets.BaseWidget::scClassName;
@@ -1604,7 +1605,18 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
  // @formatter:on
 
 	private List<Canvas> items = new ArrayList<Canvas>();
-
+	private MasterContainer container;
+	
+	public Window(MasterContainer container)
+	{
+		this.container = container;
+	}
+	
+	public void show()
+	{
+		container.showWindow(this);
+	}
+	
 	public void addItem(Canvas component)
 	{
 		component.setParent(this);

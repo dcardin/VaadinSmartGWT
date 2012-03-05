@@ -5,14 +5,12 @@ import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
 import static argo.jdom.JsonNodeFactories.aJsonString;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.vaadin.smartgwt.client.ui.VLabel;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -23,7 +21,6 @@ import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
-import org.vaadin.smartgwt.server.grid.CellFormatter;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
@@ -51,20 +48,22 @@ import argo.jdom.JsonArrayNodeBuilder;
 import argo.jdom.JsonObjectNodeBuilder;
 import argo.jdom.JsonRootNode;
 
-import com.google.gwt.i18n.client.NumberFormat;
 import com.vaadin.Application;
-import com.vaadin.ui.ClientWidget;
 import com.vaadin.ui.Window;
 
-public class SmartGWTApplication extends Application
+public class SmartGWTApplication extends Application implements MasterContainerHolder
 {
+	private static final long serialVersionUID = 1L;
+
 	private TabSet tabset;
 	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
+	private MasterContainer masterContainer = new MasterContainer();
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	@Override
+	public MasterContainer getMasterContainer()
+	{
+		return masterContainer;
+	}
 
 	@Override
 	public void init()
@@ -76,10 +75,10 @@ public class SmartGWTApplication extends Application
 
 		CountryXmlDS.reset();
 
-		MasterContainer layout = new MasterContainer();
-		layout.setPane(getSplitTest()); // getMainPanel());
+		masterContainer = new MasterContainer();
+		masterContainer.setPane(getMainPanel());
 
-		mainWindow.setContent(layout);
+		mainWindow.setContent(masterContainer);
 	}
 
 	public Canvas getSplitTest()
@@ -125,7 +124,7 @@ public class SmartGWTApplication extends Application
 			return null;
 
 		JsonObjectNodeBuilder builder = anObjectBuilder();
-		
+
 		Map<String, Object> record = (Map<String, Object>) object;
 		JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
@@ -164,18 +163,18 @@ public class SmartGWTApplication extends Application
 		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append('[');
-		
+
 		for (Record record : records)
 		{
 			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
 			buffer.append(',');
 		}
-		
-		buffer.setLength(buffer.length()-1);
+
+		buffer.setLength(buffer.length() - 1);
 		buffer.append(']');
-		
+
 		return buffer.toString();
 	}
 
@@ -276,7 +275,7 @@ public class SmartGWTApplication extends Application
 		countryGrid.setShowAllRecords(true);
 		countryGrid.setCellHeight(22);
 		// use server-side dataSource so edits are retained across page transitions
-		countryGrid.setDataSource(CountryXmlDS.getInstance());
+		countryGrid.setDataSource(CountryXmlDS.getInstance(masterContainer));
 
 		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
 		countryCodeField.setAlign(Alignment.CENTER);
@@ -494,7 +493,28 @@ public class SmartGWTApplication extends Application
 					tabset.selectTab(1);
 				}
 			});
-		vl.addMember(new Button("Press me 2!"));
+		vl.addMember(new Button("Press me 2!")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+
+					org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
+					window.setTitle("Modal Window");
+					window.setWidth(900);
+					window.setHeight(700);
+					window.setShowMinimizeButton(false);
+					window.setShowResizer(true);
+					window.setIsModal(true);
+					window.setShowModalMask(true);
+					window.setAutoCenter(true);
+			        window.setCanDragReposition(true);  
+			        window.setCanDragResize(true);  
+					window.addItem(getMainPanel());
+					window.show();
+				}
+			});
 		vl.addMember(new Button("Press me 3!"));
 		vl.addMember(new Button("Press me 4!"));
 		Label filler = new Label("");
@@ -627,7 +647,7 @@ public class SmartGWTApplication extends Application
 		// populationField.setCellFormatter(new NumericFormatter());
 		ListGridField independenceField = new ListGridField("independence", "Independence");
 		si.setPickListFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
-		si.setOptionDataSource(CountryXmlDS.getInstance());
+		si.setOptionDataSource(CountryXmlDS.getInstance(masterContainer));
 		form.addField(si);
 
 		si = new SelectItem("blah" + i);

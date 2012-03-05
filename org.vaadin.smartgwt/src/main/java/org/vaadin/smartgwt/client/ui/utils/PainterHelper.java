@@ -48,25 +48,43 @@ public class PainterHelper
 	 */
 	public static List<WidgetInfo> paintChildren(UIDL uidl, ApplicationConnection client)
 	{
+		List<WidgetInfo> childWidgets = createChildren(uidl, client);
+		
+		for (WidgetInfo info : childWidgets)
+		{
+			paintWidget(info.getWidget(), info.getUIDL(), client);
+		}
+		
+		return childWidgets;
+	}
+	
+	/**
+	 * Create the children of this uidl so they may be referenced after
+	 */
+	public static List<WidgetInfo> createChildren(UIDL uidl, ApplicationConnection client)
+	{
 		List<WidgetInfo> childWidgets = new ArrayList<WidgetInfo>();
 
 		int uidlCount = uidl.getChildCount();
 		for (int uidlPos = 0; uidlPos < uidlCount; uidlPos++)
 		{
 			final UIDL childUIDL = uidl.getChildUIDL(uidlPos);
-
 			Widget uidlWidget = childUIDL != null ? (Widget) client.getPaintable(childUIDL) : null;
-
-			if (uidlWidget instanceof Paintable)
-			{
-				((Paintable) uidlWidget).updateFromUIDL(childUIDL, client);
-			}
-
 			childWidgets.add(new WidgetInfo(childUIDL, uidlWidget));
 		}
 
 		return childWidgets;
 	}
+	
+	public static void paintWidget(Widget widget, UIDL uidl, ApplicationConnection client)
+	{
+		if (widget instanceof Paintable)
+		{
+			((Paintable) widget).updateFromUIDL(uidl, client);
+		}
+	}
+	
+	
 
 	/**
 	 * Provides automatic processing of a Widget's property, coming from properties in uidl

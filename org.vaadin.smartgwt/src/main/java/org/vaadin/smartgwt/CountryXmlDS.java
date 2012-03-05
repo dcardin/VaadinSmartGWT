@@ -7,17 +7,18 @@ import org.vaadin.smartgwt.server.data.fields.DataSourceFloatField;
 import org.vaadin.smartgwt.server.data.fields.DataSourceIntegerField;
 import org.vaadin.smartgwt.server.data.fields.DataSourceLinkField;
 import org.vaadin.smartgwt.server.data.fields.DataSourceTextField;
+import org.vaadin.smartgwt.server.layout.MasterContainer;
 
 public class CountryXmlDS extends DataSource
 {
-
 	private static CountryXmlDS instance = null;
 
-	public static CountryXmlDS getInstance()
+	public static CountryXmlDS getInstance(MasterContainer masterContainer)
 	{
 		if (instance == null)
 		{
-			instance = new CountryXmlDS("countryDS");
+			instance = new CountryXmlDS("countryDS", masterContainer);
+			masterContainer.registerDataSource(instance);
 		}
 		return instance;
 	}
@@ -27,8 +28,9 @@ public class CountryXmlDS extends DataSource
 		instance = null;
 	}
 
-	public CountryXmlDS(String id)
+	public CountryXmlDS(String id, MasterContainer masterContainer)
 	{
+		super(masterContainer);
 		setID(id);
 		setRecordXPath("/List/country");
 		DataSourceIntegerField pkField = new DataSourceIntegerField("pk");

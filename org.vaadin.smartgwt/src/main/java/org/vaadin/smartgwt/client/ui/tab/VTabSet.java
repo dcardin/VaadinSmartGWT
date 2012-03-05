@@ -66,8 +66,13 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 
 			for (String member : members)
 			{
-				Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
-				addTab(tab);
+				Paintable paintable = client.getPaintable(member);
+				
+				if (paintable instanceof Wrapper)
+				{
+					Tab tab = ((Wrapper) paintable).unwrap();
+					addTab(tab);
+				}
 			}
 		}
 		else

@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.vaadin.smartgwt.SmartGWTApplication;
 import org.vaadin.smartgwt.server.data.Record;
-import org.vaadin.smartgwt.server.layout.MasterContainer;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;

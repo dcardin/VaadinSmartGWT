@@ -266,6 +266,11 @@
 =======
 >>>>>>> THEIRS
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>consolewindow</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
