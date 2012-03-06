@@ -537,12 +537,6 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 	}
 
-	// private ComponentContainer getMainPanel2()
-	// {
-	// BorderLayout layout = new BorderLayout();
-	// return layout;
-	// }
-
 	private Layout getVertical()
 	{
 		final VLayout layout = new VLayout();

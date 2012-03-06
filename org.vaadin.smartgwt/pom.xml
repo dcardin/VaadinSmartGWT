@@ -250,7 +250,6 @@
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>widget-rpc</artifactId>
 			<version>2.0.0</version>
-<<<<<<< OURS
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -263,13 +262,6 @@
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.0</version>
 			<scope>test</scope>
-=======
->>>>>>> THEIRS
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin.addons</groupId>
-			<artifactId>consolewindow</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
