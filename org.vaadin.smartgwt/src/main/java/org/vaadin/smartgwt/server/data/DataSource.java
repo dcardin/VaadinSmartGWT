@@ -85,18 +85,18 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 //        }
 //    }
 
-    public DataSource(){
-        scClassName = "DataSource";
-    }
+//    public DataSource(){
+//        scClassName = "DataSource";
+//    }
 
 //    public DataSource(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
 
-    public DataSource(String dataURL) {
-        setDataURL(dataURL);
-        scClassName = "DataSource";
-    }
+//    public DataSource(String dataURL) {
+//        setDataURL(dataURL);
+//        scClassName = "DataSource";
+//    }
 
 //    public native JavaScriptObject create()/*-{
 //        var config = this.@com.smartgwt.client.core.BaseClass::getConfig()();
@@ -3368,6 +3368,19 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 
 	// Vaadin Integration
 
+	public DataSource(MasterContainer masterContainer)
+	{
+		scClassName = "DataSource";
+		masterContainer.registerDataSource(this);
+	}
+
+	public DataSource(String dataURL, MasterContainer masterContainer)
+	{
+		setDataURL(dataURL);
+		scClassName = "DataSource";
+		masterContainer.registerDataSource(this);
+	}
+
 	/**
 	 * Add a field to the DataSource
 	 * 
@@ -3393,7 +3406,6 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 	public void setID(String id)
 	{
 		setAttribute("ID", id, false);
-		MasterContainer.addGlobalDatasource(this);
 		// this.id = id;
 	}
 
@@ -3411,7 +3423,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 	{
 		return new String[0];
 	}
-	
+
 	public String getTag()
 	{
 		return "dataSource";

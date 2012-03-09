@@ -3,49 +3,48 @@ package org.vaadin.smartgwt.server.layout;
 import java.util.Iterator;
 
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.Window;
 import org.vaadin.smartgwt.server.data.DataSource;
+import org.vaadin.smartgwt.server.util.SC;
 
-import com.vaadin.terminal.PaintException;
-import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 
 /**
- * Server side component for the VVLayout widget.
+ * The Master Container is the top most container of SmartVaadin applications. Why is it needed?
+ * There are objects that exist in a static-like context on the client. DataSources, SC etc.
+ * These objects must have a server counterpart and it must be held somewhere.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends Layout implements ComponentContainer
 {
-	public static MasterContainer instance;
+	private static final long serialVersionUID = 1L;
+	private SC sc = new SC();
 	
-	public static MasterContainer getInstance()
+	public void registerDataSource(DataSource dataSource)
 	{
-		if (instance == null)
-			instance = new MasterContainer();
+		if (dataSource.getParent() == null)
+			dataSource.setParent(this);
 		
-		return instance;
-	}
-	
-	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
-		// TODO Auto-generated method stub
-		super.paintContent(target);
+		setAttribute("dataSource", dataSource);
 	}
 	
 	public MasterContainer()
 	{
-		MasterContainer.instance = this;
+		sc.setParent(this);
+		setAttribute("sc", sc);
 	}
 	
-	private static final long serialVersionUID = 1L;
-
-	public static void addGlobalDatasource(DataSource dataSource)
+	public SC getSC()
 	{
-		if (dataSource.getParent() == null)
-			dataSource.setParent(getInstance());
-		
-		getInstance().setAttribute("dataSource", dataSource);
+		return sc;
+	}
+	
+	public void showWindow(Window window)
+	{
+		window.setParent(this);
+		setAttribute("*window", window);
+		requestRepaint();
 	}
 	
 	@Override
@@ -57,7 +56,7 @@ public class MasterContainer extends Layout implements ComponentContainer
 	public void setPane(Canvas pane)
 	{
 		pane.setParent(this);
-		setAttribute("pane", pane);
+		setAttribute("*pane", pane);
 	}
 	
 	@Override
@@ -99,7 +98,6 @@ public class MasterContainer extends Layout implements ComponentContainer
 	@Override
 	public void moveComponentsFrom(ComponentContainer source)
 	{
-		// TODO Auto-generated method stub
 	}
 
 	@Override

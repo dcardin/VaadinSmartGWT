@@ -1608,7 +1608,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-		if (membersAdded.size() == 0 && membersReplaced.size() == 0 && membersRemoved.size() == 0)
+		if (membersAdded.size() == 0 && membersReplaced.size() == 0 && membersRemoved.size() == 0 && !isCreated())
 		{
 			// full repaint since no "special" component list has been modified
 			List<String> references = new ArrayList<String>();
