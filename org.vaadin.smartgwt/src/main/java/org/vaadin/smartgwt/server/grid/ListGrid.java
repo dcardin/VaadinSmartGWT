@@ -17,6 +17,7 @@ package org.vaadin.smartgwt.server.grid;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -1807,7 +1808,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.widgets.grid.ListGridField#setShowHover
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_interaction_value_hover" target="examples">Value hover tips Example</a>
      */
-    public void setCanHover(Boolean canHover) {
+    @Override
+	public void setCanHover(Boolean canHover) {
         setAttribute("canHover", canHover, true);
     }
 
@@ -1820,7 +1822,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.widgets.grid.ListGridField#getShowHover
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_interaction_value_hover" target="examples">Value hover tips Example</a>
      */
-    public Boolean getCanHover()  {
+    @Override
+	public Boolean getCanHover()  {
         return getAttributeAsBoolean("canHover");
     }
 
@@ -4457,7 +4460,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @param hoverStyle hoverStyle Default value is "gridHover"
      * @see com.smartgwt.client.widgets.grid.ListGrid#setShowHover
      */
-    public void setHoverStyle(String hoverStyle) {
+    @Override
+	public void setHoverStyle(String hoverStyle) {
         setAttribute("hoverStyle", hoverStyle, true);
     }
 
@@ -4468,7 +4472,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @return String
      * @see com.smartgwt.client.widgets.grid.ListGrid#getShowHover
      */
-    public String getHoverStyle()  {
+    @Override
+	public String getHoverStyle()  {
         return getAttributeAsString("hoverStyle");
     }
 
@@ -4616,7 +4621,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_autofit_rows" target="examples">Rows Example</a>
      */
-    public void setLeaveScrollbarGap(Boolean leaveScrollbarGap) {
+    @Override
+	public void setLeaveScrollbarGap(Boolean leaveScrollbarGap) {
         setAttribute("leaveScrollbarGap", leaveScrollbarGap, true);
     }
 
@@ -4630,7 +4636,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_autofit_rows" target="examples">Rows Example</a>
      */
-    public Boolean getLeaveScrollbarGap()  {
+    @Override
+	public Boolean getLeaveScrollbarGap()  {
         return getAttributeAsBoolean("leaveScrollbarGap");
     }
 
@@ -6475,7 +6482,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.widgets.grid.ListGrid#setCanHover
      * @see com.smartgwt.client.widgets.grid.ListGrid#cellHoverHTML
      */
-    public void setShowHover(Boolean showHover) {
+    @Override
+	public void setShowHover(Boolean showHover) {
         setAttribute("showHover", showHover, true);
     }
 
@@ -6489,7 +6497,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.widgets.grid.ListGrid#getCanHover
      * @see com.smartgwt.client.widgets.grid.ListGrid#cellHoverHTML
      */
-    public Boolean getShowHover()  {
+    @Override
+	public Boolean getShowHover()  {
         return getAttributeAsBoolean("showHover");
     }
 
@@ -6500,7 +6509,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      *
      * @param showHoverComponents showHoverComponents Default value is false
      */
-    public void setShowHoverComponents(Boolean showHoverComponents) {
+    @Override
+	public void setShowHoverComponents(Boolean showHoverComponents) {
         setAttribute("showHoverComponents", showHoverComponents, true);
     }
 
@@ -6511,7 +6521,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      *
      * @return Boolean
      */
-    public Boolean getShowHoverComponents()  {
+    @Override
+	public Boolean getShowHoverComponents()  {
         return getAttributeAsBoolean("showHoverComponents");
     }
 
@@ -6857,7 +6868,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @param skinImgDir skinImgDir Default value is "images/ListGrid/"
      * @see com.smartgwt.client.docs.Images Images overview and related methods
      */
-    public void setSkinImgDir(String skinImgDir) {
+    @Override
+	public void setSkinImgDir(String skinImgDir) {
         setAttribute("skinImgDir", skinImgDir, true);
     }
 
@@ -6868,7 +6880,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @return String
      * @see com.smartgwt.client.docs.Images Images overview and related methods
      */
-    public String getSkinImgDir()  {
+    @Override
+	public String getSkinImgDir()  {
         return getAttributeAsString("skinImgDir");
     }
 
@@ -7020,7 +7033,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @param styleName styleName Default value is "listGrid"
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      */
-    public void setStyleName(String styleName) {
+    @Override
+	public void setStyleName(String styleName) {
         setAttribute("styleName", styleName, true);
     }
 
@@ -7031,7 +7045,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @return String
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      */
-    public String getStyleName()  {
+    @Override
+	public String getStyleName()  {
         return getAttributeAsString("styleName");
     }
 
@@ -14302,6 +14317,12 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 
 	private final ServerSideProxy client = new ServerSideProxy(this);
 
+	public List<ListGridField> getFields()
+	{
+		final ListGridField[] fields = getAttributeAsObject("*fields");
+		return fields == null ? new ArrayList<ListGridField>() : Arrays.asList(fields);
+	}
+
 	public void setFields(ListGridField... fields)
 	{
 		setAttribute("*fields", fields, true);
@@ -14329,12 +14350,12 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 	private ListGridRecord[] parseRecords(String json)
 	{
 		List<ListGridRecord> records = new ArrayList<ListGridRecord>();
-		
+
 		try
 		{
 			JdomParser parser = new JdomParser();
 			JsonRootNode root = parser.parse(json);
-			
+
 			for (JsonNode node : root.getArrayNode())
 			{
 				ListGridRecord record = new ListGridRecord();
@@ -14348,24 +14369,23 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 				records.add(record);
 			}
 		}
-		catch(InvalidSyntaxException e)
+		catch (InvalidSyntaxException e)
 		{
-			
+
 		}
-		
+
 		return records.toArray(new ListGridRecord[0]);
 	}
-	
+
 	private ListGridRecord[] selectedRecords;
-	
+
 	public ListGridRecord[] getSelectedRecords()
 	{
 		return selectedRecords;
 	}
-	
+
 	public void selectionChanged(ListGridRecord[] selections)
-	{
-	}
+	{}
 
 	public void setFields(List<ListGridField> fields)
 	{
