@@ -418,7 +418,7 @@ public class PainterHelper
 				String[] value = uidl.getStringArrayAttribute(att);
 				dataObject.setAttribute(att.substring(1), value, true);
 			}
-			else if (!att.startsWith("*") && !att.equals("id"))
+			else if (!att.startsWith("*") && !att.equals("id") && !"disabled".equalsIgnoreCase(att))
 			{
 				String sValue = uidl.getStringAttribute(att);
 				setBaseClassProperty(dataObject, att, sValue);
@@ -481,7 +481,7 @@ public class PainterHelper
 				String[] value = uidl.getStringArrayAttribute(att);
 				dataObject.setAttribute(att.substring(1), value);
 			}
-			else if (!att.startsWith("*") && !att.equals("id"))
+			else if (!att.startsWith("*") && !att.equals("id") && !"disabled".equalsIgnoreCase(att))
 			{
 				String sValue = uidl.getStringAttribute(att);
 				setDataProperty(dataObject, att, sValue);
