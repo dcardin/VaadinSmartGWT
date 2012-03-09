@@ -10,6 +10,7 @@ import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.FormErrorOrientation;
+import org.vaadin.smartgwt.server.types.FormItemType;
 import org.vaadin.smartgwt.server.types.OperatorId;
 import org.vaadin.smartgwt.server.types.TimeDisplayFormat;
 import org.vaadin.smartgwt.server.types.TitleOrientation;
@@ -4824,7 +4825,15 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
 	{
 		final Object oldPropertyValue = getAttribute(attributeName);
 		setAttribute(attributeName, value);
-		propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
+
+		if (FormItemType.DATE.equals(getType()))
+		{
+			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, Date.parse((String) value));
+		}
+		else
+		{
+			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
+		}
 	}
 
 	private static final String ATTRIBUTE_VALUE = "value";
