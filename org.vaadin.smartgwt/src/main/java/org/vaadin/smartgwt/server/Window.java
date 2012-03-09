@@ -10,7 +10,6 @@ import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-import com.smartgwt.client.core.Rectangle;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
@@ -182,7 +181,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @param canDragReposition canDragReposition Default value is true
      * @see com.smartgwt.client.widgets.Window#setShowHeader
      */
-    public void setCanDragReposition(Boolean canDragReposition) {
+    @Override
+	public void setCanDragReposition(Boolean canDragReposition) {
         setAttribute("canDragReposition", canDragReposition, true);
     }
 
@@ -194,7 +194,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @return Boolean
      * @see com.smartgwt.client.widgets.Window#getShowHeader
      */
-    public Boolean getCanDragReposition()  {
+    @Override
+	public Boolean getCanDragReposition()  {
         return getAttributeAsBoolean("canDragReposition");
     }
 
@@ -205,7 +206,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @param canDragResize canDragResize Default value is false
      * @see com.smartgwt.client.widgets.Window#setShowResizer
      */
-    public void setCanDragResize(Boolean canDragResize) {
+    @Override
+	public void setCanDragResize(Boolean canDragResize) {
         setAttribute("canDragResize", canDragResize, true);
     }
 
@@ -217,7 +219,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @return Boolean
      * @see com.smartgwt.client.widgets.Window#getShowResizer
      */
-    public Boolean getCanDragResize()  {
+    @Override
+	public Boolean getCanDragResize()  {
         return getAttributeAsBoolean("canDragResize");
     }
 
@@ -1103,7 +1106,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @param title new title. Default value is "Untitled Window"
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      */
-    public void setTitle(String title) {
+    @Override
+	public void setTitle(String title) {
         setAttribute("title", title, true);
     }
 
@@ -1114,7 +1118,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      * @return String
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      */
-    public String getTitle()  {
+    @Override
+	public String getTitle()  {
         return getAttributeAsString("title");
     }
 
@@ -1340,7 +1345,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
      *
      * @param keepInParentRect true to keepInParentRect
      */
-    public void setKeepInParentRect(Boolean keepInParentRect) {
+    @Override
+	public void setKeepInParentRect(Boolean keepInParentRect) {
         setAttribute("keepInParentRect", keepInParentRect, true);
     }
 
@@ -1438,19 +1444,19 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
         setAttribute("footerControls", footerControls, false);
     }
 
-    /**
-     * If Window.canDragReposition or Window.canDragRShowcaseDataesize is true, should the windows size and position be
-     * constrained such that it remains within the viewport of its parent element (or for top level windows, within the
-     * viewport of the browser window)? Can also be set to an array denoting an arbitrary Rectangle beyond which the
-     * window cannot be moved. <br> Note: keepInParentRect affects only user drag interactions, not programmatic moves.
-     *
-     * @param rectangle the rectangle bounds
-     */
-    public void setKeepInParentRect(Rectangle rectangle) {
-        setAttribute("keepInParentRect", rectangle.getAsJSArray(), true);
-    }
-
 //    /**
+	// * If Window.canDragReposition or Window.canDragRShowcaseDataesize is true, should the windows size and position be
+	// * constrained such that it remains within the viewport of its parent element (or for top level windows, within the
+	// * viewport of the browser window)? Can also be set to an array denoting an arbitrary Rectangle beyond which the
+	// * window cannot be moved. <br> Note: keepInParentRect affects only user drag interactions, not programmatic moves.
+	// *
+	// * @param rectangle the rectangle bounds
+	// */
+	// public void setKeepInParentRect(Rectangle rectangle) {
+	// setAttribute("keepInParentRect", rectangle.getAsJSArray(), true);
+	// }
+	//
+	// /**
 //     * The contents of the Window body. Can be specified three different ways: <ul>
 //     * <li>an Array of Canvases that will become the children of the Window's body when it is initialized; the canvases in this array should be created, but not drawn (autodraw: false).</li>
 //     * <li>a single canvas that will become a child of the Window body.</li>
@@ -1604,8 +1610,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 
  // @formatter:on
 
-	private List<Canvas> items = new ArrayList<Canvas>();
-	private MasterContainer container;
+	private final List<Canvas> items = new ArrayList<Canvas>();
+	private final MasterContainer container;
 	
 	public Window(MasterContainer container)
 	{
