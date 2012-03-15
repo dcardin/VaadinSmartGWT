@@ -3,9 +3,9 @@ package org.vaadin.smartgwt.client.ui.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -47,8 +47,7 @@ public class VDynamicForm extends DynamicForm implements Paintable
 
 			for (String c : added)
 			{
-				FormItem item = ((Wrapper) client.getPaintable(c)).unwrap();
-				items.add(item);
+				items.add(VDataClass.<FormItem> getDataClass(client, c));
 			}
 
 			if (items.size() > 0)

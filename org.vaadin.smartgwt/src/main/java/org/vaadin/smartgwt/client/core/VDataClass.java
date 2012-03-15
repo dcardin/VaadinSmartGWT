@@ -32,6 +32,7 @@ public abstract class VDataClass<T extends DataClass> extends VJSObject<T>
 	@Override
 	protected void updateJSObjectAttributes(UIDL uidl)
 	{
+		PainterHelper.paintChildren(uidl, getClient());
 		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 }

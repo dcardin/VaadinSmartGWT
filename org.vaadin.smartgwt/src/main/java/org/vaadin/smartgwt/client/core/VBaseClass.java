@@ -32,6 +32,7 @@ public abstract class VBaseClass<T extends BaseClass> extends VJSObject<T>
 	@Override
 	protected void updateJSObjectAttributes(UIDL uidl)
 	{
+		PainterHelper.paintChildren(uidl, getClient());
 		PainterHelper.updateBaseClass(getClient(), getJSObject(), uidl);
 	}
 }

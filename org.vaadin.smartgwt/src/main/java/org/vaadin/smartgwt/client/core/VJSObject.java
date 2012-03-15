@@ -35,7 +35,7 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 			setJSObjectAttribute("pid", pid = uidl.getId());
 		}
 
-		if (client == null)
+		if (this.client == null)
 		{
 			this.client = client;
 		}
