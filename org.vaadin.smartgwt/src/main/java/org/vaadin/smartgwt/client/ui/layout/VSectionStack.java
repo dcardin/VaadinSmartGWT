@@ -1,10 +1,9 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.user.client.Element;
-import com.smartgwt.client.widgets.layout.SectionHeader;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -37,7 +36,7 @@ public class VSectionStack extends SectionStack implements Paintable
 
 			for (String c : members)
 			{
-				SectionStackSection section = ((Wrapper) client.getPaintable(c)).unwrap();
+				SectionStackSection section = VDataClass.getDataClass(client, c);
 				addSection(section);
 			}
 		}

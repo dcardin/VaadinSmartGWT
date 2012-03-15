@@ -1462,7 +1462,8 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @param title title Default value is dataSource.ID
      */
-    public void setTitle(String title) {
+    @Override
+	public void setTitle(String title) {
         setAttribute("title", title, true);
     }
 
@@ -1473,7 +1474,8 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @return String
      */
-    public String getTitle()  {
+    @Override
+	public String getTitle()  {
         return getAttributeAsString("title");
     }
 
@@ -3405,7 +3407,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 	// property being set correctly
 	public void setID(String id)
 	{
-		setAttribute("ID", id, false);
+		setAttribute("*ID", id, false);
 		// this.id = id;
 	}
 

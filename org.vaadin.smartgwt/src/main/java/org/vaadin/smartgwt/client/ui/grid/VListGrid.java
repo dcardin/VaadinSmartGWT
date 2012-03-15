@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
+import org.vaadin.smartgwt.client.core.VBaseClass;
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
@@ -65,7 +66,7 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 		{
 			String ref = uidl.getStringAttribute("*dataSource");
 
-			DataSource ds = ((Wrapper) client.getPaintable(ref)).unwrap();
+			DataSource ds = VBaseClass.getBaseClass(client, ref);
 			setDataSource(ds);
 		}
 
@@ -85,7 +86,7 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 
 			for (String c : added)
 			{
-				ListGridField item = ((Wrapper) client.getPaintable(c)).unwrap();
+				ListGridField item = VDataClass.getDataClass(client, c);
 				items.add(item);
 			}
 

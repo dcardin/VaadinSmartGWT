@@ -3,9 +3,9 @@ package org.vaadin.smartgwt.client.ui.tab;
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.rpc.shared.Method;
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -25,6 +25,7 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 		super();
 		rpc.register("selectTab", new Method()
 			{
+				@Override
 				public void invoke(final String methodName, final Object[] data)
 				{
 					selectTab((Integer) data[0]);
@@ -42,7 +43,7 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		rpc.update(this, uidl, client);
-		
+
 		this.client = client;
 		paintableId = uidl.getId();
 
@@ -66,13 +67,8 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 
 			for (String member : members)
 			{
-				Paintable paintable = client.getPaintable(member);
-				
-				if (paintable instanceof Wrapper)
-				{
-					Tab tab = ((Wrapper) paintable).unwrap();
-					addTab(tab);
-				}
+				Tab tab = VDataClass.getDataClass(client, member);
+				addTab(tab);
 			}
 		}
 		else
@@ -83,8 +79,8 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 
 				for (int i = 0; i < replaced.length; i += 2)
 				{
-					Tab oldTab = ((Wrapper) client.getPaintable(replaced[i])).unwrap();
-					Tab newTab = ((Wrapper) client.getPaintable(replaced[i + 1])).unwrap();
+					Tab oldTab = VDataClass.getDataClass(client, replaced[i]);
+					Tab newTab = VDataClass.getDataClass(client, replaced[i + 1]);
 
 					int pos = getTabNumber(oldTab.getID());
 					removeTab(oldTab);
@@ -98,7 +94,7 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 
 				for (String member : removed)
 				{
-					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
+					Tab tab = VDataClass.getDataClass(client, member);
 					removeTab(tab);
 				}
 			}
@@ -108,7 +104,7 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 
 				for (String member : added)
 				{
-					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
+					Tab tab = VDataClass.getDataClass(client, member);
 					addTab(tab);
 				}
 			}

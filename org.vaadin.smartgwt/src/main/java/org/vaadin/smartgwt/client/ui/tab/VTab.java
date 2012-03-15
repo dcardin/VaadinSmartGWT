@@ -1,57 +1,29 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
+import org.vaadin.smartgwt.client.core.VDataClass;
 
-import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
-import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VTab extends Canvas implements Paintable, Wrapper
+public class VTab extends VDataClass<Tab>
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
-	private final Tab tab;
-
-	@Override
-	public Element getElement()
-	{
-		return VMasterContainer.getDummy();
-	}
-
 	public VTab()
 	{
-		super();
-		tab = new Tab();
+		super(new Tab());
 	}
 
-	/**
-	 * Called whenever an update is received from the server
-	 */
 	@Override
-	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
+	protected void updateFromUIDL(UIDL uidl)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
-		PainterHelper.paintChildren(uidl, client);
-		PainterHelper.updateDataObject(client, tab, uidl);
-	
 		if (uidl.hasAttribute("title"))
 		{
-			if (tab.getIcon() != null)
-				tab.setTitle(Canvas.imgHTML(tab.getIcon()) + " <span class=\"tabTitle\" valign=\"center\" align=\"center\">" + uidl.getStringAttribute("title").substring(1));
+			if (getJSObject().getIcon() != null)
+			{
+				getJSObject().setTitle(
+						Canvas.imgHTML(getJSObject().getIcon()) + " <span class=\"tabTitle\" valign=\"center\" align=\"center\">"
+								+ uidl.getStringAttribute("title").substring(1));
+			}
 		}
 	}
-
-	@Override
-	public Tab unwrap()
-	{
-		return tab;
-	}
-
 }

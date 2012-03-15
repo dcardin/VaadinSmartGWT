@@ -3,8 +3,8 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -75,7 +75,7 @@ public class VSelectItem extends VDataClass<SelectItem>
 		{
 			String ref = uidl.getStringAttribute("*optionDataSource");
 
-			DataSource ds = ((Wrapper) getClient().getPaintable(ref)).unwrap();
+			DataSource ds = VBaseClass.getBaseClass(getClient(), ref);
 			getJSObject().setOptionDataSource(ds);
 		}
 
@@ -92,7 +92,7 @@ public class VSelectItem extends VDataClass<SelectItem>
 
 			for (String c : added)
 			{
-				ListGridField item = ((Wrapper) client.getPaintable(c)).unwrap();
+				ListGridField item = VDataClass.getDataClass(client, c);
 				items.add(item);
 			}
 
