@@ -24,6 +24,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	private static final long serialVersionUID = 1L;
 	private final SC sc = new SC();
 	private Canvas pane;
+	private Window window;
 
 	public void registerDataSource(DataSource dataSource)
 	{
@@ -59,17 +60,28 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	
 	public void showWindow(Window window)
 	{
+		this.window = window;
 		window.setParent(this);
-		setAttribute("*window", window);
 		requestRepaint();
 	}
 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		target.startTag("pane");
-		pane.paint(target);
-		target.endTag("pane");
+		if (pane != null)
+		{
+			target.startTag("pane");
+			pane.paint(target);
+			target.endTag("pane");
+		}
+
+		if (window != null)
+		{
+			target.startTag("window");
+			window.paint(target);
+			target.endTag("window");
+			window = null;
+		}
 
 		super.paintContent(target);
 	}

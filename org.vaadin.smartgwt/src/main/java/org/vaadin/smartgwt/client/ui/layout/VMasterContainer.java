@@ -1,7 +1,5 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import java.util.Iterator;
-
 import org.vaadin.smartgwt.client.ui.VWindow;
 
 import com.google.gwt.user.client.DOM;
@@ -51,24 +49,14 @@ public class VMasterContainer extends VLayout implements Paintable
 			setMembers((Canvas) component);
 		}
 
-		for (Iterator<Object> iterator = uidl.getChildIterator(); iterator.hasNext();)
+		final UIDL windowUIDL = uidl.getChildByTagName("window");
+
+		if (windowUIDL != null)
 		{
-			final Object next = iterator.next();
-
-			if (next instanceof UIDL)
-			{
-				final UIDL childUIDL = (UIDL) next;
-
-				if (childUIDL.getTag() != "pane")
-				{
-					client.getPaintable(childUIDL).updateFromUIDL(childUIDL, client);
-				}
-			}
-		}
-
-		if (uidl.hasAttribute("*window"))
-		{
-			((VWindow) uidl.getPaintableAttribute("*window", client)).show();
+			final UIDL componentUIDL = windowUIDL.getChildUIDL(0);
+			final Paintable component = client.getPaintable(componentUIDL);
+			component.updateFromUIDL(componentUIDL, client);
+			((VWindow) component).show();
 		}
 	}
 }
