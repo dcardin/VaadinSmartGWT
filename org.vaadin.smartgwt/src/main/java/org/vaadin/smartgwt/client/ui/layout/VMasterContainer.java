@@ -1,6 +1,8 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.vaadin.smartgwt.client.ui.VWindow;
 
@@ -41,33 +43,39 @@ public class VMasterContainer extends VLayout implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		final UIDL dataSourcesUIDL = uidl.getChildByTagName("dataSources");
+		updateChildrenFromUIDL(uidl, client, "dataSources");
 
-		for (Iterator<Object> iterator = dataSourcesUIDL.getChildIterator(); iterator.hasNext();)
+		final List<Paintable> pane = updateChildrenFromUIDL(uidl, client, "pane");
+
+		if (!pane.isEmpty())
 		{
-			final UIDL dataSourceUIDL = (UIDL) iterator.next();
-			final Paintable component = client.getPaintable(dataSourceUIDL);
-			component.updateFromUIDL(dataSourceUIDL, client);
+			setMembers((Canvas) pane.get(0));
 		}
 
-		final UIDL paneUIDL = uidl.getChildByTagName("pane");
+		final List<Paintable> window = updateChildrenFromUIDL(uidl, client, "window");
 
-		if (paneUIDL != null)
+		if (!window.isEmpty())
 		{
-			final UIDL componentUIDL = paneUIDL.getChildUIDL(0);
-			final Paintable component = client.getPaintable(componentUIDL);
-			component.updateFromUIDL(componentUIDL, client);
-			setMembers((Canvas) component);
+			((VWindow) window.get(0)).show();
+		}
+	}
+
+	private List<Paintable> updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
+	{
+		final List<Paintable> paintables = new ArrayList<Paintable>();
+		final UIDL childUIDL = uidl.getChildByTagName(tagName);
+
+		if (childUIDL != null)
+		{
+			for (Iterator<Object> iterator = childUIDL.getChildIterator(); iterator.hasNext();)
+			{
+				final UIDL paintableUIDL = (UIDL) iterator.next();
+				final Paintable paintable = client.getPaintable(paintableUIDL);
+				paintable.updateFromUIDL(paintableUIDL, client);
+				paintables.add(paintable);
+			}
 		}
 
-		final UIDL windowUIDL = uidl.getChildByTagName("window");
-
-		if (windowUIDL != null)
-		{
-			final UIDL componentUIDL = windowUIDL.getChildUIDL(0);
-			final Paintable component = client.getPaintable(componentUIDL);
-			component.updateFromUIDL(componentUIDL, client);
-			((VWindow) component).show();
-		}
+		return paintables;
 	}
 }

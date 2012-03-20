@@ -1,6 +1,7 @@
 package org.vaadin.smartgwt.server.layout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,13 +13,13 @@ import org.vaadin.smartgwt.server.util.SC;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
+import com.vaadin.terminal.Paintable;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 
 /**
- * The Master Container is the top most container of SmartVaadin applications. Why is it needed?
- * There are objects that exist in a static-like context on the client. DataSources, SC etc.
- * These objects must have a server counterpart and it must be held somewhere.
+ * The Master Container is the top most container of SmartVaadin applications. Why is it needed? There are objects that exist in a static-like context on the
+ * client. DataSources, SC etc. These objects must have a server counterpart and it must be held somewhere.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends BaseWidget implements ComponentContainer
@@ -27,13 +28,13 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	private final List<DataSource> dataSources = new ArrayList<DataSource>();
 	private Canvas pane;
 	private Window window;
-	
+
 	public MasterContainer()
 	{
 		sc.setParent(this);
 		setAttribute("sc", sc);
 	}
-	
+
 	public void addDataSource(DataSource dataSource)
 	{
 		if (!dataSources.contains(dataSource))
@@ -63,7 +64,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	{
 		return sc;
 	}
-	
+
 	public void showWindow(Window window)
 	{
 		this.window = window;
@@ -74,29 +75,32 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		target.startTag("dataSources");
-		for (DataSource dataSource : dataSources)
-		{
-			dataSource.paint(target);
-		}
-		target.endTag("dataSources");
-
-		if (pane != null)
-		{
-			target.startTag("pane");
-			pane.paint(target);
-			target.endTag("pane");
-		}
-
-		if (window != null)
-		{
-			target.startTag("window");
-			window.paint(target);
-			target.endTag("window");
-			window = null;
-		}
-
+		paintChild(target, "dataSources", dataSources);
+		paintChild(target, "pane", pane);
+		paintChild(target, "window", window);
+		window = null;
 		super.paintContent(target);
+	}
+
+	private void paintChild(PaintTarget target, String tagName, Paintable paintable) throws PaintException
+	{
+		if (paintable != null)
+		{
+			paintChild(target, tagName, Collections.singletonList(paintable));
+		}
+	}
+
+	private void paintChild(PaintTarget target, String tagName, List<? extends Paintable> paintables) throws PaintException
+	{
+		if (!paintables.isEmpty())
+		{
+			target.startTag(tagName);
+			for (Paintable paintable : paintables)
+			{
+				paintable.paint(target);
+			}
+			target.endTag(tagName);
+		}
 	}
 
 	@Override
