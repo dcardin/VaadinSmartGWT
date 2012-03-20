@@ -1,9 +1,11 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.VWindow;
 
 import com.google.gwt.user.client.DOM;
@@ -18,12 +20,8 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VMasterContainer extends VLayout implements Paintable
 {
-	public static Element dummyDiv;
-
-	public static Element getDummy()
-	{
-		return dummyDiv;
-	}
+	private static Element dummyDiv;
+	private PaintablePropertyUpdater paintablePropertyUpdater;
 
 	static
 	{
@@ -35,69 +33,44 @@ public class VMasterContainer extends VLayout implements Paintable
 		}
 	}
 
+	public static Element getDummy()
+	{
+		return dummyDiv;
+	}
+
 	public VMasterContainer()
 	{
+		this.paintablePropertyUpdater = newPaintablePropertyUpdater();
 		setSize("100%", "100%");
 	}
-	
+
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		updateChildrenFromUIDL(uidl, client, "dataSources");
-		updateChildrenFromUIDL(uidl, client, "pane", new PaintableFunction()
+		paintablePropertyUpdater.updateFromUIDL(uidl, client);
+	}
+
+	private PaintablePropertyUpdater newPaintablePropertyUpdater()
+	{
+		final List<PaintableProperty> paintableProperties = new ArrayList<PaintableProperty>();
+		paintableProperties.add(PaintableProperty.forName("dataSources"));
+		paintableProperties.add(new PaintableProperty("pane")
 			{
 				@Override
-				public void execute(Paintable paintable)
+				public void postUpdate(Paintable paintable)
 				{
 					setMembers((Canvas) paintable);
 				}
 			});
-		updateChildrenFromUIDL(uidl, client, "window", new PaintableFunction()
+		paintableProperties.add(new PaintableProperty("window")
 			{
 				@Override
-				public void execute(Paintable paintable)
+				public void postUpdate(Paintable paintable)
 				{
 					((VWindow) paintable).show();
 				}
 			});
-	}
 
-	private void updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
-	{
-		_updateChildrenFromUIDL(uidl, client, tagName);
-	}
-
-	private void updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName, PaintableFunction function)
-	{
-		final List<Paintable> paintables = _updateChildrenFromUIDL(uidl, client, tagName);
-
-		if (!paintables.isEmpty())
-		{
-			function.execute(paintables.get(0));
-		}
-	}
-
-	private List<Paintable> _updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
-	{
-		final List<Paintable> paintables = new ArrayList<Paintable>();
-		final UIDL childUIDL = uidl.getChildByTagName(tagName);
-
-		if (childUIDL != null)
-		{
-			for (Iterator<Object> iterator = childUIDL.getChildIterator(); iterator.hasNext();)
-			{
-				final UIDL paintableUIDL = (UIDL) iterator.next();
-				final Paintable paintable = client.getPaintable(paintableUIDL);
-				paintable.updateFromUIDL(paintableUIDL, client);
-				paintables.add(paintable);
-			}
-		}
-
-		return paintables;
-	}
-
-	private static interface PaintableFunction
-	{
-		void execute(Paintable paintable);
+		return new PaintablePropertyUpdater(paintableProperties);
 	}
 }
