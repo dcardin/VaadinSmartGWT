@@ -44,23 +44,40 @@ public class VMasterContainer extends VLayout implements Paintable
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		updateChildrenFromUIDL(uidl, client, "dataSources");
+		updateChildrenFromUIDL(uidl, client, "pane", new PaintableFunction()
+			{
+				@Override
+				public void execute(Paintable paintable)
+				{
+					setMembers((Canvas) paintable);
+				}
+			});
+		updateChildrenFromUIDL(uidl, client, "window", new PaintableFunction()
+			{
+				@Override
+				public void execute(Paintable paintable)
+				{
+					((VWindow) paintable).show();
+				}
+			});
+	}
 
-		final List<Paintable> pane = updateChildrenFromUIDL(uidl, client, "pane");
+	private void updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
+	{
+		_updateChildrenFromUIDL(uidl, client, tagName);
+	}
 
-		if (!pane.isEmpty())
+	private void updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName, PaintableFunction function)
+	{
+		final List<Paintable> paintables = _updateChildrenFromUIDL(uidl, client, tagName);
+
+		if (!paintables.isEmpty())
 		{
-			setMembers((Canvas) pane.get(0));
-		}
-
-		final List<Paintable> window = updateChildrenFromUIDL(uidl, client, "window");
-
-		if (!window.isEmpty())
-		{
-			((VWindow) window.get(0)).show();
+			function.execute(paintables.get(0));
 		}
 	}
 
-	private List<Paintable> updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
+	private List<Paintable> _updateChildrenFromUIDL(UIDL uidl, ApplicationConnection client, String tagName)
 	{
 		final List<Paintable> paintables = new ArrayList<Paintable>();
 		final UIDL childUIDL = uidl.getChildByTagName(tagName);
@@ -77,5 +94,10 @@ public class VMasterContainer extends VLayout implements Paintable
 		}
 
 		return paintables;
+	}
+
+	private static interface PaintableFunction
+	{
+		void execute(Paintable paintable);
 	}
 }
