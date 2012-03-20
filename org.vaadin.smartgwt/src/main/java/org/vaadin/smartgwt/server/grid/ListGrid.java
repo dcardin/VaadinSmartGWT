@@ -14316,6 +14316,7 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 	// Vaaddin integration
 
 	private final ServerSideProxy client = new ServerSideProxy(this);
+	private DataSource dataSource;
 
 	public List<ListGridField> getFields()
 	{
@@ -14397,17 +14398,22 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 
 	public DataSource getDataSource()
 	{
-		return getAttributeAsObject("dataSource");
+		return dataSource;
 	}
 
 	public void setDataSource(DataSource dataSource)
 	{
-		setAttribute("*dataSource", dataSource);
+		this.dataSource = dataSource;
 	}
 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		if (dataSource != null)
+		{
+			target.addAttribute("dataSource", dataSource);
+		}
+
 		super.paintContent(target);
 		client.paintContent(target);
 	}

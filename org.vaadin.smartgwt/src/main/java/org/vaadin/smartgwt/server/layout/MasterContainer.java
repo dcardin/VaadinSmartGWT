@@ -1,6 +1,8 @@
 package org.vaadin.smartgwt.server.layout;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Canvas;
@@ -21,20 +23,10 @@ import com.vaadin.ui.ComponentContainer;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends BaseWidget implements ComponentContainer
 {
-	private static final long serialVersionUID = 1L;
 	private final SC sc = new SC();
+	private final List<DataSource> dataSources = new ArrayList<DataSource>();
 	private Canvas pane;
 	private Window window;
-
-	public void registerDataSource(DataSource dataSource)
-	{
-		if (dataSource.getParent() == null)
-		{
-			dataSource.setParent(this);
-		}
-		
-		setAttribute("dataSource", dataSource);
-	}
 	
 	public MasterContainer()
 	{
@@ -42,6 +34,20 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 		setAttribute("sc", sc);
 	}
 	
+	public void addDataSource(DataSource dataSource)
+	{
+		if (!dataSources.contains(dataSource))
+		{
+			if (dataSource.getParent() instanceof ComponentContainer)
+			{
+				((ComponentContainer) dataSource.getParent()).removeComponent(dataSource);
+			}
+
+			dataSource.setParent(this);
+			dataSources.add(dataSource);
+		}
+	}
+
 	public Canvas getPane()
 	{
 		return pane;
@@ -68,6 +74,13 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		target.startTag("dataSources");
+		for (DataSource dataSource : dataSources)
+		{
+			dataSource.paint(target);
+		}
+		target.endTag("dataSources");
+
 		if (pane != null)
 		{
 			target.startTag("pane");

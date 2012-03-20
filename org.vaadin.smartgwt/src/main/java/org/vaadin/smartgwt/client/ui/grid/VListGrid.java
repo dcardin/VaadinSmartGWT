@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
-import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -61,13 +61,10 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 
 		PainterHelper.paintChildren(uidl, client);
 
-		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
-		if (uidl.hasAttribute("*dataSource"))
+		if (uidl.hasAttribute("dataSource"))
 		{
-			String ref = uidl.getStringAttribute("*dataSource");
-
-			DataSource ds = VBaseClass.getBaseClass(client, ref);
-			setDataSource(ds);
+			final Paintable paintable = uidl.getPaintableAttribute("dataSource", client);
+			setDataSource(((VJSObject<DataSource>) paintable).getJSObject());
 		}
 
 		addListFields(uidl, client);

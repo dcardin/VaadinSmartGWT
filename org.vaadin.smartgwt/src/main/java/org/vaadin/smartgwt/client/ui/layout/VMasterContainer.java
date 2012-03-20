@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import java.util.Iterator;
+
 import org.vaadin.smartgwt.client.ui.VWindow;
 
 import com.google.gwt.user.client.DOM;
@@ -39,6 +41,15 @@ public class VMasterContainer extends VLayout implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
+		final UIDL dataSourcesUIDL = uidl.getChildByTagName("dataSources");
+
+		for (Iterator<Object> iterator = dataSourcesUIDL.getChildIterator(); iterator.hasNext();)
+		{
+			final UIDL dataSourceUIDL = (UIDL) iterator.next();
+			final Paintable component = client.getPaintable(dataSourceUIDL);
+			component.updateFromUIDL(dataSourceUIDL, client);
+		}
+
 		final UIDL paneUIDL = uidl.getChildByTagName("pane");
 
 		if (paneUIDL != null)

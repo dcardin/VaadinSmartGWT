@@ -3,8 +3,8 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.VJSObject;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -14,6 +14,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
+import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VSelectItem extends VDataClass<SelectItem>
@@ -71,12 +72,10 @@ public class VSelectItem extends VDataClass<SelectItem>
 		}
 
 		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
-		if (uidl.hasAttribute("*optionDataSource"))
+		if (uidl.hasAttribute("optionDataSource"))
 		{
-			String ref = uidl.getStringAttribute("*optionDataSource");
-
-			DataSource ds = VBaseClass.getBaseClass(getClient(), ref);
-			getJSObject().setOptionDataSource(ds);
+			final Paintable paintable = uidl.getPaintableAttribute("optionDataSource", getClient());
+			getJSObject().setOptionDataSource((DataSource) ((VJSObject<?>) paintable).getJSObject());
 		}
 
 		addListFields(uidl, getClient());

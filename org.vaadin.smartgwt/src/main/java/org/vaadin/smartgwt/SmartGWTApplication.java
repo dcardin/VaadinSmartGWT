@@ -1,8 +1,7 @@
 package org.vaadin.smartgwt;
 
-import static argo.jdom.JsonNodeBuilders.anArrayBuilder;
-import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
-import static argo.jdom.JsonNodeFactories.aJsonString;
+import static argo.jdom.JsonNodeBuilders.*;
+import static argo.jdom.JsonNodeFactories.*;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -57,7 +56,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 	private TabSet tabset;
 	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
-	private MasterContainer masterContainer = new MasterContainer();
+	private final MasterContainer masterContainer = new MasterContainer();
 
 	@Override
 	public MasterContainer getMasterContainer()
@@ -75,7 +74,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		CountryXmlDS.reset();
 
-		masterContainer = new MasterContainer();
+		masterContainer.addDataSource(CountryXmlDS.getInstance());
 		masterContainer.setPane(getMainPanel());
 
 		mainWindow.setContent(masterContainer);
@@ -275,7 +274,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		countryGrid.setShowAllRecords(true);
 		countryGrid.setCellHeight(22);
 		// use server-side dataSource so edits are retained across page transitions
-		countryGrid.setDataSource(CountryXmlDS.getInstance(masterContainer));
+		countryGrid.setDataSource(CountryXmlDS.getInstance());
 
 		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
 		countryCodeField.setAlign(Alignment.CENTER);
@@ -641,7 +640,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		// populationField.setCellFormatter(new NumericFormatter());
 		ListGridField independenceField = new ListGridField("independence", "Independence");
 		si.setPickListFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
-		si.setOptionDataSource(CountryXmlDS.getInstance(masterContainer));
+		si.setOptionDataSource(CountryXmlDS.getInstance());
 		form.addField(si);
 
 		si = new SelectItem("blah" + i);

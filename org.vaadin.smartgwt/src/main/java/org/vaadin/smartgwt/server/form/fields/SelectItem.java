@@ -7,6 +7,9 @@ import org.vaadin.smartgwt.server.types.MultipleAppearance;
 import org.vaadin.smartgwt.server.types.TextMatchStyle;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+
 /**
  * Server side component for the VTextItem widget.
  */
@@ -1442,6 +1445,8 @@ public class SelectItem extends FormItem {
 
     // @formatter:on
     // Vaadin integration
+	private DataSource optionDataSource;
+
 	public void setPickListFields(ListGridField... pickListFields)
 	{
 		setAttribute("*pickListFields", pickListFields);
@@ -1488,9 +1493,19 @@ public class SelectItem extends FormItem {
 	 */
 	public void setOptionDataSource(DataSource dataSource)
 	{
-		setAttribute("*optionDataSource", dataSource);
+		this.optionDataSource = dataSource;
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		if (optionDataSource != null)
+		{
+			target.addAttribute("optionDataSource", optionDataSource);
+		}
+
+		super.paintContent(target);
+	}
 }
 
 

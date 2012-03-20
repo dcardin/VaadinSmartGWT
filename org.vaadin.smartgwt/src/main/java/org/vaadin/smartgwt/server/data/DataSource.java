@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
 import org.vaadin.smartgwt.server.layout.Layout;
-import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
 import org.vaadin.smartgwt.server.types.DSProtocol;
@@ -3370,17 +3369,15 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 
 	// Vaadin Integration
 
-	public DataSource(MasterContainer masterContainer)
+	public DataSource()
 	{
 		scClassName = "DataSource";
-		masterContainer.registerDataSource(this);
 	}
 
-	public DataSource(String dataURL, MasterContainer masterContainer)
+	public DataSource(String dataURL)
 	{
 		setDataURL(dataURL);
 		scClassName = "DataSource";
-		masterContainer.registerDataSource(this);
 	}
 
 	/**
