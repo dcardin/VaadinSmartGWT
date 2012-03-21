@@ -1,6 +1,5 @@
 package org.vaadin.smartgwt.server.layout;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -8,12 +7,13 @@ import java.util.List;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Window;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.terminal.Paintable;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 
@@ -25,19 +25,23 @@ import com.vaadin.ui.ComponentContainer;
 public class MasterContainer extends BaseWidget implements ComponentContainer
 {
 	private final SC sc = new SC();
-	private final List<DataSource> dataSources = new ArrayList<DataSource>();
-	private Canvas pane;
-	private Window window;
+	private final PaintablePropertyPainter paintablePropertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<DataSource>> dataSources;
+	private final Reference<Canvas> pane;
+	private final Reference<Window> window;
 
 	public MasterContainer()
 	{
+		dataSources = paintablePropertyPainter.addListProperty("dataSources");
+		pane = paintablePropertyPainter.addProperty("pane");
+		window = paintablePropertyPainter.addProperty("window");
 		sc.setParent(this);
 		setAttribute("sc", sc);
 	}
 
 	public void addDataSource(DataSource dataSource)
 	{
-		if (!dataSources.contains(dataSource))
+		if (!dataSources.value.contains(dataSource))
 		{
 			if (dataSource.getParent() instanceof ComponentContainer)
 			{
@@ -45,18 +49,18 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 			}
 
 			dataSource.setParent(this);
-			dataSources.add(dataSource);
+			dataSources.value.add(dataSource);
 		}
 	}
 
 	public Canvas getPane()
 	{
-		return pane;
+		return pane.value;
 	}
 
 	public void setPane(Canvas pane)
 	{
-		this.pane = pane;
+		this.pane.value = pane;
 		pane.setParent(this);
 	}
 
@@ -67,7 +71,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 
 	public void showWindow(Window window)
 	{
-		this.window = window;
+		this.window.value = window;
 		window.setParent(this);
 		requestRepaint();
 	}
@@ -75,97 +79,74 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		paintChild(target, "dataSources", dataSources);
-		paintChild(target, "pane", pane);
-		paintChild(target, "window", window);
-		window = null;
+		paintablePropertyPainter.paintContent(target);
+		window.value = null;
 		super.paintContent(target);
-	}
-
-	private void paintChild(PaintTarget target, String tagName, Paintable paintable) throws PaintException
-	{
-		if (paintable != null)
-		{
-			paintChild(target, tagName, Collections.singletonList(paintable));
-		}
-	}
-
-	private void paintChild(PaintTarget target, String tagName, List<? extends Paintable> paintables) throws PaintException
-	{
-		if (!paintables.isEmpty())
-		{
-			target.startTag(tagName);
-			for (Paintable paintable : paintables)
-			{
-				paintable.paint(target);
-			}
-			target.endTag(tagName);
-		}
 	}
 
 	@Override
 	public void addComponent(Component c)
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public void removeComponent(Component c)
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public void removeAllComponents()
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public void replaceComponent(Component oldComponent, Component newComponent)
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public Iterator<Component> getComponentIterator()
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+		return Collections.<Component> emptyList().iterator();
 	}
 
 	@Override
 	public void requestRepaintAll()
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public void moveComponentsFrom(ComponentContainer source)
 	{
-		throw new UnsupportedOperationException("ComponentContainer implemented only for vaadin integration.");
+
 	}
 
 	@Override
 	public void addListener(ComponentAttachListener listener)
 	{
-		// ComponentContainer implemented only for vaadin integration.
+
 	}
 
 	@Override
 	public void removeListener(ComponentAttachListener listener)
 	{
-		// ComponentContainer implemented only for vaadin integration.
+
 	}
 
 	@Override
 	public void addListener(ComponentDetachListener listener)
 	{
-		// ComponentContainer implemented only for vaadin integration.
+
 	}
 
 	@Override
 	public void removeListener(ComponentDetachListener listener)
 	{
-		// ComponentContainer implemented only for vaadin integration.
+
 	}
 }
