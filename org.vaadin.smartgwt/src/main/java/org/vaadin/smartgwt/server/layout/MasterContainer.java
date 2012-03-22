@@ -24,8 +24,8 @@ import com.vaadin.ui.ComponentContainer;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends BaseWidget implements ComponentContainer
 {
-	private final SC sc = new SC();
 	private final PaintablePropertyPainter paintablePropertyPainter = new PaintablePropertyPainter();
+	private final Reference<SC> sc;
 	private final Reference<List<DataSource>> dataSources;
 	private final Reference<Canvas> pane;
 	private final Reference<Window> window;
@@ -35,8 +35,9 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 		dataSources = paintablePropertyPainter.addListProperty("dataSources");
 		pane = paintablePropertyPainter.addProperty("pane");
 		window = paintablePropertyPainter.addProperty("window");
-		sc.setParent(this);
-		setAttribute("sc", sc);
+		sc = paintablePropertyPainter.addProperty("sc");
+		sc.value = new SC();
+		sc.value.setParent(this);
 	}
 
 	public void addDataSource(DataSource dataSource)
@@ -66,7 +67,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 
 	public SC getSC()
 	{
-		return sc;
+		return sc.value;
 	}
 
 	public void showWindow(Window window)

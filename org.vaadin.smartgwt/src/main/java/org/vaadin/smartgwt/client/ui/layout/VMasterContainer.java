@@ -53,7 +53,7 @@ public class VMasterContainer extends VLayout implements Paintable
 	private PaintablePropertyUpdater newPaintablePropertyUpdater()
 	{
 		final List<PaintableProperty> paintableProperties = new ArrayList<PaintableProperty>();
-		paintableProperties.add(PaintableProperty.forName("dataSources"));
+
 		paintableProperties.add(new PaintableProperty("pane")
 			{
 				@Override

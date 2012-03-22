@@ -19,26 +19,64 @@ public class PaintablePropertyUpdater
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		for (PaintableProperty paintableProperty : paintableProperties)
+		for (UIDL propertyUIDL : filterUIDLPropertyChildren(uidl.getChildIterator()))
 		{
-			final List<Paintable> paintables = new ArrayList<Paintable>();
-			final UIDL childUIDL = uidl.getChildByTagName(paintableProperty.getName());
-
-			if (childUIDL != null)
-			{
-				for (Iterator<Object> iterator = childUIDL.getChildIterator(); iterator.hasNext();)
-				{
-					final UIDL paintableUIDL = (UIDL) iterator.next();
-					final Paintable paintable = client.getPaintable(paintableUIDL);
-					paintable.updateFromUIDL(paintableUIDL, client);
-					paintables.add(paintable);
-				}
-			}
+			final List<Paintable> paintables = updateChildrenFromUIDL(client, propertyUIDL);
 
 			if (!paintables.isEmpty())
 			{
-				paintableProperty.postUpdate(paintables.get(0));
+				final PaintableProperty paintableProperty = findPaintableProperty(propertyUIDL.getTag());
+
+				if (paintableProperty != null)
+				{
+					paintableProperty.postUpdate(paintables.get(0));
+				}
 			}
 		}
+	}
+
+	private PaintableProperty findPaintableProperty(String propertyName)
+	{
+		for (PaintableProperty property : paintableProperties)
+		{
+			if (property.getName().equals(propertyName.substring(1)))
+			{
+				return property;
+			}
+		}
+
+		return null;
+	}
+
+	private static List<Paintable> updateChildrenFromUIDL(ApplicationConnection client, UIDL propertyUIDL)
+	{
+		final List<Paintable> paintables = new ArrayList<Paintable>();
+
+		for (Iterator<Object> iterator = propertyUIDL.getChildIterator(); iterator.hasNext();)
+		{
+			final UIDL paintableUIDL = (UIDL) iterator.next();
+			final Paintable paintable = client.getPaintable(paintableUIDL);
+			paintable.updateFromUIDL(paintableUIDL, client);
+			paintables.add(paintable);
+		}
+
+		return paintables;
+	}
+
+	private static List<UIDL> filterUIDLPropertyChildren(Iterator<Object> childrenIterator)
+	{
+		final List<UIDL> children = new ArrayList<UIDL>();
+
+		while (childrenIterator.hasNext())
+		{
+			final Object next = childrenIterator.next();
+
+			if (next instanceof UIDL && ((UIDL) next).getTag().startsWith("$"))
+			{
+				children.add((UIDL) next);
+			}
+		}
+
+		return children;
 	}
 }

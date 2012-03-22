@@ -53,19 +53,19 @@ public class PaintablePropertyPainter
 			}
 		}
 	}
-
+	
 	private void paintProperty(PaintTarget target, String name, List<? extends Paintable> paintables) throws PaintException
 	{
 		if (!paintables.isEmpty())
 		{
-			target.startTag(name);
+			target.startTag("$" + name);
 
 			for (Paintable paintable : paintables)
 			{
 				paintable.paint(target);
 			}
 
-			target.endTag(name);
+			target.endTag("$" + name);
 		}
 	}
 }
