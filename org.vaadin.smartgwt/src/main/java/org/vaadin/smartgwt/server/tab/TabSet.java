@@ -1,11 +1,13 @@
 package org.vaadin.smartgwt.server.tab;
 
+import java.util.List;
 import java.util.Map;
 
 import org.vaadin.rpc.server.ServerSideHandler;
 import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.Side;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
@@ -35,7 +37,7 @@ import com.vaadin.terminal.PaintTarget;
  * <code>pane</code> property which will be displayed in the main pane when that tab is selected.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTabSet.class)
-public class TabSet extends Layout implements ServerSideHandler { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
+public class TabSet extends Canvas implements ServerSideHandler { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
 
 //    public static TabSet getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -46,10 +48,6 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 //            return new TabSet(jsObj);
 //        }
 //    }
-
-    public TabSet(){
-        scClassName = "TabSet";
-    }
 
 //    public TabSet(JavaScriptObject jsObj){
 //        super(jsObj);
@@ -2109,6 +2107,14 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 	// **************** vaadin integration
 
 	private final ServerSideProxy client = new ServerSideProxy(this);
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<Tab>> tabs;
+
+	public TabSet()
+	{
+		scClassName = "TabSet";
+		tabs = propertyPainter.addListProperty("tabs");
+	}
 
 	/**
 	 * Add a tab
@@ -2120,7 +2126,7 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		addMember(tab);
+		tabs.value.add(tab);
 	}
 
 	/**
@@ -2135,7 +2141,13 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		addMember(tab, position);
+		tabs.value.add(position, tab);
+	}
+	
+	public void removeTab(Tab tab)
+	{
+		tabs.value.remove(tab);
+		requestRepaint();
 	}
 
 	public void selectTab(int tabIndex)
@@ -2160,6 +2172,7 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		propertyPainter.paintContent(target);
 		super.paintContent(target);
 		client.paintContent(target);
 	}
@@ -2177,14 +2190,8 @@ public class TabSet extends Layout implements ServerSideHandler { // implements 
      *
      * @return the tabs
      */
-    public Tab[] getTabs() {
-    	Tab[] tabs = new Tab[getMembers().length];
-    	
-    	for (int i=0; i < tabs.length; i++)
-    	{
-    		tabs[i] = (Tab) getMember(i);
-    	}
-        return tabs;
+	public Tab[] getTabs()
+	{
+		return tabs.value.toArray(new Tab[0]);
     }
-
 }

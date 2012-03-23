@@ -1,8 +1,14 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.rpc.shared.Method;
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -16,9 +22,8 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 {
-	protected String paintableId;
-	private ApplicationConnection client;
 	private final ClientSideProxy rpc = new ClientSideProxy("VTabSet", this);
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
 	public VTabSet()
 	{
@@ -29,6 +34,31 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 				public void invoke(final String methodName, final Object[] data)
 				{
 					selectTab((Integer) data[0]);
+				}
+			});
+
+		propertyUpdater.addProperty(new PaintableProperty("tabs")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final List<Tab> clientTabs = Arrays.asList(getTabs());
+					final List<Tab> serverTabs = new ArrayList<Tab>(paintables.length);
+
+					for (int i = 0; i < paintables.length; i++)
+					{
+						serverTabs.add(((VDataClass<Tab>) paintables[i]).getJSObject());
+					}
+
+					final List<Tab> removedTabs = new ArrayList<Tab>(clientTabs);
+					removedTabs.removeAll(serverTabs);
+
+					for (Tab removedTab : removedTabs)
+					{
+						removeTab(removedTab);
+					}
+					
+					setTabs(serverTabs.toArray(new Tab[0]));
 				}
 			});
 	}
@@ -42,73 +72,9 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
+		propertyUpdater.updateFromUIDL(uidl, client);
 		rpc.update(this, uidl, client);
-
-		this.client = client;
-		paintableId = uidl.getId();
-
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		addTabs(uidl, client);
-	}
-
-	private void addTabs(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*members"))
-		{
-			// remove and unregister all members
-			for (Tab tab : getTabs())
-			{
-				removeTab(tab);
-			}
-
-			String[] members = uidl.getStringArrayAttribute("*members");
-
-			for (String member : members)
-			{
-				Tab tab = VDataClass.getDataClass(client, member);
-				addTab(tab);
-			}
-		}
-		else
-		{
-			if (uidl.hasAttribute("*membersReplaced"))
-			{
-				String[] replaced = uidl.getStringArrayAttribute("*membersReplaced");
-
-				for (int i = 0; i < replaced.length; i += 2)
-				{
-					Tab oldTab = VDataClass.getDataClass(client, replaced[i]);
-					Tab newTab = VDataClass.getDataClass(client, replaced[i + 1]);
-
-					int pos = getTabNumber(oldTab.getID());
-					removeTab(oldTab);
-
-					addTab(newTab, pos);
-				}
-			}
-			if (uidl.hasAttribute("*membersRemoved"))
-			{
-				String[] removed = uidl.getStringArrayAttribute("*membersRemoved");
-
-				for (String member : removed)
-				{
-					Tab tab = VDataClass.getDataClass(client, member);
-					removeTab(tab);
-				}
-			}
-			if (uidl.hasAttribute("*membersAdded"))
-			{
-				String[] added = uidl.getStringArrayAttribute("*membersAdded");
-
-				for (String member : added)
-				{
-					Tab tab = VDataClass.getDataClass(client, member);
-					addTab(tab);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -123,5 +89,4 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 	{
 		System.out.println("method call: " + method);
 	}
-
 }
