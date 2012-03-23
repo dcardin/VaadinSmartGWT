@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.core.VJSObject;
+import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -56,6 +57,13 @@ public class VSelectItem extends VDataClass<SelectItem>
 		{
 			getClient().updateVariable(getPID(), "value", newValue, true);
 		}
+	}
+
+	@Override
+	protected void updateJSObjectAttributes(UIDL uidl)
+	{
+		PainterHelper.paintChildren(uidl, getClient());
+		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 
 	@Override

@@ -4,18 +4,6 @@ import com.vaadin.terminal.gwt.client.Paintable;
 
 public abstract class PaintableProperty
 {
-	public static PaintableProperty forName(String name)
-	{
-		return new PaintableProperty(name)
-			{
-				@Override
-				public void postUpdate(Paintable paintable)
-				{
-
-				}
-			};
-	}
-
 	private final String name;
 
 	public PaintableProperty(String name)
@@ -28,5 +16,5 @@ public abstract class PaintableProperty
 		return name;
 	}
 
-	public abstract void postUpdate(Paintable paintable);
+	public abstract void postUpdate(Paintable[] paintables);
 }

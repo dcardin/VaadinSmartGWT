@@ -1,9 +1,5 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.VWindow;
@@ -21,7 +17,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VMasterContainer extends VLayout implements Paintable
 {
 	private static Element dummyDiv;
-	private PaintablePropertyUpdater paintablePropertyUpdater;
+	private final PaintablePropertyUpdater paintablePropertyUpdater = new PaintablePropertyUpdater();
 
 	static
 	{
@@ -40,37 +36,30 @@ public class VMasterContainer extends VLayout implements Paintable
 
 	public VMasterContainer()
 	{
-		this.paintablePropertyUpdater = newPaintablePropertyUpdater();
 		setSize("100%", "100%");
+
+		paintablePropertyUpdater.addProperty(new PaintableProperty("pane")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					setMembers((Canvas) paintables[0]);
+				}
+			});
+
+		paintablePropertyUpdater.addProperty(new PaintableProperty("window")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					((VWindow) paintables[0]).show();
+				}
+			});
 	}
 
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		paintablePropertyUpdater.updateFromUIDL(uidl, client);
-	}
-
-	private PaintablePropertyUpdater newPaintablePropertyUpdater()
-	{
-		final List<PaintableProperty> paintableProperties = new ArrayList<PaintableProperty>();
-
-		paintableProperties.add(new PaintableProperty("pane")
-			{
-				@Override
-				public void postUpdate(Paintable paintable)
-				{
-					setMembers((Canvas) paintable);
-				}
-			});
-		paintableProperties.add(new PaintableProperty("window")
-			{
-				@Override
-				public void postUpdate(Paintable paintable)
-				{
-					((VWindow) paintable).show();
-				}
-			});
-
-		return new PaintablePropertyUpdater(paintableProperties);
 	}
 }

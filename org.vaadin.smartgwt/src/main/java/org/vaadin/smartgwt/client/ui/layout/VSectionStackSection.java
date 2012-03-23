@@ -1,6 +1,7 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
 import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -11,6 +12,13 @@ public class VSectionStackSection extends VDataClass<SectionStackSection>
 	public VSectionStackSection()
 	{
 		super(new SectionStackSection());
+	}
+
+	@Override
+	protected void updateJSObjectAttributes(UIDL uidl)
+	{
+		PainterHelper.paintChildren(uidl, getClient());
+		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 
 	@Override

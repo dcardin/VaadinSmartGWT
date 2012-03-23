@@ -3,6 +3,7 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.Date;
 
 import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.types.FormItemType;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -62,6 +63,13 @@ public class VFormItem extends VDataClass<FormItem>
 				getClient().updateVariable(getPID(), "value", (String) newValue, true);
 			}
 		}
+	}
+
+	@Override
+	protected void updateJSObjectAttributes(UIDL uidl)
+	{
+		PainterHelper.paintChildren(uidl, getClient());
+		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 
 	@Override

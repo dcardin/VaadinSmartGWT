@@ -10,26 +10,26 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class PaintablePropertyUpdater
 {
-	private final List<PaintableProperty> paintableProperties;
+	private final List<PaintableProperty> paintableProperties = new ArrayList<PaintableProperty>();
 
-	public PaintablePropertyUpdater(List<PaintableProperty> paintableProperties)
+	public void addProperty(PaintableProperty property)
 	{
-		this.paintableProperties = new ArrayList<PaintableProperty>(paintableProperties);
+		paintableProperties.add(property);
 	}
 
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		for (UIDL propertyUIDL : filterUIDLPropertyChildren(uidl.getChildIterator()))
 		{
-			final List<Paintable> paintables = updateChildrenFromUIDL(client, propertyUIDL);
+			final Paintable[] paintables = updateChildrenFromUIDL(client, propertyUIDL);
 
-			if (!paintables.isEmpty())
+			if (paintables.length > 0)
 			{
 				final PaintableProperty paintableProperty = findPaintableProperty(propertyUIDL.getTag());
 
 				if (paintableProperty != null)
 				{
-					paintableProperty.postUpdate(paintables.get(0));
+					paintableProperty.postUpdate(paintables);
 				}
 			}
 		}
@@ -48,7 +48,7 @@ public class PaintablePropertyUpdater
 		return null;
 	}
 
-	private static List<Paintable> updateChildrenFromUIDL(ApplicationConnection client, UIDL propertyUIDL)
+	private static Paintable[] updateChildrenFromUIDL(ApplicationConnection client, UIDL propertyUIDL)
 	{
 		final List<Paintable> paintables = new ArrayList<Paintable>();
 
@@ -60,7 +60,7 @@ public class PaintablePropertyUpdater
 			paintables.add(paintable);
 		}
 
-		return paintables;
+		return paintables.toArray(new Paintable[0]);
 	}
 
 	private static List<UIDL> filterUIDLPropertyChildren(Iterator<Object> childrenIterator)

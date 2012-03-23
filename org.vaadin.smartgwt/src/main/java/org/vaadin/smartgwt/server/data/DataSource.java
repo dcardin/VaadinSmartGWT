@@ -1,9 +1,12 @@
 package org.vaadin.smartgwt.server.data;
 
+import java.util.List;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
-import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.core.BaseClass;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
 import org.vaadin.smartgwt.server.types.DSProtocol;
@@ -11,6 +14,8 @@ import org.vaadin.smartgwt.server.types.EnumTranslateStrategy;
 import org.vaadin.smartgwt.server.types.RPCTransport;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.ClientWidget;
 
 /*
@@ -72,7 +77,7 @@ import com.vaadin.ui.ClientWidget;
  * @see com.smartgwt.client.widgets.DataBoundComponent
  */
 @ClientWidget(value=VDataSource.class)
-public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
+public class DataSource extends BaseClass { //  BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
 
 //    public static DataSource getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -1461,7 +1466,6 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @param title title Default value is dataSource.ID
      */
-    @Override
 	public void setTitle(String title) {
         setAttribute("title", title, true);
     }
@@ -1473,7 +1477,6 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @return String
      */
-    @Override
 	public String getTitle()  {
         return getAttributeAsString("title");
     }
@@ -2508,14 +2511,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      * @return array of DataSourceFields
      */
     public DataSourceField[] getFields() {
-        String[] fields = getFieldNames();
-        if(fields == null) return null;
-        DataSourceField[] dsFields = new DataSourceField[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            String field = fields[i];
-            dsFields[i] = getField(field);
-        }
-        return dsFields;
+    	return fields.value.toArray(new DataSourceField[0]);
     }
 
 //    /**
@@ -3369,15 +3365,19 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 
 	// Vaadin Integration
 
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<DataSourceField>> fields;
+
 	public DataSource()
 	{
 		scClassName = "DataSource";
+		fields = propertyPainter.addListProperty("fields");
 	}
 
 	public DataSource(String dataURL)
 	{
+		this();
 		setDataURL(dataURL);
-		scClassName = "DataSource";
 	}
 
 	/**
@@ -3394,8 +3394,9 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 		{
 			error("Fields cannot be added to a DataSource after the underlying component has been created.");
 		}
+
 		field.setParent(this);
-		addMember(field);
+		fields.value.add(field);
 	}
 
 	// override setID() - if this.addGlobalID is false, don't register the ID with the IDManager
@@ -3428,4 +3429,10 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 		return "dataSource";
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
+	}
 }
