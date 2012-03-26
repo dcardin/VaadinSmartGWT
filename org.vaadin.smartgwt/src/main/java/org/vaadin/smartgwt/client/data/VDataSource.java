@@ -4,7 +4,6 @@ import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
@@ -35,12 +34,6 @@ public class VDataSource extends VBaseClass<DataSource>
 					getJSObject().setFields(fields);
 				}
 			});
-	}
-
-	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
-	{
-		PainterHelper.updateBaseClass(getClient(), getJSObject(), uidl);
 	}
 
 	@Override

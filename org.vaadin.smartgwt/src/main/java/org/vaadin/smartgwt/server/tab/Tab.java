@@ -1,8 +1,13 @@
 package org.vaadin.smartgwt.server.tab;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.layout.Layout;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.RefDataClass;
+import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.menu.Menu;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -44,7 +49,7 @@ import org.vaadin.smartgwt.server.menu.Menu;
  *  </pre>
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTab.class)
-public class Tab extends Layout { // RefDataClass implements com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers {
+public class Tab extends RefDataClass { // implements com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers {
 
 //    public static Tab getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -64,17 +69,6 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //    public Tab(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
-
-    public Tab(String title) {
-        setTitle(title);
-//        setID(com.smartgwt.client.util.SC.generateID(getClass().getName()));
-    }
-
-    public Tab(String title, String icon) {
-        setTitle(title);
-		setIcon(icon);
-//        setID(com.smartgwt.client.util.SC.generateID(getClass().getName()));
-    }
 
     // ********************* Properties / Attributes ***********************
 
@@ -651,6 +645,27 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 
 	// Vaadin integration
 
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<Canvas> pane;
+
+	private Tab()
+	{
+		this.pane = propertyPainter.addProperty("pane");
+	}
+
+	public Tab(String title)
+	{
+		this();
+		setTitle(title);
+	}
+
+	public Tab(String title, String icon)
+	{
+		this();
+		setTitle(title);
+		setIcon(icon);
+	}
+
 	/**
 	 * Specifies the pane associated with this tab. You can change the pane associated with a given tab after the TabSet has been created by calling
 	 * {@link com.smartgwt.client.widgets.tab.TabSet#updateTab(int, com.smartgwt.client.widgets.Canvas)}
@@ -660,19 +675,17 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 	 */
 	public void setPane(Canvas pane)
 	{
-		if (pane == null)
-			return;
+		if (this.pane.value != null)
+		{
+			this.pane.value.setParent(null);
+		}
+
+		if (pane != null)
+		{
+			pane.setParent(this);
+		}
 		
-		pane.setParent(this);
-//
-//		if (tabSet == null || !tabSet.isCreated())
-//		{
-			setAttribute("pane", pane);
-//		}
-//		else
-//		{
-//			tabSet.updateTab(this, pane);
-//		}
+		this.pane.value = pane;
 	}
 
 	/**
@@ -682,7 +695,7 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 	 */
 	public Canvas getPane()
 	{
-		return getAttributeAsObject("pane");
+		return this.pane.value;
 	}
 
 	/**
@@ -707,5 +720,12 @@ public class Tab extends Layout { // RefDataClass implements com.smartgwt.client
 //            tabSet.setTabTitle(this, title);
 //        }
     }
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
+	}
 
 }

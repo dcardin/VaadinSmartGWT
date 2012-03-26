@@ -16,7 +16,6 @@ public class VDataSourceField extends VDataClass<DataSourceField>
 	@Override
 	protected void updateJSObjectAttributes(UIDL uidl)
 	{
-		PainterHelper.paintChildren(uidl, getClient());
 		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 
