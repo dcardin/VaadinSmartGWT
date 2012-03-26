@@ -3,7 +3,9 @@ package org.vaadin.smartgwt.client.ui.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.ui.form.fields.VAbstractFormItem;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -16,8 +18,26 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VDynamicForm extends DynamicForm implements Paintable
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+
+	public VDynamicForm()
+	{
+		propertyUpdater.addProperty(new PaintableProperty("fields")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final List<FormItem> formItems = new ArrayList<FormItem>();
+
+					for (Paintable paintable : paintables)
+					{
+						formItems.add(((VAbstractFormItem<? extends FormItem, ?>) paintable).getJSObject());
+					}
+
+					setFields(formItems.toArray(new FormItem[0]));
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
@@ -28,35 +48,7 @@ public class VDynamicForm extends DynamicForm implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
-		PainterHelper.paintChildren(uidl, client);
+		propertyUpdater.updateFromUIDL(uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-
-		addFormItems(uidl, client);
-	}
-
-	private void addFormItems(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*fields"))
-		{
-			List<FormItem> items = new ArrayList<FormItem>();
-
-			String[] added = uidl.getStringArrayAttribute("*fields");
-
-			for (String c : added)
-			{
-				items.add(VDataClass.<FormItem> getDataClass(client, c));
-			}
-
-			if (items.size() > 0)
-			{
-				FormItem[] itemsArr = new FormItem[0];
-				itemsArr = items.toArray(itemsArr);
-
-				setFields(itemsArr);
-			}
-		}
 	}
 }
