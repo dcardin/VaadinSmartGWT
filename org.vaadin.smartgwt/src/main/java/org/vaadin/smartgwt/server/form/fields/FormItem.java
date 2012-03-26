@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
-import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.FormErrorOrientation;
@@ -42,7 +42,7 @@ import com.vaadin.ui.ClientWidget;
  * documentation for details.
  */
 @ClientWidget(value=VFormItem.class)
-public class FormItem extends BaseWidget { // RefDataClass  implements com.smartgwt.client.widgets.form.fields.events.HasFocusHandlers, com.smartgwt.client.widgets.form.fields.events.HasBlurHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangedHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyUpHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyDownHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasItemHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasDoubleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleDoubleClickHandlers {
+public class FormItem extends RefDataClass { // implements com.smartgwt.client.widgets.form.fields.events.HasFocusHandlers, com.smartgwt.client.widgets.form.fields.events.HasBlurHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangeHandlers, com.smartgwt.client.widgets.form.fields.events.HasChangedHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyUpHandlers, com.smartgwt.client.widgets.form.fields.events.HasKeyDownHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasIconKeyPressHandlers, com.smartgwt.client.widgets.form.fields.events.HasItemHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasDoubleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleHoverHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleClickHandlers, com.smartgwt.client.widgets.form.fields.events.HasTitleDoubleClickHandlers {
 
 //    public static FormItem getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -2429,7 +2429,6 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
      * @param title title Default value is null
      * @see com.smartgwt.client.docs.Basics Basics overview and related methods
      */
-    @Override
 	public void setTitle(String title) {
         setAttribute("title", title);
     }
@@ -2441,7 +2440,6 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
      * @return Return the title of this formItem
      * @see com.smartgwt.client.docs.Basics Basics overview and related methods
      */
-    @Override
 	public String getTitle()  {
         return getAttributeAsString("title");
     }
@@ -4823,15 +4821,17 @@ public class FormItem extends BaseWidget { // RefDataClass  implements com.smart
 
 	private void setPropertyAttribute(String attributeName, String propertyName, Object value)
 	{
-		final Object oldPropertyValue = getAttribute(attributeName);
-		setAttribute(attributeName, value);
-
 		if (FormItemType.DATE.equals(getType()))
 		{
-			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, Date.parse((String) value));
+			final Long oldPropertyValue = getAttributeAsLong(attributeName);
+			final Date date = oldPropertyValue == null ? null : new Date(oldPropertyValue);
+			setAttribute(attributeName, date);
+			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, date);
 		}
 		else
 		{
+			final Object oldPropertyValue = getAttribute(attributeName);
+			setAttribute(attributeName, value);
 			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
 		}
 	}

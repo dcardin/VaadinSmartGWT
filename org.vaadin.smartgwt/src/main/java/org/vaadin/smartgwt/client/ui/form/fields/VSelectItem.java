@@ -3,113 +3,64 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
+import org.vaadin.smartgwt.client.ui.grid.VListGridField;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.BlurEvent;
-import com.smartgwt.client.widgets.form.fields.events.BlurHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VSelectItem extends VDataClass<SelectItem>
+public class VSelectItem extends VAbstractFormItem<SelectItem, String>
 {
-	private String savedValue = null;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
 	public VSelectItem()
 	{
 		super(new SelectItem());
 
-		getJSObject().addBlurHandler(new BlurHandler()
+		propertyUpdater.addProperty(new PaintableProperty("pickListFields")
 			{
 				@Override
-				public void onBlur(BlurEvent event)
+				public void postUpdate(Paintable[] paintables)
 				{
-					postChange();
-				}
-			});
+					final List<ListGridField> pickListFields = new ArrayList<ListGridField>();
 
-		getJSObject().addKeyPressHandler(new KeyPressHandler()
-			{
-
-				@Override
-				public void onKeyPress(KeyPressEvent event)
-				{
-					if (event.getKeyName().equalsIgnoreCase("enter"))
+					for (Paintable paintable : paintables)
 					{
-						postChange();
+						pickListFields.add(((VListGridField) paintable).getJSObject());
 					}
+
+					getJSObject().setPickListFields(pickListFields.toArray(new ListGridField[0]));
 				}
 			});
-	}
-
-	private void postChange()
-	{
-		String newValue = getJSObject().getValueAsString();
-
-		if ((newValue == null && savedValue != null) || (newValue != null && !newValue.equals(savedValue)))
-		{
-			getClient().updateVariable(getPID(), "value", newValue, true);
-		}
 	}
 
 	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
+	protected String getUIDLFormItemValue(UIDL uidl, String attributeName)
 	{
-		PainterHelper.paintChildren(uidl, getClient());
-		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
+		return uidl.getStringAttribute(attributeName);
+	}
+
+	@Override
+	protected String getFormItemValue()
+	{
+		return getJSObject().getValueAsString();
 	}
 
 	@Override
 	protected void updateFromUIDL(UIDL uidl)
 	{
-		if (uidl.hasAttribute("value"))
-		{
-			String newValue = uidl.getStringAttribute("value");
-
-			if (!newValue.equals(getJSObject().getValueAsString()))
-			{
-				savedValue = newValue;
-			}
-		}
+		propertyUpdater.updateFromUIDL(uidl, getClient());
 
 		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
 		if (uidl.hasAttribute("optionDataSource"))
 		{
 			final Paintable paintable = uidl.getPaintableAttribute("optionDataSource", getClient());
 			getJSObject().setOptionDataSource((DataSource) ((VJSObject<?>) paintable).getJSObject());
-		}
-
-		addListFields(uidl, getClient());
-	}
-	
-	private void addListFields(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*pickListFields"))
-		{
-			List<ListGridField> items = new ArrayList<ListGridField>();
-
-			String[] added = uidl.getStringArrayAttribute("*pickListFields");
-
-			for (String c : added)
-			{
-				ListGridField item = VDataClass.getDataClass(client, c);
-				items.add(item);
-			}
-
-			if (items.size() > 0)
-			{
-				ListGridField[] itemsArr = new ListGridField[0];
-				itemsArr = items.toArray(itemsArr);
-
-				getJSObject().setPickListFields(itemsArr);
-			}
 		}
 	}
 }
