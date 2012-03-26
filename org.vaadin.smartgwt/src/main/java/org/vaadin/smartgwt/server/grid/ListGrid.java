@@ -27,9 +27,10 @@ import org.vaadin.rpc.shared.Method;
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
-import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.types.AutoFitEvent;
 import org.vaadin.smartgwt.server.types.AutoFitIconFieldType;
@@ -71,7 +72,7 @@ import com.vaadin.terminal.PaintTarget;
  * each row represents one object and each cell in the row represents one property.
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
-public class ListGrid extends Layout implements ServerSideHandler  {
+public class ListGrid extends Canvas implements ServerSideHandler  {
 //implements DataBoundComponent, com.smartgwt.client.widgets.grid.events.HasHeaderClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDropHandlers, com.smartgwt.client.widgets.grid.events.HasRecordExpandHandlers, com.smartgwt.client.widgets.grid.events.HasRecordCollapseHandlers, com.smartgwt.client.widgets.grid.events.HasDataArrivedHandlers, com.smartgwt.client.widgets.grid.events.HasDrawAreaChangedHandlers, com.smartgwt.client.widgets.grid.events.HasFieldStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasEditCompleteHandlers, com.smartgwt.client.widgets.grid.events.HasEditFailedHandlers, com.smartgwt.client.widgets.grid.events.HasEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasCellSavedHandlers, com.smartgwt.client.widgets.grid.events.HasCellOutHandlers, com.smartgwt.client.widgets.grid.events.HasCellOverHandlers, com.smartgwt.client.widgets.grid.events.HasCellContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasCellClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowOutHandlers, com.smartgwt.client.widgets.grid.events.HasRowOverHandlers, com.smartgwt.client.widgets.grid.events.HasRowContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellHoverHandlers, com.smartgwt.client.widgets.grid.events.HasRowHoverHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionUpdatedHandlers, com.smartgwt.client.widgets.grid.events.HasHeaderDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasFilterEditorSubmitHandlers, com.smartgwt.client.widgets.grid.events.HasGroupByHandlers, com.smartgwt.client.widgets.grid.events.HasViewStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasBodyKeyPressHandlers {
 
 //    public static ListGrid getOrCreateRef(JavaScriptObject jsObj) {
@@ -4621,7 +4622,6 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_autofit_rows" target="examples">Rows Example</a>
      */
-    @Override
 	public void setLeaveScrollbarGap(Boolean leaveScrollbarGap) {
         setAttribute("leaveScrollbarGap", leaveScrollbarGap, true);
     }
@@ -4636,7 +4636,6 @@ public class ListGrid extends Layout implements ServerSideHandler  {
      * @see com.smartgwt.client.docs.Appearance Appearance overview and related methods
      * @see <a href="http://www.smartclient.com/smartgwt/showcase/#grid_autofit_rows" target="examples">Rows Example</a>
      */
-    @Override
 	public Boolean getLeaveScrollbarGap()  {
         return getAttributeAsBoolean("leaveScrollbarGap");
     }
@@ -14315,28 +14314,18 @@ public class ListGrid extends Layout implements ServerSideHandler  {
     // @formatter:on
 	// Vaaddin integration
 
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<ListGridField>> fields;
 	private final ServerSideProxy client = new ServerSideProxy(this);
 	private DataSource dataSource;
 
-	public List<ListGridField> getFields()
-	{
-		final ListGridField[] fields = getAttributeAsObject("*fields");
-		return fields == null ? new ArrayList<ListGridField>() : Arrays.asList(fields);
-	}
-
-	public void setFields(ListGridField... fields)
-	{
-		setAttribute("*fields", fields, true);
-		for (ListGridField field : fields)
-		{
-			field.setParent(this);
-		}
-	}
-
 	public ListGrid()
 	{
+		this.fields = propertyPainter.addListProperty("field");
+
 		setModalEditing(true);
 		scClassName = "ListGrid";
+
 		client.register("selectionChanged", new Method()
 			{
 				@Override
@@ -14346,6 +14335,28 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 					selectionChanged(selectedRecords);
 				}
 			});
+	}
+
+	public ListGridField[] getFields()
+	{
+		return fields.value.toArray(new ListGridField[0]);
+	}
+
+	public void setFields(ListGridField... fields)
+	{
+		for (ListGridField field : this.fields.value)
+		{
+			field.setParent(null);
+		}
+
+		this.fields.value.clear();
+
+		for (ListGridField field : fields)
+		{
+			field.setParent(this);
+		}
+
+		this.fields.value.addAll(Arrays.asList(fields));
 	}
 
 	private ListGridRecord[] parseRecords(String json)
@@ -14409,6 +14420,8 @@ public class ListGrid extends Layout implements ServerSideHandler  {
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		propertyPainter.paintContent(target);
+
 		if (dataSource != null)
 		{
 			target.addAttribute("dataSource", dataSource);

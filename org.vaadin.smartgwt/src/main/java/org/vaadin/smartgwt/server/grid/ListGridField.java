@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.grid.VListGridField;
-import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.DataClass;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.AutoFitWidthApproach;
@@ -45,7 +45,10 @@ import com.vaadin.ui.ClientWidget;
  * @see com.smartgwt.client.widgets.grid.ListGrid#setFields
  */
 @ClientWidget(value=VListGridField.class)
-public class ListGridField extends Canvas { // DataClass  implements com.smartgwt.client.widgets.grid.events.HasCellSavedHandlers, com.smartgwt.client.widgets.grid.events.HasChangeHandlers, com.smartgwt.client.widgets.grid.events.HasChangedHandlers, com.smartgwt.client.widgets.grid.events.HasEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers {
+public class ListGridField extends DataClass
+{ // implements com.smartgwt.client.widgets.grid.events.HasCellSavedHandlers, com.smartgwt.client.widgets.grid.events.HasChangeHandlers,
+	// com.smartgwt.client.widgets.grid.events.HasChangedHandlers, com.smartgwt.client.widgets.grid.events.HasEditorEnterHandlers,
+	// com.smartgwt.client.widgets.grid.events.HasEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers {
 
 //    public static ListGridField getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;

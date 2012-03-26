@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
-import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -25,18 +26,27 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", this);
-
-	@Override
-	public Element getElement()
-	{
-		return VMasterContainer.getDummy();
-	}
 
 	public VListGrid()
 	{
+		propertyUpdater.addProperty(new PaintableProperty("field")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final List<ListGridField> fields = new ArrayList<ListGridField>(paintables.length);
+
+					for (Paintable paintable : paintables)
+					{
+						fields.add(((VListGridField) paintable).getJSObject());
+					}
+
+					setFields(fields.toArray(new ListGridField[0]));
+				}
+			});
+
 		addSelectionChangedHandler(new SelectionChangedHandler()
 			{
 				@Override
@@ -53,13 +63,16 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 	}
 
 	@Override
+	public Element getElement()
+	{
+		return VMasterContainer.getDummy();
+	}
+
+	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
+		propertyUpdater.updateFromUIDL(uidl, client);
 		rpc.update(this, uidl, client);
-
-		PainterHelper.paintChildren(uidl, client);
 
 		if (uidl.hasAttribute("dataSource"))
 		{
@@ -67,34 +80,8 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 			setDataSource(((VJSObject<DataSource>) paintable).getJSObject());
 		}
 
-		addListFields(uidl, client);
-
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 		rpc.clientInitComplete();
-	}
-
-	private void addListFields(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*fields"))
-		{
-			List<ListGridField> items = new ArrayList<ListGridField>();
-
-			String[] added = uidl.getStringArrayAttribute("*fields");
-
-			for (String c : added)
-			{
-				ListGridField item = VDataClass.getDataClass(client, c);
-				items.add(item);
-			}
-
-			if (items.size() > 0)
-			{
-				ListGridField[] itemsArr = new ListGridField[0];
-				itemsArr = items.toArray(itemsArr);
-
-				setFields(itemsArr);
-			}
-		}
 	}
 
 	@Override
