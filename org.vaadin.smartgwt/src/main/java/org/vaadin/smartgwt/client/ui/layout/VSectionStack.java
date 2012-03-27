@@ -1,19 +1,33 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import org.vaadin.smartgwt.client.core.VDataClass;
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.layout.SectionStack;
-import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VSectionStack extends SectionStack implements Paintable
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+
+	public VSectionStack()
+	{
+		propertyUpdater.addProperty(new PaintableProperty("sections")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					for (Paintable paintable : paintables)
+					{
+						addSection(((VSectionStackSection) paintable).getJSObject());
+					}
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
@@ -24,23 +38,7 @@ public class VSectionStack extends SectionStack implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
+		propertyUpdater.updateFromUIDL(uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		if (uidl.hasAttribute("*members"))
-		{
-			String[] members = uidl.getStringArrayAttribute("*members");
-
-			for (String c : members)
-			{
-				SectionStackSection section = VDataClass.getDataClass(client, c);
-				addSection(section);
-			}
-		}
-		
 	}
-	
 }

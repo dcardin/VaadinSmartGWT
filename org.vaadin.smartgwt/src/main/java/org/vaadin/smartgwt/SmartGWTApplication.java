@@ -3,8 +3,10 @@ package org.vaadin.smartgwt;
 import static argo.jdom.JsonNodeBuilders.*;
 import static argo.jdom.JsonNodeFactories.*;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -105,15 +107,15 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		listGrid.setFields(new ListGridField("system", "System"), new ListGridField("monitor", "Monitor"));
 
 		SectionStackSection section1 = new SectionStackSection("Monitors");
-		section1.addMember(listGrid);
+		section1.addItem(listGrid);
 		section1.setExpanded(true);
 
 		SectionStackSection section2 = new SectionStackSection("Monitors");
-		section2.addMember(getVertical());
+		section2.addItem(getVertical());
 		section2.setExpanded(true);
 
-		sectionStack.addMember(section1);
-		sectionStack.addMember(section2);
+		sectionStack.addSection(section1);
+		sectionStack.addSection(section2);
 		return sectionStack;
 	}
 
@@ -144,10 +146,13 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		{
 			JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
-			for (Map.Entry<String, Object> entry : record.getAttributes().entrySet())
+			for (int i = 0; i < record.getAttributes().length; i++)
 			{
-				nodeBuilder.withField(entry.getKey(), aJsonString(entry.getValue() == null ? "" : entry.getValue().toString()));
+				final String name = record.getAttributes()[i];
+				final Object value = record.getAttributeAsObject(name);
+				nodeBuilder.withField(name, aJsonString(value == null ? "" : value.toString()));
 			}
+
 			recordBuilder.withElement(nodeBuilder);
 		}
 		builder.withField("records", recordBuilder);
@@ -465,18 +470,37 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return layout;
 	}
 
-	private Layout getMainPanel()
+	private Canvas getMainPanel()
 	{
+		final List<Tab> tabs = new ArrayList<Tab>();
+
 		tabset = new TabSet();
 		tabset.setSizeFull();
 
-		Tab tab = new Tab("premier");
-		Tab tab2 = new Tab("deuxieme");
-		Tab tab3 = new Tab("troisième");
-		Tab tab4 = new Tab("un autre");
-		Tab tab5 = new Tab("recursif");
-		Tab tab6 = new Tab("avec event");
-		Tab tab7 = new Tab("Fake border");
+		final Tab tab = new Tab("premier");
+		tabs.add(tab);
+
+		final Tab tab2 = new Tab("deuxieme");
+		tabs.add(tab2);
+
+		final Tab tab3 = new Tab("troisième");
+		tabs.add(tab3);
+
+		final Tab tab4 = new Tab("un autre");
+		tabs.add(tab4);
+
+		final Tab tab5 = new Tab("recursif");
+		tabs.add(tab5);
+
+		final Tab tab6 = new Tab("avec event");
+		tabs.add(tab6);
+
+		final Tab tab7 = new Tab("Fake border");
+		tabs.add(tab7);
+
+		final Tab tab8 = new Tab("sections");
+		tab8.setPane(getStackView());
+		tabs.add(tab8);
 
 		tab.setPane(createForm(4));
 		tab2.setPane(getEditableListGrid());
@@ -492,6 +516,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					tabset.selectTab(1);
 				}
 			});
+
 		vl.addMember(new Button("Press me 2!")
 			{
 				@Override
@@ -514,7 +539,18 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					window.show();
 				}
 			});
-		vl.addMember(new Button("Press me 3!"));
+
+		vl.addMember(new Button("Press me 3!")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+
+					tabset.removeTab(tab3);
+				}
+			});
+
 		vl.addMember(new Button("Press me 4!"));
 		Label filler = new Label("");
 		filler.setHeight("*");
@@ -531,7 +567,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		tab7.setPane(paintBorderLayout());
 
-		tabset.setTabs(tabEric, tab, tab2, tab3, tab4, tab5, tab6, tab7);
+		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 
 	}

@@ -7,7 +7,6 @@ import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-
 public class VListGridField extends VDataClass<ListGridField>
 {
 	public VListGridField()
@@ -18,7 +17,6 @@ public class VListGridField extends VDataClass<ListGridField>
 	@Override
 	protected void updateJSObjectAttributes(UIDL uidl)
 	{
-		PainterHelper.paintChildren(uidl, getClient());
 		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 

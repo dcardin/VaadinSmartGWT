@@ -1,10 +1,3 @@
-package org.vaadin.smartgwt.server.layout;
-
-import org.vaadin.smartgwt.client.ui.layout.VSectionStackSection;
-
-import com.vaadin.terminal.Resource;
-import com.vaadin.ui.ClientWidget;
-
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -21,13 +14,27 @@ import com.vaadin.ui.ClientWidget;
  * Lesser General Public License for more details.
  */
 
+package org.vaadin.smartgwt.server.layout;
+
+import java.util.List;
+
+import org.vaadin.smartgwt.client.ui.layout.VSectionStackSection;
+import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.RefDataClass;
+import org.vaadin.smartgwt.server.core.Reference;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+import com.vaadin.ui.ClientWidget;
+
 // @formatter:off
 /**
  * Section descriptor used by a SectionStack to describe a section of items which are shown or hidden together, and their
  * associated header.
  */
 @ClientWidget(value=VSectionStackSection.class)
-public class SectionStackSection extends Layout {
+public class SectionStackSection extends RefDataClass {
 
 //    public static SectionStackSection getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -47,11 +54,6 @@ public class SectionStackSection extends Layout {
 //    public SectionStackSection(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
-
-    public SectionStackSection(String title) {
-        setTitle(title);
-//        setID(com.smartgwt.client.util.SC.generateID("SectionStackSection"));
-    }
 
     // ********************* Properties / Attributes ***********************
 
@@ -354,8 +356,57 @@ public class SectionStackSection extends Layout {
 	{
     	setAttribute("icon", icon);
 	}
+	
+	//@formatter:on
+
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<Canvas>> items;
+
+	public SectionStackSection()
+	{
+		this.items = propertyPainter.addListProperty("items");
+	}
+
+	public SectionStackSection(String title)
+	{
+		this();
+		setTitle(title);
+	}
+
+	/**
+	 * Return the items in this SectionStackSection
+	 * 
+	 * @return the items in this SectionStackSection
+	 */
+	public Canvas[] getItems()
+	{
+		return items.value.toArray(new Canvas[0]);
+	}
+
+	/**
+	 * List of Canvases that constitute the section. These Canvases will be shown and hidden together.
+	 * 
+	 * @param items
+	 *            list of Canvases that constitute the section
+	 */
+	public void setItems(Canvas... items)
+	{
+		for (Canvas item : items)
+		{
+			addItem(item);
+		}
+	}
+
+	public void addItem(Canvas item)
+	{
+		item.setParent(this);
+		items.value.add(item);
+	}
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
+	}
 }
-
-
-
-

@@ -1,16 +1,3 @@
-package org.vaadin.smartgwt.server.layout;
-
-import org.vaadin.smartgwt.client.ui.layout.VSectionStack;
-import org.vaadin.smartgwt.server.types.LocatorStrategy;
-import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
-import org.vaadin.smartgwt.server.types.Overflow;
-import org.vaadin.smartgwt.server.types.VisibilityMode;
-import org.vaadin.smartgwt.server.util.EnumUtil;
-
-import com.vaadin.ui.ClientWidget;
-
-// @formatter:on
-
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -27,6 +14,24 @@ import com.vaadin.ui.ClientWidget;
  * Lesser General Public License for more details.
  */
 
+package org.vaadin.smartgwt.server.layout;
+
+import java.util.List;
+
+import org.vaadin.smartgwt.client.ui.layout.VSectionStack;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.Reference;
+import org.vaadin.smartgwt.server.types.LocatorStrategy;
+import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
+import org.vaadin.smartgwt.server.types.Overflow;
+import org.vaadin.smartgwt.server.types.VisibilityMode;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+import com.vaadin.ui.ClientWidget;
+
+//@formatter:off
 /**
  * A container that manages a list of sections of widgets, each with a header. Sometimes called an "Accordion".
  * <P>
@@ -34,7 +39,7 @@ import com.vaadin.ui.ClientWidget;
  * visible and share the available space.
  */
 @ClientWidget(value=VSectionStack.class)
-public class SectionStack extends Layout
+public class SectionStack extends VLayout
 { // implements com.smartgwt.client.widgets.layout.events.HasSectionHeaderClickHandlers {
 
 	// public static SectionStack getOrCreateRef(JavaScriptObject jsObj) {
@@ -46,11 +51,6 @@ public class SectionStack extends Layout
 	// return new SectionStack(jsObj);
 	// }
 	// }
-
-	public SectionStack()
-	{
-		scClassName = "SectionStack";
-	}
 
 	// public SectionStack(JavaScriptObject jsObj){
 	// super(jsObj);
@@ -874,16 +874,6 @@ public class SectionStack extends Layout
 	// return self.sectionIsVisible(sectionID);
 	// }-*/;
 	//
-	// /**
-	// * Changes the title of a Section Header.
-	// *
-	// * @param sectionID ID of the section whose title you want to change
-	// * @param newTitle new title for the Section Header
-	// */
-	// public native void setSectionTitle(String sectionID, String newTitle) /*-{
-	// var self = this.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()();
-	// return self.setSectionTitle(sectionID, newTitle);
-	// }-*/;
 	//
 	// /**
 	// * Changes the title of a Section Header.
@@ -1025,7 +1015,74 @@ public class SectionStack extends Layout
 	// }-*/;
 
 	// @formatter:on
-	public void setSectionTitle(String sectionID, String newTitle) 
+
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final Reference<List<SectionStackSection>> sections;
+
+	public SectionStack()
 	{
+		scClassName = "SectionStack";
+		sections = propertyPainter.addListProperty("sections");
+	}
+
+	public void setSections(SectionStackSection... sections)
+	{
+		for (SectionStackSection section : sections)
+		{
+			addSection(section);
+		}
+	}
+
+	/**
+	 * Add a section to the SectionStack.
+	 * 
+	 * @param section
+	 *            the section to add
+	 */
+	public void addSection(SectionStackSection section)
+	{
+		section.setParent(this);
+		sections.value.add(section);
+	}
+
+	/**
+	 * Add a section to the SectionStack.
+	 * 
+	 * @param section
+	 *            the section to add
+	 * @param position
+	 *            index for the new section
+	 */
+	public void addSection(SectionStackSection section, int position)
+	{
+		section.setParent(this);
+		sections.value.add(position, section);
+	}
+
+	/**
+	 * Changes the title of a Section Header.
+	 * 
+	 * @param sectionID
+	 *            ID of the section whose title you want to change
+	 * @param newTitle
+	 *            new title for the Section Header
+	 */
+	public void setSectionTitle(String sectionID, String newTitle)
+	{
+		for (SectionStackSection section : sections.value)
+		{
+			if (sectionID.equals(section.getName()))
+			{
+				section.setTitle(newTitle);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
 	}
 }
