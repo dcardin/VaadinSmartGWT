@@ -1,5 +1,11 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.google.gwt.user.client.Element;
@@ -11,8 +17,30 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VVLayout extends VLayout implements Paintable
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+
+	public VVLayout()
+	{
+		propertyUpdater.addProperty(new PaintableProperty("members")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final List<Canvas> clientCanvases = Arrays.asList(getMembers());
+					final List<Canvas> serverCanvases = new ArrayList<Canvas>(paintables.length);
+
+					for (Paintable paintable : paintables)
+					{
+						serverCanvases.add((Canvas) paintable);
+					}
+
+					final List<Canvas> removedCanvases = new ArrayList<Canvas>(clientCanvases);
+					removedCanvases.removeAll(serverCanvases);
+					removeMembers(removedCanvases.toArray(new Canvas[0]));
+					setMembers(serverCanvases.toArray(new Canvas[0]));
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
@@ -23,62 +51,7 @@ public class VVLayout extends VLayout implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
+		propertyUpdater.updateFromUIDL(uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		if (uidl.hasAttribute("*members"))
-		{
-			// remove and unregister all members
-			for (Canvas member : getMembers())
-			{
-				removeMember(member);
-			}
-
-			String[] members = uidl.getStringArrayAttribute("*members");
-
-			for (String c : members)
-			{
-				addMember((Canvas) client.getPaintable(c));
-			}
-		}
-		else
-		{
-			if (uidl.hasAttribute("*membersReplaced"))
-			{
-				String[] replaced = uidl.getStringArrayAttribute("*membersReplaced");
-
-				for (int i = 0; i < replaced.length; i += 2)
-				{
-					Canvas removed = (Canvas) client.getPaintable(replaced[i]);
-					Canvas added = (Canvas) client.getPaintable(replaced[i + 1]);
-
-					int pos = getMemberNumber(removed);
-					removeMember(removed);
-					addMember(added, pos);
-				}
-			}
-			if (uidl.hasAttribute("*membersRemoved"))
-			{
-				String[] removed = uidl.getStringArrayAttribute("*membersRemoved");
-
-				for (String c : removed)
-				{
-					Canvas removedCanvas = (Canvas) client.getPaintable(c);
-					removeMember(removedCanvas);
-				}
-			}
-			if (uidl.hasAttribute("*membersAdded"))
-			{
-				String[] added = uidl.getStringArrayAttribute("*membersAdded");
-
-				for (String c : added)
-				{
-					addMember((Canvas) client.getPaintable(c), 0);
-				}
-			}
-		}
 	}
 }
