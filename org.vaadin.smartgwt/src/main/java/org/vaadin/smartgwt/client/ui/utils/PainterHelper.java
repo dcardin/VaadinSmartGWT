@@ -1,8 +1,5 @@
 package org.vaadin.smartgwt.client.ui.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
 
@@ -20,73 +17,6 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class PainterHelper
 {
-	public static class WidgetInfo
-	{
-		private final Widget widget;
-		private final UIDL uidl;
-
-		public WidgetInfo(UIDL uidl, Widget widget)
-		{
-			this.uidl = uidl;
-			this.widget = widget;
-		}
-
-		public Widget getWidget()
-		{
-			return widget;
-		}
-
-		public UIDL getUIDL()
-		{
-			return uidl;
-		}
-	}
-
-	/**
-	 * Identifies the Paintable children and when associated with a widget, update them from the uidl
-	 * 
-	 * @param uidl
-	 * @param client
-	 * @return
-	 */
-	public static List<WidgetInfo> paintChildren(UIDL uidl, ApplicationConnection client)
-	{
-		List<WidgetInfo> childWidgets = createChildren(uidl, client);
-
-		for (WidgetInfo info : childWidgets)
-		{
-			paintWidget(info.getWidget(), info.getUIDL(), client);
-		}
-
-		return childWidgets;
-	}
-
-	/**
-	 * Create the children of this uidl so they may be referenced after
-	 */
-	public static List<WidgetInfo> createChildren(UIDL uidl, ApplicationConnection client)
-	{
-		List<WidgetInfo> childWidgets = new ArrayList<WidgetInfo>();
-
-		int uidlCount = uidl.getChildCount();
-		for (int uidlPos = 0; uidlPos < uidlCount; uidlPos++)
-		{
-			final UIDL childUIDL = uidl.getChildUIDL(uidlPos);
-			Widget uidlWidget = childUIDL != null ? (Widget) client.getPaintable(childUIDL) : null;
-			childWidgets.add(new WidgetInfo(childUIDL, uidlWidget));
-		}
-
-		return childWidgets;
-	}
-
-	public static void paintWidget(Widget widget, UIDL uidl, ApplicationConnection client)
-	{
-		if (widget instanceof Paintable)
-		{
-			((Paintable) widget).updateFromUIDL(uidl, client);
-		}
-	}
-
 	/**
 	 * Provides automatic processing of a Widget's property, coming from properties in uidl
 	 * 
