@@ -1042,7 +1042,7 @@ public class SectionStack extends VLayout
 	public void addSection(SectionStackSection section)
 	{
 		section.setParent(this);
-		sections.value.add(section);
+		sections.get().add(section);
 	}
 
 	/**
@@ -1056,7 +1056,7 @@ public class SectionStack extends VLayout
 	public void addSection(SectionStackSection section, int position)
 	{
 		section.setParent(this);
-		sections.value.add(position, section);
+		sections.get().add(position, section);
 	}
 
 	/**
@@ -1069,7 +1069,7 @@ public class SectionStack extends VLayout
 	 */
 	public void setSectionTitle(String sectionID, String newTitle)
 	{
-		for (SectionStackSection section : sections.value)
+		for (SectionStackSection section : sections.get())
 		{
 			if (sectionID.equals(section.getName()))
 			{

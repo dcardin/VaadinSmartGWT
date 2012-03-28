@@ -36,13 +36,13 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 		pane = paintablePropertyPainter.addProperty("pane");
 		window = paintablePropertyPainter.addProperty("window");
 		sc = paintablePropertyPainter.addProperty("sc");
-		sc.value = new SC();
-		sc.value.setParent(this);
+		sc.set(new SC());
+		sc.get().setParent(this);
 	}
 
 	public void addDataSource(DataSource dataSource)
 	{
-		if (!dataSources.value.contains(dataSource))
+		if (!dataSources.get().contains(dataSource))
 		{
 			if (dataSource.getParent() instanceof ComponentContainer)
 			{
@@ -50,29 +50,29 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 			}
 
 			dataSource.setParent(this);
-			dataSources.value.add(dataSource);
+			dataSources.get().add(dataSource);
 		}
 	}
 
 	public Canvas getPane()
 	{
-		return pane.value;
+		return pane.get();
 	}
 
 	public void setPane(Canvas pane)
 	{
-		this.pane.value = pane;
+		this.pane.set(pane);
 		pane.setParent(this);
 	}
 
 	public SC getSC()
 	{
-		return sc.value;
+		return sc.get();
 	}
 
 	public void showWindow(Window window)
 	{
-		this.window.value = window;
+		this.window.set(window);
 		window.setParent(this);
 		requestRepaint();
 	}
@@ -81,7 +81,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	public void paintContent(PaintTarget target) throws PaintException
 	{
 		paintablePropertyPainter.paintContent(target);
-		window.value = null;
+		window.set(null);
 		super.paintContent(target);
 	}
 

@@ -675,9 +675,9 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	 */
 	public void setPane(Canvas pane)
 	{
-		if (this.pane.value != null)
+		if (this.pane.get() != null)
 		{
-			this.pane.value.setParent(null);
+			this.pane.get().setParent(null);
 		}
 
 		if (pane != null)
@@ -685,7 +685,7 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 			pane.setParent(this);
 		}
 		
-		this.pane.value = pane;
+		this.pane.set(pane);
 	}
 
 	/**
@@ -695,7 +695,7 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	 */
 	public Canvas getPane()
 	{
-		return this.pane.value;
+		return this.pane.get();
 	}
 
 	/**

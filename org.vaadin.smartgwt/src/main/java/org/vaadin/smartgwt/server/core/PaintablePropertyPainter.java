@@ -31,7 +31,7 @@ public class PaintablePropertyPainter
 		checkArgument(!properties.containsKey(propertyName), propertyName + " already registered.");
 
 		final Reference<List<T>> reference = new Reference<List<T>>();
-		reference.value = Lists.newArrayList();
+		reference.set(Lists.<T> newArrayList());
 		properties.put(propertyName, reference);
 		return reference;
 	}
@@ -41,7 +41,7 @@ public class PaintablePropertyPainter
 		for (Entry<String, Reference<?>> entry : properties.entrySet())
 		{
 			final String name = entry.getKey();
-			final Object value = entry.getValue().value;
+			final Object value = entry.getValue().get();
 
 			if (value instanceof List)
 			{

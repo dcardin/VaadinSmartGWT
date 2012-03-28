@@ -1478,19 +1478,19 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
 
 	public void setPickListFields(ListGridField... pickListFields)
 	{
-		for (ListGridField pickListField : this.pickListFields.value)
+		for (ListGridField pickListField : this.pickListFields.get())
 		{
 			pickListField.setParent(null);
 		}
 
-		this.pickListFields.value.clear();
+		this.pickListFields.get().clear();
 
 		for (ListGridField pickListField : pickListFields)
 		{
 			pickListField.setParent(this);
 		}
 
-		this.pickListFields.value.addAll(Arrays.asList(pickListFields));
+		this.pickListFields.get().addAll(Arrays.asList(pickListFields));
 	}
 
 	/**

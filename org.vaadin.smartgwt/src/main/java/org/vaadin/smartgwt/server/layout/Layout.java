@@ -1376,7 +1376,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public Boolean hasMember(Canvas canvas)
 	{
-		return members.value.contains(canvas);
+		return members.get().contains(canvas);
 	}
 
 	/**
@@ -1389,7 +1389,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		if (hasMember(member))
 		{
-			members.value.remove(member);
+			members.get().remove(member);
 			member.setParent(null);
 			requestRepaint();
 		}
@@ -1445,19 +1445,19 @@ public class Layout extends Canvas implements ComponentContainer {
 
 	public void setMembers(List<Canvas> members)
 	{
-		for (Canvas member : this.members.value)
+		for (Canvas member : this.members.get())
 		{
 			member.setParent(null);
 		}
 
-		this.members.value.clear();
+		this.members.get().clear();
 
 		for (Canvas member : members)
 		{
 			member.setParent(this);
 		}
 
-		this.members.value.addAll(members);
+		this.members.get().addAll(members);
 		requestRepaint();
 	}
 
@@ -1470,7 +1470,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void addMember(Canvas component)
 	{
 		component.setParent(this);
-		members.value.add(component);
+		members.get().add(component);
 		requestRepaint();
 	}
 
@@ -1485,7 +1485,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void addMember(Canvas component, int position)
 	{
 		component.setParent(this);
-		members.value.add(position, component);
+		members.get().add(position, component);
 		requestRepaint();
 	}
 
@@ -1510,17 +1510,17 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public Canvas[] getMembers()
 	{
-		return members.value.toArray(new Canvas[0]);
+		return members.get().toArray(new Canvas[0]);
 	}
 	
 	public void removeAllMembers()
 	{
-		for (Canvas member : members.value)
+		for (Canvas member : members.get())
 		{
 			member.setParent(null);
 		}
 
-		members.value.clear();
+		members.get().clear();
 	}
 
 	/**
@@ -1558,22 +1558,22 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public int getMemberNumber(Canvas member)
 	{
-		return members.value.indexOf(member);
+		return members.get().indexOf(member);
 	}
 
 	public void removeMemberAt(int pos)
 	{
 		// List<Canvas> members = getMembersAsList();
-		removeMember(members.value.get(pos));
+		removeMember(members.get().get(pos));
 	}
 
 	public void replaceMember(Canvas oldComponent, Canvas newComponent)
 	{
-		final int index = members.value.indexOf(oldComponent);
+		final int index = members.get().indexOf(oldComponent);
 
 		if (index > -1)
 		{
-			members.value.set(index, newComponent);
+			members.get().set(index, newComponent);
 			oldComponent.setParent(null);
 			newComponent.setParent(this);
 			requestRepaint();
@@ -1611,7 +1611,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		final List<Component> components = new ArrayList<Component>();
 		
-		for (Canvas canvas : members.value)
+		for (Canvas canvas : members.get())
 		{
 			components.add(canvas);
 		}

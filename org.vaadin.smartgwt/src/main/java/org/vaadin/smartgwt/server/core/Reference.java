@@ -1,6 +1,16 @@
 package org.vaadin.smartgwt.server.core;
 
-public final class Reference<T>
+public class Reference<T>
 {
-	public T value;
+	private T value;
+
+	public T get()
+	{
+		return value;
+	}
+
+	public void set(T value)
+	{
+		this.value = value;
+	}
 }

@@ -2511,7 +2511,7 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
      * @return array of DataSourceFields
      */
     public DataSourceField[] getFields() {
-    	return fields.value.toArray(new DataSourceField[0]);
+    	return fields.get().toArray(new DataSourceField[0]);
     }
 
 //    /**
@@ -3396,7 +3396,7 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 		}
 
 		field.setParent(this);
-		fields.value.add(field);
+		fields.get().add(field);
 	}
 
 	// override setID() - if this.addGlobalID is false, don't register the ID with the IDManager

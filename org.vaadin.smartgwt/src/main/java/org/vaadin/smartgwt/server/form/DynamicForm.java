@@ -4138,7 +4138,7 @@ public class DynamicForm extends Canvas
 	public void addField(FormItem item)
 	{
 		item.setParent(this);
-		this.fields.value.add(item);
+		this.fields.get().add(item);
 	}
 
 	/**
@@ -4152,24 +4152,24 @@ public class DynamicForm extends Canvas
 	 */
 	public void setFields(FormItem... fields)
 	{
-		for (FormItem formItem : this.fields.value)
+		for (FormItem formItem : this.fields.get())
 		{
 			formItem.setParent(null);
 		}
 
-		this.fields.value.clear();
+		this.fields.get().clear();
 
 		for (FormItem formItem : fields)
 		{
 			formItem.setParent(this);
 		}
 
-		this.fields.value.addAll(Arrays.asList(fields));
+		this.fields.get().addAll(Arrays.asList(fields));
 	}
 
 	public FormItem[] getFields()
 	{
-		return this.fields.value.toArray(new FormItem[0]);
+		return this.fields.get().toArray(new FormItem[0]);
 	}
 
 	public DataSource getDataSource()

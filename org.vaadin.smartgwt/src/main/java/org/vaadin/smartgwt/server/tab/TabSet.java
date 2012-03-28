@@ -2126,7 +2126,7 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		tabs.value.add(tab);
+		tabs.get().add(tab);
 	}
 
 	/**
@@ -2141,12 +2141,12 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		tabs.value.add(position, tab);
+		tabs.get().add(position, tab);
 	}
 	
 	public void removeTab(Tab tab)
 	{
-		tabs.value.remove(tab);
+		tabs.get().remove(tab);
 		requestRepaint();
 	}
 
@@ -2192,6 +2192,6 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
      */
 	public Tab[] getTabs()
 	{
-		return tabs.value.toArray(new Tab[0]);
+		return tabs.get().toArray(new Tab[0]);
     }
 }

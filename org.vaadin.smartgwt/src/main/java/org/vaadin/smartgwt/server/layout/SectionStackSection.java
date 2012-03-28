@@ -380,7 +380,7 @@ public class SectionStackSection extends RefDataClass {
 	 */
 	public Canvas[] getItems()
 	{
-		return items.value.toArray(new Canvas[0]);
+		return items.get().toArray(new Canvas[0]);
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class SectionStackSection extends RefDataClass {
 	public void addItem(Canvas item)
 	{
 		item.setParent(this);
-		items.value.add(item);
+		items.get().add(item);
 	}
 
 	@Override

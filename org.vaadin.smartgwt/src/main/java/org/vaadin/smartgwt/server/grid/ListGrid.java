@@ -14339,24 +14339,24 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 
 	public ListGridField[] getFields()
 	{
-		return fields.value.toArray(new ListGridField[0]);
+		return fields.get().toArray(new ListGridField[0]);
 	}
 
 	public void setFields(ListGridField... fields)
 	{
-		for (ListGridField field : this.fields.value)
+		for (ListGridField field : this.fields.get())
 		{
 			field.setParent(null);
 		}
 
-		this.fields.value.clear();
+		this.fields.get().clear();
 
 		for (ListGridField field : fields)
 		{
 			field.setParent(this);
 		}
 
-		this.fields.value.addAll(Arrays.asList(fields));
+		this.fields.get().addAll(Arrays.asList(fields));
 	}
 
 	private ListGridRecord[] parseRecords(String json)

@@ -1630,7 +1630,7 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 	public void addItem(Canvas component)
 	{
 		component.setParent(this);
-		items.value.add(component);
+		items.get().add(component);
 	}
 
 	@Override
