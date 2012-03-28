@@ -44,6 +44,19 @@ public class VWindow extends Window implements Paintable, ClientSideHandler
 					setMembers(serverCanvases.toArray(new Canvas[0]));
 				}
 			});
+		
+		propertyUpdater.addProperty(new PaintableProperty("items")
+			{
+				
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					for (Paintable paintable : paintables)
+					{
+						addItem((Canvas) paintable);
+					}
+				}
+			});
 	}
 
 	@Override
@@ -58,16 +71,6 @@ public class VWindow extends Window implements Paintable, ClientSideHandler
 		propertyUpdater.updateFromUIDL(uidl, client);
 		rpc.update(this, uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-
-		if (uidl.hasAttribute("*items"))
-		{
-			String[] members = uidl.getStringArrayAttribute("*items");
-
-			for (String c : members)
-			{
-				addItem((Canvas) client.getPaintable(c));
-			}
-		}
 	}
 
 	@Override
