@@ -478,29 +478,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabset.setSizeFull();
 
 		final Tab tab = new Tab("premier");
-		tabs.add(tab);
-
 		final Tab tab2 = new Tab("deuxieme");
-		tabs.add(tab2);
-
 		final Tab tab3 = new Tab("troisième");
-		tabs.add(tab3);
-
 		final Tab tab4 = new Tab("un autre");
-		tabs.add(tab4);
-
 		final Tab tab5 = new Tab("recursif");
-		tabs.add(tab5);
-
 		final Tab tab6 = new Tab("avec event");
-		tabs.add(tab6);
-
 		final Tab tab7 = new Tab("Fake border");
-		tabs.add(tab7);
-
-		final Tab tab8 = new Tab("sections");
-		tab8.setPane(getStackView());
-		tabs.add(tab8);
 
 		tab.setPane(createForm(4));
 		tab2.setPane(getEditableListGrid());
@@ -564,12 +547,19 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		Tab tabEric = new Tab("Éric");
 		tabEric.setPane(getEricLayout());
-
 		tab7.setPane(paintBorderLayout());
 
+		// tabs.add(tab);
+		// tabs.add(tab2);
+		// tabs.add(tab3);
+		// tabs.add(tab4);
+		// tabs.add(tab5);
+		// tabs.add(tab6);
+		// tabs.add(tab7);
+		// tabs.add(newTab("sections", getStackView()));
+		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
-
 	}
 
 	private Layout getVertical()
@@ -604,6 +594,25 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}
 
 		return layout;
+	}
+
+	private Tab newTab(String title, Canvas pane)
+	{
+		final Tab tab = new Tab(title);
+		tab.setPane(pane);
+		return tab;
+	}
+
+	private Canvas newSplitLayoutPane()
+	{
+		final VSplitLayout vLayout = new VSplitLayout();
+		final Label topLabel = new Label("TOP");
+		final Label bottomLabel = new Label("BOTTOM");
+		topLabel.setBackgroundColor("red");
+		bottomLabel.setBackgroundColor("blue");
+		vLayout.setTopCanvas(topLabel);
+		vLayout.setBottomCanvas(bottomLabel);
+		return vLayout;
 	}
 
 	public VLayout getSpecial()
