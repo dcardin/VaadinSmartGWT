@@ -31,10 +31,12 @@ public class VSplitLayout extends Layout
 	{
 		top = propertyPainter.addProperty("top");
 		bottom = propertyPainter.addProperty("bottom");
-		setShowResizeBar(showResizeBar);
-		setResizeWithParent(resizeWithParent);
-		setTopCanvas(top.value = new NullMember());
-		setBottomCanvas(bottom.value = new NullMember());
+		this.showResizeBar = showResizeBar;
+		this.resizeWithParent = resizeWithParent;
+		top.value = new NullMember();
+		bottom.value = new NullMember();
+		setTopCanvas(new NullMember());
+		setBottomCanvas(new NullMember());
 		setProportionalLayout(true);
 	}
 
@@ -44,7 +46,11 @@ public class VSplitLayout extends Layout
 		top.value = canvas == null ? new NullMember() : canvas;
 		top.value.setParent(this);
 		top.value.setHeight(proportions[0]);
-		top.value.setShowResizeBar(showResizeBar);
+
+		if (top.value instanceof NullMember == false && bottom.value instanceof NullMember == false)
+		{
+			top.value.setShowResizeBar(showResizeBar);
+		}
 	}
 
 	public void setBottomCanvas(Canvas canvas)
@@ -53,6 +59,11 @@ public class VSplitLayout extends Layout
 		bottom.value = canvas == null ? new NullMember() : canvas;
 		bottom.value.setParent(this);
 		bottom.value.setHeight(proportions[1]);
+
+		if (top.value instanceof NullMember == false && bottom.value instanceof NullMember == false)
+		{
+			top.value.setShowResizeBar(showResizeBar);
+		}
 	}
 
 	public void setProportionalLayout(boolean proportional)
@@ -75,6 +86,11 @@ public class VSplitLayout extends Layout
 	public void setShowResizeBar(boolean showResizeBar)
 	{
 		this.showResizeBar = showResizeBar;
+
+		if (top.value instanceof NullMember == false && bottom.value instanceof NullMember == false)
+		{
+			top.value.setShowResizeBar(showResizeBar);
+		}
 	}
 
 	public void setResizeWithParent(boolean resizeWithParent)

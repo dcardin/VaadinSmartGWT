@@ -1,10 +1,12 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.google.gwt.user.client.Element;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -14,10 +16,46 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VHSplitLayout extends HLayout implements Paintable
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
-	private ResizedHandler handler;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private boolean resizeWithParent;
+
+	public VHSplitLayout()
+	{
+		setWidth100();
+		setMembers(new NullMember(), new NullMember());
+
+		addResizedHandler(new ResizedHandler()
+			{
+				@Override
+				public void onResized(ResizedEvent event)
+				{
+					updateChildrenSizes();
+					reflow();
+				}
+			});
+
+		propertyUpdater.addProperty(new PaintableProperty("left")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final Canvas left = (Canvas) paintables[0];
+					removeMember(getMembers()[0]);
+					addMember(left, 0);
+				}
+			});
+
+		propertyUpdater.addProperty(new PaintableProperty("right")
+			{
+				@Override
+				public void postUpdate(Paintable[] paintables)
+				{
+					final Canvas right = (Canvas) paintables[0];
+					removeMember(getMembers()[1]);
+					addMember(right);
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
@@ -28,35 +66,15 @@ public class VHSplitLayout extends HLayout implements Paintable
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
-		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		Canvas left = PainterHelper.getCanvasByRef(uidl, client, "#left");
-		Canvas right = PainterHelper.getCanvasByRef(uidl, client, "#right");
-
-		boolean showResizeBar = Boolean.parseBoolean(uidl.getStringAttribute("*showResizeBar").substring(1));
-		resizeWithParent = getAttributeAsBoolean("resizeWithParent");
-
-		setupLayout(left, right, showResizeBar, uidl.getStringArrayAttribute("*proportions"));
-
-		if (handler == null)
+		if (uidl.hasAttribute("cached"))
 		{
-			handler = new ResizedHandler()
-				{
-					@Override
-					public void onResized(ResizedEvent event)
-					{
-						redraw();
-//						updateChildrenSizes();
-					}
-
-				};
+			return;
 		}
-		addResizedHandler(handler);
-	};
+
+		propertyUpdater.updateFromUIDL(uidl, client);
+		PainterHelper.updateSmartGWTComponent(client, this, uidl);
+		resizeWithParent = uidl.getBooleanAttribute("*resizeWithParent");
+	}
 
 	@Override
 	protected void onDraw()
@@ -83,18 +101,12 @@ public class VHSplitLayout extends HLayout implements Paintable
 		}
 	}
 
-	private void setupLayout(final Canvas left, final Canvas right, boolean showResizeBar, String[] proportions)
+	private static class NullMember extends Label
 	{
-		setWidth100();
-
-		removeMembers(getMembers());
-
-		left.setWidth(proportions[0]);
-		right.setWidth(proportions[1]);
-
-		left.setShowResizeBar(showResizeBar);
-
-		addMember(left);
-		addMember(right);
+		public NullMember()
+		{
+			super("");
+			setVisible(false);
+		}
 	}
 }

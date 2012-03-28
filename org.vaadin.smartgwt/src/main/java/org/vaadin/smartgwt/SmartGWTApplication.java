@@ -27,6 +27,7 @@ import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
+import org.vaadin.smartgwt.server.layout.HSplitLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.SectionStack;
@@ -606,13 +607,19 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private Canvas newSplitLayoutPane()
 	{
 		final VSplitLayout vLayout = new VSplitLayout();
-		final Label topLabel = new Label("TOP");
-		final Label bottomLabel = new Label("BOTTOM");
-		topLabel.setBackgroundColor("red");
-		bottomLabel.setBackgroundColor("blue");
-		vLayout.setTopCanvas(topLabel);
-		vLayout.setBottomCanvas(bottomLabel);
+		final HSplitLayout hLayout = new HSplitLayout();
+		hLayout.setLeftCanvas(newLabel("LEFT", "blue"));
+		hLayout.setRightCanvas(newLabel("RIGHT", "green"));
+		vLayout.setTopCanvas(newLabel("TOP", "red"));
+		vLayout.setBottomCanvas(hLayout);
 		return vLayout;
+	}
+
+	private Label newLabel(String content, String bgColor)
+	{
+		final Label label = new Label(content);
+		label.setBackgroundColor(bgColor);
+		return label;
 	}
 
 	public VLayout getSpecial()
