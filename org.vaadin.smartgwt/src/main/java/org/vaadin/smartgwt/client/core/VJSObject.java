@@ -1,7 +1,6 @@
 package org.vaadin.smartgwt.client.core;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
-
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -12,6 +11,7 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 {
 	protected static final String ATTRIBUTE_PID = "pid";
 
+	private final Element element = DOM.createDiv();
 	private final T object;
 	private ApplicationConnection client;
 	private String pid;
@@ -24,7 +24,7 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 	@Override
 	public final Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

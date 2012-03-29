@@ -8,6 +8,7 @@ import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -18,6 +19,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VHLayout extends HLayout implements Paintable
 {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	private final Element element = DOM.createDiv();
 
 	public VHLayout()
 	{
@@ -45,7 +47,7 @@ public class VHLayout extends HLayout implements Paintable
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

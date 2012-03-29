@@ -8,9 +8,9 @@ import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Window;
@@ -22,6 +22,7 @@ public class VWindow extends Window implements Paintable, ClientSideHandler
 {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final ClientSideProxy rpc = new ClientSideProxy("VWindow", this);
+	private final Element element = DOM.createDiv();
 
 	public VWindow()
 	{
@@ -62,7 +63,7 @@ public class VWindow extends Window implements Paintable, ClientSideHandler
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

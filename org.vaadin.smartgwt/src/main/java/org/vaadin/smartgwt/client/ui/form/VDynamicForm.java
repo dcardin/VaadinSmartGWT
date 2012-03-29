@@ -6,9 +6,9 @@ import java.util.List;
 import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.form.fields.VAbstractFormItem;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -19,6 +19,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VDynamicForm extends DynamicForm implements Paintable
 {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	private final Element element = DOM.createDiv();
 
 	public VDynamicForm()
 	{
@@ -42,7 +43,7 @@ public class VDynamicForm extends DynamicForm implements Paintable
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

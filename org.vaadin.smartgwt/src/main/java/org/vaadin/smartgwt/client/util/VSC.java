@@ -3,8 +3,8 @@ package org.vaadin.smartgwt.client.util;
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.rpc.shared.Method;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -15,6 +15,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VSC extends Canvas implements Paintable, ClientSideHandler
 {
+	private final Element element = DOM.createDiv();
 	protected String paintableId;
 	private ApplicationConnection client;
 	private final ClientSideProxy rpc = new ClientSideProxy("VSC", this);
@@ -73,7 +74,7 @@ public class VSC extends Canvas implements Paintable, ClientSideHandler
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

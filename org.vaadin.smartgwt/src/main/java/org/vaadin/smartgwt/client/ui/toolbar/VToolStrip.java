@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -18,6 +18,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VToolStrip extends ToolStrip implements Paintable
 {
+	private final Element element = DOM.createDiv();
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
 	public VToolStrip()
@@ -46,7 +47,7 @@ public class VToolStrip extends ToolStrip implements Paintable
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

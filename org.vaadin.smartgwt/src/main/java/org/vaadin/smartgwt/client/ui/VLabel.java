@@ -1,8 +1,8 @@
 package org.vaadin.smartgwt.client.ui;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -13,13 +13,14 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VLabel extends Label implements Paintable
 {
+	private final Element element = DOM.createDiv();
 	protected String paintableId;
 	protected ApplicationConnection client;
 
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	public VLabel()

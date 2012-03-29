@@ -8,10 +8,10 @@ import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.util.JSOHelper;
@@ -27,6 +27,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	private final Element element = DOM.createDiv();
 	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", this);
 
 	public VListGrid()
@@ -65,7 +66,7 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override

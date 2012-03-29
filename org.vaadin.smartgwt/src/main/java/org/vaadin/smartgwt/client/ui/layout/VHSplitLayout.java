@@ -1,6 +1,7 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -11,6 +12,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VHSplitLayout extends HLayout implements Paintable
 {
 	private final VSplitLayoutHelper splitLayoutHelper;
+	private final Element element = DOM.createDiv();
 
 	public VHSplitLayout()
 	{
@@ -33,7 +35,7 @@ public class VHSplitLayout extends HLayout implements Paintable
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override
