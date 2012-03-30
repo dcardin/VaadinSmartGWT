@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.PaintableReferenceListener;
 import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -18,12 +18,12 @@ public class VTab extends VDataClass<Tab>
 	{
 		super(new Tab());
 		
-		propertyUpdater.addProperty(new PaintableProperty("pane")
+		propertyUpdater.addPaintableReferenceListener("pane", new PaintableReferenceListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onChange(Paintable paintable)
 				{
-					getJSObject().setPane(paintables.length > 0 ? (Canvas) paintables[0] : null);
+					getJSObject().setPane((Canvas) paintable);
 				}
 			});
 	}

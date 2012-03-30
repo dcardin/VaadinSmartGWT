@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
 import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
@@ -1358,12 +1358,11 @@ public class Layout extends Canvas implements ComponentContainer {
 	// ********************* Vaadin Integration ***********************
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<Canvas>> members;
+	private final PaintableList<Canvas> members = propertyPainter.addPaintableList("members");
 
 	public Layout()
 	{
 		scClassName = "Layout";
-		members = propertyPainter.addListProperty("members");
 	}
 
 	/**
@@ -1376,7 +1375,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public Boolean hasMember(Canvas canvas)
 	{
-		return members.get().contains(canvas);
+		return members.contains(canvas);
 	}
 
 	/**
@@ -1389,7 +1388,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		if (hasMember(member))
 		{
-			members.get().remove(member);
+			members.remove(member);
 			member.setParent(null);
 			requestRepaint();
 		}
@@ -1445,19 +1444,19 @@ public class Layout extends Canvas implements ComponentContainer {
 
 	public void setMembers(List<Canvas> members)
 	{
-		for (Canvas member : this.members.get())
+		for (Canvas member : this.members)
 		{
 			member.setParent(null);
 		}
 
-		this.members.get().clear();
+		this.members.clear();
 
 		for (Canvas member : members)
 		{
 			member.setParent(this);
 		}
 
-		this.members.get().addAll(members);
+		this.members.addAll(members);
 		requestRepaint();
 	}
 
@@ -1470,7 +1469,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void addMember(Canvas component)
 	{
 		component.setParent(this);
-		members.get().add(component);
+		members.add(component);
 		requestRepaint();
 	}
 
@@ -1485,7 +1484,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void addMember(Canvas component, int position)
 	{
 		component.setParent(this);
-		members.get().add(position, component);
+		members.add(position, component);
 		requestRepaint();
 	}
 
@@ -1510,17 +1509,17 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public Canvas[] getMembers()
 	{
-		return members.get().toArray(new Canvas[0]);
+		return members.toArray(new Canvas[0]);
 	}
 	
 	public void removeAllMembers()
 	{
-		for (Canvas member : members.get())
+		for (Canvas member : members)
 		{
 			member.setParent(null);
 		}
 
-		members.get().clear();
+		members.clear();
 	}
 
 	/**
@@ -1558,22 +1557,22 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public int getMemberNumber(Canvas member)
 	{
-		return members.get().indexOf(member);
+		return members.indexOf(member);
 	}
 
 	public void removeMemberAt(int pos)
 	{
 		// List<Canvas> members = getMembersAsList();
-		removeMember(members.get().get(pos));
+		removeMember(members.get(pos));
 	}
 
 	public void replaceMember(Canvas oldComponent, Canvas newComponent)
 	{
-		final int index = members.get().indexOf(oldComponent);
+		final int index = members.indexOf(oldComponent);
 
 		if (index > -1)
 		{
-			members.get().set(index, newComponent);
+			members.set(index, newComponent);
 			oldComponent.setParent(null);
 			newComponent.setParent(this);
 			requestRepaint();
@@ -1611,7 +1610,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		final List<Component> components = new ArrayList<Component>();
 		
-		for (Canvas canvas : members.get())
+		for (Canvas canvas : members)
 		{
 			components.add(canvas);
 		}

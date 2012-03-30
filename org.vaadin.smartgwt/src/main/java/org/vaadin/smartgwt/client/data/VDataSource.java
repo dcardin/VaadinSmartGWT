@@ -1,6 +1,6 @@
 package org.vaadin.smartgwt.client.data;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
@@ -19,19 +19,30 @@ public class VDataSource extends VBaseClass<DataSource>
 	{
 		super(new DataSource());
 
-		propertyUpdater.addProperty(new PaintableProperty("fields")
+		propertyUpdater.addPaintableListListener("fields", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					final DataSourceField[] fields = new DataSourceField[paintables.length];
+					getJSObject().setFields(toDataSourceFieldArray(source));
+				}
 
-					for (int i = 0; i < paintables.length; i++)
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					getJSObject().setFields(toDataSourceFieldArray(source));
+				}
+
+				private DataSourceField[] toDataSourceFieldArray(Paintable[] source)
+				{
+					final DataSourceField[] fields = new DataSourceField[source.length];
+
+					for (int i = 0; i < source.length; i++)
 					{
-						fields[i] = ((VDataClass<DataSourceField>) paintables[i]).getJSObject();
+						fields[i] = ((VDataClass<DataSourceField>) source[i]).getJSObject();
 					}
 
-					getJSObject().setFields(fields);
+					return fields;
 				}
 			});
 	}

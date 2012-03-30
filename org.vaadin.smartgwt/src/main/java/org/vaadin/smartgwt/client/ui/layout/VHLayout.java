@@ -1,10 +1,6 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -23,23 +19,25 @@ public class VHLayout extends HLayout implements Paintable
 
 	public VHLayout()
 	{
-		propertyUpdater.addProperty(new PaintableProperty("members")
+		propertyUpdater.addPaintableListListener("members", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					final List<Canvas> clientCanvases = Arrays.asList(getMembers());
-					final List<Canvas> serverCanvases = new ArrayList<Canvas>(paintables.length);
-
-					for (Paintable paintable : paintables)
+					if (index == null)
 					{
-						serverCanvases.add((Canvas) paintable);
+						addMember((Canvas) element);
 					}
+					else
+					{
+						addMember((Canvas) element, index);
+					}
+				}
 
-					final List<Canvas> removedCanvases = new ArrayList<Canvas>(clientCanvases);
-					removedCanvases.removeAll(serverCanvases);
-					removeMembers(removedCanvases.toArray(new Canvas[0]));
-					setMembers(serverCanvases.toArray(new Canvas[0]));
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					removeMember((Canvas) element);
 				}
 			});
 	}

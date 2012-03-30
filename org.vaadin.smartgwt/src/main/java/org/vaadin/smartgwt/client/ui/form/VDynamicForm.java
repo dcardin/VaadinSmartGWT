@@ -3,7 +3,7 @@ package org.vaadin.smartgwt.client.ui.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.form.fields.VAbstractFormItem;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -23,19 +23,29 @@ public class VDynamicForm extends DynamicForm implements Paintable
 
 	public VDynamicForm()
 	{
-		propertyUpdater.addProperty(new PaintableProperty("fields")
+		propertyUpdater.addPaintableListListener("fields", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					setFields(toFormItemArray(source).toArray(new FormItem[0]));
+				}
+
+				@Override
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
+				{
+					setFields(toFormItemArray(source).toArray(new FormItem[0]));
+				}
+
+				private List<FormItem> toFormItemArray(Paintable[] source)
 				{
 					final List<FormItem> formItems = new ArrayList<FormItem>();
 
-					for (Paintable paintable : paintables)
+					for (Paintable paintable : source)
 					{
 						formItems.add(((VAbstractFormItem<? extends FormItem, ?>) paintable).getJSObject());
 					}
-
-					setFields(formItems.toArray(new FormItem[0]));
+					return formItems;
 				}
 			});
 	}

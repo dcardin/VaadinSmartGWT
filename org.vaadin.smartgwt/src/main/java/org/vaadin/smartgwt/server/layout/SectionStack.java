@@ -16,11 +16,9 @@
 
 package org.vaadin.smartgwt.server.layout;
 
-import java.util.List;
-
 import org.vaadin.smartgwt.client.ui.layout.VSectionStack;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.LocatorStrategy;
 import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
 import org.vaadin.smartgwt.server.types.Overflow;
@@ -1017,12 +1015,11 @@ public class SectionStack extends VLayout
 	// @formatter:on
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<SectionStackSection>> sections;
+	private final PaintableList<SectionStackSection> sections = propertyPainter.addPaintableList("sections");
 
 	public SectionStack()
 	{
 		scClassName = "SectionStack";
-		sections = propertyPainter.addListProperty("sections");
 	}
 
 	public void setSections(SectionStackSection... sections)
@@ -1042,7 +1039,7 @@ public class SectionStack extends VLayout
 	public void addSection(SectionStackSection section)
 	{
 		section.setParent(this);
-		sections.get().add(section);
+		sections.add(section);
 	}
 
 	/**
@@ -1056,7 +1053,7 @@ public class SectionStack extends VLayout
 	public void addSection(SectionStackSection section, int position)
 	{
 		section.setParent(this);
-		sections.get().add(position, section);
+		sections.add(position, section);
 	}
 
 	/**
@@ -1069,7 +1066,7 @@ public class SectionStack extends VLayout
 	 */
 	public void setSectionTitle(String sectionID, String newTitle)
 	{
-		for (SectionStackSection section : sections.get())
+		for (SectionStackSection section : sections)
 		{
 			if (sectionID.equals(section.getName()))
 			{

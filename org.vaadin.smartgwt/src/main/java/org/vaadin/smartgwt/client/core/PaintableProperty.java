@@ -1,20 +1,11 @@
 package org.vaadin.smartgwt.client.core;
 
-import com.vaadin.terminal.gwt.client.Paintable;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
+import com.vaadin.terminal.gwt.client.UIDL;
 
-public abstract class PaintableProperty
+public interface PaintableProperty
 {
-	private final String name;
+	String getName();
 
-	public PaintableProperty(String name)
-	{
-		this.name = name;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public abstract void postUpdate(Paintable[] paintables);
+	void updateFromUIDL(UIDL uidl, ApplicationConnection client);
 }

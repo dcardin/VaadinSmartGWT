@@ -1,13 +1,12 @@
 package org.vaadin.smartgwt.server.tab;
 
-import java.util.List;
 import java.util.Map;
 
 import org.vaadin.rpc.server.ServerSideHandler;
 import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.Side;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
@@ -2108,12 +2107,11 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 
 	private final ServerSideProxy client = new ServerSideProxy(this);
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<Tab>> tabs;
+	private final PaintableList<Tab> paintableTabs = propertyPainter.addPaintableList("tabs");
 
 	public TabSet()
 	{
 		scClassName = "TabSet";
-		tabs = propertyPainter.addListProperty("tabs");
 	}
 
 	/**
@@ -2126,7 +2124,7 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		tabs.get().add(tab);
+		paintableTabs.add(tab);
 	}
 
 	/**
@@ -2141,12 +2139,12 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	{
 		tab.setTabSet(this);
 		tab.setParent(this);
-		tabs.get().add(position, tab);
+		paintableTabs.add(position, tab);
 	}
 	
 	public void removeTab(Tab tab)
 	{
-		tabs.get().remove(tab);
+		paintableTabs.remove(tab);
 		requestRepaint();
 	}
 
@@ -2192,6 +2190,6 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
      */
 	public Tab[] getTabs()
 	{
-		return tabs.get().toArray(new Tab[0]);
+		return paintableTabs.toArray(new Tab[0]);
     }
 }

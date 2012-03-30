@@ -2,13 +2,13 @@ package org.vaadin.smartgwt.server.layout;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Window;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
+import org.vaadin.smartgwt.server.core.PaintableReference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
 
@@ -25,24 +25,20 @@ import com.vaadin.ui.ComponentContainer;
 public class MasterContainer extends BaseWidget implements ComponentContainer
 {
 	private final PaintablePropertyPainter paintablePropertyPainter = new PaintablePropertyPainter();
-	private final Reference<SC> sc;
-	private final Reference<List<DataSource>> dataSources;
-	private final Reference<Canvas> pane;
-	private final Reference<Window> window;
+	private final PaintableReference<SC> sc = paintablePropertyPainter.addProperty("sc");
+	private final PaintableList<DataSource> dataSources = paintablePropertyPainter.addPaintableList("dataSources");
+	private final PaintableReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
+	private final PaintableReference<Window> window = paintablePropertyPainter.addProperty("window");
 
 	public MasterContainer()
 	{
-		dataSources = paintablePropertyPainter.addListProperty("dataSources");
-		pane = paintablePropertyPainter.addProperty("pane");
-		window = paintablePropertyPainter.addProperty("window");
-		sc = paintablePropertyPainter.addProperty("sc");
 		sc.set(new SC());
 		sc.get().setParent(this);
 	}
 
 	public void addDataSource(DataSource dataSource)
 	{
-		if (!dataSources.get().contains(dataSource))
+		if (!dataSources.contains(dataSource))
 		{
 			if (dataSource.getParent() instanceof ComponentContainer)
 			{
@@ -50,7 +46,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 			}
 
 			dataSource.setParent(this);
-			dataSources.get().add(dataSource);
+			dataSources.add(dataSource);
 		}
 	}
 

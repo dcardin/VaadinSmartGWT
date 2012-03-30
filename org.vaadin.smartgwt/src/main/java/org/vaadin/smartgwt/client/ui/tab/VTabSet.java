@@ -1,12 +1,9 @@
 package org.vaadin.smartgwt.client.ui.tab;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.rpc.shared.Method;
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -38,36 +35,27 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 				}
 			});
 
-		propertyUpdater.addProperty(new PaintableProperty("tabs")
+		propertyUpdater.addPaintableListListener("tabs", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					final List<Tab> updatedTabs = new ArrayList<Tab>();
+					final Tab tab = ((VDataClass<Tab>) element).getJSObject();
 
-					for (Paintable paintable : paintables)
+					if (index == null)
 					{
-						updatedTabs.add(((VDataClass<Tab>) paintable).getJSObject());
+						addTab(tab);
 					}
+					else
+					{
+						addTab(tab, index);
+					}
+				}
 
-					// added
-					for (Tab updatedTab : updatedTabs)
-					{
-						if (VTabSet.this != updatedTab.getTabSet())
-						{
-							addTab(updatedTab);
-						}
-					}
-
-					// removed
-					for (Tab tab : getTabs())
-					{
-						if (!updatedTabs.contains(tab))
-						{
-							removeTab(tab);
-							client.unregisterPaintable(VDataClass.getVDataClass(client, tab));
-						}
-					}
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					removeTab(((VDataClass<Tab>) element).getJSObject());
 				}
 			});
 	}

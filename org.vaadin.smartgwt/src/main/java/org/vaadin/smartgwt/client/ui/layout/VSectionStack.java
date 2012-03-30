@@ -1,12 +1,13 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -18,15 +19,27 @@ public class VSectionStack extends SectionStack implements Paintable
 
 	public VSectionStack()
 	{
-		propertyUpdater.addProperty(new PaintableProperty("sections")
+		propertyUpdater.addPaintableListListener("sections", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					for (Paintable paintable : paintables)
+					final SectionStackSection section = ((VSectionStackSection) element).getJSObject();
+
+					if (index == null)
 					{
-						addSection(((VSectionStackSection) paintable).getJSObject());
+						addSection(section, index);
 					}
+					else
+					{
+						addSection(section);
+					}
+				}
+
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					removeSection(index);
 				}
 			});
 	}

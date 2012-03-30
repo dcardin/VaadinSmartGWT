@@ -1,9 +1,8 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -19,27 +18,18 @@ public class VSectionStackSection extends VDataClass<SectionStackSection>
 	{
 		super(new SectionStackSection());
 		
-		propertyUpdater.addProperty(new PaintableProperty("items")
+		propertyUpdater.addPaintableListListener("items", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					for (Paintable paintable : paintables)
-					{
-						if (paintable instanceof Canvas)
-						{
-							getJSObject().addItem((Canvas) paintable);
-						}
-						else if (paintable instanceof VJSObject)
-						{
-							final Object object = ((VJSObject<?>) paintable).getJSObject();
+					getJSObject().addItem((Canvas) element);
+				}
 
-							if (object instanceof Canvas)
-							{
-								getJSObject().addItem((Canvas) object);
-							}
-						}
-					}
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+
 				}
 			});
 	}

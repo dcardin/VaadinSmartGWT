@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.PaintableReferenceListener;
 import org.vaadin.smartgwt.client.ui.VWindow;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -18,21 +18,21 @@ public class VMasterContainer extends VLayout implements Paintable
 	{
 		setSize("100%", "100%");
 
-		paintablePropertyUpdater.addProperty(new PaintableProperty("pane")
+		paintablePropertyUpdater.addPaintableReferenceListener("pane", new PaintableReferenceListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onChange(Paintable paintable)
 				{
-					setMembers((Canvas) paintables[0]);
+					setMembers((Canvas) paintable);
 				}
 			});
 
-		paintablePropertyUpdater.addProperty(new PaintableProperty("window")
+		paintablePropertyUpdater.addPaintableReferenceListener("window", new PaintableReferenceListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onChange(Paintable paintable)
 				{
-					((VWindow) paintables[0]).show();
+					((VWindow) paintable).show();
 				}
 			});
 	}

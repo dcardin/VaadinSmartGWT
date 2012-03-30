@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.PaintableReferenceListener;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -34,25 +34,25 @@ abstract class VSplitLayoutHelper
 				}
 			});
 
-		propertyUpdater.addProperty(new PaintableProperty("member1")
+		propertyUpdater.addPaintableReferenceListener("member1", new PaintableReferenceListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onChange(Paintable paintable)
 				{
-					final Canvas left = (Canvas) paintables[0];
+					final Canvas member1 = (Canvas) paintable;
 					VSplitLayoutHelper.this.source.removeMember(VSplitLayoutHelper.this.source.getMembers()[0]);
-					VSplitLayoutHelper.this.source.addMember(left, 0);
+					VSplitLayoutHelper.this.source.addMember(member1, 0);
 				}
 			});
 
-		propertyUpdater.addProperty(new PaintableProperty("member2")
+		propertyUpdater.addPaintableReferenceListener("member2", new PaintableReferenceListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onChange(Paintable paintable)
 				{
-					final Canvas right = (Canvas) paintables[0];
+					final Canvas member2 = (Canvas) paintable;
 					VSplitLayoutHelper.this.source.removeMember(VSplitLayoutHelper.this.source.getMembers()[1]);
-					VSplitLayoutHelper.this.source.addMember(right);
+					VSplitLayoutHelper.this.source.addMember(member2);
 				}
 			});
 	}

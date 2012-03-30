@@ -3,7 +3,7 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.grid.VListGridField;
@@ -22,19 +22,25 @@ public class VSelectItem extends VAbstractFormItem<SelectItem, String>
 	{
 		super(new SelectItem());
 
-		propertyUpdater.addProperty(new PaintableProperty("pickListFields")
+		propertyUpdater.addPaintableListListener("pickListFields", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
 					final List<ListGridField> pickListFields = new ArrayList<ListGridField>();
 
-					for (Paintable paintable : paintables)
+					for (Paintable paintable : source)
 					{
 						pickListFields.add(((VListGridField) paintable).getJSObject());
 					}
 
 					getJSObject().setPickListFields(pickListFields.toArray(new ListGridField[0]));
+				}
+
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+
 				}
 			});
 	}

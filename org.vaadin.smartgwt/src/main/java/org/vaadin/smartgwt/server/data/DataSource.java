@@ -1,12 +1,11 @@
 package org.vaadin.smartgwt.server.data;
 
-import java.util.List;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
 import org.vaadin.smartgwt.server.core.BaseClass;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
 import org.vaadin.smartgwt.server.types.DSProtocol;
@@ -2511,7 +2510,7 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
      * @return array of DataSourceFields
      */
     public DataSourceField[] getFields() {
-    	return fields.get().toArray(new DataSourceField[0]);
+    	return fields.toArray(new DataSourceField[0]);
     }
 
 //    /**
@@ -3366,12 +3365,11 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 	// Vaadin Integration
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<DataSourceField>> fields;
+	private final PaintableList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
 
 	public DataSource()
 	{
 		scClassName = "DataSource";
-		fields = propertyPainter.addListProperty("fields");
 	}
 
 	public DataSource(String dataURL)
@@ -3396,7 +3394,7 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 		}
 
 		field.setParent(this);
-		fields.get().add(field);
+		fields.add(field);
 	}
 
 	// override setID() - if this.addGlobalID is false, don't register the ID with the IDManager

@@ -1,11 +1,10 @@
 package org.vaadin.smartgwt.server.form;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -4128,17 +4127,12 @@ public class DynamicForm extends Canvas
 	// ******** Vaadin Integration
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<FormItem>> fields;
-
-	public DynamicForm()
-	{
-		this.fields = propertyPainter.addListProperty("fields");
-	}
+	private final PaintableList<FormItem> fields = propertyPainter.addPaintableList("fields");
 
 	public void addField(FormItem item)
 	{
 		item.setParent(this);
-		this.fields.get().add(item);
+		this.fields.add(item);
 	}
 
 	/**
@@ -4152,24 +4146,24 @@ public class DynamicForm extends Canvas
 	 */
 	public void setFields(FormItem... fields)
 	{
-		for (FormItem formItem : this.fields.get())
+		for (FormItem formItem : this.fields)
 		{
 			formItem.setParent(null);
 		}
 
-		this.fields.get().clear();
+		this.fields.clear();
 
 		for (FormItem formItem : fields)
 		{
 			formItem.setParent(this);
 		}
 
-		this.fields.get().addAll(Arrays.asList(fields));
+		this.fields.addAll(Arrays.asList(fields));
 	}
 
 	public FormItem[] getFields()
 	{
-		return this.fields.get().toArray(new FormItem[0]);
+		return this.fields.toArray(new FormItem[0]);
 	}
 
 	public DataSource getDataSource()

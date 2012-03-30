@@ -17,10 +17,9 @@
 package org.vaadin.smartgwt.server.form.fields;
 
 import java.util.Arrays;
-import java.util.List;
 
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.Reference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
@@ -1454,13 +1453,12 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
     // @formatter:on
 	// Vaadin integration
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<ListGridField>> pickListFields;
+	private final PaintableList<ListGridField> pickListFields = propertyPainter.addPaintableList("pickListFields");
 	private DataSource optionDataSource;
 
 	public SelectItem()
 	{
 		setAttribute("editorType", "SelectItem");
-		this.pickListFields = propertyPainter.addListProperty("pickListFields");
 	}
 
 	public SelectItem(String name)
@@ -1478,19 +1476,19 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
 
 	public void setPickListFields(ListGridField... pickListFields)
 	{
-		for (ListGridField pickListField : this.pickListFields.get())
+		for (ListGridField pickListField : this.pickListFields)
 		{
 			pickListField.setParent(null);
 		}
 
-		this.pickListFields.get().clear();
+		this.pickListFields.clear();
 
 		for (ListGridField pickListField : pickListFields)
 		{
 			pickListField.setParent(this);
 		}
 
-		this.pickListFields.get().addAll(Arrays.asList(pickListFields));
+		this.pickListFields.addAll(Arrays.asList(pickListFields));
 	}
 
 	/**

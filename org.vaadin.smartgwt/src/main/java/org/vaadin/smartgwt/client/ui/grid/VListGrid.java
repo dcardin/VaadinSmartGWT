@@ -1,11 +1,8 @@
 package org.vaadin.smartgwt.client.ui.grid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
-import org.vaadin.smartgwt.client.core.PaintableProperty;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -32,19 +29,30 @@ public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
 
 	public VListGrid()
 	{
-		propertyUpdater.addProperty(new PaintableProperty("field")
+		propertyUpdater.addPaintableListListener("fields", new PaintableListListener()
 			{
 				@Override
-				public void postUpdate(Paintable[] paintables)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					final List<ListGridField> fields = new ArrayList<ListGridField>(paintables.length);
+					setFields(toListGridFieldArray(source));
+				}
 
-					for (Paintable paintable : paintables)
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					setFields(toListGridFieldArray(source));
+				}
+
+				private ListGridField[] toListGridFieldArray(Paintable[] source)
+				{
+					final ListGridField[] fields = new ListGridField[source.length];
+
+					for (int i = 0; i < source.length; i++)
 					{
-						fields.add(((VListGridField) paintable).getJSObject());
+						fields[i] = ((VListGridField) source[i]).getJSObject();
 					}
 
-					setFields(fields.toArray(new ListGridField[0]));
+					return fields;
 				}
 			});
 

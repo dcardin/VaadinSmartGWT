@@ -16,13 +16,11 @@
 
 package org.vaadin.smartgwt.server.layout;
 
-import java.util.List;
-
 import org.vaadin.smartgwt.client.ui.layout.VSectionStackSection;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.core.RefDataClass;
-import org.vaadin.smartgwt.server.core.Reference;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -360,16 +358,15 @@ public class SectionStackSection extends RefDataClass {
 	//@formatter:on
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final Reference<List<Canvas>> items;
+	private final PaintableList<Canvas> items = propertyPainter.addPaintableList("items");
 
 	public SectionStackSection()
 	{
-		this.items = propertyPainter.addListProperty("items");
+
 	}
 
 	public SectionStackSection(String title)
 	{
-		this();
 		setTitle(title);
 	}
 
@@ -380,7 +377,7 @@ public class SectionStackSection extends RefDataClass {
 	 */
 	public Canvas[] getItems()
 	{
-		return items.get().toArray(new Canvas[0]);
+		return items.toArray(new Canvas[0]);
 	}
 
 	/**
@@ -400,7 +397,7 @@ public class SectionStackSection extends RefDataClass {
 	public void addItem(Canvas item)
 	{
 		item.setParent(this);
-		items.get().add(item);
+		items.add(item);
 	}
 
 	@Override
