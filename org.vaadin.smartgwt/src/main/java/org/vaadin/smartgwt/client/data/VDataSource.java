@@ -13,7 +13,6 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VDataSource extends VBaseClass<DataSource>
 {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
-	private final boolean isRegistered = false;
 
 	public VDataSource()
 	{
@@ -24,25 +23,13 @@ public class VDataSource extends VBaseClass<DataSource>
 				@Override
 				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					getJSObject().setFields(toDataSourceFieldArray(source));
+					getJSObject().addField(((VDataClass<DataSourceField>) element).getJSObject());
 				}
 
 				@Override
 				public void onRemove(Paintable[] source, Integer index, Paintable element)
 				{
-					getJSObject().setFields(toDataSourceFieldArray(source));
-				}
 
-				private DataSourceField[] toDataSourceFieldArray(Paintable[] source)
-				{
-					final DataSourceField[] fields = new DataSourceField[source.length];
-
-					for (int i = 0; i < source.length; i++)
-					{
-						fields[i] = ((VDataClass<DataSourceField>) source[i]).getJSObject();
-					}
-
-					return fields;
 				}
 			});
 	}
@@ -52,7 +39,7 @@ public class VDataSource extends VBaseClass<DataSource>
 	{
 		propertyUpdater.updateFromUIDL(uidl, getClient());
 
-		if (uidl.hasAttribute("*ID") && !isRegistered)
+		if (uidl.hasAttribute("*ID") && getJSObject().getID() == null)
 		{
 			getJSObject().setID(uidl.getStringAttribute("*ID").substring(1));
 		}

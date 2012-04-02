@@ -28,11 +28,11 @@ public class VSectionStack extends SectionStack implements Paintable
 
 					if (index == null)
 					{
-						addSection(section, index);
+						addSection(section);
 					}
 					else
 					{
-						addSection(section);
+						addSection(section, index);
 					}
 				}
 

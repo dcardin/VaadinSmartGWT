@@ -107,9 +107,19 @@ public class PaintableList<E extends Paintable> implements PaintableProperty, It
 			paintable.paint(target);
 		}
 
-		for (Instruction<E> instruction : instructions)
+		if (target.isFullRepaint())
 		{
-			instruction.paintContent(target);
+			for (E paintable : paintables)
+			{
+				new Instruction<E>("add", paintable).paintContent(target);
+			}
+		}
+		else
+		{
+			for (Instruction<E> instruction : instructions)
+			{
+				instruction.paintContent(target);
+			}
 		}
 
 		instructions.clear();

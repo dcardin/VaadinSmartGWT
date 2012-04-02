@@ -517,8 +517,8 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					window.setIsModal(true);
 					window.setShowModalMask(true);
 					window.setAutoCenter(true);
-			        window.setCanDragReposition(true);  
-			        window.setCanDragResize(true);  
+					window.setCanDragReposition(true);
+					window.setCanDragResize(true);
 					window.addItem(getMainPanel());
 					window.show();
 				}
@@ -530,12 +530,42 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				public void changeVariables(Object source, Map<String, Object> variables)
 				{
 					super.changeVariables(source, variables);
-
 					tabset.removeTab(tab3);
 				}
 			});
 
 		vl.addMember(new Button("Press me 4!"));
+
+		vl.addMember(new Button("Add Tab")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.addTab(newTab("Title", newLabel("LABEL", "blue")));
+				}
+			});
+
+		vl.addMember(new Button("Add Tab Index 0")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.addTab(newTab("Title", newLabel("INDEXED", "red")), 0);
+				}
+			});
+
+		vl.addMember(new Button("Remove Tab")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.removeTab(tabset.getTabs()[tabset.getTabs().length - 1]);
+				}
+			});
+
 		Label filler = new Label("");
 		filler.setHeight("*");
 		filler.setWidth100();
@@ -550,14 +580,14 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabEric.setPane(getEricLayout());
 		tab7.setPane(paintBorderLayout());
 
-		// tabs.add(tab);
-		// tabs.add(tab2);
-		// tabs.add(tab3);
-		// tabs.add(tab4);
-		// tabs.add(tab5);
-		// tabs.add(tab6);
-		// tabs.add(tab7);
-		// tabs.add(newTab("sections", getStackView()));
+		tabs.add(tab);
+		tabs.add(tab2);
+		tabs.add(tab3);
+		tabs.add(tab4);
+		tabs.add(tab5);
+		tabs.add(tab6);
+		tabs.add(tab7);
+		tabs.add(newTab("sections", getStackView()));
 		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
