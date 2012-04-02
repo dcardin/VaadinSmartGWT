@@ -7,6 +7,7 @@ import org.vaadin.smartgwt.client.core.VDataClass;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
@@ -35,10 +36,14 @@ public class VDataSource extends VBaseClass<DataSource>
 	}
 
 	@Override
-	protected void updateFromUIDL(UIDL uidl)
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		propertyUpdater.updateFromUIDL(uidl, getClient());
+		propertyUpdater.updateFromUIDL(uidl, client);
+	}
 
+	@Override
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
+	{
 		if (uidl.hasAttribute("*ID") && getJSObject().getID() == null)
 		{
 			getJSObject().setID(uidl.getStringAttribute("*ID").substring(1));

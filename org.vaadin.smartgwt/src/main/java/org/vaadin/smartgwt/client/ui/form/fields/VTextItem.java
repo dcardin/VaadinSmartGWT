@@ -1,6 +1,7 @@
 package org.vaadin.smartgwt.client.ui.form.fields;
 
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VTextItem extends VAbstractFormItem<TextItem, String>
@@ -23,7 +24,7 @@ public class VTextItem extends VAbstractFormItem<TextItem, String>
 	}
 
 	@Override
-	protected void updateFromUIDL(UIDL uidl)
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		if (uidl.hasAttribute("*errorMessages"))
 		{

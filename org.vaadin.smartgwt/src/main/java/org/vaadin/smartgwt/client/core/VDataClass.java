@@ -1,7 +1,10 @@
 package org.vaadin.smartgwt.client.core;
 
+import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
+
 import com.smartgwt.client.core.DataClass;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
+import com.vaadin.terminal.gwt.client.UIDL;
 
 public abstract class VDataClass<T extends DataClass> extends VJSObject<T>
 {
@@ -21,8 +24,26 @@ public abstract class VDataClass<T extends DataClass> extends VJSObject<T>
 	}
 
 	@Override
-	protected void setJSObjectAttribute(String name, String value)
+	protected final void setStringAttribute(String name, String value)
 	{
 		getJSObject().setAttribute(name, value);
+	}
+
+	@Override
+	protected final void updateJSObjectAttributes(UIDL uidl, ApplicationConnection client)
+	{
+		PainterHelper.updateDataObject(client, getJSObject(), uidl);
+	}
+
+	@Override
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
+	{
+
+	}
+
+	@Override
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
+	{
+
 	}
 }

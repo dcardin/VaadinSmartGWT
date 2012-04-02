@@ -24,14 +24,26 @@ public abstract class VBaseClass<T extends BaseClass> extends VJSObject<T>
 	}
 
 	@Override
-	protected void setJSObjectAttribute(String name, String value)
+	protected final void setStringAttribute(String name, String value)
 	{
 		getJSObject().setAttribute(name, value, true);
 	}
 
 	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
+	protected final void updateJSObjectAttributes(UIDL uidl, ApplicationConnection client)
 	{
-		PainterHelper.updateBaseClass(getClient(), getJSObject(), uidl);
+		PainterHelper.updateBaseClass(client, getJSObject(), uidl);
+	}
+
+	@Override
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
+	{
+
+	}
+
+	@Override
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
+	{
+
 	}
 }

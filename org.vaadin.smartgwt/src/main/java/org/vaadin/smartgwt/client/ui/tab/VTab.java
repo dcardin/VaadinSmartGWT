@@ -3,10 +3,10 @@ package org.vaadin.smartgwt.client.ui.tab;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.PaintableReferenceListener;
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.tab.Tab;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
@@ -29,14 +29,13 @@ public class VTab extends VDataClass<Tab>
 	}
 
 	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		propertyUpdater.updateFromUIDL(uidl, getClient());
-		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
+		propertyUpdater.updateFromUIDL(uidl, client);
 	}
 
 	@Override
-	protected void updateFromUIDL(UIDL uidl)
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 		if (uidl.hasAttribute("title"))
 		{

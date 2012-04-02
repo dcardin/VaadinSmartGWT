@@ -3,6 +3,7 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.Date;
 
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VDateItem extends VAbstractFormItem<DateItem, Date>
@@ -25,7 +26,7 @@ public class VDateItem extends VAbstractFormItem<DateItem, Date>
 	}
 
 	@Override
-	protected void updateFromUIDL(UIDL uidl)
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
 
 	}

@@ -1,18 +1,20 @@
 package org.vaadin.smartgwt.client.ui.form.fields;
 
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.events.BlurEvent;
 import com.smartgwt.client.widgets.form.fields.events.BlurHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public abstract class VAbstractFormItem<T extends FormItem, V> extends VDataClass<T>
 {
 	private V value = null;
+	private ApplicationConnection client;
+	private String pid;
 
 	protected VAbstractFormItem(T dataClass)
 	{
@@ -41,14 +43,15 @@ public abstract class VAbstractFormItem<T extends FormItem, V> extends VDataClas
 	}
 
 	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
+		this.pid = uidl.getId();
+		this.client = client;
+
 		if (uidl.hasAttribute("value"))
 		{
 			value = getUIDLFormItemValue(uidl, "value");
 		}
-
-		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
 	}
 
 	protected abstract V getUIDLFormItemValue(UIDL uidl, String attributeName);
@@ -59,7 +62,7 @@ public abstract class VAbstractFormItem<T extends FormItem, V> extends VDataClas
 	{
 		if (!equal(value, getFormItemValue()))
 		{
-			getClient().updateVariable(getPID(), "value", getFormItemValue() == null ? null : getFormItemValue().toString(), true);
+			client.updateVariable(pid, "value", getFormItemValue() == null ? null : getFormItemValue().toString(), true);
 		}
 	}
 
