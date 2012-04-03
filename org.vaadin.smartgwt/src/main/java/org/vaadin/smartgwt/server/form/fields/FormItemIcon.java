@@ -1,7 +1,3 @@
-package org.vaadin.smartgwt.server.form.fields;
-
-import org.vaadin.smartgwt.server.BaseWidget;
-
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -17,13 +13,21 @@ import org.vaadin.smartgwt.server.BaseWidget;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
- 
+
+package org.vaadin.smartgwt.server.form.fields;
+
+import org.vaadin.smartgwt.server.core.DataClass;
+
+import com.vaadin.ui.ClientWidget;
+
+// @formatter:off
 /**
  * Form item icon descriptor objects used by Form Items to specify the appearance and  behavior of icons displayed after
  * the item in the page flow.
  * @see com.smartgwt.client.widgets.form.fields.FormItem#getIcons
  */
-public class FormItemIcon extends BaseWidget { // DataClass  implements com.smartgwt.client.widgets.form.fields.events.HasFormItemClickHandlers {
+@ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VFormItemIcon.class)
+public class FormItemIcon extends DataClass { // implements com.smartgwt.client.widgets.form.fields.events.HasFormItemClickHandlers {
 
 //    public static FormItemIcon getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;

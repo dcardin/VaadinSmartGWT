@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
+import org.vaadin.smartgwt.server.core.PaintableArray;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -17,6 +19,8 @@ import org.vaadin.smartgwt.server.types.TitleOrientation;
 import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.ClientWidget;
 
 /*
@@ -3948,15 +3952,15 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 //        setAttribute("validators", validators);
 //    }
 
-    /**
-     * An array of descriptor objects for icons to display in a line after this form item.  These icons are clickable
-     * images, often used to display some kind of helper for   populating a form item.
-     *
-     * @param icons icons Default value is null
-     */
-    public void setIcons(FormItemIcon... icons) {
-        setAttribute("icons", icons);
-    }
+//    /**
+//     * An array of descriptor objects for icons to display in a line after this form item.  These icons are clickable
+//     * images, often used to display some kind of helper for   populating a form item.
+//     *
+//     * @param icons icons Default value is null
+//     */
+//    public void setIcons(FormItemIcon... icons) {
+//        setAttribute("icons", icons);
+//    }
 
     /**
      * If {@link com.smartgwt.client.widgets.form.DynamicForm#getShowInlineErrors showInlineErrors} is true, where
@@ -4775,7 +4779,21 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
     // @formatter:on
 	// vaadin integration
 
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableArray<FormItemIcon> icons = propertyPainter.addPaintableArray("icons");
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+	/**
+	 * An array of descriptor objects for icons to display in a line after this form item. These icons are clickable images, often used to display some kind of
+	 * helper for populating a form item.
+	 * 
+	 * @param icons
+	 *            icons Default value is null
+	 */
+	public void setIcons(FormItemIcon... icons)
+	{
+		this.icons.set(icons);
+	}
 
 	public void setOptionDataSource(DataSource dataSource)
 	{
@@ -4817,6 +4835,13 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
 	{
 		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+	}
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
 	}
 
 	private void setPropertyAttribute(String attributeName, String propertyName, Object value)
