@@ -42,7 +42,7 @@ public class PickerIcon extends FormItemIcon
 	 */
 	public PickerIcon(Picker icon)
 	{
-		setSrc(icon.url);
+		setSrc(icon.getUrl());
 		setWidth((Integer) 18);
 		setHeight((Integer) 22);
 		setAttribute("hspace", 0);
@@ -55,6 +55,11 @@ public class PickerIcon extends FormItemIcon
 		public Picker(String url)
 		{
 			this.url = url;
+		}
+
+		public String getUrl()
+		{
+			return url;
 		}
 	}
 }

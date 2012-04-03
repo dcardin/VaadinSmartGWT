@@ -10,15 +10,27 @@ import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
+import org.vaadin.smartgwt.server.core.PaintableArray;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 
 public class FormItemTest
 {
 	private FormItem formItem;
+	private ComponentPropertyPainter propertyPainter;
+	private PaintableArray<FormItemIcon> icons;
 	private ArgumentCaptor<PropertyChangeEvent> propertyChangeEventCaptor;
 
 	@Before
 	public void before()
 	{
+		propertyPainter = mock(ComponentPropertyPainter.class);
+		icons = mock(PaintableArray.class);
+		when(propertyPainter.<FormItemIcon> addPaintableArray("icons")).thenReturn(icons);
+
 		formItem = new FormItem();
 		propertyChangeEventCaptor = ArgumentCaptor.forClass(PropertyChangeEvent.class);
 	}
@@ -47,6 +59,22 @@ public class FormItemTest
 		formItem.changeVariables(formItem, Collections.<String, Object> singletonMap("value", "newValue"));
 		verify(listener).propertyChange(propertyChangeEventCaptor.capture());
 		assertPropertyChangeEvent(propertyChangeEventCaptor.getValue(), formItem, FormItem.PROPERTYNAME_VALUE, "oldValue", "newValue");
+	}
+
+	@Test
+	public void test_setIconsInPaintableArray()
+	{
+		final FormItemIcon icon = new FormItemIcon();
+		formItem.setIcons(icon);
+		verify(icons).set(new FormItemIcon[] { icon });
+	}
+
+	@Test
+	public void test_paintsPaintablePropertyPainter() throws PaintException
+	{
+		final PaintTarget target = mock(JsonPaintTarget.class);
+		formItem.paint(target);
+		verify(propertyPainter).paintContent(target);
 	}
 
 	private static void assertPropertyChangeEvent(PropertyChangeEvent event, Object source, String propertyName, Object oldValue, Object newValue)

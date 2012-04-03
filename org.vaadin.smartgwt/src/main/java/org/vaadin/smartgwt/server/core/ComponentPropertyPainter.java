@@ -1,5 +1,6 @@
 package org.vaadin.smartgwt.server.core;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -26,6 +27,10 @@ public class ComponentPropertyPainter {
 		this.parent = parent;
 	}
 
+	public Set<ComponentProperty> getPaintableProperties() {
+		return new HashSet<ComponentProperty>(properties);
+	}
+
 	/**
 	 * Creates a new component reference that will be managed on paint.
 	 * 
@@ -36,6 +41,12 @@ public class ComponentPropertyPainter {
 		final ComponentReference<T> reference = new ComponentReference<T>(parent, "$" + propertyName);
 		properties.add(reference);
 		return reference;
+	}
+
+	public <T extends Component> PaintableArray<T> addPaintableArray(String propertyName) {
+		final PaintableArray<T> array = new PaintableArray<T>("$" + propertyName);
+		properties.add(array);
+		return array;
 	}
 
 	/**

@@ -17,6 +17,10 @@ public class PaintableArray<T extends Paintable> implements ComponentProperty {
 		this.paintables = paintables;
 	}
 
+	public Object getTagName() {
+		return tagName;
+	}
+
 	public T[] get() {
 		return paintables;
 	}

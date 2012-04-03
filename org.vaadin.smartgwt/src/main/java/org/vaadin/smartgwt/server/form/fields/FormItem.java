@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.PaintableArray;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -58,10 +58,6 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 //            return FormItemFactory.getFormItem(jsObj);
 //        }
 //    }
-
-    public FormItem(){
-//        setName(com.smartgwt.client.util.SC.generateID(getClass().getName()));
-    }
 
 //    public FormItem(JavaScriptObject jsObj){
 //        super(jsObj);
@@ -4779,9 +4775,9 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
     // @formatter:on
 	// vaadin integration
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableArray<FormItemIcon> icons = propertyPainter.addPaintableArray("icons");
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final PaintableArray<FormItemIcon> icons = propertyPainter.addPaintableArray("icons");
 
 	/**
 	 * An array of descriptor objects for icons to display in a line after this form item. These icons are clickable images, often used to display some kind of
@@ -4790,71 +4786,57 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 	 * @param icons
 	 *            icons Default value is null
 	 */
-	public void setIcons(FormItemIcon... icons)
-	{
+	public void setIcons(FormItemIcon... icons) {
 		this.icons.set(icons);
 	}
 
-	public void setOptionDataSource(DataSource dataSource)
-	{
+	public void setOptionDataSource(DataSource dataSource) {
 		setAttribute("optionDataSource", dataSource);
 	}
 
-	public void setValue(Object value)
-	{
+	public void setValue(Object value) {
 		setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, value);
 		requestRepaint();
 	}
 
 	@Override
-	public void changeVariables(Object source, Map<String, Object> variables)
-	{
+	public void changeVariables(Object source, Map<String, Object> variables) {
 		super.changeVariables(source, variables);
 
-		if (variables.containsKey(ATTRIBUTE_VALUE))
-		{
+		if (variables.containsKey(ATTRIBUTE_VALUE)) {
 			setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, variables.get(ATTRIBUTE_VALUE));
 		}
 	}
 
-	public void addPropertyChangeListener(PropertyChangeListener listener)
-	{
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
-	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
-	{
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
 	}
 
-	public void removePropertyChangeListener(PropertyChangeListener listener)
-	{
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
-	{
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}
 
-	private void setPropertyAttribute(String attributeName, String propertyName, Object value)
-	{
-		if (FormItemType.DATE.equals(getType()))
-		{
+	private void setPropertyAttribute(String attributeName, String propertyName, Object value) {
+		if (FormItemType.DATE.equals(getType())) {
 			final Long oldPropertyValue = getAttributeAsLong(attributeName);
 			final Date date = oldPropertyValue == null ? null : new Date(oldPropertyValue);
 			setAttribute(attributeName, date);
 			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, date);
-		}
-		else
-		{
+		} else {
 			final Object oldPropertyValue = getAttribute(attributeName);
 			setAttribute(attributeName, value);
 			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
