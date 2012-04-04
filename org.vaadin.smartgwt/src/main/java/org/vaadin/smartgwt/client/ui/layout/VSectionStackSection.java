@@ -3,10 +3,10 @@ package org.vaadin.smartgwt.client.ui.layout;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VDataClass;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
@@ -35,14 +35,8 @@ public class VSectionStackSection extends VDataClass<SectionStackSection>
 	}
 
 	@Override
-	protected void updateJSObjectAttributes(UIDL uidl)
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
-	}
-
-	@Override
-	protected void updateFromUIDL(UIDL uidl)
-	{
-		propertyUpdater.updateFromUIDL(uidl, getClient());
+		propertyUpdater.updateFromUIDL(uidl, client);
 	}
 }

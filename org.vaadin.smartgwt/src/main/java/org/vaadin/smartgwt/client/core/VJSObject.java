@@ -13,8 +13,6 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 
 	private final Element element = DOM.createDiv();
 	private final T object;
-	private ApplicationConnection client;
-	private String pid;
 
 	protected VJSObject(T object)
 	{
@@ -30,18 +28,10 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 	@Override
 	public final void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		if (pid == null)
-		{
-			setJSObjectAttribute("pid", pid = uidl.getId());
-		}
-
-		if (this.client == null)
-		{
-			this.client = client;
-		}
-
-		updateJSObjectAttributes(uidl);
-		updateFromUIDL(uidl);
+		setStringAttribute(ATTRIBUTE_PID, uidl.getId());
+		preAttributeUpdateFromUIDL(uidl, client);
+		updateJSObjectAttributes(uidl, client);
+		postAttributeUpdateFromUIDL(uidl, client);
 	}
 
 	public final T getJSObject()
@@ -49,19 +39,18 @@ public abstract class VJSObject<T> extends Widget implements Paintable
 		return object;
 	}
 
-	protected final String getPID()
-	{
-		return pid;
-	}
+	protected abstract void setStringAttribute(String name, String value);
 
-	protected final ApplicationConnection getClient()
-	{
-		return client;
-	}
+	protected abstract void updateJSObjectAttributes(UIDL uidl, ApplicationConnection client);
 
-	protected abstract void setJSObjectAttribute(String name, String value);
+	/**
+	 * Called before updating the dynamic attributes. Referenced paintables should be painted at this point to prevent dynamic update to refer to a
+	 * non-registered PID.
+	 */
+	protected abstract void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client);
 
-	protected abstract void updateJSObjectAttributes(UIDL uidl);
-
-	protected abstract void updateFromUIDL(UIDL uidl);
+	/**
+	 * Called after dynamic attributes have been updated. Behavior dependent on dynamic attribute values should be done at this point.
+	 */
+	protected abstract void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client);
 }

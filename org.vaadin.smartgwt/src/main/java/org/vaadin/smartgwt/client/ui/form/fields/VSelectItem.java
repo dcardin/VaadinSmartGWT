@@ -11,6 +11,7 @@ import org.vaadin.smartgwt.client.ui.grid.VListGridField;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
@@ -58,14 +59,14 @@ public class VSelectItem extends VAbstractFormItem<SelectItem, String>
 	}
 
 	@Override
-	protected void updateFromUIDL(UIDL uidl)
+	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		propertyUpdater.updateFromUIDL(uidl, getClient());
+		propertyUpdater.updateFromUIDL(uidl, client);
 
 		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
 		if (uidl.hasAttribute("optionDataSource"))
 		{
-			final Paintable paintable = uidl.getPaintableAttribute("optionDataSource", getClient());
+			final Paintable paintable = uidl.getPaintableAttribute("optionDataSource", client);
 			getJSObject().setOptionDataSource((DataSource) ((VJSObject<?>) paintable).getJSObject());
 		}
 	}
