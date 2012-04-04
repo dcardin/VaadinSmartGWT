@@ -1,10 +1,10 @@
 package org.vaadin.smartgwt.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
@@ -12,7 +12,6 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 
 //@formatter:off
 /**
@@ -1610,7 +1609,8 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 
  // @formatter:on
 
-	private final List<Canvas> items = new ArrayList<Canvas>();
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableList<Canvas> items = propertyPainter.addPaintableList("items");
 	private final MasterContainer container;
 	
 	public Window(MasterContainer container)
@@ -1632,23 +1632,7 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
+		propertyPainter.paintContent(target);
 		super.paintContent(target);
-		
-		JsonPaintTarget jspt = (JsonPaintTarget) target;
-
-		if (items.size() > 0)
-		{
-			List<String> references = new ArrayList<String>();
-			for (Canvas c : items)
-			{
-				if (jspt.needsToBePainted(c))
-					c.paint(target);
-				
-				references.add(jspt.getPaintIdentifier(c));
-			}
-
-			if (references.size() > 0)
-				target.addAttribute("*items", references.toArray());
-		}
 	}
 }

@@ -263,6 +263,11 @@
 			<version>1.9.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
+			<version>11.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>

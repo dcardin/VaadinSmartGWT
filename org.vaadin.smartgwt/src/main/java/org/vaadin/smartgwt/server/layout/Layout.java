@@ -1,11 +1,14 @@
 package org.vaadin.smartgwt.server.layout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
 import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
@@ -17,7 +20,6 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Form;
@@ -35,11 +37,7 @@ public class Layout extends Canvas implements ComponentContainer {
 //            return new Layout(jsObj);
 //        }
 //    }
-
-    public Layout(){
-        scClassName = "Layout";
-    }
-
+	
 //    public Layout(JavaScriptObject jsObj){
 //        super(jsObj);
 //    }
@@ -1358,12 +1356,14 @@ public class Layout extends Canvas implements ComponentContainer {
 	
     // @formatter:on
 	// ********************* Vaadin Integration ***********************
-	private static final long serialVersionUID = 1L;
 
-	private List<Canvas> members = new ArrayList<Canvas>();
-	private List<Canvas> membersAdded = new ArrayList<Canvas>();
-	private List<Canvas> membersRemoved = new ArrayList<Canvas>();
-	private List<Canvas[]> membersReplaced = new ArrayList<Canvas[]>();
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableList<Canvas> members = propertyPainter.addPaintableList("members");
+
+	public Layout()
+	{
+		scClassName = "Layout";
+	}
 
 	/**
 	 * Returns true if the layout includes the specified canvas.
@@ -1386,13 +1386,12 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public void removeMember(Canvas member)
 	{
-		members.remove(member);
-
-		if (isCreated())
+		if (hasMember(member))
 		{
-			membersRemoved.add(member);
+			members.remove(member);
+			member.setParent(null);
+			requestRepaint();
 		}
-		requestRepaint();
 	}
 
 	/**
@@ -1440,25 +1439,25 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public void setMembers(Canvas... newMembers)
 	{
-		if (isCreated())
+		setMembers(Arrays.asList(newMembers));
+	}
+
+	public void setMembers(List<Canvas> members)
+	{
+		for (Canvas member : this.members)
 		{
-			for (Canvas member : members)
-				removeMember(member);
+			member.setParent(null);
 		}
 
-		members.addAll(members);
+		this.members.clear();
 
 		for (Canvas member : members)
 		{
 			member.setParent(this);
 		}
 
+		this.members.addAll(members);
 		requestRepaint();
-	}
-
-	public void setMembers(List<Canvas> members)
-	{
-		setMembers((Canvas[]) members.toArray());
 	}
 
 	/**
@@ -1471,11 +1470,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		component.setParent(this);
 		members.add(component);
-
-		if (isCreated())
-		{
-			membersAdded.add(component);
-		}
 		requestRepaint();
 	}
 
@@ -1491,11 +1485,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	{
 		component.setParent(this);
 		members.add(position, component);
-
-		if (isCreated())
-		{
-			membersAdded.add(component);
-		}
 		requestRepaint();
 	}
 
@@ -1508,7 +1497,9 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void removeMembers(Canvas[] members)
 	{
 		for (Canvas member : members)
+		{
 			removeMember(member);
+		}
 	}
 
 	/**
@@ -1518,17 +1509,17 @@ public class Layout extends Canvas implements ComponentContainer {
 	 */
 	public Canvas[] getMembers()
 	{
-		Canvas[] tmp = new Canvas[0];
-
-		return members.toArray(tmp);
+		return members.toArray(new Canvas[0]);
 	}
 	
 	public void removeAllMembers()
 	{
-		for (Canvas member : getMembers())
+		for (Canvas member : members)
 		{
-			removeMember(member);
+			member.setParent(null);
 		}
+
+		members.clear();
 	}
 
 	/**
@@ -1577,17 +1568,15 @@ public class Layout extends Canvas implements ComponentContainer {
 
 	public void replaceMember(Canvas oldComponent, Canvas newComponent)
 	{
-		int index = getMemberNumber(oldComponent);
-		members.remove(index);
-		members.add(index, newComponent);
+		final int index = members.indexOf(oldComponent);
 
-		newComponent.setParent(this);
-
-		if (isCreated())
+		if (index > -1)
 		{
-			membersReplaced.add(new Canvas[] { oldComponent, newComponent });
+			members.set(index, newComponent);
+			oldComponent.setParent(null);
+			newComponent.setParent(this);
+			requestRepaint();
 		}
-		requestRepaint();
 	}
 
 	@Override
@@ -1606,69 +1595,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
-		JsonPaintTarget jspt = (JsonPaintTarget) target;
-
-		if (membersAdded.size() == 0 && membersReplaced.size() == 0 && membersRemoved.size() == 0 && !isCreated())
-		{
-			// full repaint since no "special" component list has been modified
-			List<String> references = new ArrayList<String>();
-
-			for (Canvas c : members)
-			{
-				if (jspt.needsToBePainted(c))
-					c.paint(target);
-				references.add(jspt.getPaintIdentifier(c));
-			}
-			
-			if (references.size() > 0)
-				target.addAttribute("*members", references.toArray());
-		}
-		else
-		{
-			if (membersAdded.size() > 0)
-			{
-				List<String> references = new ArrayList<String>();
-
-				for (Canvas c : membersAdded)
-				{
-					if (jspt.needsToBePainted(c))
-						c.paint(target);
-					references.add(jspt.getPaintIdentifier(c));
-				}
-
-				target.addAttribute("*membersAdded", references.toArray());
-				membersAdded.clear();
-			}
-
-			if (membersRemoved.size() > 0)
-			{
-				List<String> references = new ArrayList<String>();
-
-				for (Canvas c : membersRemoved)
-				{
-					references.add(jspt.getPaintIdentifier(c));
-				}
-
-				target.addAttribute("*membersRemoved", references.toArray());
-				membersRemoved.clear();
-			}
-
-			if (membersReplaced.size() > 0)
-			{
-				List<String> references = new ArrayList<String>();
-				for (Component[] c : membersReplaced)
-				{
-					references.add(jspt.getPaintIdentifier(c[0]));
-					references.add(jspt.getPaintIdentifier(c[1]));
-					if (jspt.needsToBePainted(c[1]))
-						c[1].paint(target);
-				}
-				target.addAttribute("*membersReplaced", references.toArray());
-				membersReplaced.clear();
-			}
-		}
-
-		// must be last so that we know if we have sent the data at least once
+		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}
 
@@ -1681,13 +1608,13 @@ public class Layout extends Canvas implements ComponentContainer {
 	@Override
 	public Iterator<Component> getComponentIterator()
 	{
-		// List<Canvas> members = getMembersAsList();
-
-		List<Component> components = new ArrayList<Component>();
+		final List<Component> components = new ArrayList<Component>();
+		
 		for (Canvas canvas : members)
 		{
 			components.add(canvas);
 		}
+
 		return components.iterator();
 	}
 

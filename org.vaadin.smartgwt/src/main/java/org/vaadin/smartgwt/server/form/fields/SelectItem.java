@@ -1,5 +1,25 @@
+/*
+ * Smart GWT (GWT for SmartClient)
+ * Copyright 2008 and beyond, Isomorphic Software, Inc.
+ *
+ * Smart GWT is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3
+ * as published by the Free Software Foundation.  Smart GWT is also
+ * available under typical commercial license terms - see
+ * http://smartclient.com/license
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
 package org.vaadin.smartgwt.server.form.fields;
 
+import java.util.Arrays;
+
+import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
@@ -7,11 +27,20 @@ import org.vaadin.smartgwt.server.types.MultipleAppearance;
 import org.vaadin.smartgwt.server.types.TextMatchStyle;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+
+//@formatter:off
+
 /**
- * Server side component for the VTextItem widget.
+ * FormItem that allows picking between several mutually exclusive options via a select list. <P> Options may be derived
+ * from a <code>dataSource</code> or a <code>valueMap</code>. <P> Note that to select the first option as a default value
+ * for the item, {@link com.smartgwt.client.widgets.form.fields.SelectItem#getDefaultToFirstOption defaultToFirstOption}
+ * may be set.
+ * @see com.smartgwt.client.widgets.form.fields.FormItem#getValueMap
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VSelectItem.class)
-public class SelectItem extends FormItem {
+public class SelectItem extends FormItem { // implements PickList, com.smartgwt.client.widgets.form.fields.events.HasDataArrivedHandlers {
 
 //    public static SelectItem getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -23,25 +52,6 @@ public class SelectItem extends FormItem {
 //            return new SelectItem(jsObj);
 //        }
 //    }
-
-    public SelectItem(){
-        setAttribute("editorType", "SelectItem");
-    }
-
-//    public SelectItem(JavaScriptObject jsObj){
-//        super(jsObj);
-//    }
-
-    public SelectItem(String name) {
-        setName(name);
-        setAttribute("editorType", "SelectItem");
-    }
-
-    public SelectItem(String name, String title) {
-        setName(name);
-		setTitle(title);
-        setAttribute("editorType", "SelectItem");
-    }
 
     // ********************* Properties / Attributes ***********************
 
@@ -1441,14 +1451,46 @@ public class SelectItem extends FormItem {
 //    }-*/;    
 
     // @formatter:on
-    // Vaadin integration
+	// Vaadin integration
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableList<ListGridField> pickListFields = propertyPainter.addPaintableList("pickListFields");
+	private DataSource optionDataSource;
+
+	public SelectItem()
+	{
+		setAttribute("editorType", "SelectItem");
+	}
+
+	public SelectItem(String name)
+	{
+		this();
+		setName(name);
+	}
+
+	public SelectItem(String name, String title)
+	{
+		this();
+		setName(name);
+		setTitle(title);
+	}
+
 	public void setPickListFields(ListGridField... pickListFields)
 	{
-		setAttribute("*pickListFields", pickListFields);
-		for (ListGridField field : pickListFields)
-			field.setParent(this);
+		for (ListGridField pickListField : this.pickListFields)
+		{
+			pickListField.setParent(null);
+		}
+
+		this.pickListFields.clear();
+
+		for (ListGridField pickListField : pickListFields)
+		{
+			pickListField.setParent(this);
+		}
+
+		this.pickListFields.addAll(Arrays.asList(pickListFields));
 	}
-	
+
 	/**
 	 * If set, this FormItem will derive data to show in the PickList by fetching records from the specified <code>optionDataSource</code>. The fetched data
 	 * will be used as a {@link com.smartgwt.client.widgets.form.fields.FormItem#getValueMap valueMap} by extracting the
@@ -1488,10 +1530,19 @@ public class SelectItem extends FormItem {
 	 */
 	public void setOptionDataSource(DataSource dataSource)
 	{
-		setAttribute("*optionDataSource", dataSource);
+		this.optionDataSource = dataSource;
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+
+		if (optionDataSource != null)
+		{
+			target.addAttribute("optionDataSource", optionDataSource);
+		}
+
+		super.paintContent(target);
+	}
 }
-
-
-

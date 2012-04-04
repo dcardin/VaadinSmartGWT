@@ -3,10 +3,12 @@ package org.vaadin.smartgwt.client.ui.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.ui.form.fields.VAbstractFormItem;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
@@ -16,48 +18,48 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VDynamicForm extends DynamicForm implements Paintable
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	private final Element element = DOM.createDiv();
+
+	public VDynamicForm()
+	{
+		propertyUpdater.addPaintableListListener("fields", new PaintableListListener()
+			{
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					setFields(toFormItemArray(source).toArray(new FormItem[0]));
+				}
+
+				@Override
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
+				{
+					setFields(toFormItemArray(source).toArray(new FormItem[0]));
+				}
+
+				private List<FormItem> toFormItemArray(Paintable[] source)
+				{
+					final List<FormItem> formItems = new ArrayList<FormItem>();
+
+					for (Paintable paintable : source)
+					{
+						formItems.add(((VAbstractFormItem<? extends FormItem, ?>) paintable).getJSObject());
+					}
+					return formItems;
+				}
+			});
+	}
 
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
-		PainterHelper.paintChildren(uidl, client);
+		propertyUpdater.updateFromUIDL(uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-
-		addFormItems(uidl, client);
-	}
-
-	private void addFormItems(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*fields"))
-		{
-			List<FormItem> items = new ArrayList<FormItem>();
-
-			String[] added = uidl.getStringArrayAttribute("*fields");
-
-			for (String c : added)
-			{
-				FormItem item = ((Wrapper) client.getPaintable(c)).unwrap();
-				items.add(item);
-			}
-
-			if (items.size() > 0)
-			{
-				FormItem[] itemsArr = new FormItem[0];
-				itemsArr = items.toArray(itemsArr);
-
-				setFields(itemsArr);
-			}
-		}
 	}
 }

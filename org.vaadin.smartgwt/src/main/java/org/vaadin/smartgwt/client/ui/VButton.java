@@ -1,8 +1,8 @@
 package org.vaadin.smartgwt.client.ui;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -14,13 +14,14 @@ public class VButton extends Button implements Paintable
 {
 	public static final String CLICK_EVENT_IDENTIFIER = "click";
 
+	private final Element element = DOM.createDiv();
 	protected String paintableId;
 	protected ApplicationConnection client;
 
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	public VButton()

@@ -1,49 +1,48 @@
 package org.vaadin.smartgwt.client.ui.layout;
 
+import org.vaadin.smartgwt.client.core.PaintableListListener;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.SectionHeader;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VSectionStackSection extends Canvas implements Paintable, Wrapper
+public class VSectionStackSection extends VDataClass<SectionStackSection>
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
-	private SectionStackSection section = new SectionStackSection();
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
-	@Override
-	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
+	public VSectionStackSection()
 	{
-		this.client = client;
-		paintableId = uidl.getId();
-
-		PainterHelper.updateDataObject(client, section, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		if (uidl.hasAttribute("*members"))
-		{
-			String[] members = uidl.getStringArrayAttribute("*members");
-			for (String c : members)
+		super(new SectionStackSection());
+		
+		propertyUpdater.addPaintableListListener("items", new PaintableListListener()
 			{
-				section.addItem((Canvas) client.getPaintable(c));
-			}
-		}
+				@Override
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
+				{
+					getJSObject().addItem((Canvas) element);
+				}
 
-		if (uidl.hasAttribute("icon"))
-		{
-			section.setAttribute("icon", uidl.getStringAttribute("icon").substring(1));
-		}
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
 
+				}
+			});
 	}
 
 	@Override
-	public SectionStackSection unwrap()
+	protected void updateJSObjectAttributes(UIDL uidl)
 	{
-		return section;
+		PainterHelper.updateDataObject(getClient(), getJSObject(), uidl);
+	}
+
+	@Override
+	protected void updateFromUIDL(UIDL uidl)
+	{
+		propertyUpdater.updateFromUIDL(uidl, getClient());
 	}
 }

@@ -3,143 +3,70 @@ package org.vaadin.smartgwt.client.ui.form.fields;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
-import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.VJSObject;
+import org.vaadin.smartgwt.client.ui.grid.VListGridField;
 
-import com.google.gwt.user.client.Element;
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.DataSourceField;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.BlurEvent;
-import com.smartgwt.client.widgets.form.fields.events.BlurHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VSelectItem extends Canvas implements Paintable, Wrapper
+public class VSelectItem extends VAbstractFormItem<SelectItem, String>
 {
-	protected String paintableId;
-	protected ApplicationConnection client;
-
-	private final SelectItem si;
-	private String savedValue = null;
-
-	@Override
-	public Element getElement()
-	{
-		return VMasterContainer.getDummy();
-	}
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
 	public VSelectItem()
 	{
-		super();
+		super(new SelectItem());
 
-		si = new SelectItem();
-
-		si.addBlurHandler(new BlurHandler()
+		propertyUpdater.addPaintableListListener("pickListFields", new PaintableListListener()
 			{
 				@Override
-				public void onBlur(BlurEvent event)
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
 				{
-					postChange();
-				}
-			});
+					final List<ListGridField> pickListFields = new ArrayList<ListGridField>();
 
-		si.addKeyPressHandler(new KeyPressHandler()
-			{
-
-				@Override
-				public void onKeyPress(KeyPressEvent event)
-				{
-					if (event.getKeyName().equalsIgnoreCase("enter"))
+					for (Paintable paintable : source)
 					{
-						postChange();
+						pickListFields.add(((VListGridField) paintable).getJSObject());
 					}
+
+					getJSObject().setPickListFields(pickListFields.toArray(new ListGridField[0]));
+				}
+
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+
 				}
 			});
 	}
 
-	private void postChange()
+	@Override
+	protected String getUIDLFormItemValue(UIDL uidl, String attributeName)
 	{
-		String newValue = si.getValueAsString();
-
-		if ((newValue == null && savedValue != null) || (newValue != null && !newValue.equals(savedValue)))
-		{
-			client.updateVariable(paintableId, "value", newValue, true);
-		}
+		return uidl.getStringAttribute(attributeName);
 	}
 
-	/**
-	 * Called whenever an update is received from the server
-	 */
 	@Override
-	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
+	protected String getFormItemValue()
 	{
-		this.client = client;
-		paintableId = uidl.getId();
+		return getJSObject().getValueAsString();
+	}
 
-		if (uidl.hasAttribute("value"))
-		{
-			String newValue = uidl.getStringAttribute("value");
-
-			if (!newValue.equals(si.getValueAsString()))
-			{
-				// ti.setValue(newValue);
-				savedValue = newValue;
-			}
-		}
-
-		PainterHelper.paintChildren(uidl, client);
+	@Override
+	protected void updateFromUIDL(UIDL uidl)
+	{
+		propertyUpdater.updateFromUIDL(uidl, getClient());
 
 		// the dataSource property is manually managed for now. Using the automatic painter doesn't work properly
-		if (uidl.hasAttribute("*optionDataSource"))
+		if (uidl.hasAttribute("optionDataSource"))
 		{
-			String ref = uidl.getStringAttribute("*optionDataSource");
-
-			DataSource ds = ((Wrapper) client.getPaintable(ref)).unwrap();
-			si.setOptionDataSource(ds);
-		}
-
-		addListFields(uidl, client);
-		PainterHelper.updateDataObject(client, si, uidl);
-	}
-	
-	private void addListFields(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*pickListFields"))
-		{
-			List<ListGridField> items = new ArrayList<ListGridField>();
-
-			String[] added = uidl.getStringArrayAttribute("*pickListFields");
-
-			for (String c : added)
-			{
-				ListGridField item = ((Wrapper) client.getPaintable(c)).unwrap();
-				items.add(item);
-			}
-
-			if (items.size() > 0)
-			{
-				ListGridField[] itemsArr = new ListGridField[0];
-				itemsArr = items.toArray(itemsArr);
-
-				si.setPickListFields(itemsArr);
-			}
+			final Paintable paintable = uidl.getPaintableAttribute("optionDataSource", getClient());
+			getJSObject().setOptionDataSource((DataSource) ((VJSObject<?>) paintable).getJSObject());
 		}
 	}
-
-	@Override
-	public FormItem unwrap()
-	{
-		return si;
-	}
-	
-
-
 }

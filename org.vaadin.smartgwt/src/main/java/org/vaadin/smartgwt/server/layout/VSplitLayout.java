@@ -6,61 +6,33 @@ import org.vaadin.smartgwt.server.Canvas;
 import com.vaadin.ui.ClientWidget;
 
 @ClientWidget(value = VVSplitLayout.class)
-public class VSplitLayout extends Layout
+public class VSplitLayout extends AbstractSplitLayout
 {
 	public VSplitLayout()
 	{
-		this(true, true);
+		super();
+		setHeight100();
 	}
 
 	public VSplitLayout(boolean showResizeBar, boolean resizeWithParent)
 	{
-		setShowResizeBar(showResizeBar);
-		setResizeWithParent(resizeWithParent);
-		setProportionalLayout(true);
+		super(showResizeBar, resizeWithParent);
+		setHeight100();
 	}
 
 	public void setTopCanvas(Canvas canvas)
 	{
-		setAttribute("top", canvas);
-		addMember(canvas);
+		setMember1(canvas);
 	}
 
 	public void setBottomCanvas(Canvas canvas)
 	{
-		setAttribute("bottom", canvas);
-		addMember(canvas);
+		setMember2(canvas);
 	}
 
-	public void setProportionalLayout(boolean proportional)
+	@Override
+	protected void setMemberProportion(Canvas member, String proportion)
 	{
-		setProportions(0.5d, 0.5d);
-	}
-
-	public void setProportions(double... proportions)
-	{
-		if (proportions.length != 2)
-			throw new IllegalArgumentException("Need two proportions exactly");
-		
-		String[] result = new String[proportions.length];
-		
-		for (int i=0; i < proportions.length; i++)
-		{
-			Integer value = ((int) (proportions[i]*100));
-			
-			result[i] = value.toString() + "%";
-		}
-		
-		setAttribute("*proportions", result);
-	}
-
-	public void setShowResizeBar(boolean showResizeBar)
-	{
-		setAttribute("*showResizeBar", showResizeBar);
-	}
-
-	public void setResizeWithParent(boolean resizeWithParent)
-	{
-		setAttribute("resizeWithParent", resizeWithParent);
+		member.setHeight(proportion);
 	}
 }

@@ -3,8 +3,9 @@ package org.vaadin.smartgwt.server.data;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
-import org.vaadin.smartgwt.server.layout.Layout;
-import org.vaadin.smartgwt.server.layout.MasterContainer;
+import org.vaadin.smartgwt.server.core.BaseClass;
+import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
 import org.vaadin.smartgwt.server.types.DSProtocol;
@@ -12,6 +13,8 @@ import org.vaadin.smartgwt.server.types.EnumTranslateStrategy;
 import org.vaadin.smartgwt.server.types.RPCTransport;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.ClientWidget;
 
 /*
@@ -73,7 +76,7 @@ import com.vaadin.ui.ClientWidget;
  * @see com.smartgwt.client.widgets.DataBoundComponent
  */
 @ClientWidget(value=VDataSource.class)
-public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
+public class DataSource extends BaseClass { //  BaseClass  implements com.smartgwt.client.data.events.HasHandleErrorHandlers {
 
 //    public static DataSource getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -1462,7 +1465,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @param title title Default value is dataSource.ID
      */
-    public void setTitle(String title) {
+	public void setTitle(String title) {
         setAttribute("title", title, true);
     }
 
@@ -1473,7 +1476,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      *
      * @return String
      */
-    public String getTitle()  {
+	public String getTitle()  {
         return getAttributeAsString("title");
     }
 
@@ -2507,14 +2510,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
      * @return array of DataSourceFields
      */
     public DataSourceField[] getFields() {
-        String[] fields = getFieldNames();
-        if(fields == null) return null;
-        DataSourceField[] dsFields = new DataSourceField[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            String field = fields[i];
-            dsFields[i] = getField(field);
-        }
-        return dsFields;
+    	return fields.toArray(new DataSourceField[0]);
     }
 
 //    /**
@@ -3368,17 +3364,18 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 
 	// Vaadin Integration
 
-	public DataSource(MasterContainer masterContainer)
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
+
+	public DataSource()
 	{
 		scClassName = "DataSource";
-		masterContainer.registerDataSource(this);
 	}
 
-	public DataSource(String dataURL, MasterContainer masterContainer)
+	public DataSource(String dataURL)
 	{
+		this();
 		setDataURL(dataURL);
-		scClassName = "DataSource";
-		masterContainer.registerDataSource(this);
 	}
 
 	/**
@@ -3395,8 +3392,9 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 		{
 			error("Fields cannot be added to a DataSource after the underlying component has been created.");
 		}
+
 		field.setParent(this);
-		addMember(field);
+		fields.add(field);
 	}
 
 	// override setID() - if this.addGlobalID is false, don't register the ID with the IDManager
@@ -3405,7 +3403,7 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 	// property being set correctly
 	public void setID(String id)
 	{
-		setAttribute("ID", id, false);
+		setAttribute("*ID", id, false);
 		// this.id = id;
 	}
 
@@ -3429,4 +3427,10 @@ public class DataSource extends Layout { //  BaseClass  implements com.smartgwt.
 		return "dataSource";
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
+	}
 }

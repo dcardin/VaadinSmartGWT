@@ -1,11 +1,12 @@
 package org.vaadin.smartgwt;
 
-import static argo.jdom.JsonNodeBuilders.anArrayBuilder;
-import static argo.jdom.JsonNodeBuilders.anObjectBuilder;
-import static argo.jdom.JsonNodeFactories.aJsonString;
+import static argo.jdom.JsonNodeBuilders.*;
+import static argo.jdom.JsonNodeFactories.*;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -26,6 +27,7 @@ import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
+import org.vaadin.smartgwt.server.layout.HSplitLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.SectionStack;
@@ -57,7 +59,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 	private TabSet tabset;
 	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
-	private MasterContainer masterContainer = new MasterContainer();
+	private final MasterContainer masterContainer = new MasterContainer();
 
 	@Override
 	public MasterContainer getMasterContainer()
@@ -75,7 +77,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		CountryXmlDS.reset();
 
-		masterContainer = new MasterContainer();
+		masterContainer.addDataSource(CountryXmlDS.getInstance());
 		masterContainer.setPane(getMainPanel());
 
 		mainWindow.setContent(masterContainer);
@@ -106,15 +108,15 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		listGrid.setFields(new ListGridField("system", "System"), new ListGridField("monitor", "Monitor"));
 
 		SectionStackSection section1 = new SectionStackSection("Monitors");
-		section1.addMember(listGrid);
+		section1.addItem(listGrid);
 		section1.setExpanded(true);
 
 		SectionStackSection section2 = new SectionStackSection("Monitors");
-		section2.addMember(getVertical());
+		section2.addItem(getVertical());
 		section2.setExpanded(true);
 
-		sectionStack.addMember(section1);
-		sectionStack.addMember(section2);
+		sectionStack.addSection(section1);
+		sectionStack.addSection(section2);
 		return sectionStack;
 	}
 
@@ -145,10 +147,13 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		{
 			JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
-			for (Map.Entry<String, Object> entry : record.getAttributes().entrySet())
+			for (int i = 0; i < record.getAttributes().length; i++)
 			{
-				nodeBuilder.withField(entry.getKey(), aJsonString(entry.getValue() == null ? "" : entry.getValue().toString()));
+				final String name = record.getAttributes()[i];
+				final Object value = record.getAttributeAsObject(name);
+				nodeBuilder.withField(name, aJsonString(value == null ? "" : value.toString()));
 			}
+
 			recordBuilder.withElement(nodeBuilder);
 		}
 		builder.withField("records", recordBuilder);
@@ -275,7 +280,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		countryGrid.setShowAllRecords(true);
 		countryGrid.setCellHeight(22);
 		// use server-side dataSource so edits are retained across page transitions
-		countryGrid.setDataSource(CountryXmlDS.getInstance(masterContainer));
+		countryGrid.setDataSource(CountryXmlDS.getInstance());
 
 		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
 		countryCodeField.setAlign(Alignment.CENTER);
@@ -466,18 +471,20 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return layout;
 	}
 
-	private Layout getMainPanel()
+	private Canvas getMainPanel()
 	{
+		final List<Tab> tabs = new ArrayList<Tab>();
+
 		tabset = new TabSet();
 		tabset.setSizeFull();
 
-		Tab tab = new Tab("premier");
-		Tab tab2 = new Tab("deuxieme");
-		Tab tab3 = new Tab("troisième");
-		Tab tab4 = new Tab("un autre");
-		Tab tab5 = new Tab("recursif");
-		Tab tab6 = new Tab("avec event");
-		Tab tab7 = new Tab("Fake border");
+		final Tab tab = new Tab("premier");
+		final Tab tab2 = new Tab("deuxieme");
+		final Tab tab3 = new Tab("troisième");
+		final Tab tab4 = new Tab("un autre");
+		final Tab tab5 = new Tab("recursif");
+		final Tab tab6 = new Tab("avec event");
+		final Tab tab7 = new Tab("Fake border");
 
 		tab.setPane(createForm(4));
 		tab2.setPane(getEditableListGrid());
@@ -493,6 +500,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					tabset.selectTab(1);
 				}
 			});
+
 		vl.addMember(new Button("Press me 2!")
 			{
 				@Override
@@ -509,14 +517,55 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					window.setIsModal(true);
 					window.setShowModalMask(true);
 					window.setAutoCenter(true);
-			        window.setCanDragReposition(true);  
-			        window.setCanDragResize(true);  
+					window.setCanDragReposition(true);
+					window.setCanDragResize(true);
 					window.addItem(getMainPanel());
 					window.show();
 				}
 			});
-		vl.addMember(new Button("Press me 3!"));
+
+		vl.addMember(new Button("Press me 3!")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.removeTab(tab3);
+				}
+			});
+
 		vl.addMember(new Button("Press me 4!"));
+
+		vl.addMember(new Button("Add Tab")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.addTab(newTab("Title", newLabel("LABEL", "blue")));
+				}
+			});
+
+		vl.addMember(new Button("Add Tab Index 0")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.addTab(newTab("Title", newLabel("INDEXED", "red")), 0);
+				}
+			});
+
+		vl.addMember(new Button("Remove Tab")
+			{
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables)
+				{
+					super.changeVariables(source, variables);
+					tabset.removeTab(tabset.getTabs()[tabset.getTabs().length - 1]);
+				}
+			});
+
 		Label filler = new Label("");
 		filler.setHeight("*");
 		filler.setWidth100();
@@ -529,12 +578,19 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		Tab tabEric = new Tab("Éric");
 		tabEric.setPane(getEricLayout());
-
 		tab7.setPane(paintBorderLayout());
 
-		tabset.setTabs(tabEric, tab, tab2, tab3, tab4, tab5, tab6, tab7);
+		tabs.add(tab);
+		tabs.add(tab2);
+		tabs.add(tab3);
+		tabs.add(tab4);
+		tabs.add(tab5);
+		tabs.add(tab6);
+		tabs.add(tab7);
+		tabs.add(newTab("sections", getStackView()));
+		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
+		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
-
 	}
 
 	private Layout getVertical()
@@ -569,6 +625,31 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}
 
 		return layout;
+	}
+
+	private Tab newTab(String title, Canvas pane)
+	{
+		final Tab tab = new Tab(title);
+		tab.setPane(pane);
+		return tab;
+	}
+
+	private Canvas newSplitLayoutPane()
+	{
+		final VSplitLayout vLayout = new VSplitLayout();
+		final HSplitLayout hLayout = new HSplitLayout();
+		hLayout.setLeftCanvas(newLabel("LEFT", "blue"));
+		hLayout.setRightCanvas(newLabel("RIGHT", "green"));
+		vLayout.setTopCanvas(newLabel("TOP", "red"));
+		vLayout.setBottomCanvas(hLayout);
+		return vLayout;
+	}
+
+	private Label newLabel(String content, String bgColor)
+	{
+		final Label label = new Label(content);
+		label.setBackgroundColor(bgColor);
+		return label;
 	}
 
 	public VLayout getSpecial()
@@ -641,7 +722,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		// populationField.setCellFormatter(new NumericFormatter());
 		ListGridField independenceField = new ListGridField("independence", "Independence");
 		si.setPickListFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
-		si.setOptionDataSource(CountryXmlDS.getInstance(masterContainer));
+		si.setOptionDataSource(CountryXmlDS.getInstance());
 		form.addField(si);
 
 		si = new SelectItem("blah" + i);

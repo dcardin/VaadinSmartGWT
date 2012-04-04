@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.client.ui.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.vaadin.smartgwt.client.core.VBaseClass;
+import org.vaadin.smartgwt.client.core.VDataClass;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,75 +17,6 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class PainterHelper
 {
-	public static class WidgetInfo
-	{
-		private final Widget widget;
-		private final UIDL uidl;
-
-		public WidgetInfo(UIDL uidl, Widget widget)
-		{
-			this.uidl = uidl;
-			this.widget = widget;
-		}
-
-		public Widget getWidget()
-		{
-			return widget;
-		}
-
-		public UIDL getUIDL()
-		{
-			return uidl;
-		}
-	}
-
-	/**
-	 * Identifies the Paintable children and when associated with a widget, update them from the uidl
-	 * 
-	 * @param uidl
-	 * @param client
-	 * @return
-	 */
-	public static List<WidgetInfo> paintChildren(UIDL uidl, ApplicationConnection client)
-	{
-		List<WidgetInfo> childWidgets = createChildren(uidl, client);
-		
-		for (WidgetInfo info : childWidgets)
-		{
-			paintWidget(info.getWidget(), info.getUIDL(), client);
-		}
-		
-		return childWidgets;
-	}
-	
-	/**
-	 * Create the children of this uidl so they may be referenced after
-	 */
-	public static List<WidgetInfo> createChildren(UIDL uidl, ApplicationConnection client)
-	{
-		List<WidgetInfo> childWidgets = new ArrayList<WidgetInfo>();
-
-		int uidlCount = uidl.getChildCount();
-		for (int uidlPos = 0; uidlPos < uidlCount; uidlPos++)
-		{
-			final UIDL childUIDL = uidl.getChildUIDL(uidlPos);
-			Widget uidlWidget = childUIDL != null ? (Widget) client.getPaintable(childUIDL) : null;
-			childWidgets.add(new WidgetInfo(childUIDL, uidlWidget));
-		}
-
-		return childWidgets;
-	}
-	
-	public static void paintWidget(Widget widget, UIDL uidl, ApplicationConnection client)
-	{
-		if (widget instanceof Paintable)
-		{
-			((Paintable) widget).updateFromUIDL(uidl, client);
-		}
-	}
-	
-	
-
 	/**
 	 * Provides automatic processing of a Widget's property, coming from properties in uidl
 	 * 
@@ -124,56 +55,31 @@ public class PainterHelper
 								((Canvas) component).enable();
 							}
 						}
-						
+
 						continue;
 					}
 
-					// Names starting with the character '[' indicate an array of paintables references (String)
-					if (att.startsWith("["))
-					{
-						String[] refs = uidl.getStringArrayAttribute(att);
-						List<Canvas> paintables = new ArrayList<Canvas>();
-
-						for (String c : refs)
-						{
-							Paintable p = client.getPaintable(c);
-							if (p instanceof Wrapper)
-							{
-								Canvas canvas = ((Wrapper) p).unwrap();
-								paintables.add(canvas);
-							}
-						}
-
-						Canvas[] toSet = new Canvas[0];
-						toSet = paintables.toArray(toSet);
-
-						// component.setAttribute(att.substring(1), toSet);
-					}
 					// Names starting with the character '#' indicate a reference to a Paintable
-					else if (att.startsWith("#"))
+					if (att.startsWith("#"))
 					{
-						Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
-						if (paintable instanceof Canvas)
+						final Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
+
+						if (paintable instanceof BaseWidget)
 						{
-							Object obj = null;
-
-							if (paintable instanceof Wrapper)
-							{
-								obj = ((Wrapper) paintable).unwrap();
-							}
-
-							if (obj instanceof Canvas)
-							{
-								widget.setProperty(att.substring(1), ((Canvas) obj).getOrCreateJsObj());
-							}
-							else if (obj instanceof BaseClass)
-							{
-								JavaScriptObject jso = ((BaseClass) obj).getOrCreateJsObj();
-								widget.setProperty(att.substring(1), jso);
-							}
+							widget.setProperty(att.substring(1), ((BaseWidget) paintable).getOrCreateJsObj());
+						}
+						else if (paintable instanceof VDataClass)
+						{
+							final JavaScriptObject jso = ((VDataClass<DataClass>) paintable).getJSObject().getJsObj();
+							widget.setProperty(att.substring(1), jso);
+						}
+						else if (paintable instanceof VBaseClass)
+						{
+							final JavaScriptObject jso = ((VBaseClass<BaseClass>) paintable).getJSObject().getOrCreateJsObj();
+							widget.setProperty(att.substring(1), jso);
 						}
 					}
-					// Names starting with '!' indicate a String[] 
+					// Names starting with '!' indicate a String[]
 					else if (att.startsWith("!"))
 					{
 						String[] value = uidl.getStringArrayAttribute(att);
@@ -368,7 +274,7 @@ public class PainterHelper
 			case 'j':
 			{
 				JavaScriptObject value = JSON.decode(sValue.substring(1));
-				
+
 				if (!widget.isCreated())
 					JSOHelper.setAttribute(widget.getConfig(), att, value);
 				else
@@ -385,26 +291,7 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			if (att.startsWith("["))
-			{
-				String[] refs = uidl.getStringArrayAttribute(att);
-				List<Canvas> paintables = new ArrayList<Canvas>();
-
-				for (String c : refs)
-				{
-					Paintable p = client.getPaintable(c);
-					if (p instanceof Wrapper)
-					{
-						Canvas canvas = ((Wrapper) p).unwrap();
-						paintables.add(canvas);
-					}
-				}
-
-				Canvas[] toSet = new Canvas[0];
-				toSet = paintables.toArray(toSet);
-				// dataObject.setAttribute(att.substring(1), toSet);
-			}
-			else if (att.startsWith("#"))
+			if (att.startsWith("#"))
 			{
 				Paintable p = client.getPaintable(uidl.getStringAttribute(att));
 				if (p instanceof BaseWidget)
@@ -434,46 +321,24 @@ public class PainterHelper
 		for (String att : uidl.getAttributeNames())
 		{
 			System.out.println("Updating: " + att);
-			if (att.startsWith("["))
-			{
-				String[] refs = uidl.getStringArrayAttribute(att);
-				List<Canvas> paintables = new ArrayList<Canvas>();
 
-				for (String c : refs)
+			if (att.startsWith("#"))
+			{
+				final Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
+
+				if (paintable instanceof BaseWidget)
 				{
-					Paintable p = client.getPaintable(c);
-					if (p instanceof Wrapper)
-					{
-						Canvas canvas = ((Wrapper) p).unwrap();
-						paintables.add(canvas);
-					}
+					dataObject.setAttribute(att.substring(1), ((BaseWidget) paintable).getOrCreateJsObj());
 				}
-
-				Canvas[] toSet = new Canvas[0];
-				toSet = paintables.toArray(toSet);
-				// dataObject.setAttribute(att.substring(1), toSet);
-			}
-			else if (att.startsWith("#"))
-			{
-				Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
-				if (paintable instanceof Canvas)
+				else if (paintable instanceof VDataClass)
 				{
-					Object obj = paintable;
-
-					if (paintable instanceof Wrapper)
-					{
-						obj = ((Wrapper) paintable).unwrap();
-					}
-
-					if (obj instanceof Canvas)
-					{
-						dataObject.setAttribute(att.substring(1), ((Canvas) obj).getOrCreateJsObj());
-					}
-					else if (obj instanceof BaseClass)
-					{
-						JavaScriptObject jso = ((BaseClass) obj).getOrCreateJsObj();
-						dataObject.setAttribute(att.substring(1), jso);
-					}
+					final JavaScriptObject jso = ((VDataClass<DataClass>) paintable).getJSObject().getJsObj();
+					dataObject.setAttribute(att.substring(1), jso);
+				}
+				else if (paintable instanceof VBaseClass)
+				{
+					final JavaScriptObject jso = ((VBaseClass<BaseClass>) paintable).getJSObject().getOrCreateJsObj();
+					dataObject.setAttribute(att.substring(1), jso);
 				}
 			}
 			else if (att.startsWith("!"))
@@ -488,7 +353,7 @@ public class PainterHelper
 			}
 		}
 	}
-	
+
 	public static Canvas getCanvasByRef(UIDL uidl, ApplicationConnection client, String refName)
 	{
 		String ref = uidl.getStringAttribute(refName);

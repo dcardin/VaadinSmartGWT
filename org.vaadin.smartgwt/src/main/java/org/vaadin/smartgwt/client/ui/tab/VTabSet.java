@@ -3,10 +3,12 @@ package org.vaadin.smartgwt.client.ui.tab;
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.rpc.shared.Method;
-import org.vaadin.smartgwt.client.ui.layout.VMasterContainer;
+import org.vaadin.smartgwt.client.core.PaintableListListener;
+import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
-import org.vaadin.smartgwt.client.ui.utils.Wrapper;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
@@ -16,18 +18,44 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 {
-	protected String paintableId;
-	private ApplicationConnection client;
+	private final Element element = DOM.createDiv();
 	private final ClientSideProxy rpc = new ClientSideProxy("VTabSet", this);
+	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	private ApplicationConnection client;
 
 	public VTabSet()
 	{
 		super();
 		rpc.register("selectTab", new Method()
 			{
+				@Override
 				public void invoke(final String methodName, final Object[] data)
 				{
 					selectTab((Integer) data[0]);
+				}
+			});
+
+		propertyUpdater.addPaintableListListener("tabs", new PaintableListListener()
+			{
+				@Override
+				public void onAdd(Paintable[] source, Integer index, Paintable element)
+				{
+					final Tab tab = ((VDataClass<Tab>) element).getJSObject();
+
+					if (index == null)
+					{
+						addTab(tab);
+					}
+					else
+					{
+						addTab(tab, index);
+					}
+				}
+
+				@Override
+				public void onRemove(Paintable[] source, Integer index, Paintable element)
+				{
+					removeTab(((VDataClass<Tab>) element).getJSObject());
 				}
 			});
 	}
@@ -35,84 +63,16 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 	@Override
 	public Element getElement()
 	{
-		return VMasterContainer.getDummy();
+		return element;
 	}
 
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
 	{
-		rpc.update(this, uidl, client);
-		
 		this.client = client;
-		paintableId = uidl.getId();
-
+		propertyUpdater.updateFromUIDL(uidl, client);
+		rpc.update(this, uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		PainterHelper.paintChildren(uidl, client);
-
-		addTabs(uidl, client);
-	}
-
-	private void addTabs(UIDL uidl, ApplicationConnection client)
-	{
-		if (uidl.hasAttribute("*members"))
-		{
-			// remove and unregister all members
-			for (Tab tab : getTabs())
-			{
-				removeTab(tab);
-			}
-
-			String[] members = uidl.getStringArrayAttribute("*members");
-
-			for (String member : members)
-			{
-				Paintable paintable = client.getPaintable(member);
-				
-				if (paintable instanceof Wrapper)
-				{
-					Tab tab = ((Wrapper) paintable).unwrap();
-					addTab(tab);
-				}
-			}
-		}
-		else
-		{
-			if (uidl.hasAttribute("*membersReplaced"))
-			{
-				String[] replaced = uidl.getStringArrayAttribute("*membersReplaced");
-
-				for (int i = 0; i < replaced.length; i += 2)
-				{
-					Tab oldTab = ((Wrapper) client.getPaintable(replaced[i])).unwrap();
-					Tab newTab = ((Wrapper) client.getPaintable(replaced[i + 1])).unwrap();
-
-					int pos = getTabNumber(oldTab.getID());
-					removeTab(oldTab);
-
-					addTab(newTab, pos);
-				}
-			}
-			if (uidl.hasAttribute("*membersRemoved"))
-			{
-				String[] removed = uidl.getStringArrayAttribute("*membersRemoved");
-
-				for (String member : removed)
-				{
-					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
-					removeTab(tab);
-				}
-			}
-			if (uidl.hasAttribute("*membersAdded"))
-			{
-				String[] added = uidl.getStringArrayAttribute("*membersAdded");
-
-				for (String member : added)
-				{
-					Tab tab = ((Wrapper) client.getPaintable(member)).unwrap();
-					addTab(tab);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -127,5 +87,4 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler
 	{
 		System.out.println("method call: " + method);
 	}
-
 }

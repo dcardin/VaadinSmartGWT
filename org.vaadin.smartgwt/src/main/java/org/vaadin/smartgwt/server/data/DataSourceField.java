@@ -19,7 +19,7 @@ package org.vaadin.smartgwt.server.data;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.fields.VDataSourceField;
-import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.DataClass;
 import org.vaadin.smartgwt.server.types.DateDisplayFormat;
 import org.vaadin.smartgwt.server.types.FieldType;
 import org.vaadin.smartgwt.server.types.OperatorId;
@@ -33,7 +33,7 @@ import com.vaadin.ui.ClientWidget;
  * Metadata about a DataSourceField, including its type and validators.
  */
 @ClientWidget(value=VDataSourceField.class)
-public class DataSourceField extends Canvas { //DataClass {
+public class DataSourceField extends DataClass {
 
 //    public static DataSourceField getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;

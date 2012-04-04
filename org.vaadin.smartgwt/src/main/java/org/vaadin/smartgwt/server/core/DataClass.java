@@ -1,7 +1,3 @@
-package org.vaadin.smartgwt.server.core;
-
-import org.vaadin.smartgwt.server.BaseWidget;
-
 /*
  * SmartGWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -18,380 +14,308 @@ import org.vaadin.smartgwt.server.BaseWidget;
  * Lesser General Public License for more details.
  */
 
-public class DataClass extends BaseWidget { //extends JsObject {
+package org.vaadin.smartgwt.server.core;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.vaadin.smartgwt.SmartGWTApplication;
+import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.types.ValueEnum;
+
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+import com.vaadin.terminal.Paintable;
+import com.vaadin.terminal.gwt.server.JsonPaintTarget;
+import com.vaadin.ui.AbstractComponent;
+
+// @formatter:off
+public class DataClass extends AbstractComponent {
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
+	
     public DataClass() {
-//        super(JSOHelper.createObject());FormItem
+    	
     }
 
-//    public DataClass(JavaScriptObject jsObj) {
-//        super(jsObj);
-//    }
+    public void setAttribute(String property, String value) {
+    	attributes.put(property, value);
+    }
 
-//    public JavaScriptObject getJsObj() {
-//        return jsObj;
-//    }
+    public String getAttribute(String property) {
+        return (String) attributes.get(property);
+    }
 
-//    public void setAttribute(String property, String value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public String getAttribute(String property) {
-//        return JSOHelper.getAttribute(jsObj, property);
-//    }
-//
-//    public String getAttributeAsString(String property) {
-//        return JSOHelper.getAttribute(jsObj, property);
-//    }
-//
-//    public void setAttribute(String property, int value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, double value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//    
-//    public void setAttribute(String property, long value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public Integer getAttributeAsInt(String property) {
-//        return JSOHelper.getAttributeAsInt(jsObj, property);
-//    }
-//
-//    public void setAttribute(String property, boolean value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public Boolean getAttributeAsBoolean(String property) {
-//        return JSOHelper.getAttributeAsBoolean(jsObj, property);
-//    }
-//
-//    public Double getAttributeAsDouble(String property) {
-//        return JSOHelper.getAttributeAsDouble(jsObj, property);
-//    }
-//    
-//    public Long getAttributeAsLong(String property) {
-//        Double dVal = this.getAttributeAsDouble(property);
-//        return dVal == null ? null : dVal.longValue();
-//    }
-//    
-//    public double[] getAttributeAsDoubleArray(String property) {
-//        return JSOHelper.getAttributeAsDoubleArray(jsObj, property);
-//    }
-//
-//    public void setAttribute(String property, int[] value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//    public void setAttribute(String property, Integer[] value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, DataClass[] value) {
-//        JSOHelper.setAttribute(jsObj, property, JSOHelper.convertToJavaScriptArray(value));
-//    }
-//
-//    public void setAttribute(String property, BaseClass[] value) {
-//        JSOHelper.setAttribute(jsObj, property, JSOHelper.convertToJavaScriptArray(value));
-//    }
-//
-//    public void setAttribute(String property, BaseWidget[] value) {
-//        JSOHelper.setAttribute(jsObj, property, JSOHelper.convertToJavaScriptArray(value));
-//    }
-//
-//
-//    public int[] getAttributeAsIntArray(String property) {
-//        return JSOHelper.getAttributeAsIntArray(jsObj, property);
-//    }
-//
-//    public void setAttribute(String property, String[] value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public String[] getAttributeAsStringArray(String property) {
-//        return JSOHelper.getAttributeAsStringArray(jsObj, property);
-//    }
-//
-//    public void setAttribute(String property, DataClass value) {
-//        JSOHelper.setAttribute(jsObj, property, value == null ? null : value.getJsObj());
-//    }
-//
-//    public void setAttribute(String property, BaseClass value) {
-//        JSOHelper.setAttribute(jsObj, property, value == null ? null : value.getOrCreateJsObj());
-//    }
-//
-//
-//    public void setAttribute(String property, JavaScriptObject value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, Date value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//    
-//    public void setAttribute(String property, double[] value) {
-//    	JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, Boolean value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, Map value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, ValueEnum[] value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, ValueEnum value) {
-//        JSOHelper.setAttribute(jsObj, property, value == null ? null : value.getValue());
-//    }
-//    
-//    /**
-//     * Set the attribute value as and Object. Note that this method converts the Java primitive Object types, Dates and Maps to the underyling
-//     * JavaScriptObject value. All other object types are set as Object type attributes and users are expected to call {@link #getAttributeAsObject(String)}
-//     * in order to retrieve them.
-//     *
-//     * @param property the attribute name
-//     * @param value the attribute value.
-//     */
-//    public void setAttribute(String property, Object value) {
-//        if (value instanceof String || value == null) {
-//            setAttribute(property, (String) value);
-//        } else if (value instanceof Integer) {
-//            setAttribute(property, ((Integer) value).intValue());
-//        } else if (value instanceof Float) {
-//            setAttribute(property, ((Float) value).floatValue());
-//        } else if (value instanceof Double) {
-//            setAttribute(property, ((Double) value).doubleValue());
-//        } else if (value instanceof Long) {
-//            setAttribute(property, ((Long) value).longValue());
-//        } else if (value instanceof Boolean) {
-//            setAttribute(property, ((Boolean) value).booleanValue());
-//        } else if (value instanceof Date) {
-//            setAttribute(property, (Date) value);
-//        } else if (value instanceof JavaScriptObject) {
-//            setAttribute(property, ((JavaScriptObject) value));
-//        } else if (value instanceof Map) {
-//            setAttribute(property, JSOHelper.convertMapToJavascriptObject((Map) value));
-//        } else  {
-//            JSOHelper.setAttribute(jsObj, property, value);
-//        }
-//    }
-//
-//    public void setAttribute(String property, Double value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, Integer value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//    public void setAttribute(String property, Float value) {
-//        JSOHelper.setAttribute(jsObj, property, value);
-//    }
-//
-//
-//    public Float getAttributeAsFloat(String property) {
-//        return JSOHelper.getAttributeAsFloat(jsObj, property);
-//    }
-//
-//    public Date getAttributeAsDate(String property) {
-//        return JSOHelper.getAttributeAsDate(jsObj, property);
-//    }
-//
-//    public Object getAttributeAsObject(String property) {
-//        return JSOHelper.getAttributeAsObject(jsObj, property);
-//    }
-//
-//    public Map getAttributeAsMap(String property) {
-//        return JSOHelper.getAttributeAsMap(jsObj, property);
-//    }
-//
-//    /**
-//     * Get the attribute value as a Record.
-//     *
-//     * @param property the property name
-//     * @return the record value
-//     */
-//    public Record getAttributeAsRecord(String property) {
-//        return Record.getOrCreateRef(getAttributeAsJavaScriptObject(property));
-//    }
-//
-//    public JavaScriptObject getAttributeAsJavaScriptObject(String property) {
-//        return JSOHelper.getAttributeAsJavaScriptObject(jsObj, property);
-//    }
-//    
-//    public String[] getAttributes() {
-//        return JSOHelper.getProperties(jsObj);
-//    }
+    public String getAttributeAsString(String property) {
+        return (String) attributes.get(property);
+    }
 
-    //event handling code
-//    private HandlerManager manager = null;
-//
-//    public void fireEvent(GwtEvent<?> event) {
-//        if (manager != null) {
-//            manager.fireEvent(event);
-//        }
-//    }
+    public void setAttribute(String property, int value) {
+        attributes.put(property, value);
+    }
 
-//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
-//           final H handler, GwtEvent.Type<H> type) {
-//        return ensureHandlers().addHandler(type, handler);
-//    }
+    public void setAttribute(String property, double value) {
+        attributes.put(property, value);
+    }
+    
+    public void setAttribute(String property, long value) {
+    	attributes.put(property, value);
+    }
+
+    public Integer getAttributeAsInt(String property) {
+        return (Integer) attributes.get(property);
+    }
+
+    public void setAttribute(String property, boolean value) {
+    	attributes.put(property, value);
+    }
+
+    public Boolean getAttributeAsBoolean(String property) {
+        return (Boolean) attributes.get(property);
+    }
+
+    public Double getAttributeAsDouble(String property) {
+    	return (Double) attributes.get(property);
+    }
+    
+    public Long getAttributeAsLong(String property) {
+        Double dVal = this.getAttributeAsDouble(property);
+        return dVal == null ? null : dVal.longValue();
+    }
+    
+    public double[] getAttributeAsDoubleArray(String property) {
+        return (double[]) attributes.get(property);
+    }
+
+    public void setAttribute(String property, int[] value) {
+        attributes.put(property, value);
+    }
+    public void setAttribute(String property, Integer[] value) {
+        attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, DataClass[] value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, BaseClass[] value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, BaseWidget[] value) {
+    	attributes.put(property, value);
+    }
+
+    public int[] getAttributeAsIntArray(String property) {
+        return (int[]) attributes.get(property);
+    }
+
+    public void setAttribute(String property, String[] value) {
+       attributes.put(property, value);
+    }
+
+    public String[] getAttributeAsStringArray(String property) {
+    	return (String[]) attributes.get(property);
+    }
+
+    public void setAttribute(String property, DataClass value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, BaseClass value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, Date value) {
+    	attributes.put(property, value);
+    }
+    
+    public void setAttribute(String property, double[] value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, Boolean value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, Map value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, ValueEnum[] value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, ValueEnum value) {
+    	attributes.put(property, value);
+    }
+    
+    /**
+     * Set the attribute value as and Object. Note that this method converts the Java primitive Object types, Dates and Maps to the underyling
+     * JavaScriptObject value. All other object types are set as Object type attributes and users are expected to call {@link #getAttributeAsObject(String)}
+     * in order to retrieve them.
+     *
+     * @param property the attribute name
+     * @param value the attribute value.
+     */
+    public void setAttribute(String property, Object value) {
+        if (value instanceof String || value == null) {
+            setAttribute(property, (String) value);
+        } else if (value instanceof Integer) {
+            setAttribute(property, ((Integer) value).intValue());
+        } else if (value instanceof Float) {
+            setAttribute(property, ((Float) value).floatValue());
+        } else if (value instanceof Double) {
+            setAttribute(property, ((Double) value).doubleValue());
+        } else if (value instanceof Long) {
+            setAttribute(property, ((Long) value).longValue());
+        } else if (value instanceof Boolean) {
+            setAttribute(property, ((Boolean) value).booleanValue());
+        } else if (value instanceof Date) {
+            setAttribute(property, (Date) value);
+        } else if (value instanceof Map) {
+            setAttribute(property, (Map) value);
+        } else  {
+        	attributes.put(property, value);
+        }
+    }
+
+    public void setAttribute(String property, Double value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, Integer value) {
+    	attributes.put(property, value);
+    }
+
+    public void setAttribute(String property, Float value) {
+    	attributes.put(property, value);
+    }
+
+
+    public Float getAttributeAsFloat(String property) {
+        return (Float) attributes.get(property);
+    }
+
+    public Date getAttributeAsDate(String property) {
+    	return (Date) attributes.get(property);
+    }
+
+    public Object getAttributeAsObject(String property) {
+    	return attributes.get(property);
+    }
+
+    public Map getAttributeAsMap(String property) {
+    	return (Map) attributes.get(property);
+    }
 
     /**
-     * Ensures the existence of the handler manager.
+     * Get the attribute value as a Record.
      *
-     * @return the handler manager
-     **/
-//    HandlerManager ensureHandlers() {
-//        return manager == null ? manager = new HandlerManager(this)
-//        : manager;
-//    }
+     * @param property the property name
+     * @return the record value
+     */
+    public Record getAttributeAsRecord(String property) {
+    	return (Record) attributes.get(property);
+    }
+    
+    public String[] getAttributes() {
+        return attributes.keySet().toArray(new String[0]);
+    }
+    
+    //@formatter:on
 
-//    HandlerManager getManager() {
-//        return manager;
-//    }
-
-//    public int getHandlerCount(GwtEvent.Type<?> type) {
-//        return manager == null? 0 : manager.getHandlerCount(type);
-//    }
-//    
-    // @formatter:on
-    // Vaadin integration
-/*	protected Map<String, Object> attributes = new HashMap<String, Object>();
-
-	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
+    @Override
+	public void paintContent(PaintTarget target) throws PaintException
 	{
-		attributes.put(attribute, value);
-	}
+		JsonPaintTarget jspt = (JsonPaintTarget) target;
 
-	public void setAttribute(String attribute, Object value)
-	{
-		setAttribute(attribute, value, true);
-	}
-
-	public String getAttributeAsString(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return value.toString();
-	}
-
-	public String getAttribute(String attribute)
-	{
-		return getAttributeAsString(attribute);
-	}
-
-	public Integer getAttributeAsInt(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return Integer.valueOf(value.toString());
-	}
-
-	public Boolean getAttributeAsBoolean(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return Boolean.valueOf(value.toString());
-	}
-
-	public Double getAttributeAsDouble(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return Double.valueOf(value.toString());
-	}
-
-	public Float getAttributeAsFloat(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return Float.valueOf(value.toString());
-	}
-
-	
-	public Map<?,?> getAttributeAsMap(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return (Map<?,?>) value;
-	}
-
-	public Date getAttributeAsDate(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
+		for (Map.Entry<String, Object> entry : attributes.entrySet())
 		{
-			DateFormat df = new SimpleDateFormat();
-			try
+			Object value = entry.getValue();
+			String name = entry.getKey();
+
+			if (value == null)
 			{
-				Date d = df.parse(value.toString());
-				return d;
+				target.addAttribute(name, "null");
 			}
-			catch (Exception e)
+			else if (value instanceof Boolean)
 			{
-				e.printStackTrace();
+				target.addAttribute(name, "b" + String.valueOf(value));
+			}
+			else if (value instanceof Integer)
+			{
+				target.addAttribute(name, "i" + String.valueOf(value));
+			}
+			else if (value instanceof Float)
+			{
+				target.addAttribute(name, "f" + String.valueOf(value));
+			}
+			else if (value instanceof Long)
+			{
+				target.addAttribute(name, "l" + String.valueOf(value));
+			}
+			else if (value instanceof Double)
+			{
+				target.addAttribute(name, "d" + String.valueOf(value));
+			}
+			else if (value instanceof String)
+			{
+				target.addAttribute(name, "s" + String.valueOf(value));
+			}
+			else if (value instanceof String[])
+			{
+				if (name.charAt(0) != '*')
+					name = "!" + name;
+
+				target.addAttribute(name, (String[]) value);
+			}
+			else if (value instanceof Record[])
+			{
+				try
+				{
+					String json = SmartGWTApplication.getJsonString((Record[]) value);
+					System.out.println(json);
+					target.addAttribute(name, "j" + json);
+
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			else if (value instanceof Paintable[])
+			{
+				List<String> references = new ArrayList<String>();
+
+				for (Paintable p : (Paintable[]) value)
+				{
+					if (jspt.needsToBePainted(p))
+						p.paint(target);
+
+					references.add(jspt.getPaintIdentifier(p));
+				}
+
+				if (name.charAt(0) != '*')
+					name = "[" + name;
+
+				target.addAttribute(name, references.toArray()); // [ = array
+			}
+			else if (value instanceof Paintable)
+			{
+				String ref = jspt.getPaintIdentifier((Paintable) value);
+
+				if (jspt.needsToBePainted((Paintable) value))
+					((Paintable) value).paint(target);
+
+				if (name.charAt(0) != '*')
+					name = "#" + name;
+
+				target.addAttribute(name, ref); // # = reference
 			}
 		}
-		return null;
 	}
-
-	public String[] getAttributeAsStringArray(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return (String[]) value;
-	}
-
-	public String[] getAttributeAsJava(String attribute)
-	{
-		Object value = attributes.get(attribute);
-
-		if (value == null)
-			return null;
-		else
-			return (String[]) value;
-	}
-
-	public <T> T getAttributeAsObject(String attribute)
-	{
-		Object value = attributes.get(attribute);
-		return (T) value;
-	}
-	
-	public JavaScriptObject getAttributeAsJavaScriptObject(String property)
-	{
-		throw new IllegalStateException();
-	} 
-*/
 }

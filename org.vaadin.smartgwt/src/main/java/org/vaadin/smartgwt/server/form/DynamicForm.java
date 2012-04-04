@@ -2,9 +2,11 @@ package org.vaadin.smartgwt.server.form;
 
 import java.util.Arrays;
 
+import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
-import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.DSOperationType;
 import org.vaadin.smartgwt.server.types.DateDisplayFormat;
@@ -17,12 +19,15 @@ import org.vaadin.smartgwt.server.types.TitleOrientation;
 import org.vaadin.smartgwt.server.types.VisibilityMode;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+
 /**
  * Server side component for the VDynamicForm widget.
  */
 // @formatter:off
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.VDynamicForm.class)
-public class DynamicForm extends Layout
+public class DynamicForm extends Canvas
 {
 	private static final long serialVersionUID = 1L;
 
@@ -4121,19 +4126,13 @@ public class DynamicForm extends Layout
     // @formatter:on
 	// ******** Vaadin Integration
 
-	private FormItem[] fields;
+	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final PaintableList<FormItem> fields = propertyPainter.addPaintableList("fields");
 
-	// @formatter:on
 	public void addField(FormItem item)
 	{
-		FormItem[] items = getFields();
-		if (items == null)
-		{
-			items = new FormItem[0];
-		}
-		items = Arrays.copyOf(items, items.length + 1);
-		items[items.length - 1] = item;
-		setFields(items);
+		item.setParent(this);
+		this.fields.add(item);
 	}
 
 	/**
@@ -4147,24 +4146,24 @@ public class DynamicForm extends Layout
 	 */
 	public void setFields(FormItem... fields)
 	{
-		setAttribute("*fields", fields, true);
-		for (FormItem item : fields)
+		for (FormItem formItem : this.fields)
 		{
-			item.setParent(this);
+			formItem.setParent(null);
 		}
-		this.fields = fields;
+
+		this.fields.clear();
+
+		for (FormItem formItem : fields)
+		{
+			formItem.setParent(this);
+		}
+
+		this.fields.addAll(Arrays.asList(fields));
 	}
 
 	public FormItem[] getFields()
 	{
-//		if (fields == null || getDataSource() != null)
-//		{
-//			return convertToFormItemArray(getAttributeAsJavaScriptObject("fields"));
-//		}
-//		else
-//		{
-			return fields;
-//		}
+		return this.fields.toArray(new FormItem[0]);
 	}
 
 	public DataSource getDataSource()
@@ -4172,4 +4171,10 @@ public class DynamicForm extends Layout
 		return getAttributeAsObject("dataSource");
 	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException
+	{
+		propertyPainter.paintContent(target);
+		super.paintContent(target);
+	}
 }
