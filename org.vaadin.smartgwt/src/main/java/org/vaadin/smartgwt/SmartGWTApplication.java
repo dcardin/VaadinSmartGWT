@@ -53,8 +53,7 @@ import argo.jdom.JsonRootNode;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
-public class SmartGWTApplication extends Application implements MasterContainerHolder
-{
+public class SmartGWTApplication extends Application implements MasterContainerHolder {
 	private static final long serialVersionUID = 1L;
 
 	private TabSet tabset;
@@ -62,14 +61,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private final MasterContainer masterContainer = new MasterContainer();
 
 	@Override
-	public MasterContainer getMasterContainer()
-	{
+	public MasterContainer getMasterContainer() {
 		return masterContainer;
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
 		final Window mainWindow = new Window("BorderLayout Test 2");
 		setMainWindow(mainWindow);
 		mainWindow.setStyleName(null);
@@ -83,8 +80,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		mainWindow.setContent(masterContainer);
 	}
 
-	public Canvas getSplitTest()
-	{
+	public Canvas getSplitTest() {
 		VSplitLayout split = new VSplitLayout(true, true);
 		split.setWidth100();
 		split.setAutoHeight();
@@ -98,8 +94,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return split;
 	}
 
-	public SectionStack getStackView()
-	{
+	public SectionStack getStackView() {
 		SectionStack sectionStack = new SectionStack();
 		sectionStack.setWidth(200);
 		final ListGrid listGrid = new ListGrid();
@@ -120,8 +115,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return sectionStack;
 	}
 
-	public static String getJsonString(Object object)
-	{
+	public static String getJsonString(Object object) {
 		if (object instanceof Map == false)
 			return null;
 
@@ -130,25 +124,21 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		Map<String, Object> record = (Map<String, Object>) object;
 		JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
-		for (Map.Entry<String, Object> entry : record.entrySet())
-		{
+		for (Map.Entry<String, Object> entry : record.entrySet()) {
 			nodeBuilder.withField(entry.getKey(), aJsonString(entry.getValue() == null ? "" : entry.getValue().toString()));
 		}
 
 		return JSON_FORMATTER.format(builder.build());
 	}
 
-	public static String getJsonString2(Record[] records)
-	{
+	public static String getJsonString2(Record[] records) {
 		JsonObjectNodeBuilder builder = anObjectBuilder();
 		JsonArrayNodeBuilder recordBuilder = anArrayBuilder();
 
-		for (Record record : records)
-		{
+		for (Record record : records) {
 			JsonObjectNodeBuilder nodeBuilder = anObjectBuilder();
 
-			for (int i = 0; i < record.getAttributes().length; i++)
-			{
+			for (int i = 0; i < record.getAttributes().length; i++) {
 				final String name = record.getAttributes()[i];
 				final Object value = record.getAttributeAsObject(name);
 				nodeBuilder.withField(name, aJsonString(value == null ? "" : value.toString()));
@@ -162,8 +152,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return JSON_FORMATTER.format(jso);
 	}
 
-	public static String getJsonString(Record[] records) throws Exception
-	{
+	public static String getJsonString(Record[] records) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
 
@@ -171,8 +160,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		buffer.append('[');
 
-		for (Record record : records)
-		{
+		for (Record record : records) {
 			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
 			buffer.append(',');
 		}
@@ -183,21 +171,17 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return buffer.toString();
 	}
 
-	private Canvas getListGrid()
-	{
-		final ListGrid countryGrid = new ListGrid()
-			{
-				@Override
-				public void selectionChanged(ListGridRecord[] selections)
-				{
-					System.out.print("records: ");
-					for (ListGridRecord record : selections)
-					{
-						System.out.print(record.getAttributeAsString("countryName") + ",");
-					}
-					System.out.println();
+	private Canvas getListGrid() {
+		final ListGrid countryGrid = new ListGrid() {
+			@Override
+			public void selectionChanged(ListGridRecord[] selections) {
+				System.out.print("records: ");
+				for (ListGridRecord record : selections) {
+					System.out.print(record.getAttributeAsString("countryName") + ",");
 				}
-			};
+				System.out.println();
+			}
+		};
 
 		countryGrid.setWidth(500);
 		countryGrid.setHeight(224);
@@ -224,8 +208,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return countryGrid;
 	}
 
-	private Canvas getEditableListGrid()
-	{
+	private Canvas getEditableListGrid() {
 		VLayout surrounding = new VLayout();
 		surrounding.setSizeFull();
 
@@ -310,8 +293,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return surrounding;
 	}
 
-	private Layout paintBorderLayout()
-	{
+	private Layout paintBorderLayout() {
 		final VLayout outerLayout = new VLayout();
 		outerLayout.setSizeFull();
 		outerLayout.setBackgroundColor("cyan");
@@ -351,8 +333,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return outerLayout;
 	}
 
-	private Layout complexLayout(boolean subPanel)
-	{
+	private Layout complexLayout(boolean subPanel) {
 		BorderLayout layout = new BorderLayout();
 		layout.setSizeFull();
 
@@ -379,8 +360,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return layout;
 	}
 
-	private Layout getEricLayout()
-	{
+	private Layout getEricLayout() {
 		HLayout layout = new HLayout();
 		layout.setWidth100();
 		layout.setHeight100();
@@ -409,16 +389,14 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return layout;
 	}
 
-	class BlueBox extends Label
-	{
+	class BlueBox extends Label {
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public BlueBox(String contents)
-		{
+		public BlueBox(String contents) {
 			super("");
 			setAlign(Alignment.CENTER);
 			setBorder("1px solid #808080");
@@ -426,8 +404,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 			setContents(contents);
 		}
 
-		public BlueBox(Integer width, Integer height, String contents)
-		{
+		public BlueBox(Integer width, Integer height, String contents) {
 			this(contents);
 			if (width != null)
 				setWidth(String.valueOf(width));
@@ -435,8 +412,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				setHeight(String.valueOf(height));
 		}
 
-		public BlueBox(Integer width, String height, String contents)
-		{
+		public BlueBox(Integer width, String height, String contents) {
 			this(contents);
 			if (width != null)
 				setWidth(String.valueOf(width));
@@ -444,8 +420,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				setHeight(String.valueOf(height));
 		}
 
-		public BlueBox(String width, String height, String contents)
-		{
+		public BlueBox(String width, String height, String contents) {
 			this(contents);
 			if (width != null)
 				setWidth(String.valueOf(width));
@@ -454,14 +429,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}
 	}
 
-	private BaseWidget getButtonLayout()
-	{
+	private BaseWidget getButtonLayout() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
 
-		for (int i = 0; i < 10; i++)
-		{
+		for (int i = 0; i < 10; i++) {
 			Button button = new Button("Button " + i);
 
 			button.setHeight("*");
@@ -471,8 +444,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return layout;
 	}
 
-	private Canvas getMainPanel()
-	{
+	private Canvas getMainPanel() {
 		final List<Tab> tabs = new ArrayList<Tab>();
 
 		tabset = new TabSet();
@@ -490,81 +462,69 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tab2.setPane(getEditableListGrid());
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
-		vl.addMember(new Button("Press me 1!")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
+		vl.addMember(new Button("Press me 1!") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
 
-					tabset.selectTab(1);
-				}
-			});
+				tabset.selectTab(1);
+			}
+		});
 
-		vl.addMember(new Button("Press me 2!")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
+		vl.addMember(new Button("Press me 2!") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
 
-					org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
-					window.setTitle("Modal Window");
-					window.setWidth(900);
-					window.setHeight(700);
-					window.setShowMinimizeButton(false);
-					window.setShowResizer(true);
-					window.setIsModal(true);
-					window.setShowModalMask(true);
-					window.setAutoCenter(true);
-					window.setCanDragReposition(true);
-					window.setCanDragResize(true);
-					window.addItem(getMainPanel());
-					window.show();
-				}
-			});
+				org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
+				window.setTitle("Modal Window");
+				window.setWidth(900);
+				window.setHeight(700);
+				window.setShowMinimizeButton(false);
+				window.setShowResizer(true);
+				window.setIsModal(true);
+				window.setShowModalMask(true);
+				window.setAutoCenter(true);
+				window.setCanDragReposition(true);
+				window.setCanDragResize(true);
+				window.addItem(getMainPanel());
+				window.show();
+			}
+		});
 
-		vl.addMember(new Button("Press me 3!")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
-					tabset.removeTab(tab3);
-				}
-			});
+		vl.addMember(new Button("Press me 3!") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				tabset.removeTab(tab3);
+			}
+		});
 
 		vl.addMember(new Button("Press me 4!"));
 
-		vl.addMember(new Button("Add Tab")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
-					tabset.addTab(newTab("Title", newLabel("LABEL", "blue")));
-				}
-			});
+		vl.addMember(new Button("Add Tab") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				tabset.addTab(newTab("Title", newLabel("LABEL", "blue")));
+			}
+		});
 
-		vl.addMember(new Button("Add Tab Index 0")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
-					tabset.addTab(newTab("Title", newLabel("INDEXED", "red")), 0);
-				}
-			});
+		vl.addMember(new Button("Add Tab Index 0") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				tabset.addTab(newTab("Title", newLabel("INDEXED", "red")), 0);
+			}
+		});
 
-		vl.addMember(new Button("Remove Tab")
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
-					tabset.removeTab(tabset.getTabs()[tabset.getTabs().length - 1]);
-				}
-			});
+		vl.addMember(new Button("Remove Tab") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				tabset.removeTab(tabset.getTabs()[tabset.getTabs().length - 1]);
+			}
+		});
 
 		Label filler = new Label("");
 		filler.setHeight("*");
@@ -593,49 +553,40 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return tabset;
 	}
 
-	private Layout getVertical()
-	{
+	private Layout getVertical() {
 		final VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
 
-		for (int i = 1; i <= 10; i++)
-		{
-			final Button button = new Button("Button " + i)
-				{
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+		for (int i = 1; i <= 10; i++) {
+			final Button button = new Button("Button " + i) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
-					@Override
-					public void changeVariables(Object source, Map<String, Object> variables)
-					{
-						if (new Random().nextBoolean() == true)
-						{
-							layout.removeMember(this); // layout.getMembers()[0]);
-						}
-						else
-						{
-							layout.replaceMember(this, new Button("unclickable button"));
-						}
+				@Override
+				public void changeVariables(Object source, Map<String, Object> variables) {
+					if (new Random().nextBoolean() == true) {
+						layout.removeMember(this); // layout.getMembers()[0]);
+					} else {
+						layout.replaceMember(this, new Button("unclickable button"));
 					}
-				};
+				}
+			};
 			layout.addMember(button);
 		}
 
 		return layout;
 	}
 
-	private Tab newTab(String title, Canvas pane)
-	{
+	private Tab newTab(String title, Canvas pane) {
 		final Tab tab = new Tab(title);
 		tab.setPane(pane);
 		return tab;
 	}
 
-	private Canvas newSplitLayoutPane()
-	{
+	private Canvas newSplitLayoutPane() {
 		final VSplitLayout vLayout = new VSplitLayout();
 		final HSplitLayout hLayout = new HSplitLayout();
 		hLayout.setLeftCanvas(newLabel("LEFT", "blue"));
@@ -645,15 +596,13 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return vLayout;
 	}
 
-	private Label newLabel(String content, String bgColor)
-	{
+	private Label newLabel(String content, String bgColor) {
 		final Label label = new Label(content);
 		label.setBackgroundColor(bgColor);
 		return label;
 	}
 
-	public VLayout getSpecial()
-	{
+	public VLayout getSpecial() {
 		VLayout vlayout = new VLayout();
 		vlayout.setMargin(15);
 		vlayout.setWidth("100%");
@@ -671,8 +620,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return vlayout;
 	}
 
-	public DynamicForm createForm(int nbCols)
-	{
+	public DynamicForm createForm(int nbCols) {
 		DynamicForm form = new DynamicForm();
 		form.setWidth("100%");
 		form.setNumCols(nbCols);
@@ -780,36 +728,29 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		return form;
 	}
 
-	public static <T> Iterable<T> iterate(final Enumeration<T> en)
-	{
-		final Iterator<T> iterator = new Iterator<T>()
-			{
-				@Override
-				public boolean hasNext()
-				{
-					return en.hasMoreElements();
-				}
+	public static <T> Iterable<T> iterate(final Enumeration<T> en) {
+		final Iterator<T> iterator = new Iterator<T>() {
+			@Override
+			public boolean hasNext() {
+				return en.hasMoreElements();
+			}
 
-				@Override
-				public T next()
-				{
-					return en.nextElement();
-				}
+			@Override
+			public T next() {
+				return en.nextElement();
+			}
 
-				@Override
-				public void remove()
-				{
-					throw new UnsupportedOperationException();
-				}
-			};
-		return new Iterable<T>()
-			{
-				@Override
-				public Iterator<T> iterator()
-				{
-					return iterator;
-				}
-			};
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return iterator;
+			}
+		};
 	}
 
 }
