@@ -8,7 +8,7 @@ import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Window;
 import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
-import org.vaadin.smartgwt.server.core.PaintableReference;
+import org.vaadin.smartgwt.server.core.ComponentReference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
 
@@ -25,10 +25,10 @@ import com.vaadin.ui.ComponentContainer;
 public class MasterContainer extends BaseWidget implements ComponentContainer
 {
 	private final ComponentPropertyPainter paintablePropertyPainter = new ComponentPropertyPainter(this);
-	private final PaintableReference<SC> sc = paintablePropertyPainter.addProperty("sc");
+	private final ComponentReference<SC> sc = paintablePropertyPainter.addProperty("sc");
 	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
-	private final PaintableReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
-	private final PaintableReference<Window> window = paintablePropertyPainter.addProperty("window");
+	private final ComponentReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
+	private final ComponentReference<Window> window = paintablePropertyPainter.addProperty("window");
 
 	public MasterContainer()
 	{

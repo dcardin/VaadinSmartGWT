@@ -12,7 +12,7 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.Component;
 
-public class ComponentList<E extends Component> implements PaintableProperty, Iterable<E> {
+public class ComponentList<E extends Component> implements ComponentProperty, Iterable<E> {
 	private final Component parent;
 	private final List<E> components = Lists.newArrayList();
 	private final List<Instruction<E>> instructions = Lists.newArrayList();
