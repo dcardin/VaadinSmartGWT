@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
+import com.vaadin.ui.Component;
 
 public class PaintablePropertyPainter
 {
@@ -18,9 +19,9 @@ public class PaintablePropertyPainter
 		return reference;
 	}
 
-	public <T extends Paintable> PaintableList<T> addPaintableList(String propertyName)
+	public <T extends Component> ComponentList<T> addPaintableList(String propertyName)
 	{
-		final PaintableList<T> paintables = new PaintableList<T>("$" + propertyName);
+		final ComponentList<T> paintables = new ComponentList<T>("$" + propertyName);
 		properties.add(paintables);
 		return paintables;
 	}

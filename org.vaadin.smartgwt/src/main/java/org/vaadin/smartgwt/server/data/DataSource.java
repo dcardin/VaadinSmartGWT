@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
 import org.vaadin.smartgwt.server.core.BaseClass;
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
@@ -3365,7 +3365,7 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 	// Vaadin Integration
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
+	private final ComponentList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
 
 	public DataSource() {
 		scClassName = "DataSource";

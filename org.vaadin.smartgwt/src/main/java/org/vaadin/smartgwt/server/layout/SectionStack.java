@@ -17,7 +17,7 @@
 package org.vaadin.smartgwt.server.layout;
 
 import org.vaadin.smartgwt.client.ui.layout.VSectionStack;
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.types.LocatorStrategy;
 import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
@@ -1015,7 +1015,7 @@ public class SectionStack extends VLayout
 	// @formatter:on
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<SectionStackSection> sections = propertyPainter.addPaintableList("sections");
+	private final ComponentList<SectionStackSection> sections = propertyPainter.addPaintableList("sections");
 
 	public SectionStack() {
 		scClassName = "SectionStack";

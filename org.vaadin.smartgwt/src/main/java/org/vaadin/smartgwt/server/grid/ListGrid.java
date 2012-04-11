@@ -27,7 +27,7 @@ import org.vaadin.rpc.shared.Method;
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
@@ -14315,7 +14315,7 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 	// Vaaddin integration
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<ListGridField> fields = propertyPainter.addPaintableList("fields");
+	private final ComponentList<ListGridField> fields = propertyPainter.addPaintableList("fields");
 	private final ServerSideProxy client = new ServerSideProxy(this);
 	private DataSource dataSource;
 

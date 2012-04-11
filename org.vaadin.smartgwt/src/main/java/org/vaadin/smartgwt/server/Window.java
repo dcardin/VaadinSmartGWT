@@ -3,7 +3,7 @@ package org.vaadin.smartgwt.server;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
@@ -1610,7 +1610,7 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
  // @formatter:on
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<Canvas> items = propertyPainter.addPaintableList("items");
+	private final ComponentList<Canvas> items = propertyPainter.addPaintableList("items");
 	private final MasterContainer container;
 
 	public Window(MasterContainer container) {

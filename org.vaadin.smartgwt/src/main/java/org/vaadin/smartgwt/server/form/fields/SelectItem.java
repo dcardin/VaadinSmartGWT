@@ -18,7 +18,7 @@ package org.vaadin.smartgwt.server.form.fields;
 
 import java.util.Arrays;
 
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.grid.ListGridField;
@@ -1453,7 +1453,7 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
     // @formatter:on
 	// Vaadin integration
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<ListGridField> pickListFields = propertyPainter.addPaintableList("pickListFields");
+	private final ComponentList<ListGridField> pickListFields = propertyPainter.addPaintableList("pickListFields");
 	private DataSource optionDataSource;
 
 	public SelectItem() {

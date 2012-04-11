@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintableList;
+import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
@@ -1358,7 +1358,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	// ********************* Vaadin Integration ***********************
 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<Canvas> members = propertyPainter.addPaintableList("members");
+	private final ComponentList<Canvas> members = propertyPainter.addPaintableList("members");
 
 	public Layout() {
 		scClassName = "Layout";
