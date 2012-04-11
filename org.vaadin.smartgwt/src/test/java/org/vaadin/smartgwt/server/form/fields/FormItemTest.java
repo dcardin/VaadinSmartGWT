@@ -59,17 +59,19 @@ public class FormItemTest {
 	}
 
 	@Test
-	public void test_setIconsInPaintableArray() {
+	public void test_setIcons() {
 		final FormItemIcon icon = new FormItemIcon();
 		formItem.setIcons(icon);
-		verify(icons).set(new FormItemIcon[] { icon });
+		assertArrayEquals(new FormItemIcon[] { icon }, formItem.getIcons());
 	}
 
 	@Test
-	public void test_paintsPaintablePropertyPainter() throws PaintException {
+	public void test_paintsIconsOnPaint() throws PaintException {
+		final FormItemIcon icon = mock(FormItemIcon.class);
 		final PaintTarget target = mock(JsonPaintTarget.class);
+		formItem.setIcons(icon);
 		formItem.paint(target);
-		verify(propertyPainter).paintContent(target);
+		verify(icon).paint(target);
 	}
 
 	private static void assertPropertyChangeEvent(PropertyChangeEvent event, Object source, String propertyName, Object oldValue, Object newValue) {

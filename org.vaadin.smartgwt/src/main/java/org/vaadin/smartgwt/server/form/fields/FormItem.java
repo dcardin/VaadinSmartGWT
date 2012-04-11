@@ -4778,6 +4778,10 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final PaintableArray<FormItemIcon> icons = propertyPainter.addPaintableArray("icons");
 
+	public FormItemIcon[] getIcons() {
+		return this.icons.get();
+	}
+
 	/**
 	 * An array of descriptor objects for icons to display in a line after this form item. These icons are clickable images, often used to display some kind of
 	 * helper for populating a form item.
