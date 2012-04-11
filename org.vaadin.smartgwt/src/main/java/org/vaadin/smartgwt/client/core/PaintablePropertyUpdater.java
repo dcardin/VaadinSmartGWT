@@ -81,7 +81,6 @@ public class PaintablePropertyUpdater {
 	private static PaintableProperty newPaintableProperty(final String name, final String type) {
 		if ("List".equals(type)) {
 			return new PaintableList(name);
-
 		} else if ("Reference".equals(type)) {
 			return new PaintableReference(name);
 		} else if ("Array".equals(type)) {

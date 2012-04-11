@@ -17,7 +17,6 @@ package org.vaadin.smartgwt.server.form.fields;
 
 import com.vaadin.ui.ClientWidget;
 
-
 /**
  * Convenience class for setting pickers for form fields. This is a specialized subclass of FormItemIcon that sets up the correct picker dimensions and spacing.
  * <p>
@@ -26,8 +25,7 @@ import com.vaadin.ui.ClientWidget;
  * @see FormItem#setIcons(FormItemIcon...)
  */
 @ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VPickerIcon.class)
-public class PickerIcon extends FormItemIcon
-{
+public class PickerIcon extends FormItemIcon {
 	public static Picker CLEAR = new Picker("[SKIN]/pickers/clear_picker.$IMG_TYPE");
 	public static Picker COMBO_BOX = new Picker("[SKIN]/pickers/comboBoxPicker.$IMG_TYPE");
 	public static Picker DATE = new Picker("[SKIN]/pickers/date_picker.$IMG_TYPE");
@@ -40,25 +38,21 @@ public class PickerIcon extends FormItemIcon
 	 * @param icon
 	 *            the icon
 	 */
-	public PickerIcon(Picker icon)
-	{
+	public PickerIcon(Picker icon) {
 		setSrc(icon.getUrl());
 		setWidth((Integer) 18);
 		setHeight((Integer) 22);
 		setAttribute("hspace", 0);
 	}
 
-	public static class Picker
-	{
+	public static class Picker {
 		private final String url;
 
-		public Picker(String url)
-		{
+		public Picker(String url) {
 			this.url = url;
 		}
 
-		public String getUrl()
-		{
+		public String getUrl() {
 			return url;
 		}
 	}

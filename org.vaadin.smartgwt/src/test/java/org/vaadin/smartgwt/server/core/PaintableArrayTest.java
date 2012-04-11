@@ -11,41 +11,35 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
 
-public class PaintableArrayTest
-{
+public class PaintableArrayTest {
 	private final String tagName = "propertyName";
 	private final Paintable[] paintables = new Paintable[0];
 	private PaintableArray<Paintable> paintableArray;
 
 	@Before
-	public void before()
-	{
+	public void before() {
 		paintableArray = new PaintableArray<Paintable>(tagName, paintables);
 	}
 
 	@Test
-	public void test_injectsTagName()
-	{
+	public void test_injectsTagName() {
 		assertEquals(tagName, paintableArray.getTagName());
 	}
 
 	@Test
-	public void test_injectsPaintableArrayReference()
-	{
+	public void test_injectsPaintableArrayReference() {
 		assertSame(paintables, paintableArray.get());
 	}
 
 	@Test
-	public void test_setPaintableArrayReference()
-	{
+	public void test_setPaintableArrayReference() {
 		final Paintable[] paintables = new Paintable[0];
 		paintableArray.set(paintables);
 		assertSame(paintables, paintableArray.get());
 	}
 
 	@Test
-	public void test_paintsNullPaintablesArray() throws PaintException
-	{
+	public void test_paintsNullPaintablesArray() throws PaintException {
 		final PaintTarget target = mock(PaintTarget.class);
 		paintableArray.paintContent(target);
 
@@ -57,8 +51,7 @@ public class PaintableArrayTest
 	}
 
 	@Test
-	public void test_paintsPaintablesArray() throws PaintException
-	{
+	public void test_paintsPaintablesArray() throws PaintException {
 		final Paintable paintable = mock(Paintable.class);
 		final PaintTarget target = mock(PaintTarget.class);
 
