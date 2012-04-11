@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.server.core;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,26 +13,31 @@ import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.Component;
 
 public class ComponentList<E extends Component> implements PaintableProperty, Iterable<E> {
+	private final Component parent;
 	private final List<E> components = Lists.newArrayList();
 	private final List<Instruction<E>> instructions = Lists.newArrayList();
 	private final String tagName;
 
-	public ComponentList(String tagName) {
+	public ComponentList(Component parent, String tagName) {
+		this.parent = parent;
 		this.tagName = tagName;
 	}
 
 	public void add(E e) {
+		e.setParent(parent);
 		components.add(e);
 		instructions.add(new Instruction<E>("add", e));
 	}
 
 	public void add(int index, E element) {
+		element.setParent(parent);
 		components.add(index, element);
 		instructions.add(new Instruction<E>("add", index, element));
 	}
 
 	public void addAll(Collection<? extends E> c) {
 		for (E e : c) {
+			e.setParent(parent);
 			add(e);
 		}
 	}
@@ -48,15 +55,11 @@ public class ComponentList<E extends Component> implements PaintableProperty, It
 	}
 
 	public E set(int index, E element) {
+		checkPositionIndex(index, components.size());
+		element.setParent(parent);
 		final E oldElement = components.set(index, element);
 		instructions.add(new Instruction<E>("remove", index, oldElement));
-
-		if (components.size() - 1 == index) {
-			instructions.add(new Instruction<E>("add", element));
-		} else {
-			instructions.add(new Instruction<E>("add", index, element));
-		}
-
+		instructions.add(new Instruction<E>("add", index, element));
 		return oldElement;
 	}
 

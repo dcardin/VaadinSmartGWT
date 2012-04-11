@@ -18,7 +18,7 @@ package org.vaadin.smartgwt.server.layout;
 
 import org.vaadin.smartgwt.client.ui.layout.VSectionStack;
 import org.vaadin.smartgwt.server.core.ComponentList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.types.LocatorStrategy;
 import org.vaadin.smartgwt.server.types.LocatorTypeStrategy;
 import org.vaadin.smartgwt.server.types.Overflow;
@@ -1014,8 +1014,8 @@ public class SectionStack extends VLayout
 
 	// @formatter:on
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final ComponentList<SectionStackSection> sections = propertyPainter.addPaintableList("sections");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<SectionStackSection> sections = propertyPainter.addComponentList("sections");
 
 	public SectionStack() {
 		scClassName = "SectionStack";
@@ -1034,7 +1034,6 @@ public class SectionStack extends VLayout
 	 *            the section to add
 	 */
 	public void addSection(SectionStackSection section) {
-		section.setParent(this);
 		sections.add(section);
 	}
 
@@ -1047,7 +1046,6 @@ public class SectionStack extends VLayout
 	 *            index for the new section
 	 */
 	public void addSection(SectionStackSection section, int position) {
-		section.setParent(this);
 		sections.add(position, section);
 	}
 

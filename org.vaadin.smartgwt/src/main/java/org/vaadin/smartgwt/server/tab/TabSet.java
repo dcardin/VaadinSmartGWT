@@ -6,7 +6,7 @@ import org.vaadin.rpc.server.ServerSideHandler;
 import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.core.ComponentList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.types.Side;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
@@ -2106,8 +2106,8 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	// **************** vaadin integration
 
 	private final ServerSideProxy client = new ServerSideProxy(this);
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final ComponentList<Tab> paintableTabs = propertyPainter.addPaintableList("tabs");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<Tab> paintableTabs = propertyPainter.addComponentList("tabs");
 
 	public TabSet() {
 		scClassName = "TabSet";
@@ -2121,7 +2121,6 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	 */
 	public void addTab(Tab tab) {
 		tab.setTabSet(this);
-		tab.setParent(this);
 		paintableTabs.add(tab);
 	}
 
@@ -2135,7 +2134,6 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	 */
 	public void addTab(Tab tab, int position) {
 		tab.setTabSet(this);
-		tab.setParent(this);
 		paintableTabs.add(position, tab);
 	}
 

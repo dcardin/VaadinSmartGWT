@@ -19,7 +19,7 @@ package org.vaadin.smartgwt.server.layout;
 import org.vaadin.smartgwt.client.ui.layout.VSectionStackSection;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.core.ComponentList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 
 import com.vaadin.terminal.PaintException;
@@ -357,8 +357,8 @@ public class SectionStackSection extends RefDataClass {
 	
 	//@formatter:on
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final ComponentList<Canvas> items = propertyPainter.addPaintableList("items");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<Canvas> items = propertyPainter.addComponentList("items");
 
 	public SectionStackSection() {
 
@@ -390,7 +390,6 @@ public class SectionStackSection extends RefDataClass {
 	}
 
 	public void addItem(Canvas item) {
-		item.setParent(this);
 		items.add(item);
 	}
 

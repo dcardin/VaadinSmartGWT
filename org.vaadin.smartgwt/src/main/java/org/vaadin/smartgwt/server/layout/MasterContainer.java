@@ -7,7 +7,7 @@ import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Window;
 import org.vaadin.smartgwt.server.core.ComponentList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.PaintableReference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
@@ -22,107 +22,122 @@ import com.vaadin.ui.ComponentContainer;
  * client. DataSources, SC etc. These objects must have a server counterpart and it must be held somewhere.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
-public class MasterContainer extends BaseWidget implements ComponentContainer {
-	private final PaintablePropertyPainter paintablePropertyPainter = new PaintablePropertyPainter();
+public class MasterContainer extends BaseWidget implements ComponentContainer
+{
+	private final ComponentPropertyPainter paintablePropertyPainter = new ComponentPropertyPainter(this);
 	private final PaintableReference<SC> sc = paintablePropertyPainter.addProperty("sc");
-	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addPaintableList("dataSources");
+	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
 	private final PaintableReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
 	private final PaintableReference<Window> window = paintablePropertyPainter.addProperty("window");
 
-	public MasterContainer() {
+	public MasterContainer()
+	{
 		sc.set(new SC());
 		sc.get().setParent(this);
 	}
 
-	public void addDataSource(DataSource dataSource) {
-		if (!dataSources.contains(dataSource)) {
-			if (dataSource.getParent() instanceof ComponentContainer) {
-				((ComponentContainer) dataSource.getParent()).removeComponent(dataSource);
-			}
-
-			dataSource.setParent(this);
+	public void addDataSource(DataSource dataSource)
+	{
+		if (!dataSources.contains(dataSource))
+		{
 			dataSources.add(dataSource);
 		}
 	}
 
-	public Canvas getPane() {
+	public Canvas getPane()
+	{
 		return pane.get();
 	}
 
-	public void setPane(Canvas pane) {
+	public void setPane(Canvas pane)
+	{
 		this.pane.set(pane);
 		pane.setParent(this);
 	}
 
-	public SC getSC() {
+	public SC getSC()
+	{
 		return sc.get();
 	}
 
-	public void showWindow(Window window) {
+	public void showWindow(Window window)
+	{
 		this.window.set(window);
 		window.setParent(this);
 		requestRepaint();
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException {
+	public void paintContent(PaintTarget target) throws PaintException
+	{
 		paintablePropertyPainter.paintContent(target);
 		window.set(null);
 		super.paintContent(target);
 	}
 
 	@Override
-	public void addComponent(Component c) {
+	public void addComponent(Component c)
+	{
 
 	}
 
 	@Override
-	public void removeComponent(Component c) {
+	public void removeComponent(Component c)
+	{
 
 	}
 
 	@Override
-	public void removeAllComponents() {
+	public void removeAllComponents()
+	{
 
 	}
 
 	@Override
-	public void replaceComponent(Component oldComponent, Component newComponent) {
+	public void replaceComponent(Component oldComponent, Component newComponent)
+	{
 
 	}
 
 	@Override
-	public Iterator<Component> getComponentIterator() {
+	public Iterator<Component> getComponentIterator()
+	{
 		return Collections.<Component> emptyList().iterator();
 	}
 
 	@Override
-	public void requestRepaintAll() {
+	public void requestRepaintAll()
+	{
 
 	}
 
 	@Override
-	public void moveComponentsFrom(ComponentContainer source) {
+	public void moveComponentsFrom(ComponentContainer source)
+	{
 
 	}
 
 	@Override
-	public void addListener(ComponentAttachListener listener) {
+	public void addListener(ComponentAttachListener listener)
+	{
 
 	}
 
 	@Override
-	public void removeListener(ComponentAttachListener listener) {
+	public void removeListener(ComponentAttachListener listener)
+	{
 
 	}
 
 	@Override
-	public void addListener(ComponentDetachListener listener) {
+	public void addListener(ComponentDetachListener listener)
+	{
 
 	}
 
 	@Override
-	public void removeListener(ComponentDetachListener listener) {
+	public void removeListener(ComponentDetachListener listener)
+	{
 
 	}
 }

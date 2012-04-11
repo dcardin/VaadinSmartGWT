@@ -1,7 +1,7 @@
 package org.vaadin.smartgwt.server.tab;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.PaintableReference;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.menu.Menu;
@@ -645,7 +645,7 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 
 	// Vaadin integration
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final PaintableReference<Canvas> pane = propertyPainter.addProperty("pane");
 
 	private Tab() {

@@ -4,14 +4,14 @@ import static com.google.common.base.Preconditions.*;
 
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.PaintableReference;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
 public abstract class AbstractSplitLayout extends Canvas {
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final PaintableReference<Canvas> member1 = propertyPainter.addProperty("member1");
 	private final PaintableReference<Canvas> member2 = propertyPainter.addProperty("member2");
 	private final String[] proportions = new String[2];
