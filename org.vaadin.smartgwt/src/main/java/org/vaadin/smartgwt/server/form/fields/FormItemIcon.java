@@ -16,8 +16,21 @@
 
 package org.vaadin.smartgwt.server.form.fields;
 
-import org.vaadin.smartgwt.server.core.DataClass;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import org.vaadin.smartgwt.server.core.DataClass;
+import org.vaadin.smartgwt.server.form.DynamicForm;
+import org.vaadin.smartgwt.server.form.fields.events.FormItemClickHandler;
+import org.vaadin.smartgwt.server.form.fields.events.FormItemIconClickEvent;
+import org.vaadin.smartgwt.server.form.fields.events.HasFormItemClickHandlers;
+
+import com.google.common.collect.Sets;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.ClientWidget;
 
 /**
@@ -26,22 +39,8 @@ import com.vaadin.ui.ClientWidget;
  * @see com.smartgwt.client.widgets.form.fields.FormItem#getIcons
  */
 @ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VFormItemIcon.class)
-public class FormItemIcon extends DataClass { // implements com.smartgwt.client.widgets.form.fields.events.HasFormItemClickHandlers {
-
-	//    public static FormItemIcon getOrCreateRef(JavaScriptObject jsObj) {
-	//        if(jsObj == null) return null;
-	//        return new FormItemIcon(jsObj);
-	//    }
-
-	public FormItemIcon() {
-
-	}
-
-	//    public FormItemIcon(JavaScriptObject jsObj){
-	//        super(jsObj);
-	//    }
-
-	// ********************* Properties / Attributes ***********************
+public class FormItemIcon extends DataClass implements HasFormItemClickHandlers {
+	private Set<FormItemClickHandler> formItemClickHandlers = Sets.newHashSet();
 
 	/**
 	 * If set, this property determines the height of this icon in px.      If unset the form item's <code>iconHeight</code>
@@ -53,18 +52,6 @@ public class FormItemIcon extends DataClass { // implements com.smartgwt.client.
 	public void setHeight(Integer height) {
 		setAttribute("height", height);
 	}
-
-	/**
-	 * If set, this property determines the height of this icon in px.      If unset the form item's <code>iconHeight</code>
-	 * property will be used instead.
-	 *
-	 *
-	 * @return Integer
-	 * @see com.smartgwt.client.widgets.form.fields.FormItem#getIconHeight
-	 */
-	//    public Integer getHeight()  {
-	//        return getAttributeAsInt("height");
-	//    }
 
 	/**
 	 * Identifier for this form item icon. This identifier (if set) should be unique within this form item and may be used to
@@ -279,76 +266,56 @@ public class FormItemIcon extends DataClass { // implements com.smartgwt.client.
 		setAttribute("width", width);
 	}
 
-	/**
-	 * If set, this property determines the width of this icon in px.      If unset the form item's <code>iconWidth</code>
-	 * property will be used instead.
-	 *
-	 *
-	 * @return Integer
-	 * @see com.smartgwt.client.widgets.form.fields.FormItem#getIconWidth
-	 */
-	//    public Integer getWidth()  {
-	//        return getAttributeAsInt("width");
-	//    }
+	protected Set<FormItemClickHandler> getFormItemClickHandlers() {
+		return Sets.newHashSet(formItemClickHandlers);
+	}
 
-	// ********************* Methods ***********************
-	//    /**
-	//     * Add a formItemClick handler.
-	//     * <p>
-	//     * StringMethod action to fire when this icon is clicked      If unset the form item's <code>iconClick</code> method will
-	//     * be fired instead (if      specified).
-	//     *
-	//     * @param handler the formItemClick handler
-	//     * @return {@link HandlerRegistration} used to remove this handler
-	//     */
-	//    public HandlerRegistration addFormItemClickHandler(com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler handler) {
-	//        if(getHandlerCount(com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent.getType()) == 0) setupFormItemClickEvent();
-	//        return doAddHandler(handler, com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent.getType());
-	//    }
-	//
-	//    private native void setupFormItemClickEvent() /*-{
-	//        var obj = null;
-	//            obj = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-	//            var selfJ = this;
-	//            obj.click = $entry(function(){
-	//                var param = {"form" : arguments[0], "item" : arguments[1], "icon" : arguments[2]};
-	//                var event = @com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent::new(Lcom/google/gwt/core/client/JavaScriptObject;)(param);
-	//                selfJ.@com.smartgwt.client.core.DataClass::fireEvent(Lcom/google/gwt/event/shared/GwtEvent;)(event);
-	//            });
-	//   }-*/;
-	//            
-	//    /**
-	//     * StringMethod action to fire when this icon has focus and receives a keypress      event.      If unset the form item's
-	//     * <code>iconKeyPress</code> method will be fired instead       (if specified).
-	//     * @param keyName Name of the key pressed
-	//     * @param character character produced by the keypress
-	//     * @param form The Dynamic Form to which this icon's item belongs.
-	//     * @param item The Form Item containing this icon
-	//     * @param icon A pointer to the form item icon
-	//     */
-	//    public native void keyPress(String keyName, char character, DynamicForm form, FormItem item, FormItemIcon icon) /*-{
-	//        var self = this.@com.smartgwt.client.core.DataClass::getJsObj()();
-	//        self.keyPress(keyName, character, form.@com.smartgwt.client.widgets.BaseWidget::getOrCreateJsObj()(), item.@com.smartgwt.client.core.DataClass::getJsObj()(), icon.@com.smartgwt.client.core.DataClass::getJsObj()());
-	//    }-*/;
-	//
-	//    // ********************* Static Methods ***********************
-	//        
-	//    // ***********************************************************        
-	//
-	//
-	//    public boolean equals(Object o) {
-	//        if (this == o) return true;
-	//        if (o == null || getClass() != o.getClass()) return false;
-	//
-	//        FormItemIcon that = (FormItemIcon) o;
-	//
-	//        if (getSrc() != null ? !getSrc().equals(that.getSrc()) : that.getSrc() != null) return false;
-	//
-	//        return true;
-	//    }
-	//
-	//    public int hashCode() {
-	//        return getSrc() != null ? getSrc().hashCode() : 0;
-	//    }
+	@Override
+	public HandlerRegistration addFormItemClickHandler(final FormItemClickHandler handler) {
+		formItemClickHandlers.add(handler);
+		return new HandlerRegistration() {
+			@Override
+			public void removeHandler() {
+				formItemClickHandlers.remove(handler);
+			}
+		};
+	}
 
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException {
+		if (!formItemClickHandlers.isEmpty()) {
+			target.addAttribute("hasFormItemClickHandlers", true);
+		}
+
+		super.paintContent(target);
+	}
+
+	@Override
+	public void changeVariables(Object source, Map<String, Object> variables) {
+		final Map<String, Object> formItemIconClickEventVariables = filterComplexVariable(variables, "formItemIconClickEvent");
+
+		if (!formItemIconClickEventVariables.isEmpty()) {
+			final DynamicForm form = (DynamicForm) formItemIconClickEventVariables.get("form");
+			final FormItem item = (FormItem) formItemIconClickEventVariables.get("item");
+			final FormItemIcon icon = (FormItemIcon) formItemIconClickEventVariables.get("icon");
+			final FormItemIconClickEvent event = new FormItemIconClickEvent(form, item, icon);
+			for (FormItemClickHandler handler : formItemClickHandlers) {
+				handler.onFormItemClick(event);
+			}
+		}
+
+		super.changeVariables(source, variables);
+	}
+
+	private static Map<String, Object> filterComplexVariable(Map<String, Object> variables, String complexVariableName) {
+		final Map<String, Object> complexVariables = new HashMap<String, Object>();
+
+		for (Entry<String, Object> variable : variables.entrySet()) {
+			if (variable.getKey().startsWith(complexVariableName + ".")) {
+				complexVariables.put(variable.getKey().replace(complexVariableName + ".", ""), variable.getValue());
+			}
+		}
+
+		return complexVariables;
+	}
 }
