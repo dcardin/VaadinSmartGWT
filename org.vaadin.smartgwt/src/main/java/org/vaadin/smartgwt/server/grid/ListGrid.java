@@ -14319,58 +14319,47 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 	private final ServerSideProxy client = new ServerSideProxy(this);
 	private DataSource dataSource;
 
-	public ListGrid()
-	{
+	public ListGrid() {
 		setModalEditing(true);
 		scClassName = "ListGrid";
 
-		client.register("selectionChanged", new Method()
-			{
-				@Override
-				public void invoke(String methodName, Object[] params)
-				{
-					selectedRecords = parseRecords(params[0].toString());
-					selectionChanged(selectedRecords);
-				}
-			});
+		client.register("selectionChanged", new Method() {
+			@Override
+			public void invoke(String methodName, Object[] params) {
+				selectedRecords = parseRecords(params[0].toString());
+				selectionChanged(selectedRecords);
+			}
+		});
 	}
 
-	public ListGridField[] getFields()
-	{
+	public ListGridField[] getFields() {
 		return fields.toArray(new ListGridField[0]);
 	}
 
-	public void setFields(ListGridField... fields)
-	{
-		for (ListGridField field : this.fields)
-		{
+	public void setFields(ListGridField... fields) {
+		for (ListGridField field : this.fields) {
 			field.setParent(null);
 		}
 
 		this.fields.clear();
 
-		for (ListGridField field : fields)
-		{
+		for (ListGridField field : fields) {
 			field.setParent(this);
 		}
 
 		this.fields.addAll(Arrays.asList(fields));
 	}
 
-	private ListGridRecord[] parseRecords(String json)
-	{
+	private ListGridRecord[] parseRecords(String json) {
 		List<ListGridRecord> records = new ArrayList<ListGridRecord>();
 
-		try
-		{
+		try {
 			JdomParser parser = new JdomParser();
 			JsonRootNode root = parser.parse(json);
 
-			for (JsonNode node : root.getArrayNode())
-			{
+			for (JsonNode node : root.getArrayNode()) {
 				ListGridRecord record = new ListGridRecord();
-				for (Map.Entry<JsonStringNode, JsonNode> entry : node.getFields().entrySet())
-				{
+				for (Map.Entry<JsonStringNode, JsonNode> entry : node.getFields().entrySet()) {
 					if (entry.getValue().hasText())
 						record.setAttribute(entry.getKey().getText(), entry.getValue().getText());
 					else
@@ -14378,9 +14367,7 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 				}
 				records.add(record);
 			}
-		}
-		catch (InvalidSyntaxException e)
-		{
+		} catch (InvalidSyntaxException e) {
 
 		}
 
@@ -14389,39 +14376,33 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 
 	private ListGridRecord[] selectedRecords;
 
-	public ListGridRecord[] getSelectedRecords()
-	{
+	public ListGridRecord[] getSelectedRecords() {
 		return selectedRecords;
 	}
 
-	public void selectionChanged(ListGridRecord[] selections)
-	{}
+	public void selectionChanged(ListGridRecord[] selections) {
+	}
 
-	public void setFields(List<ListGridField> fields)
-	{
+	public void setFields(List<ListGridField> fields) {
 		ListGridField[] fieldsArr = new ListGridField[0];
 
 		fieldsArr = fields.toArray(fieldsArr);
 		setFields(fieldsArr);
 	}
 
-	public DataSource getDataSource()
-	{
+	public DataSource getDataSource() {
 		return dataSource;
 	}
 
-	public void setDataSource(DataSource dataSource)
-	{
+	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 
-		if (dataSource != null)
-		{
+		if (dataSource != null) {
 			target.addAttribute("dataSource", dataSource);
 		}
 
@@ -14430,19 +14411,17 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 	}
 
 	@Override
-	public Object[] initRequestFromClient()
-	{
+	public Object[] initRequestFromClient() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void callFromClient(String method, Object[] params)
-	{}
+	public void callFromClient(String method, Object[] params) {
+	}
 
 	@Override
-	public void changeVariables(Object source, Map<String, Object> variables)
-	{
+	public void changeVariables(Object source, Map<String, Object> variables) {
 		super.changeVariables(source, variables);
 		client.changeVariables(source, variables);
 	}

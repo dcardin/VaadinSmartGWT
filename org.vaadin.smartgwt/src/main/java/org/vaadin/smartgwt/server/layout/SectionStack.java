@@ -1017,15 +1017,12 @@ public class SectionStack extends VLayout
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<SectionStackSection> sections = propertyPainter.addPaintableList("sections");
 
-	public SectionStack()
-	{
+	public SectionStack() {
 		scClassName = "SectionStack";
 	}
 
-	public void setSections(SectionStackSection... sections)
-	{
-		for (SectionStackSection section : sections)
-		{
+	public void setSections(SectionStackSection... sections) {
+		for (SectionStackSection section : sections) {
 			addSection(section);
 		}
 	}
@@ -1036,8 +1033,7 @@ public class SectionStack extends VLayout
 	 * @param section
 	 *            the section to add
 	 */
-	public void addSection(SectionStackSection section)
-	{
+	public void addSection(SectionStackSection section) {
 		section.setParent(this);
 		sections.add(section);
 	}
@@ -1050,8 +1046,7 @@ public class SectionStack extends VLayout
 	 * @param position
 	 *            index for the new section
 	 */
-	public void addSection(SectionStackSection section, int position)
-	{
+	public void addSection(SectionStackSection section, int position) {
 		section.setParent(this);
 		sections.add(position, section);
 	}
@@ -1064,12 +1059,9 @@ public class SectionStack extends VLayout
 	 * @param newTitle
 	 *            new title for the Section Header
 	 */
-	public void setSectionTitle(String sectionID, String newTitle)
-	{
-		for (SectionStackSection section : sections)
-		{
-			if (sectionID.equals(section.getName()))
-			{
+	public void setSectionTitle(String sectionID, String newTitle) {
+		for (SectionStackSection section : sections) {
+			if (sectionID.equals(section.getName())) {
 				section.setTitle(newTitle);
 				return;
 			}
@@ -1077,8 +1069,7 @@ public class SectionStack extends VLayout
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}

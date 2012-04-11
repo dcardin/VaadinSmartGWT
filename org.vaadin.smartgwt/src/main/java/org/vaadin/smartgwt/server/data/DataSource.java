@@ -3367,13 +3367,11 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
 
-	public DataSource()
-	{
+	public DataSource() {
 		scClassName = "DataSource";
 	}
 
-	public DataSource(String dataURL)
-	{
+	public DataSource(String dataURL) {
 		this();
 		setDataURL(dataURL);
 	}
@@ -3386,10 +3384,8 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 	 * @throws IllegalStateException
 	 *             this property cannot be changed after the underlying component has been created
 	 */
-	public void addField(DataSourceField field) throws IllegalStateException
-	{
-		if (isCreated())
-		{
+	public void addField(DataSourceField field) throws IllegalStateException {
+		if (isCreated()) {
 			error("Fields cannot be added to a DataSource after the underlying component has been created.");
 		}
 
@@ -3401,35 +3397,29 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 	// Note: this is called directly from BaseClass init method so this.scClassName may not yet have
 	// been set. Catch this case and avoid calling 'getAddGlobalID' as that ultimately relies on this
 	// property being set correctly
-	public void setID(String id)
-	{
+	public void setID(String id) {
 		setAttribute("*ID", id, false);
 		// this.id = id;
 	}
 
-	public void setAddGlobalId(Boolean addGlobalId) throws IllegalStateException
-	{
+	public void setAddGlobalId(Boolean addGlobalId) throws IllegalStateException {
 		setAttribute("addGlobalId", addGlobalId, false);
 	}
 
-	public DataSourceField getField(String fieldName)
-	{
+	public DataSourceField getField(String fieldName) {
 		return null;
 	}
 
-	public String[] getFieldNames(boolean excludeHidden)
-	{
+	public String[] getFieldNames(boolean excludeHidden) {
 		return new String[0];
 	}
 
-	public String getTag()
-	{
+	public String getTag() {
 		return "dataSource";
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}

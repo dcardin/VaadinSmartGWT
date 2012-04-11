@@ -2109,8 +2109,7 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<Tab> paintableTabs = propertyPainter.addPaintableList("tabs");
 
-	public TabSet()
-	{
+	public TabSet() {
 		scClassName = "TabSet";
 	}
 
@@ -2120,8 +2119,7 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	 * @param tab
 	 *            new tab
 	 */
-	public void addTab(Tab tab)
-	{
+	public void addTab(Tab tab) {
 		tab.setTabSet(this);
 		tab.setParent(this);
 		paintableTabs.add(tab);
@@ -2135,61 +2133,51 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	 * @param position
 	 *            the position where tab should be added
 	 */
-	public void addTab(Tab tab, int position)
-	{
+	public void addTab(Tab tab, int position) {
 		tab.setTabSet(this);
 		tab.setParent(this);
 		paintableTabs.add(position, tab);
 	}
-	
-	public void removeTab(Tab tab)
-	{
+
+	public void removeTab(Tab tab) {
 		paintableTabs.remove(tab);
 		requestRepaint();
 	}
 
-	public void selectTab(int tabIndex)
-	{
+	public void selectTab(int tabIndex) {
 		client.call("selectTab", tabIndex);
 	}
 
 	@Override
-	public Object[] initRequestFromClient()
-	{
-		return new Object[] { 80, 25, true, "Welcome to console demo",
-        "}> " };
+	public Object[] initRequestFromClient() {
+		return new Object[] { 80, 25, true, "Welcome to console demo", "}> " };
 	}
 
 	@Override
-	public void callFromClient(String method, Object[] params)
-	{
+	public void callFromClient(String method, Object[] params) {
 		int i = 0;
 
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 		client.paintContent(target);
 	}
 
-	
 	@Override
-	public void changeVariables(final Object source, final Map variables)
-	{
+	public void changeVariables(final Object source, final Map variables) {
 		super.changeVariables(source, variables);
 		client.changeVariables(source, variables);
 	}
-	
-    /**
-     * The tabs
-     *
-     * @return the tabs
-     */
-	public Tab[] getTabs()
-	{
+
+	/**
+	 * The tabs
+	 *
+	 * @return the tabs
+	 */
+	public Tab[] getTabs() {
 		return paintableTabs.toArray(new Tab[0]);
-    }
+	}
 }

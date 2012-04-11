@@ -1612,26 +1612,22 @@ public class Window extends Layout { //implements com.smartgwt.client.widgets.ev
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<Canvas> items = propertyPainter.addPaintableList("items");
 	private final MasterContainer container;
-	
-	public Window(MasterContainer container)
-	{
+
+	public Window(MasterContainer container) {
 		this.container = container;
 	}
-	
-	public void show()
-	{
+
+	public void show() {
 		container.showWindow(this);
 	}
-	
-	public void addItem(Canvas component)
-	{
+
+	public void addItem(Canvas component) {
 		component.setParent(this);
 		items.add(component);
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}

@@ -4129,8 +4129,7 @@ public class DynamicForm extends Canvas
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<FormItem> fields = propertyPainter.addPaintableList("fields");
 
-	public void addField(FormItem item)
-	{
+	public void addField(FormItem item) {
 		item.setParent(this);
 		this.fields.add(item);
 	}
@@ -4144,36 +4143,30 @@ public class DynamicForm extends Canvas
 	 * @param fields
 	 *            form item fields
 	 */
-	public void setFields(FormItem... fields)
-	{
-		for (FormItem formItem : this.fields)
-		{
+	public void setFields(FormItem... fields) {
+		for (FormItem formItem : this.fields) {
 			formItem.setParent(null);
 		}
 
 		this.fields.clear();
 
-		for (FormItem formItem : fields)
-		{
+		for (FormItem formItem : fields) {
 			formItem.setParent(this);
 		}
 
 		this.fields.addAll(Arrays.asList(fields));
 	}
 
-	public FormItem[] getFields()
-	{
+	public FormItem[] getFields() {
 		return this.fields.toArray(new FormItem[0]);
 	}
 
-	public DataSource getDataSource()
-	{
+	public DataSource getDataSource() {
 		return getAttributeAsObject("dataSource");
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}

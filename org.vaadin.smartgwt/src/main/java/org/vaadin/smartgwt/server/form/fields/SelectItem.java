@@ -1456,35 +1456,29 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
 	private final PaintableList<ListGridField> pickListFields = propertyPainter.addPaintableList("pickListFields");
 	private DataSource optionDataSource;
 
-	public SelectItem()
-	{
+	public SelectItem() {
 		setAttribute("editorType", "SelectItem");
 	}
 
-	public SelectItem(String name)
-	{
+	public SelectItem(String name) {
 		this();
 		setName(name);
 	}
 
-	public SelectItem(String name, String title)
-	{
+	public SelectItem(String name, String title) {
 		this();
 		setName(name);
 		setTitle(title);
 	}
 
-	public void setPickListFields(ListGridField... pickListFields)
-	{
-		for (ListGridField pickListField : this.pickListFields)
-		{
+	public void setPickListFields(ListGridField... pickListFields) {
+		for (ListGridField pickListField : this.pickListFields) {
 			pickListField.setParent(null);
 		}
 
 		this.pickListFields.clear();
 
-		for (ListGridField pickListField : pickListFields)
-		{
+		for (ListGridField pickListField : pickListFields) {
 			pickListField.setParent(this);
 		}
 
@@ -1528,18 +1522,15 @@ public class SelectItem extends FormItem { // implements PickList, com.smartgwt.
 	 * @param optionDataSource
 	 *            optionDataSource Default value is null
 	 */
-	public void setOptionDataSource(DataSource dataSource)
-	{
+	public void setOptionDataSource(DataSource dataSource) {
 		this.optionDataSource = dataSource;
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 
-		if (optionDataSource != null)
-		{
+		if (optionDataSource != null) {
 			target.addAttribute("optionDataSource", optionDataSource);
 		}
 

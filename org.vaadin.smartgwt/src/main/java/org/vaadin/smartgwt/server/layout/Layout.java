@@ -1360,8 +1360,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<Canvas> members = propertyPainter.addPaintableList("members");
 
-	public Layout()
-	{
+	public Layout() {
 		scClassName = "Layout";
 	}
 
@@ -1373,8 +1372,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * 
 	 * @return true if the layout includes the specified canvas
 	 */
-	public Boolean hasMember(Canvas canvas)
-	{
+	public Boolean hasMember(Canvas canvas) {
 		return members.contains(canvas);
 	}
 
@@ -1384,10 +1382,8 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param member
 	 *            the canvas to be removed from the layout
 	 */
-	public void removeMember(Canvas member)
-	{
-		if (hasMember(member))
-		{
+	public void removeMember(Canvas member) {
+		if (hasMember(member)) {
 			members.remove(member);
 			member.setParent(null);
 			requestRepaint();
@@ -1437,22 +1433,18 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param members
 	 *            members Default value is null
 	 */
-	public void setMembers(Canvas... newMembers)
-	{
+	public void setMembers(Canvas... newMembers) {
 		setMembers(Arrays.asList(newMembers));
 	}
 
-	public void setMembers(List<Canvas> members)
-	{
-		for (Canvas member : this.members)
-		{
+	public void setMembers(List<Canvas> members) {
+		for (Canvas member : this.members) {
 			member.setParent(null);
 		}
 
 		this.members.clear();
 
-		for (Canvas member : members)
-		{
+		for (Canvas member : members) {
 			member.setParent(this);
 		}
 
@@ -1466,8 +1458,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param component
 	 *            the canvas object to be added to the layout
 	 */
-	public void addMember(Canvas component)
-	{
+	public void addMember(Canvas component) {
 		component.setParent(this);
 		members.add(component);
 		requestRepaint();
@@ -1481,8 +1472,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param position
 	 *            the position in the layout to place newMember (starts with 0); if omitted, it will be added at the last position
 	 */
-	public void addMember(Canvas component, int position)
-	{
+	public void addMember(Canvas component, int position) {
 		component.setParent(this);
 		members.add(position, component);
 		requestRepaint();
@@ -1494,10 +1484,8 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * @param members
 	 *            array of members to be removed, or reference to single member.
 	 */
-	public void removeMembers(Canvas[] members)
-	{
-		for (Canvas member : members)
-		{
+	public void removeMembers(Canvas[] members) {
+		for (Canvas member : members) {
 			removeMember(member);
 		}
 	}
@@ -1507,15 +1495,12 @@ public class Layout extends Canvas implements ComponentContainer {
 	 * 
 	 * @return the members
 	 */
-	public Canvas[] getMembers()
-	{
+	public Canvas[] getMembers() {
 		return members.toArray(new Canvas[0]);
 	}
-	
-	public void removeAllMembers()
-	{
-		for (Canvas member : members)
-		{
+
+	public void removeAllMembers() {
+		for (Canvas member : members) {
 			member.setParent(null);
 		}
 
@@ -1541,8 +1526,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	 *            index for the member
 	 * @return member widget
 	 */
-	public Canvas getMember(int index)
-	{
+	public Canvas getMember(int index) {
 		return getMembers()[index];
 	}
 
@@ -1555,23 +1539,19 @@ public class Layout extends Canvas implements ComponentContainer {
 	 *            the member
 	 * @return index of the member canvas (or -1 if not found)
 	 */
-	public int getMemberNumber(Canvas member)
-	{
+	public int getMemberNumber(Canvas member) {
 		return members.indexOf(member);
 	}
 
-	public void removeMemberAt(int pos)
-	{
+	public void removeMemberAt(int pos) {
 		// List<Canvas> members = getMembersAsList();
 		removeMember(members.get(pos));
 	}
 
-	public void replaceMember(Canvas oldComponent, Canvas newComponent)
-	{
+	public void replaceMember(Canvas oldComponent, Canvas newComponent) {
 		final int index = members.indexOf(oldComponent);
 
-		if (index > -1)
-		{
+		if (index > -1) {
 			members.set(index, newComponent);
 			oldComponent.setParent(null);
 			newComponent.setParent(this);
@@ -1580,38 +1560,32 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	@Override
-	public void addComponent(Component component)
-	{
+	public void addComponent(Component component) {
 		addMember((Canvas) component);
 	}
 
 	@Override
-	public void removeAllComponents()
-	{
+	public void removeAllComponents() {
 		setMembers(new Canvas[0]);
 		requestRepaint();
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}
 
 	@Override
-	public void replaceComponent(Component oldComponent, Component newComponent)
-	{
+	public void replaceComponent(Component oldComponent, Component newComponent) {
 		replaceMember((Canvas) oldComponent, (Canvas) newComponent);
 	}
 
 	@Override
-	public Iterator<Component> getComponentIterator()
-	{
+	public Iterator<Component> getComponentIterator() {
 		final List<Component> components = new ArrayList<Component>();
-		
-		for (Canvas canvas : members)
-		{
+
+		for (Canvas canvas : members) {
 			components.add(canvas);
 		}
 
@@ -1619,50 +1593,37 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	@Override
-	public void removeComponent(Component c)
-	{
+	public void removeComponent(Component c) {
 		removeComponent((Canvas) c);
 	}
 
 	@Override
-	public void requestRepaintAll()
-	{
+	public void requestRepaintAll() {
 		requestRepaint();
-		for (Iterator<Component> childIterator = getComponentIterator(); childIterator.hasNext();)
-		{
+		for (Iterator<Component> childIterator = getComponentIterator(); childIterator.hasNext();) {
 			Component c = childIterator.next();
-			if (c instanceof Form)
-			{
+			if (c instanceof Form) {
 				// Form has children in layout, but is not ComponentContainer
 				c.requestRepaint();
 				((Form) c).getLayout().requestRepaintAll();
-			}
-			else if (c instanceof Table)
-			{
+			} else if (c instanceof Table) {
 				// ((Table) c).requestRepaintAll();
-			}
-			else if (c instanceof ComponentContainer)
-			{
+			} else if (c instanceof ComponentContainer) {
 				((ComponentContainer) c).requestRepaintAll();
-			}
-			else
-			{
+			} else {
 				c.requestRepaint();
 			}
 		}
 	}
 
 	@Override
-	public void moveComponentsFrom(ComponentContainer source)
-	{
+	public void moveComponentsFrom(ComponentContainer source) {
 		final LinkedList<Component> components = new LinkedList<Component>();
-		for (final Iterator<Component> i = source.getComponentIterator(); i.hasNext();)
-		{
+		for (final Iterator<Component> i = source.getComponentIterator(); i.hasNext();) {
 			components.add(i.next());
 		}
 
-		for (final Iterator<Component> i = components.iterator(); i.hasNext();)
-		{
+		for (final Iterator<Component> i = components.iterator(); i.hasNext();) {
 			final Component c = i.next();
 			source.removeComponent(c);
 			addComponent(c);
@@ -1670,36 +1631,31 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	@Override
-	public void addListener(ComponentAttachListener listener)
-	{
+	public void addListener(ComponentAttachListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void removeListener(ComponentAttachListener listener)
-	{
+	public void removeListener(ComponentAttachListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void addListener(ComponentDetachListener listener)
-	{
+	public void addListener(ComponentDetachListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void removeListener(ComponentDetachListener listener)
-	{
+	public void removeListener(ComponentDetachListener listener) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setSizeFull()
-	{
+	public void setSizeFull() {
 		setWidth("100%");
 		setHeight("100%");
 	}

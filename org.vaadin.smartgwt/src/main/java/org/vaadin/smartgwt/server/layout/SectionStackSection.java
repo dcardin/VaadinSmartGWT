@@ -360,13 +360,11 @@ public class SectionStackSection extends RefDataClass {
 	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
 	private final PaintableList<Canvas> items = propertyPainter.addPaintableList("items");
 
-	public SectionStackSection()
-	{
+	public SectionStackSection() {
 
 	}
 
-	public SectionStackSection(String title)
-	{
+	public SectionStackSection(String title) {
 		setTitle(title);
 	}
 
@@ -375,8 +373,7 @@ public class SectionStackSection extends RefDataClass {
 	 * 
 	 * @return the items in this SectionStackSection
 	 */
-	public Canvas[] getItems()
-	{
+	public Canvas[] getItems() {
 		return items.toArray(new Canvas[0]);
 	}
 
@@ -386,23 +383,19 @@ public class SectionStackSection extends RefDataClass {
 	 * @param items
 	 *            list of Canvases that constitute the section
 	 */
-	public void setItems(Canvas... items)
-	{
-		for (Canvas item : items)
-		{
+	public void setItems(Canvas... items) {
+		for (Canvas item : items) {
 			addItem(item);
 		}
 	}
 
-	public void addItem(Canvas item)
-	{
+	public void addItem(Canvas item) {
 		item.setParent(this);
 		items.add(item);
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}
