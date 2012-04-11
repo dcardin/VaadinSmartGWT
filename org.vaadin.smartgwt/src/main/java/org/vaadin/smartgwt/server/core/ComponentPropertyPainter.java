@@ -16,7 +16,7 @@ public class ComponentPropertyPainter {
 	}
 
 	public <T extends Component> ComponentReference<T> addProperty(String propertyName) {
-		final ComponentReference<T> reference = new ComponentReference<T>("$" + propertyName);
+		final ComponentReference<T> reference = new ComponentReference<T>(parent, "$" + propertyName);
 		properties.add(reference);
 		return reference;
 	}

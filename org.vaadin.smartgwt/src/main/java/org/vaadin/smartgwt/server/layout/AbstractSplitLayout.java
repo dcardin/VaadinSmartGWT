@@ -71,9 +71,7 @@ public abstract class AbstractSplitLayout extends Canvas {
 	}
 
 	protected void setMember1(Canvas canvas) {
-		member1.get().setParent(null);
 		member1.set(canvas == null ? new NullMember() : canvas);
-		member1.get().setParent(this);
 		setMemberProportion(member1.get(), proportions[0]);
 
 		if (member1.get() instanceof NullMember == false && member2.get() instanceof NullMember == false) {
@@ -86,9 +84,7 @@ public abstract class AbstractSplitLayout extends Canvas {
 	}
 
 	protected void setMember2(Canvas canvas) {
-		member2.get().setParent(null);
 		member2.set(canvas == null ? new NullMember() : canvas);
-		member2.get().setParent(this);
 		setMemberProportion(member2.get(), proportions[1]);
 
 		if (member1.get() instanceof NullMember == false && member2.get() instanceof NullMember == false) {

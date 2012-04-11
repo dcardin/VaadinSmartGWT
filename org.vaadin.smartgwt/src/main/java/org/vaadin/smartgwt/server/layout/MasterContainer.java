@@ -33,7 +33,6 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	public MasterContainer()
 	{
 		sc.set(new SC());
-		sc.get().setParent(this);
 	}
 
 	public void addDataSource(DataSource dataSource)
@@ -52,7 +51,6 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	public void setPane(Canvas pane)
 	{
 		this.pane.set(pane);
-		pane.setParent(this);
 	}
 
 	public SC getSC()
@@ -63,7 +61,6 @@ public class MasterContainer extends BaseWidget implements ComponentContainer
 	public void showWindow(Window window)
 	{
 		this.window.set(window);
-		window.setParent(this);
 		requestRepaint();
 	}
 
