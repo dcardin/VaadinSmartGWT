@@ -10,114 +10,90 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.Paintable;
 
-public class PaintableList<E extends Paintable> implements PaintableProperty, Iterable<E>
-{
+public class PaintableList<E extends Paintable> implements PaintableProperty, Iterable<E> {
 	private final List<E> paintables = Lists.newArrayList();
 	private final List<Instruction<E>> instructions = Lists.newArrayList();
 	private final String tagName;
 
-	public PaintableList(String tagName)
-	{
+	public PaintableList(String tagName) {
 		this.tagName = tagName;
 	}
 
-	public void add(E e)
-	{
+	public void add(E e) {
 		paintables.add(e);
 		instructions.add(new Instruction<E>("add", e));
 	}
 
-	public void add(int index, E element)
-	{
+	public void add(int index, E element) {
 		paintables.add(index, element);
 		instructions.add(new Instruction<E>("add", index, element));
 	}
 
-	public void addAll(Collection<? extends E> c)
-	{
-		for (E e : c)
-		{
+	public void addAll(Collection<? extends E> c) {
+		for (E e : c) {
 			add(e);
 		}
 	}
 
-	public void remove(E e)
-	{
+	public void remove(E e) {
 		final int index = paintables.indexOf(e);
 
-		if (paintables.remove(e))
-		{
+		if (paintables.remove(e)) {
 			instructions.add(new Instruction<E>("remove", index, e));
 		}
 	}
 
-	public E get(int index)
-	{
+	public E get(int index) {
 		return paintables.get(index);
 	}
 
-	public E set(int index, E element)
-	{
+	public E set(int index, E element) {
 		final E oldElement = paintables.set(index, element);
 		instructions.add(new Instruction<E>("remove", index, oldElement));
 
-		if (paintables.size() - 1 == index)
-		{
+		if (paintables.size() - 1 == index) {
 			instructions.add(new Instruction<E>("add", element));
-		}
-		else
-		{
+		} else {
 			instructions.add(new Instruction<E>("add", index, element));
 		}
 
 		return oldElement;
 	}
 
-	public void clear()
-	{
-		for (Iterator<E> iterator = iterator(); iterator.hasNext();)
-		{
+	public void clear() {
+		for (Iterator<E> iterator = iterator(); iterator.hasNext();) {
+			iterator.next();
 			iterator.remove();
 		}
 	}
 
-	public E[] toArray(E[] a)
-	{
+	public E[] toArray(E[] a) {
 		return new ArrayList<E>(paintables).toArray(a);
 	}
 
-	public boolean contains(Object o)
-	{
+	public boolean contains(Object o) {
 		return paintables.contains(o);
 	}
 
-	public int indexOf(Object o)
-	{
+	public int indexOf(Object o) {
 		return paintables.indexOf(o);
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		target.startTag(tagName);
 		target.addAttribute("type", "List");
 
-		for (Paintable paintable : paintables)
-		{
+		for (Paintable paintable : paintables) {
 			paintable.paint(target);
 		}
 
-		if (target.isFullRepaint())
-		{
-			for (E paintable : paintables)
-			{
+		if (target.isFullRepaint()) {
+			for (E paintable : paintables) {
 				new Instruction<E>("add", paintable).paintContent(target);
 			}
-		}
-		else
-		{
-			for (Instruction<E> instruction : instructions)
-			{
+		} else {
+			for (Instruction<E> instruction : instructions) {
 				instruction.paintContent(target);
 			}
 		}
@@ -127,42 +103,35 @@ public class PaintableList<E extends Paintable> implements PaintableProperty, It
 	}
 
 	@Override
-	public Iterator<E> iterator()
-	{
+	public Iterator<E> iterator() {
 		return new PaintableIterator(paintables.iterator());
 	}
 
-	private static class Instruction<E extends Paintable>
-	{
+	private static class Instruction<E extends Paintable> {
 		private final E element;
 		private final Integer index;
 		private final String name;
 
-		public Instruction(String name, E element)
-		{
+		public Instruction(String name, E element) {
 			this.name = name;
 			this.index = null;
 			this.element = element;
 		}
 
-		public Instruction(String name, int index, E element)
-		{
+		public Instruction(String name, int index, E element) {
 			this.name = name;
 			this.index = index;
 			this.element = element;
 		}
 
-		public void paintContent(PaintTarget target) throws PaintException
-		{
+		public void paintContent(PaintTarget target) throws PaintException {
 			target.startTag(name);
 
-			if (index != null)
-			{
+			if (index != null) {
 				target.addAttribute("index", index);
 			}
 
-			if (element != null)
-			{
+			if (element != null) {
 				target.addAttribute("element", element);
 			}
 
@@ -170,31 +139,26 @@ public class PaintableList<E extends Paintable> implements PaintableProperty, It
 		}
 	}
 
-	private class PaintableIterator implements Iterator<E>
-	{
+	private class PaintableIterator implements Iterator<E> {
 		private final Iterator<E> source;
 		private E next;
 
-		public PaintableIterator(Iterator<E> source)
-		{
+		public PaintableIterator(Iterator<E> source) {
 			this.source = source;
 		}
 
 		@Override
-		public boolean hasNext()
-		{
+		public boolean hasNext() {
 			return source.hasNext();
 		}
 
 		@Override
-		public E next()
-		{
+		public E next() {
 			return next = source.next();
 		}
 
 		@Override
-		public void remove()
-		{
+		public void remove() {
 			source.remove();
 			instructions.add(new Instruction<E>("remove", next));
 		}

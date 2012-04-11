@@ -5,34 +5,36 @@ import org.vaadin.smartgwt.server.Canvas;
 
 import com.vaadin.ui.ClientWidget;
 
-@ClientWidget(value=VHSplitLayout.class)
-public class HSplitLayout extends AbstractSplitLayout
-{
-	public HSplitLayout()
-	{
+@ClientWidget(value = VHSplitLayout.class)
+public class HSplitLayout extends AbstractSplitLayout {
+	public HSplitLayout() {
 		super();
 		setWidth100();
 	}
-	
-	public HSplitLayout(boolean showResizeBar, boolean resizeWithParent)
-	{
+
+	public HSplitLayout(boolean showResizeBar, boolean resizeWithParent) {
 		super(showResizeBar, resizeWithParent);
 		setWidth100();
 	}
-	
-	public void setLeftCanvas(Canvas canvas)
-	{
+
+	public Canvas getLeftCanvas() {
+		return getMember1();
+	}
+
+	public void setLeftCanvas(Canvas canvas) {
 		setMember1(canvas);
 	}
 
-	public void setRightCanvas(Canvas canvas)
-	{
+	public Canvas getRightCanvas() {
+		return getMember2();
+	}
+
+	public void setRightCanvas(Canvas canvas) {
 		setMember2(canvas);
 	}
 
 	@Override
-	protected void setMemberProportion(Canvas member, String proportion)
-	{
+	protected void setMemberProportion(Canvas member, String proportion) {
 		member.setWidth(proportion);
 	}
 }
