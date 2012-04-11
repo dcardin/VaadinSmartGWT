@@ -549,6 +549,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabs.add(tab7);
 		tabs.add(newTab("sections", getStackView()));
 		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
+		tabs.add(newTab("postCreationModification", newPostCreationModifiedLayout()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 	}
@@ -600,6 +601,25 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		final Label label = new Label(content);
 		label.setBackgroundColor(bgColor);
 		return label;
+	}
+
+	private Canvas newPostCreationModifiedLayout() {
+		final VLayout layout = new VLayout();
+		final Label yellow = newLabel("YELLOW", "yellow");
+		layout.addMember(new Button("Load Layout") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				layout.removeMember(yellow);
+				//				final Label blue = newLabel("BLUE", "blue");
+				//				layout.addMember(newLabel("GREEN", "green"));
+				//				layout.addMember(blue);
+				//				layout.addMember(newLabel("RED", "red"));
+				//				layout.removeMember(blue);
+			}
+		});
+		layout.addMember(yellow);
+		return layout;
 	}
 
 	public VLayout getSpecial() {
