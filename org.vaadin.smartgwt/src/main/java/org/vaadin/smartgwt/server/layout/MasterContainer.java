@@ -22,119 +22,99 @@ import com.vaadin.ui.ComponentContainer;
  * client. DataSources, SC etc. These objects must have a server counterpart and it must be held somewhere.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
-public class MasterContainer extends BaseWidget implements ComponentContainer
-{
+public class MasterContainer extends BaseWidget implements ComponentContainer {
 	private final ComponentPropertyPainter paintablePropertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentReference<SC> sc = paintablePropertyPainter.addProperty("sc");
 	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
 	private final ComponentReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
 	private final ComponentReference<Window> window = paintablePropertyPainter.addProperty("window");
 
-	public MasterContainer()
-	{
+	public MasterContainer() {
 		sc.set(new SC());
 	}
 
-	public void addDataSource(DataSource dataSource)
-	{
-		if (!dataSources.contains(dataSource))
-		{
+	public void addDataSource(DataSource dataSource) {
+		if (!dataSources.contains(dataSource)) {
 			dataSources.add(dataSource);
 		}
 	}
 
-	public Canvas getPane()
-	{
+	public Canvas getPane() {
 		return pane.get();
 	}
 
-	public void setPane(Canvas pane)
-	{
+	public void setPane(Canvas pane) {
 		this.pane.set(pane);
 	}
 
-	public SC getSC()
-	{
+	public SC getSC() {
 		return sc.get();
 	}
 
-	public void showWindow(Window window)
-	{
+	public void showWindow(Window window) {
 		this.window.set(window);
 		requestRepaint();
 	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		paintablePropertyPainter.paintContent(target);
 		window.set(null);
 		super.paintContent(target);
 	}
 
 	@Override
-	public void addComponent(Component c)
-	{
+	public void addComponent(Component c) {
 
 	}
 
 	@Override
-	public void removeComponent(Component c)
-	{
+	public void removeComponent(Component c) {
 
 	}
 
 	@Override
-	public void removeAllComponents()
-	{
+	public void removeAllComponents() {
 
 	}
 
 	@Override
-	public void replaceComponent(Component oldComponent, Component newComponent)
-	{
+	public void replaceComponent(Component oldComponent, Component newComponent) {
 
 	}
 
 	@Override
-	public Iterator<Component> getComponentIterator()
-	{
+	public Iterator<Component> getComponentIterator() {
 		return Collections.<Component> emptyList().iterator();
 	}
 
 	@Override
-	public void requestRepaintAll()
-	{
+	public void requestRepaintAll() {
 
 	}
 
 	@Override
-	public void moveComponentsFrom(ComponentContainer source)
-	{
+	public void moveComponentsFrom(ComponentContainer source) {
 
 	}
 
 	@Override
-	public void addListener(ComponentAttachListener listener)
-	{
+	public void addListener(ComponentAttachListener listener) {
 
 	}
 
 	@Override
-	public void removeListener(ComponentAttachListener listener)
-	{
+	public void removeListener(ComponentAttachListener listener) {
 
 	}
 
 	@Override
-	public void addListener(ComponentDetachListener listener)
-	{
+	public void addListener(ComponentDetachListener listener) {
 
 	}
 
 	@Override
-	public void removeListener(ComponentDetachListener listener)
-	{
+	public void removeListener(ComponentDetachListener listener) {
 
 	}
 }

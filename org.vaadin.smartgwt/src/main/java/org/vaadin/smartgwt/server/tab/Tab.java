@@ -648,18 +648,15 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentReference<Canvas> pane = propertyPainter.addProperty("pane");
 
-	private Tab()
-	{
+	private Tab() {
 
 	}
 
-	public Tab(String title)
-	{
+	public Tab(String title) {
 		setTitle(title);
 	}
 
-	public Tab(String title, String icon)
-	{
+	public Tab(String title, String icon) {
 		setTitle(title);
 		setIcon(icon);
 	}
@@ -671,8 +668,7 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	 * @param pane
 	 *            the tab pane
 	 */
-	public void setPane(Canvas pane)
-	{
+	public void setPane(Canvas pane) {
 		this.pane.set(pane);
 	}
 
@@ -681,8 +677,7 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	 * 
 	 * @return the tab pane
 	 */
-	public Canvas getPane()
-	{
+	public Canvas getPane() {
 		return this.pane.get();
 	}
 
@@ -696,22 +691,20 @@ public class Tab extends RefDataClass { // implements com.smartgwt.client.widget
 	 *            icon Default value is null
 	 * @see <a href="http://www.smartclient.com/smartgwt/showcase/#layout_tabs_orientation" target="examples">Orientation Example</a>
 	 */
-	public void setIcon(String icon)
-	{
+	public void setIcon(String icon) {
 		setAttribute("icon", icon);
 	}
 
 	public void setTitle(String title) {
-//        if(tabSet == null || !tabSet.isDrawn()) {
-            setAttribute("title", title);
-//        } else {
-//            tabSet.setTabTitle(this, title);
-//        }
-    }
+		//        if(tabSet == null || !tabSet.isDrawn()) {
+		setAttribute("title", title);
+		//        } else {
+		//            tabSet.setTabTitle(this, title);
+		//        }
+	}
 
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
+	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
 	}
