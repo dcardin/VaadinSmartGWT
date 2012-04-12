@@ -23,22 +23,6 @@ public abstract class VAbstractFormItem<T extends FormItem, V> extends VDataClas
 	protected VAbstractFormItem(T dataClass) {
 		super(dataClass);
 
-		getJSObject().addBlurHandler(new BlurHandler() {
-			@Override
-			public void onBlur(BlurEvent event) {
-				postChange();
-			}
-		});
-
-		getJSObject().addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equalsIgnoreCase("enter")) {
-					postChange();
-				}
-			}
-		});
-
 		propertyUpdater.addPaintableArrayListener("icons", new PaintableArrayListener() {
 			@Override
 			public void onChange(Paintable[] oldPaintables, Paintable[] newPaintables) {
@@ -55,15 +39,33 @@ public abstract class VAbstractFormItem<T extends FormItem, V> extends VDataClas
 
 	@Override
 	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client) {
+		if (this.pid == null) {
+
+			getJSObject().addBlurHandler(new BlurHandler() {
+				@Override
+				public void onBlur(BlurEvent event) {
+					postChange();
+				}
+			});
+
+			getJSObject().addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equalsIgnoreCase("enter")) {
+						postChange();
+					}
+				}
+			});
+		}
+
+		this.pid = uidl.getId();
+		this.client = client;
 		propertyUpdater.updateFromUIDL(uidl, client);
 		super.preAttributeUpdateFromUIDL(uidl, client);
 	}
 
 	@Override
 	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client) {
-		this.pid = uidl.getId();
-		this.client = client;
-
 		if (uidl.hasAttribute("value")) {
 			value = getUIDLFormItemValue(uidl, "value");
 		}
