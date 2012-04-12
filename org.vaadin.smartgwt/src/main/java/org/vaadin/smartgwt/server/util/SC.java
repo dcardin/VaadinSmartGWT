@@ -67,7 +67,7 @@ public class SC extends Canvas {
 	private class ServerSideHandlerImpl implements ServerSideHandler {
 		@Override
 		public Object[] initRequestFromClient() {
-			return null;
+			return new Object[0];
 		}
 
 		@Override
