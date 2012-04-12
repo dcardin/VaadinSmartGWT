@@ -27,8 +27,8 @@ import org.vaadin.rpc.shared.Method;
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintableList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentList;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
@@ -14314,8 +14314,8 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
     // @formatter:on
 	// Vaaddin integration
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<ListGridField> fields = propertyPainter.addPaintableList("fields");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
 	private final ServerSideProxy client = new ServerSideProxy(this);
 	private DataSource dataSource;
 
@@ -14337,16 +14337,7 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 	}
 
 	public void setFields(ListGridField... fields) {
-		for (ListGridField field : this.fields) {
-			field.setParent(null);
-		}
-
 		this.fields.clear();
-
-		for (ListGridField field : fields) {
-			field.setParent(this);
-		}
-
 		this.fields.addAll(Arrays.asList(fields));
 	}
 

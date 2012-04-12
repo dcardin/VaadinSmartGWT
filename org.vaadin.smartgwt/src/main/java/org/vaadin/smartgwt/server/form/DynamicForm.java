@@ -3,8 +3,8 @@ package org.vaadin.smartgwt.server.form;
 import java.util.Arrays;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintableList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentList;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -4126,11 +4126,10 @@ public class DynamicForm extends Canvas
     // @formatter:on
 	// ******** Vaadin Integration
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<FormItem> fields = propertyPainter.addPaintableList("fields");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<FormItem> fields = propertyPainter.addComponentList("fields");
 
 	public void addField(FormItem item) {
-		item.setParent(this);
 		this.fields.add(item);
 	}
 
@@ -4144,16 +4143,7 @@ public class DynamicForm extends Canvas
 	 *            form item fields
 	 */
 	public void setFields(FormItem... fields) {
-		for (FormItem formItem : this.fields) {
-			formItem.setParent(null);
-		}
-
 		this.fields.clear();
-
-		for (FormItem formItem : fields) {
-			formItem.setParent(this);
-		}
-
 		this.fields.addAll(Arrays.asList(fields));
 	}
 

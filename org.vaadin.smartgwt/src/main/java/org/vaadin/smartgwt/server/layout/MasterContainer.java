@@ -6,9 +6,9 @@ import java.util.Iterator;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Window;
-import org.vaadin.smartgwt.server.core.PaintableList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.PaintableReference;
+import org.vaadin.smartgwt.server.core.ComponentList;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentReference;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
 
@@ -23,24 +23,18 @@ import com.vaadin.ui.ComponentContainer;
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends BaseWidget implements ComponentContainer {
-	private final PaintablePropertyPainter paintablePropertyPainter = new PaintablePropertyPainter();
-	private final PaintableReference<SC> sc = paintablePropertyPainter.addProperty("sc");
-	private final PaintableList<DataSource> dataSources = paintablePropertyPainter.addPaintableList("dataSources");
-	private final PaintableReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
-	private final PaintableReference<Window> window = paintablePropertyPainter.addProperty("window");
+	private final ComponentPropertyPainter paintablePropertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentReference<SC> sc = paintablePropertyPainter.addProperty("sc");
+	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
+	private final ComponentReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
+	private final ComponentReference<Window> window = paintablePropertyPainter.addProperty("window");
 
 	public MasterContainer() {
 		sc.set(new SC());
-		sc.get().setParent(this);
 	}
 
 	public void addDataSource(DataSource dataSource) {
 		if (!dataSources.contains(dataSource)) {
-			if (dataSource.getParent() instanceof ComponentContainer) {
-				((ComponentContainer) dataSource.getParent()).removeComponent(dataSource);
-			}
-
-			dataSource.setParent(this);
 			dataSources.add(dataSource);
 		}
 	}
@@ -51,7 +45,6 @@ public class MasterContainer extends BaseWidget implements ComponentContainer {
 
 	public void setPane(Canvas pane) {
 		this.pane.set(pane);
-		pane.setParent(this);
 	}
 
 	public SC getSC() {
@@ -60,7 +53,6 @@ public class MasterContainer extends BaseWidget implements ComponentContainer {
 
 	public void showWindow(Window window) {
 		this.window.set(window);
-		window.setParent(this);
 		requestRepaint();
 	}
 

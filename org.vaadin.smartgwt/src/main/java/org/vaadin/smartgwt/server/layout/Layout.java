@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.core.PaintableList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentList;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.LayoutPolicy;
 import org.vaadin.smartgwt.server.types.LayoutResizeBarPolicy;
@@ -1357,8 +1357,8 @@ public class Layout extends Canvas implements ComponentContainer {
     // @formatter:on
 	// ********************* Vaadin Integration ***********************
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<Canvas> members = propertyPainter.addPaintableList("members");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<Canvas> members = propertyPainter.addComponentList("members");
 
 	public Layout() {
 		scClassName = "Layout";
@@ -1385,7 +1385,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	public void removeMember(Canvas member) {
 		if (hasMember(member)) {
 			members.remove(member);
-			member.setParent(null);
 			requestRepaint();
 		}
 	}
@@ -1438,16 +1437,7 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	public void setMembers(List<Canvas> members) {
-		for (Canvas member : this.members) {
-			member.setParent(null);
-		}
-
 		this.members.clear();
-
-		for (Canvas member : members) {
-			member.setParent(this);
-		}
-
 		this.members.addAll(members);
 		requestRepaint();
 	}
@@ -1459,7 +1449,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	 *            the canvas object to be added to the layout
 	 */
 	public void addMember(Canvas component) {
-		component.setParent(this);
 		members.add(component);
 		requestRepaint();
 	}
@@ -1473,7 +1462,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	 *            the position in the layout to place newMember (starts with 0); if omitted, it will be added at the last position
 	 */
 	public void addMember(Canvas component, int position) {
-		component.setParent(this);
 		members.add(position, component);
 		requestRepaint();
 	}
@@ -1500,10 +1488,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	public void removeAllMembers() {
-		for (Canvas member : members) {
-			member.setParent(null);
-		}
-
 		members.clear();
 	}
 
@@ -1544,7 +1528,6 @@ public class Layout extends Canvas implements ComponentContainer {
 	}
 
 	public void removeMemberAt(int pos) {
-		// List<Canvas> members = getMembersAsList();
 		removeMember(members.get(pos));
 	}
 
@@ -1553,8 +1536,6 @@ public class Layout extends Canvas implements ComponentContainer {
 
 		if (index > -1) {
 			members.set(index, newComponent);
-			oldComponent.setParent(null);
-			newComponent.setParent(this);
 			requestRepaint();
 		}
 	}

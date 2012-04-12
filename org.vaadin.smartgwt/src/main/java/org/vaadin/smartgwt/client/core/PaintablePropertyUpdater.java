@@ -7,17 +7,39 @@ import java.util.List;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 
+/**
+ * Manages client side paintable references that were registered on the server with ComponentPropertyPainter.  By default, paintables will be created when
+ * updating from UIDL.  Further behavior can be defined through listener registration, like adding or removing paintables from their respective parent.
+ */
 public class PaintablePropertyUpdater {
 	private final List<PaintableProperty> properties = new ArrayList<PaintableProperty>();
 
+	/**
+	 * Registers a listener to be notified when the specified property reference is modified.
+	 * 
+	 * @param propertyName the name of the property to watch.  it must match with the server-side property registration.
+	 * @param listener the listener to notify.
+	 */
 	public void addPaintableReferenceListener(String propertyName, PaintableReferenceListener listener) {
 		((PaintableReference) getOrCreateProperty(propertyName, "Reference")).addPaintableReferenceListener(listener);
 	}
 
+	/**
+	 * Registers a listener to be notified when the specified list property elements are modified. 
+	 * 
+	 * @param propertyName the name of the property to watch.  it must match with the server-side property registration.
+	 * @param listener the listener to be notified.
+	 */
 	public void addPaintableListListener(String propertyName, PaintableListListener listener) {
 		((PaintableList) getOrCreateProperty(propertyName, "List")).addPaintableListListener(listener);
 	}
 
+	/**
+	 * Equivalent of Paintable.updateFromUIDL.  It must be called when updating the client-side component that uses this instance.
+	 * 
+	 * @param uidl the client-side component uidl
+	 * @param client the application connection
+	 */
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		for (UIDL propertyUIDL : filterUIDLPropertyChildren(uidl.getChildIterator())) {
 			final String name = propertyUIDL.getTag().substring(1);

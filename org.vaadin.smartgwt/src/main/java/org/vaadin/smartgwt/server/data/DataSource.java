@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.client.data.VDataSource;
 import org.vaadin.smartgwt.server.core.BaseClass;
-import org.vaadin.smartgwt.server.core.PaintableList;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentList;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.types.CriteriaPolicy;
 import org.vaadin.smartgwt.server.types.DSDataFormat;
 import org.vaadin.smartgwt.server.types.DSProtocol;
@@ -3364,8 +3364,8 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 
 	// Vaadin Integration
 
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableList<DataSourceField> fields = propertyPainter.addPaintableList("fields");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<DataSourceField> fields = propertyPainter.addComponentList("fields");
 
 	public DataSource() {
 		scClassName = "DataSource";
@@ -3389,7 +3389,6 @@ public class DataSource extends BaseClass { //  BaseClass  implements com.smartg
 			error("Fields cannot be added to a DataSource after the underlying component has been created.");
 		}
 
-		field.setParent(this);
 		fields.add(field);
 	}
 

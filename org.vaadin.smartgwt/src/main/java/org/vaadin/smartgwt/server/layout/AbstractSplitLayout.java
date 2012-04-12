@@ -4,16 +4,16 @@ import static com.google.common.base.Preconditions.*;
 
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
-import org.vaadin.smartgwt.server.core.PaintablePropertyPainter;
-import org.vaadin.smartgwt.server.core.PaintableReference;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
+import org.vaadin.smartgwt.server.core.ComponentReference;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
 public abstract class AbstractSplitLayout extends Canvas {
-	private final PaintablePropertyPainter propertyPainter = new PaintablePropertyPainter();
-	private final PaintableReference<Canvas> member1 = propertyPainter.addProperty("member1");
-	private final PaintableReference<Canvas> member2 = propertyPainter.addProperty("member2");
+	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentReference<Canvas> member1 = propertyPainter.addProperty("member1");
+	private final ComponentReference<Canvas> member2 = propertyPainter.addProperty("member2");
 	private final String[] proportions = new String[2];
 	private boolean showResizeBar;
 	private boolean resizeWithParent;
@@ -71,9 +71,7 @@ public abstract class AbstractSplitLayout extends Canvas {
 	}
 
 	protected void setMember1(Canvas canvas) {
-		member1.get().setParent(null);
 		member1.set(canvas == null ? new NullMember() : canvas);
-		member1.get().setParent(this);
 		setMemberProportion(member1.get(), proportions[0]);
 
 		if (member1.get() instanceof NullMember == false && member2.get() instanceof NullMember == false) {
@@ -86,9 +84,7 @@ public abstract class AbstractSplitLayout extends Canvas {
 	}
 
 	protected void setMember2(Canvas canvas) {
-		member2.get().setParent(null);
 		member2.set(canvas == null ? new NullMember() : canvas);
-		member2.get().setParent(this);
 		setMemberProportion(member2.get(), proportions[1]);
 
 		if (member1.get() instanceof NullMember == false && member2.get() instanceof NullMember == false) {
