@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
-import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.ComponentArray;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -4840,7 +4840,7 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 			setAttribute(attributeName, date);
 			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, date);
 		} else {
-			final Object oldPropertyValue = getAttribute(attributeName);
+			final Object oldPropertyValue = getAttributeAsObject(attributeName);
 			setAttribute(attributeName, value);
 			propertyChangeSupport.firePropertyChange(propertyName, oldPropertyValue, value);
 		}
