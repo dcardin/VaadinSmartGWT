@@ -16,9 +16,9 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VTabSet extends TabSet implements Paintable, ClientSideHandler {
+public class VTabSet extends TabSet implements Paintable {
 	private final Element element = DOM.createDiv();
-	private final ClientSideProxy rpc = new ClientSideProxy("VTabSet", this);
+	private final ClientSideProxy rpc = new ClientSideProxy("VTabSet", new ClientSideHandlerImpl());
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 
 	public VTabSet() {
@@ -61,14 +61,15 @@ public class VTabSet extends TabSet implements Paintable, ClientSideHandler {
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 	}
 
-	@Override
-	public boolean initWidget(Object[] params) {
-		rpc.clientInitComplete();
-		return true;
-	}
+	private class ClientSideHandlerImpl implements ClientSideHandler {
+		@Override
+		public boolean initWidget(Object[] params) {
+			return false;
+		}
 
-	@Override
-	public void handleCallFromServer(String method, Object[] params) {
-		System.out.println("method call: " + method);
+		@Override
+		public void handleCallFromServer(String method, Object[] params) {
+
+		}
 	}
 }
