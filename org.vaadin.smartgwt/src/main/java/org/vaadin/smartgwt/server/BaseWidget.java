@@ -10,8 +10,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.vaadin.smartgwt.SmartGWTApplication;
 import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.util.JSONHelper;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -1194,7 +1194,7 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			{
 				try
 				{
-					String json = SmartGWTApplication.getJsonString((Record[]) value);
+					String json = JSONHelper.getJsonString((Record[]) value);
 					System.out.println(json);
 					target.addAttribute(name, "j" + json);
 

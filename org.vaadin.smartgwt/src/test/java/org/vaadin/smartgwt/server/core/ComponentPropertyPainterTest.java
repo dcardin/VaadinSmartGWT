@@ -21,14 +21,14 @@ public class ComponentPropertyPainterTest
 	@Test
 	public void test_registerNewPaintableArrayProperty()
 	{
-		final PaintableArray<Component> paintableArray = componentPropertyPainter.addPaintableArray("propertyName");
-		assertTrue(componentPropertyPainter.getPaintableProperties().contains(paintableArray));
+		final ComponentArray<Component> paintableArray = componentPropertyPainter.addComponentArray("propertyName");
+		assertTrue(componentPropertyPainter.getComponentProperties().contains(paintableArray));
 	}
 
 	@Test
 	public void test_registersNewPaintableArrayPropertyWith$PrefixedName()
 	{
-		final PaintableArray<Component> paintableArray = componentPropertyPainter.addPaintableArray("propertyName");
+		final ComponentArray<Component> paintableArray = componentPropertyPainter.addComponentArray("propertyName");
 		assertEquals("$" + "propertyName", paintableArray.getTagName());
 	}
 }

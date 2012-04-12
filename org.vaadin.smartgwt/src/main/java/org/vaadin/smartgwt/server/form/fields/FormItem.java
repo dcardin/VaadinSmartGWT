@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.client.ui.form.fields.VFormItem;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
-import org.vaadin.smartgwt.server.core.PaintableArray;
+import org.vaadin.smartgwt.server.core.ComponentArray;
 import org.vaadin.smartgwt.server.core.RefDataClass;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.types.Alignment;
@@ -4776,7 +4776,7 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
-	private final PaintableArray<FormItemIcon> icons = propertyPainter.addPaintableArray("icons");
+	private final ComponentArray<FormItemIcon> icons = propertyPainter.addComponentArray("icons");
 
 	public FormItemIcon[] getIcons() {
 		return this.icons.get();

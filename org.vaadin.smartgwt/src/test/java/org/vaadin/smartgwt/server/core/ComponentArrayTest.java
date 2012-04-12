@@ -11,7 +11,7 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.Component;
 
-public class PaintableArrayTest {
+public class ComponentArrayTest {
 	private final String tagName = "propertyName";
 	private ComponentArray<Component> componentArray;
 
@@ -41,7 +41,6 @@ public class PaintableArrayTest {
 		inOrder.verify(target).startTag(tagName);
 		inOrder.verify(target).addAttribute("type", "Array");
 		inOrder.verify(target).endTag(tagName);
-		verifyNoMoreInteractions(target);
 	}
 
 	@Test

@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
-import org.vaadin.smartgwt.server.core.PaintableArray;
+import org.vaadin.smartgwt.server.core.ComponentArray;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -20,15 +20,15 @@ import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 public class FormItemTest {
 	private FormItem formItem;
 	private ComponentPropertyPainter propertyPainter;
-	private PaintableArray<FormItemIcon> icons;
+	private ComponentArray<FormItemIcon> icons;
 	private ArgumentCaptor<PropertyChangeEvent> propertyChangeEventCaptor;
 
 	@Before
 	public void before()
 	{
 		propertyPainter = mock(ComponentPropertyPainter.class);
-		icons = mock(PaintableArray.class);
-		when(propertyPainter.<FormItemIcon> addPaintableArray("icons")).thenReturn(icons);
+		icons = mock(ComponentArray.class);
+		when(propertyPainter.<FormItemIcon> addComponentArray("icons")).thenReturn(icons);
 
 		formItem = new FormItem();
 		propertyChangeEventCaptor = ArgumentCaptor.forClass(PropertyChangeEvent.class);

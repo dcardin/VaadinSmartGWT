@@ -27,7 +27,7 @@ public class ComponentPropertyPainter {
 		this.parent = parent;
 	}
 
-	public Set<ComponentProperty> getPaintableProperties() {
+	public Set<ComponentProperty> getComponentProperties() {
 		return new HashSet<ComponentProperty>(properties);
 	}
 
@@ -43,8 +43,8 @@ public class ComponentPropertyPainter {
 		return reference;
 	}
 
-	public <T extends Component> PaintableArray<T> addPaintableArray(String propertyName) {
-		final PaintableArray<T> array = new PaintableArray<T>("$" + propertyName);
+	public <T extends Component> ComponentArray<T> addComponentArray(String propertyName) {
+		final ComponentArray<T> array = new ComponentArray<T>(parent, "$" + propertyName);
 		properties.add(array);
 		return array;
 	}

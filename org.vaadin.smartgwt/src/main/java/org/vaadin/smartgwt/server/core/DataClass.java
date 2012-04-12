@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.vaadin.smartgwt.SmartGWTApplication;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.types.ValueEnum;
+import org.vaadin.smartgwt.server.util.JSONHelper;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -277,7 +277,7 @@ public class DataClass extends AbstractComponent {
 			{
 				try
 				{
-					String json = SmartGWTApplication.getJsonString((Record[]) value);
+					String json = JSONHelper.getJsonString((Record[]) value);
 					System.out.println(json);
 					target.addAttribute(name, "j" + json);
 

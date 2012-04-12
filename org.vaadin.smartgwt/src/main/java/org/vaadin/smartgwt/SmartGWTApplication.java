@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -151,25 +149,6 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 		JsonRootNode jso = recordBuilder.build();
 		return JSON_FORMATTER.format(jso);
-	}
-
-	public static String getJsonString(Record[] records) throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-		StringBuffer buffer = new StringBuffer();
-
-		buffer.append('[');
-
-		for (Record record : records) {
-			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
-			buffer.append(',');
-		}
-
-		buffer.setLength(buffer.length() - 1);
-		buffer.append(']');
-
-		return buffer.toString();
 	}
 
 	private Canvas getListGrid() {
