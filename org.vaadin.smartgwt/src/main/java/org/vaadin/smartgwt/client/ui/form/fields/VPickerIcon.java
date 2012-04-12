@@ -17,9 +17,11 @@ public class VPickerIcon extends VFormItemIcon {
 	protected void postAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		super.postAttributeUpdateFromUIDL(uidl, client);
 
-		final String src = uidl.getStringAttribute("src").substring(1);
-		if (src.endsWith("$IMG_TYPE")) {
-			getJSObject().setSrc(src.replace("$IMG_TYPE", IMG_TYPE));
+		if (uidl.hasAttribute("src") && uidl.getStringAttribute("src") != null) {
+			final String src = uidl.getStringAttribute("src").substring(1);
+			if (src.endsWith("$IMG_TYPE")) {
+				getJSObject().setSrc(src.replace("$IMG_TYPE", IMG_TYPE));
+			}
 		}
 	}
 }
