@@ -24,6 +24,10 @@ public class PaintablePropertyUpdater {
 		((PaintableReference) getOrCreateProperty(propertyName, "Reference")).addPaintableReferenceListener(listener);
 	}
 
+	public void addPaintableArrayListener(String propertyName, PaintableArrayListener listener) {
+		((PaintableArray) getOrCreateProperty(propertyName, "Array")).addPaintableArrayListener(listener);
+	}
+
 	/**
 	 * Registers a listener to be notified when the specified list property elements are modified. 
 	 * 
@@ -75,17 +79,14 @@ public class PaintablePropertyUpdater {
 	}
 
 	private static PaintableProperty newPaintableProperty(final String name, final String type) {
-		final PaintableProperty paintableProperty;
-
 		if ("List".equals(type)) {
-			paintableProperty = new PaintableList(name);
-
+			return new PaintableList(name);
 		} else if ("Reference".equals(type)) {
-			paintableProperty = new PaintableReference(name);
+			return new PaintableReference(name);
+		} else if ("Array".equals(type)) {
+			return new PaintableArray(name);
 		} else {
 			throw new UnsupportedOperationException("unknow paintable property type.");
 		}
-
-		return paintableProperty;
 	}
 }

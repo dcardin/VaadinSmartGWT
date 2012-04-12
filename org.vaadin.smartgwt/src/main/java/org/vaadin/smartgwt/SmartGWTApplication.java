@@ -20,6 +20,7 @@ import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
+import org.vaadin.smartgwt.server.form.fields.PickerIcon;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
 import org.vaadin.smartgwt.server.grid.ListGrid;
@@ -657,6 +658,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tiEvent.setTitle("Edit Field " + i++);
 		tiEvent.setValue("value!");
 		tiEvent.setWidth("100%");
+		tiEvent.setIcons(new PickerIcon(PickerIcon.CLEAR));
 		form.addField(tiEvent);
 
 		FormItem ti = new TextItem("blah" + i);
