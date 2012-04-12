@@ -36,7 +36,7 @@ import com.vaadin.terminal.PaintTarget;
  * <code>pane</code> property which will be displayed in the main pane when that tab is selected.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.tab.VTabSet.class)
-public class TabSet extends Canvas implements ServerSideHandler { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
+public class TabSet extends Canvas { // implements com.smartgwt.client.widgets.tab.events.HasCloseClickHandlers, com.smartgwt.client.widgets.tab.events.HasTabContextMenuHandlers, com.smartgwt.client.widgets.tab.events.HasTabSelectedHandlers, com.smartgwt.client.widgets.tab.events.HasTabDeselectedHandlers {
 
 //    public static TabSet getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
@@ -2105,7 +2105,7 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
     // @formatter:on
 	// **************** vaadin integration
 
-	private final ServerSideProxy client = new ServerSideProxy(this);
+	private final ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<Tab> paintableTabs = propertyPainter.addComponentList("tabs");
 
@@ -2147,17 +2147,6 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	}
 
 	@Override
-	public Object[] initRequestFromClient() {
-		return new Object[] { 80, 25, true, "Welcome to console demo", "}> " };
-	}
-
-	@Override
-	public void callFromClient(String method, Object[] params) {
-		int i = 0;
-
-	}
-
-	@Override
 	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
@@ -2177,5 +2166,22 @@ public class TabSet extends Canvas implements ServerSideHandler { // implements 
 	 */
 	public Tab[] getTabs() {
 		return paintableTabs.toArray(new Tab[0]);
+	}
+
+	private class ServerSideHandlerImpl implements ServerSideHandler {
+		@Override
+		public Object[] initRequestFromClient() {
+			return new Object[0];
+		}
+
+		@Override
+		public void callFromClient(String method, Object[] params) {
+
+		}
+
+		@Override
+		public void requestRepaint() {
+			TabSet.this.requestRepaint();
+		}
 	}
 }
