@@ -13,11 +13,11 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VSC extends Widget implements Paintable, ClientSideHandler {
+public class VSC extends Widget implements Paintable {
 	private final Element element = DOM.createDiv();
 	protected String paintableId;
 	private ApplicationConnection client;
-	private final ClientSideProxy rpc = new ClientSideProxy("VSC", this);
+	private final ClientSideProxy rpc = new ClientSideProxy("VSC", new ClientSideHandlerImpl());
 
 	public VSC() {
 		rpc.register("sayNoCallback", new Method() {
@@ -65,15 +65,15 @@ public class VSC extends Widget implements Paintable, ClientSideHandler {
 		paintableId = uidl.getId();
 	}
 
-	@Override
-	public boolean initWidget(Object[] params) {
-		rpc.clientInitComplete();
-		return true;
-	}
+	private class ClientSideHandlerImpl implements ClientSideHandler {
+		@Override
+		public boolean initWidget(Object[] params) {
+			return false;
+		}
 
-	@Override
-	public void handleCallFromServer(String method, Object[] params) {
-		System.out.println("method call: " + method);
-	}
+		@Override
+		public void handleCallFromServer(String method, Object[] params) {
 
+		}
+	}
 }

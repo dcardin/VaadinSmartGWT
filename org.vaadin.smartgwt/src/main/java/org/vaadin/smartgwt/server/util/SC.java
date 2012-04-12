@@ -26,8 +26,8 @@ import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.util.VSC.class)
-public class SC extends Canvas implements ServerSideHandler {
-	private ServerSideProxy client = new ServerSideProxy(this);
+public class SC extends Canvas {
+	private ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
 	private Stack callBacks = new Stack();
 
 	public void say(String message) {
@@ -49,15 +49,6 @@ public class SC extends Canvas implements ServerSideHandler {
 	}
 
 	@Override
-	public Object[] initRequestFromClient() {
-		return null;
-	}
-
-	@Override
-	public void callFromClient(String method, Object[] params) {
-	}
-
-	@Override
 	public void changeVariables(final Object source, final Map variables) {
 		client.changeVariables(source, variables);
 
@@ -71,5 +62,22 @@ public class SC extends Canvas implements ServerSideHandler {
 	public void paintContent(PaintTarget target) throws PaintException {
 		super.paintContent(target);
 		client.paintContent(target);
+	}
+
+	private class ServerSideHandlerImpl implements ServerSideHandler {
+		@Override
+		public Object[] initRequestFromClient() {
+			return null;
+		}
+
+		@Override
+		public void callFromClient(String method, Object[] params) {
+
+		}
+
+		@Override
+		public void requestRepaint() {
+			SC.this.requestRepaint();
+		}
 	}
 }
