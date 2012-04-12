@@ -72,7 +72,7 @@ import com.vaadin.terminal.PaintTarget;
  * each row represents one object and each cell in the row represents one property.
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
-public class ListGrid extends Canvas implements ServerSideHandler  {
+public class ListGrid extends Canvas {
 //implements DataBoundComponent, com.smartgwt.client.widgets.grid.events.HasHeaderClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDropHandlers, com.smartgwt.client.widgets.grid.events.HasRecordExpandHandlers, com.smartgwt.client.widgets.grid.events.HasRecordCollapseHandlers, com.smartgwt.client.widgets.grid.events.HasDataArrivedHandlers, com.smartgwt.client.widgets.grid.events.HasDrawAreaChangedHandlers, com.smartgwt.client.widgets.grid.events.HasFieldStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasEditCompleteHandlers, com.smartgwt.client.widgets.grid.events.HasEditFailedHandlers, com.smartgwt.client.widgets.grid.events.HasEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasRowEditorExitHandlers, com.smartgwt.client.widgets.grid.events.HasEditorEnterHandlers, com.smartgwt.client.widgets.grid.events.HasCellSavedHandlers, com.smartgwt.client.widgets.grid.events.HasCellOutHandlers, com.smartgwt.client.widgets.grid.events.HasCellOverHandlers, com.smartgwt.client.widgets.grid.events.HasCellContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasCellMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasCellClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowOutHandlers, com.smartgwt.client.widgets.grid.events.HasRowOverHandlers, com.smartgwt.client.widgets.grid.events.HasRowContextClickHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseDownHandlers, com.smartgwt.client.widgets.grid.events.HasRowMouseUpHandlers, com.smartgwt.client.widgets.grid.events.HasRecordClickHandlers, com.smartgwt.client.widgets.grid.events.HasRecordDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasCellHoverHandlers, com.smartgwt.client.widgets.grid.events.HasRowHoverHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionChangedHandlers, com.smartgwt.client.widgets.grid.events.HasSelectionUpdatedHandlers, com.smartgwt.client.widgets.grid.events.HasHeaderDoubleClickHandlers, com.smartgwt.client.widgets.grid.events.HasFilterEditorSubmitHandlers, com.smartgwt.client.widgets.grid.events.HasGroupByHandlers, com.smartgwt.client.widgets.grid.events.HasViewStateChangedHandlers, com.smartgwt.client.widgets.grid.events.HasBodyKeyPressHandlers {
 
 //    public static ListGrid getOrCreateRef(JavaScriptObject jsObj) {
@@ -14316,7 +14316,7 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
-	private final ServerSideProxy client = new ServerSideProxy(this);
+	private final ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
 	private DataSource dataSource;
 
 	public ListGrid() {
@@ -14402,19 +14402,25 @@ public class ListGrid extends Canvas implements ServerSideHandler  {
 	}
 
 	@Override
-	public Object[] initRequestFromClient() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void callFromClient(String method, Object[] params) {
-	}
-
-	@Override
 	public void changeVariables(Object source, Map<String, Object> variables) {
 		super.changeVariables(source, variables);
 		client.changeVariables(source, variables);
 	}
 
+	private class ServerSideHandlerImpl implements ServerSideHandler {
+		@Override
+		public Object[] initRequestFromClient() {
+			return new Object[0];
+		}
+
+		@Override
+		public void callFromClient(String method, Object[] params) {
+
+		}
+
+		@Override
+		public void requestRepaint() {
+			ListGrid.this.requestRepaint();
+		}
+	}
 }

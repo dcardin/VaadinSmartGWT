@@ -21,87 +21,73 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
-public class VListGrid extends ListGrid implements Paintable, ClientSideHandler
-{
+public class VListGrid extends ListGrid implements Paintable {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final Element element = DOM.createDiv();
-	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", this);
+	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", new ClientSideHandlerImpl());
 
-	public VListGrid()
-	{
-		propertyUpdater.addPaintableListListener("fields", new PaintableListListener()
-			{
-				@Override
-				public void onAdd(Paintable[] source, Integer index, Paintable element)
-				{
-					setFields(toListGridFieldArray(source));
+	public VListGrid() {
+		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
+			@Override
+			public void onAdd(Paintable[] source, Integer index, Paintable element) {
+				setFields(toListGridFieldArray(source));
+			}
+
+			@Override
+			public void onRemove(Paintable[] source, Integer index, Paintable element) {
+				setFields(toListGridFieldArray(source));
+			}
+
+			private ListGridField[] toListGridFieldArray(Paintable[] source) {
+				final ListGridField[] fields = new ListGridField[source.length];
+
+				for (int i = 0; i < source.length; i++) {
+					fields[i] = ((VListGridField) source[i]).getJSObject();
 				}
 
-				@Override
-				public void onRemove(Paintable[] source, Integer index, Paintable element)
-				{
-					setFields(toListGridFieldArray(source));
+				return fields;
+			}
+		});
+
+		addSelectionChangedHandler(new SelectionChangedHandler() {
+			@Override
+			public void onSelectionChanged(SelectionEvent event) {
+				JavaScriptObject selections = JSOHelper.convertToJavaScriptArray(getSelectedRecords());
+				if (selections != null) {
+					rpc.call("selectionChanged", JSON.encode(selections));
+					rpc.forceSync();
 				}
-
-				private ListGridField[] toListGridFieldArray(Paintable[] source)
-				{
-					final ListGridField[] fields = new ListGridField[source.length];
-
-					for (int i = 0; i < source.length; i++)
-					{
-						fields[i] = ((VListGridField) source[i]).getJSObject();
-					}
-
-					return fields;
-				}
-			});
-
-		addSelectionChangedHandler(new SelectionChangedHandler()
-			{
-				@Override
-				public void onSelectionChanged(SelectionEvent event)
-				{
-					JavaScriptObject selections = JSOHelper.convertToJavaScriptArray(getSelectedRecords());
-					if (selections != null)
-					{
-						rpc.call("selectionChanged", JSON.encode(selections));
-						rpc.forceSync();
-					}
-				}
-			});
+			}
+		});
 	}
 
 	@Override
-	public Element getElement()
-	{
+	public Element getElement() {
 		return element;
 	}
 
 	@Override
-	public void updateFromUIDL(UIDL uidl, ApplicationConnection client)
-	{
+	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		propertyUpdater.updateFromUIDL(uidl, client);
 		rpc.update(this, uidl, client);
 
-		if (uidl.hasAttribute("dataSource"))
-		{
+		if (uidl.hasAttribute("dataSource")) {
 			final Paintable paintable = uidl.getPaintableAttribute("dataSource", client);
 			setDataSource(((VJSObject<DataSource>) paintable).getJSObject());
 		}
 
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-		rpc.clientInitComplete();
 	}
 
-	@Override
-	public boolean initWidget(Object[] params)
-	{
-		rpc.clientInitComplete();
-		return true;
+	private class ClientSideHandlerImpl implements ClientSideHandler {
+		@Override
+		public boolean initWidget(Object[] params) {
+			return false;
+		}
+
+		@Override
+		public void handleCallFromServer(String method, Object[] params) {
+
+		}
 	}
-
-	@Override
-	public void handleCallFromServer(String method, Object[] params)
-	{}
-
 }
