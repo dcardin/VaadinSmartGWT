@@ -14,7 +14,7 @@ public class JSONHelper {
 		buffer.append('[');
 
 		for (Record record : records) {
-			buffer.append(objectMapper.writeValueAsString(record.getAttributes()));
+			buffer.append(objectMapper.writeValueAsString(record.toMap()));
 			buffer.append(',');
 		}
 

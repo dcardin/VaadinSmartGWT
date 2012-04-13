@@ -1,5 +1,3 @@
-package org.vaadin.smartgwt.server.data;
-
 /*
  * SmartGWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -15,9 +13,13 @@ package org.vaadin.smartgwt.server.data;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
+package org.vaadin.smartgwt.server.data;
+
+import java.util.Map;
 
 import org.vaadin.smartgwt.server.core.RefDataClass;
 
+import com.google.common.collect.Maps;
 
 /**
  * A Record contains attributes that are displayed and edited by a {@link com.smartgwt.client.widgets.DataBoundComponent}.
@@ -52,101 +54,16 @@ import org.vaadin.smartgwt.server.core.RefDataClass;
  * saved.
  */
 public class Record extends RefDataClass {
-
-    public Record() {
-    }
-
-//    public Record(JavaScriptObject jsObj) {
-//        super(jsObj);
-//    }
-    
-//    public Record(Map recordProperties) {
-//        JavaScriptObject jsObj = JSOHelper.convertMapToJavascriptObject(recordProperties);
-//        this.setJsObj(jsObj);
-//    }
-
-//    public static Record getOrCreateRef(JavaScriptObject jsObj) {
-//        if (jsObj == null) return null;
-//        RefDataClass obj = RefDataClass.getRef(jsObj);
-//        if (obj != null) {
-//            obj.setJsObj(jsObj);
-//            return (Record) obj;
-//        } else {
-//            return new Record(jsObj);
-//        }
-//    }
-
-    /**
-     * Returns the nested structure as Record array.
-     *
-     * @param property the record property
-     * @return array of records
-     */
-//    public Record[] getAttributeAsRecordArray(String property) {
-//        return convertToRecordArray(getAttributeAsJavaScriptObject(property));
-//    }
-
-    /**
-     * Returns the nested structure as a RecordList.
-     *
-     * @param property the record property
-     * @return the RecordList
-     */
-//    public RecordList getAttributeAsRecordList(String property) {
-//        JavaScriptObject jsObject = getAttributeAsJavaScriptObject(property);
-//        return jsObject == null ? null : new RecordList(jsObject);
-//    }
-
-//    public static Record[] convertToRecordArray(JavaScriptObject nativeArray) {
-//        if (nativeArray == null) {
-//            return new Record[]{};
-//        }
-//        if (JSOHelper.isArray(nativeArray)) {
-//            JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
-//            Record[] objects = new Record[componentsj.length];
-//            for (int i = 0; i < componentsj.length; i++) {
-//                JavaScriptObject componentJS = componentsj[i];
-//                Record obj = (Record) RefDataClass.getRef(componentJS);
-//                if (obj == null) obj = new Record(componentJS);
-//                objects[i] = obj;
-//            }
-//            return objects;
-//        } else {
-//            Record[] ret = new Record[1];
-//            ret[0] = Record.getOrCreateRef(nativeArray);
-//            return ret;
-//        }
-//    }
-    
-    /**
-     * Convert this record to a Map. This is a recursive conversion so if an attribute on this record is set to
-     * another Record instance it will also be converted to a Map.
-     * @return
-     */
-//    public Map toMap() {
-//        return JSOHelper.convertToMap(this.getJsObj());
-//    }
-
-
-    // Vaadin integration
-//  public static Record[] convertToRecordArray(JavaScriptObject nativeArray) {
-//  if (nativeArray == null) {
-//      return new Record[]{};
-//  }
-////  if (JSOHelper.isArray(nativeArray)) {
-////      JavaScriptObject[] componentsj = JSOHelper.toArray(nativeArray);
-////      Record[] objects = new Record[componentsj.length];
-////      for (int i = 0; i < componentsj.length; i++) {
-////          JavaScriptObject componentJS = componentsj[i];
-////          Record obj = (Record) RefDataClass.getRef(componentJS);
-////          if (obj == null) obj = new Record(componentJS);
-////          objects[i] = obj;
-////      }
-////      return objects;
-////  } else {
-//      Record[] ret = new Record[1];
-////      ret[0] = Record.getOrCreateRef(nativeArray);
-//      return ret;
-//  }
+	/**
+	 * Convert this record to a Map. This is a recursive conversion so if an attribute on this record is set to
+	 * another Record instance it will also be converted to a Map.
+	 * @return
+	 */
+	public Map toMap() {
+		final Map<Object, Object> mapped = Maps.newHashMap();
+		for (String name : getAttributes()) {
+			mapped.put(name, getAttributeAsObject(name));
+		}
+		return mapped;
+	}
 }
-
