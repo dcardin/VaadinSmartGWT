@@ -26,7 +26,7 @@ public class VFormItemIcon extends VDataClass<FormItemIcon> {
 			this.client = client;
 		}
 		
-		if (uidl.hasAttribute("hasFormItemClickHandlers") && formItemClickRegistration == null) {
+		if (uidl.hasAttribute("*hasFormItemClickHandlers") && formItemClickRegistration == null) {
 			formItemClickRegistration = getJSObject().addFormItemClickHandler(new FormItemClickHandler() {
 				@Override
 				public void onFormItemClick(FormItemIconClickEvent event) {

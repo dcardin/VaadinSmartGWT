@@ -284,7 +284,7 @@ public class FormItemIcon extends DataClass implements HasFormItemClickHandlers 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException {
 		if (!formItemClickHandlers.isEmpty()) {
-			target.addAttribute("hasFormItemClickHandlers", true);
+			target.addAttribute("*hasFormItemClickHandlers", true);
 		}
 
 		super.paintContent(target);
