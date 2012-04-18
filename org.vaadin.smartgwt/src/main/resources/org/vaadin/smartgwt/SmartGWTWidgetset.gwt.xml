@@ -6,5 +6,5 @@
 	<script src="startup.js" />
 	<inherits name="com.smartgwt.SmartGwt" />
 	<inherits name="org.vaadin.rpc.WidgetRPC" />
-	<inherits name="org.vaadin.consolewindow.ConsoleWindowWidgetset" />
+	
 </module>

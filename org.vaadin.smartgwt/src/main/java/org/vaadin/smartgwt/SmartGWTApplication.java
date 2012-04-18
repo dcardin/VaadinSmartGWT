@@ -21,6 +21,8 @@ import org.vaadin.smartgwt.server.form.fields.FormItem;
 import org.vaadin.smartgwt.server.form.fields.PickerIcon;
 import org.vaadin.smartgwt.server.form.fields.SelectItem;
 import org.vaadin.smartgwt.server.form.fields.TextItem;
+import org.vaadin.smartgwt.server.form.fields.events.FormItemClickHandler;
+import org.vaadin.smartgwt.server.form.fields.events.FormItemIconClickEvent;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
@@ -637,7 +639,18 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tiEvent.setTitle("Edit Field " + i++);
 		tiEvent.setValue("value!");
 		tiEvent.setWidth("100%");
-		tiEvent.setIcons(new PickerIcon(PickerIcon.CLEAR));
+
+		final PickerIcon icon = new PickerIcon(PickerIcon.CLEAR);
+		icon.addFormItemClickHandler(new FormItemClickHandler()
+			{
+				@Override
+				public void onFormItemClick(FormItemIconClickEvent event)
+				{
+					tiEvent.setValue("");
+				}
+			});
+
+		tiEvent.setIcons(icon);
 		form.addField(tiEvent);
 
 		FormItem ti = new TextItem("blah" + i);
