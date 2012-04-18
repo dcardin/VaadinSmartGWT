@@ -4797,6 +4797,10 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 		setAttribute("optionDataSource", dataSource);
 	}
 
+	public Object getValue() {
+		return getAttributeAsObject(ATTRIBUTE_VALUE);
+	}
+
 	public void setValue(Object value) {
 		setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, value);
 		requestRepaint();
