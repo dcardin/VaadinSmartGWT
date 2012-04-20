@@ -31,8 +31,11 @@ import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.grid.events.HasSelectionChangedHandlers;
+import org.vaadin.smartgwt.server.grid.events.HasSelectionUpdatedHandlers;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedHandler;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.types.AutoFitEvent;
 import org.vaadin.smartgwt.server.types.AutoFitIconFieldType;
@@ -73,14 +76,16 @@ import com.vaadin.terminal.PaintTarget;
  * each row represents one object and each cell in the row represents one property.
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
-public class ListGrid extends Canvas implements HasSelectionChangedHandlers {
+public class ListGrid extends Canvas implements HasSelectionChangedHandlers, HasSelectionUpdatedHandlers {
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
 	private final ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
 	private final Set<SelectionChangedHandler> selectionChangedHandlers = Sets.newHashSet();
+	private final Set<SelectionUpdatedHandler> selectionUpdatedHandlers = Sets.newHashSet();
 	private DataSource dataSource;
 	private ListGridRecord[] selectedRecords;
 	private SelectionEventFactory selectionEventFactory;
+
 
 	public ListGrid() {
 		setModalEditing(true);
@@ -7364,12 +7369,32 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers {
 		return getAttributeAsBoolean("wrapCells");
 	}
 
+	public Set<SelectionChangedHandler> getSelectionChangedHandlers() {
+		return Sets.newHashSet(selectionChangedHandlers);
+	}
+
+	@Override
 	public HandlerRegistration addSelectionChangedHandler(final SelectionChangedHandler handler) {
 		selectionChangedHandlers.add(handler);
 		return new HandlerRegistration() {
 			@Override
 			public void removeHandler() {
 				selectionChangedHandlers.remove(handler);
+			}
+		};
+	}
+
+	public Set<SelectionUpdatedHandler> getSelectionUpdatedHandlers() {
+		return Sets.newHashSet(selectionUpdatedHandlers);
+	}
+
+	@Override
+	public HandlerRegistration addSelectionUpdatedHandler(final SelectionUpdatedHandler handler) {
+		selectionUpdatedHandlers.add(handler);
+		return new HandlerRegistration() {
+			@Override
+			public void removeHandler() {
+				selectionUpdatedHandlers.remove(handler);
 			}
 		};
 	}
@@ -7888,6 +7913,10 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers {
 			target.addAttribute("*hasSelectionChangedHandlers", true);
 		}
 
+		if (!selectionUpdatedHandlers.isEmpty()) {
+			target.addAttribute("*hasSelectionUpdatedHandlers", true);
+		}
+
 		super.paintContent(target);
 		client.paintContent(target);
 	}
@@ -7904,6 +7933,14 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers {
 				}
 			} catch (Exception e) {
 				Throwables.propagate(e);
+			}
+		}
+
+		if (variables.containsKey("onSelectionUpdated.event")) {
+			final SelectionUpdatedEvent event = new SelectionUpdatedEvent();
+			
+			for (SelectionUpdatedHandler handler : selectionUpdatedHandlers) {
+				handler.onSelectionUpdated(event);
 			}
 		}
 

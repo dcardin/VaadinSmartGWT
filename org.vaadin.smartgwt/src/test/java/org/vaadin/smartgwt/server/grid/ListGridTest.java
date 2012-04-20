@@ -10,10 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedHandler;
 
 import argo.jdom.JsonNode;
 
 import com.google.common.collect.Maps;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 
@@ -51,7 +54,7 @@ public class ListGridTest {
 	}
 
 	@Test
-	public void test_firesSelectionChangeEventWhenVariablePresent() {
+	public void test_firesSelectionChangeEvent() {
 		final HashMap<String, Object> variables = Maps.<String, Object> newHashMap();
 		variables.put("onSelectionChanged.event", "{}");
 
@@ -63,5 +66,59 @@ public class ListGridTest {
 
 		listGrid.changeVariables(null, variables);
 		verify(handler).onSelectionChanged(event);
+	}
+
+	@Test
+	public void test_canRemoveSelectionChangeEventFromRegistration() {
+		final SelectionChangedHandler handler = mock(SelectionChangedHandler.class);
+		final HandlerRegistration registration = listGrid.addSelectionChangedHandler(handler);
+
+		registration.removeHandler();
+		assertFalse(listGrid.getSelectionChangedHandlers().contains(handler));
+	}
+
+	@Test
+	public void test_addSelectionUpdatedHandler() {
+		final SelectionUpdatedHandler handler = mock(SelectionUpdatedHandler.class);
+		listGrid.addSelectionUpdatedHandler(handler);
+		assertTrue(listGrid.getSelectionUpdatedHandlers().contains(handler));
+	}
+
+	@Test
+	public void test_removeSelectionUpdatedHandlerFromRegistration() {
+		final SelectionUpdatedHandler handler = mock(SelectionUpdatedHandler.class);
+		final HandlerRegistration registration = listGrid.addSelectionUpdatedHandler(handler);
+
+		registration.removeHandler();
+		assertFalse(listGrid.getSelectionUpdatedHandlers().contains(handler));
+	}
+
+	@Test
+	public void test_paintSelectionUpdatedHandlerFlagWhenHandlersRegistered() throws PaintException {
+		final JsonPaintTarget target = mock(JsonPaintTarget.class);
+		listGrid.addSelectionUpdatedHandler(mock(SelectionUpdatedHandler.class));
+
+		listGrid.paintContent(target);
+		verify(target).addAttribute("*hasSelectionUpdatedHandlers", true);
+	}
+
+	@Test
+	public void test_doNotPaintSelectionUpdatedHandlerFlagWhenNoRegisteredHandler() throws PaintException {
+		final JsonPaintTarget target = mock(JsonPaintTarget.class);
+
+		listGrid.paintContent(target);
+		verify(target, never()).addAttribute("*hasSelectionUpdatedHandlers", true);
+	}
+
+	@Test
+	public void test_firesSelectionUpdatedEvent() {
+		final HashMap<String, Object> variables = Maps.<String, Object> newHashMap();
+		variables.put("onSelectionUpdated.event", true);
+
+		final SelectionUpdatedHandler handler = mock(SelectionUpdatedHandler.class);
+		listGrid.addSelectionUpdatedHandler(handler);
+
+		listGrid.changeVariables(null, variables);
+		verify(handler).onSelectionUpdated(new SelectionUpdatedEvent());
 	}
 }
