@@ -7,12 +7,13 @@ import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.util.JSOHelper;
-import com.smartgwt.client.util.JSON;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -25,6 +26,9 @@ public class VListGrid extends ListGrid implements Paintable {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final Element element = DOM.createDiv();
 	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", new ClientSideHandlerImpl());
+	private HandlerRegistration selectionChangedRegistration;
+	private String pid;
+	private ApplicationConnection client;
 
 	public VListGrid() {
 		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
@@ -48,17 +52,6 @@ public class VListGrid extends ListGrid implements Paintable {
 				return fields;
 			}
 		});
-
-		addSelectionChangedHandler(new SelectionChangedHandler() {
-			@Override
-			public void onSelectionChanged(SelectionEvent event) {
-				JavaScriptObject selections = JSOHelper.convertToJavaScriptArray(getSelectedRecords());
-				if (selections != null) {
-					rpc.call("selectionChanged", JSON.encode(selections));
-					rpc.forceSync();
-				}
-			}
-		});
 	}
 
 	@Override
@@ -68,12 +61,42 @@ public class VListGrid extends ListGrid implements Paintable {
 
 	@Override
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
+		if (uidl.hasAttribute("cached")) {
+			return;
+		}
+
+		if (this.pid == null) {
+			this.pid = uidl.getId();
+			this.client = client;
+		}
+
 		propertyUpdater.updateFromUIDL(uidl, client);
 		rpc.update(this, uidl, client);
 
 		if (uidl.hasAttribute("dataSource")) {
 			final Paintable paintable = uidl.getPaintableAttribute("dataSource", client);
 			setDataSource(((VJSObject<DataSource>) paintable).getJSObject());
+		}
+
+		if (uidl.hasAttribute("*hasSelectionChangedHandlers") && selectionChangedRegistration == null) {
+			selectionChangedRegistration = addSelectionChangedHandler(new SelectionChangedHandler() {
+				@Override
+				public void onSelectionChanged(SelectionEvent event) {
+					final JSONObject eventJSO = new JSONObject();
+					eventJSO.put("record", new JSONObject(event.getRecord().getJsObj()));
+					eventJSO.put("state", JSONBoolean.getInstance(event.getState()));
+					final JSONArray selectionJSO = new JSONArray();
+					for (int i = 0; event.getSelection().length < i; i++) {
+						selectionJSO.set(i, new JSONObject(event.getSelection()[i].getJsObj()));
+					}
+					eventJSO.put("selection", selectionJSO);
+					eventJSO.put("selectedRecord", new JSONObject(event.getSelectedRecord().getJsObj()));
+					VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", eventJSO.toString(), true);
+				}
+			});
+		} else if (!uidl.hasAttribute("hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
+			selectionChangedRegistration.removeHandler();
+			selectionChangedRegistration = null;
 		}
 
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
