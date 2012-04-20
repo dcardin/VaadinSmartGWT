@@ -18,6 +18,8 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
+import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -27,6 +29,7 @@ public class VListGrid extends ListGrid implements Paintable {
 	private final Element element = DOM.createDiv();
 	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", new ClientSideHandlerImpl());
 	private HandlerRegistration selectionChangedRegistration;
+	private HandlerRegistration selectionUpdatedRegistration;
 	private String pid;
 	private ApplicationConnection client;
 
@@ -97,6 +100,18 @@ public class VListGrid extends ListGrid implements Paintable {
 		} else if (!uidl.hasAttribute("hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
 			selectionChangedRegistration.removeHandler();
 			selectionChangedRegistration = null;
+		}
+
+		if (uidl.hasAttribute("*hasSelectionUpdatedHandlers") && selectionUpdatedRegistration == null) {
+			selectionUpdatedRegistration = addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+				@Override
+				public void onSelectionUpdated(SelectionUpdatedEvent event) {
+					VListGrid.this.client.updateVariable(pid, "onSelectionUpdated.event", true, true);
+				}
+			});
+		} else if (!uidl.hasAttribute("*hasSelectionUpdatedHandlers") && selectionUpdatedRegistration != null) {
+			selectionUpdatedRegistration.removeHandler();
+			selectionUpdatedRegistration = null;
 		}
 
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
