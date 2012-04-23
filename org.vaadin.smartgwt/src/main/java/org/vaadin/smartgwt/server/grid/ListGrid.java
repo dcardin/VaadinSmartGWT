@@ -7936,6 +7936,15 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 
 	@Override
 	public void changeVariables(Object source, Map<String, Object> variables) {
+		if (variables.containsKey("selectedRecords")) {
+			try {
+				final JsonRootNode node = new JdomParser().parse((String) variables.get("selectedRecords"));
+				selectedRecords = getListGridRecordFactory().newListGridRecords(node.getArrayNode());
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+		}
+
 		if (variables.containsKey("onSelectionChanged.event")) {
 			try {
 				final JsonRootNode root = new JdomParser().parse((String) variables.get("onSelectionChanged.event"));
@@ -7950,19 +7959,10 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 		}
 
 		if (variables.containsKey("onSelectionUpdated.event")) {
-			final SelectionUpdatedEvent event = new SelectionUpdatedEvent();
+			final SelectionUpdatedEvent event = new SelectionUpdatedEvent(this);
 			
 			for (SelectionUpdatedHandler handler : selectionUpdatedHandlers) {
 				handler.onSelectionUpdated(event);
-			}
-		}
-
-		if (variables.containsKey("selectedRecords")) {
-			try {
-				final JsonRootNode node = new JdomParser().parse((String) variables.get("selectedRecords"));
-				selectedRecords = getListGridRecordFactory().newListGridRecords(node.getArrayNode());
-			} catch (Exception e) {
-				Throwables.propagate(e);
 			}
 		}
 
