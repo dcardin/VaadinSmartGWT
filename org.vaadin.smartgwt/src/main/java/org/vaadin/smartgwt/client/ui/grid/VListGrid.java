@@ -2,18 +2,18 @@ package org.vaadin.smartgwt.client.ui.grid;
 
 import org.vaadin.rpc.client.ClientSideHandler;
 import org.vaadin.rpc.client.ClientSideProxy;
+import org.vaadin.smartgwt.client.core.JavaScriptHelper;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
@@ -85,16 +85,18 @@ public class VListGrid extends ListGrid implements Paintable {
 			selectionChangedRegistration = addSelectionChangedHandler(new SelectionChangedHandler() {
 				@Override
 				public void onSelectionChanged(SelectionEvent event) {
-					final JSONObject eventJSO = new JSONObject();
-					eventJSO.put("record", new JSONObject(event.getRecord().getJsObj()));
-					eventJSO.put("state", JSONBoolean.getInstance(event.getState()));
-					final JSONArray selectionJSO = new JSONArray();
+					final JavaScriptObject eventJSO = JavaScriptObject.createObject();
+					final JavaScriptObject selectionJSA = JavaScriptObject.createArray();
+					JSOHelper.setAttribute(eventJSO, "record", event.getRecord().getJsObj());
+					JSOHelper.setAttribute(eventJSO, "state", event.getState());
+					JSOHelper.setAttribute(eventJSO, "selection", selectionJSA);
+					JSOHelper.setAttribute(eventJSO, "selectedRecord", event.getSelectedRecord().getJsObj());
+
 					for (int i = 0; event.getSelection().length < i; i++) {
-						selectionJSO.set(i, new JSONObject(event.getSelection()[i].getJsObj()));
+						JSOHelper.setArrayValue(selectionJSA, i, event.getSelection()[i].getJsObj());
 					}
-					eventJSO.put("selection", selectionJSO);
-					eventJSO.put("selectedRecord", new JSONObject(event.getSelectedRecord().getJsObj()));
-					VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", eventJSO.toString(), true);
+
+					VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JavaScriptHelper.stringify(eventJSO), true);
 				}
 			});
 		} else if (!uidl.hasAttribute("hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
