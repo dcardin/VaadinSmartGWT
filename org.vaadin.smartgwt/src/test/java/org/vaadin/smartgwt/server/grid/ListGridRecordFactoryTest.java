@@ -1,5 +1,6 @@
 package org.vaadin.smartgwt.server.grid;
 
+import static argo.jdom.JsonNodeFactories.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -24,25 +25,30 @@ public class ListGridRecordFactoryTest {
 
 	@Test
 	public void test_newRecord() {
-		assertTrue(recordFactory.newListGridRecord(null) != null);
+		assertTrue(recordFactory.newListGridRecord(aJsonObject()) != null);
+	}
+
+	@Test
+	public void test_returnsNullWhenNullJsonNode() {
+		assertNull(recordFactory.newListGridRecord(aJsonNull()));
 	}
 
 	@Test
 	public void test_callsUpdaterWhenCreatingRecord() {
-		final JsonNode node = mock(JsonNode.class);
+		final JsonNode node = aJsonObject();
 		final ListGridRecord record = recordFactory.newListGridRecord(node);
 		verify(updater).update(record, node);
 	}
 
 	@Test
 	public void test_createsRecordsArrayMatchingSizeOfNodesList() {
-		final ArrayList<JsonNode> nodes = Lists.newArrayList(mock(JsonNode.class));
+		final ArrayList<JsonNode> nodes = Lists.<JsonNode> newArrayList(aJsonObject());
 		assertEquals(nodes.size(), recordFactory.newListGridRecords(nodes).length);
 	}
 
 	@Test
 	public void test_callsUpdaterOnRecordsArrayCreation() {
-		final ArrayList<JsonNode> nodes = Lists.newArrayList(mock(JsonNode.class), mock(JsonNode.class));
+		final ArrayList<JsonNode> nodes = Lists.<JsonNode> newArrayList(aJsonObject(), aJsonObject());
 		final ListGridRecord[] records = recordFactory.newListGridRecords(nodes);
 		verify(updater).update(records[0], nodes.get(0));
 		verify(updater).update(records[1], nodes.get(1));

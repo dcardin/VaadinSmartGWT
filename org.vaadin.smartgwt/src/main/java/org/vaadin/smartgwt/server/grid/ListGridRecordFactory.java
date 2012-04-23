@@ -17,15 +17,19 @@ public class ListGridRecordFactory {
 	}
 
 	public ListGridRecord newListGridRecord(JsonNode node) {
-		final ListGridRecord record = new ListGridRecord();
-		updater.update(record, node);
-		return record;
+		if (!node.isNullNode()) {
+			final ListGridRecord record = new ListGridRecord();
+			updater.update(record, node);
+			return record;
+		} else {
+			return null;
+		}
 	}
 
 	public ListGridRecord[] newListGridRecords(List<JsonNode> nodes) {
 		final ListGridRecord[] records = new ListGridRecord[nodes.size()];
 		for (int i = 0; i < records.length; i++) {
-			updater.update(records[i], nodes.get(i));
+			records[i] = newListGridRecord(nodes.get(i));
 		}
 		return records;
 	}

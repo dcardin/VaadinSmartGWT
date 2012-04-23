@@ -6,7 +6,7 @@ import argo.jdom.JsonNode;
 import argo.jdom.JsonStringNode;
 
 public class RecordJSONUpdater {
-	public <T extends Record> void update(T record, JsonNode node) {
+	public void update(Record record, JsonNode node) {
 		for (Entry<JsonStringNode, JsonNode> entry : node.getFields().entrySet()) {
 			final String name = entry.getKey().getText();
 			if (entry.getValue().isBooleanValue()) {
