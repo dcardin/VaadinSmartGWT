@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.server.grid;
 
+import javax.inject.Inject;
+
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.data.RecordFactory;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
@@ -10,6 +12,7 @@ public class SelectionEventFactory {
 	private final RecordFactory recordFactory;
 	private final ListGridRecordFactory listGridRecordFactory;
 
+	@Inject
 	public SelectionEventFactory(RecordFactory recordFactory, ListGridRecordFactory listGridRecordFactory) {
 		this.recordFactory = recordFactory;
 		this.listGridRecordFactory = listGridRecordFactory;

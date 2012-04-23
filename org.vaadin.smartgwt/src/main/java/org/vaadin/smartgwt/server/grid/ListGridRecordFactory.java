@@ -2,6 +2,8 @@ package org.vaadin.smartgwt.server.grid;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.vaadin.smartgwt.server.data.RecordJSONUpdater;
 
 import argo.jdom.JsonNode;
@@ -9,6 +11,7 @@ import argo.jdom.JsonNode;
 public class ListGridRecordFactory {
 	private final RecordJSONUpdater updater;
 
+	@Inject
 	public ListGridRecordFactory(RecordJSONUpdater updater) {
 		this.updater = updater;
 	}
