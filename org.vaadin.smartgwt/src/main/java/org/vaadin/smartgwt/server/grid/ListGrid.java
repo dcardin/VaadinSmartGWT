@@ -82,6 +82,7 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 	private DataSource dataSource;
 	private ListGridRecord[] selectedRecords;
 	private SelectionEventFactory selectionEventFactory;
+	private ListGridRecordFactory listGridRecordFactory;
 
 
 	public ListGrid() {
@@ -7891,11 +7892,27 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 	}
 
 	public SelectionEventFactory getSelectionEventFactory() {
-		return selectionEventFactory == null ? selectionEventFactory = InjectorSingleton.get().getInstance(SelectionEventFactory.class) : selectionEventFactory;
+		if (selectionEventFactory == null) {
+			return selectionEventFactory = InjectorSingleton.get().getInstance(SelectionEventFactory.class);
+		} else {
+			return selectionEventFactory;
+		}
 	}
 
 	public void setSelectionEventFactory(SelectionEventFactory selectionEventFactory) {
 		this.selectionEventFactory = selectionEventFactory;
+	}
+
+	public ListGridRecordFactory getListGridRecordFactory() {
+		if (listGridRecordFactory == null) {
+			return listGridRecordFactory = InjectorSingleton.get().getInstance(ListGridRecordFactory.class);
+		} else {
+			return listGridRecordFactory;
+		}
+	}
+
+	public void setListGridRecordFactory(ListGridRecordFactory listGridRecordFactory) {
+		this.listGridRecordFactory = listGridRecordFactory;
 	}
 
 	@Override
@@ -7937,6 +7954,15 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 			
 			for (SelectionUpdatedHandler handler : selectionUpdatedHandlers) {
 				handler.onSelectionUpdated(event);
+			}
+		}
+
+		if (variables.containsKey("selectedRecords")) {
+			try {
+				final JsonRootNode node = new JdomParser().parse((String) variables.get("selectedRecords"));
+				selectedRecords = getListGridRecordFactory().newListGridRecords(node.getArrayNode());
+			} catch (Exception e) {
+				Throwables.propagate(e);
 			}
 		}
 
