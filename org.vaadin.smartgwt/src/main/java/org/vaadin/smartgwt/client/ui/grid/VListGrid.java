@@ -16,6 +16,7 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
@@ -71,6 +72,18 @@ public class VListGrid extends ListGrid implements Paintable {
 		if (this.pid == null) {
 			this.pid = uidl.getId();
 			this.client = client;
+			addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+				@Override
+				public void onSelectionUpdated(SelectionUpdatedEvent event) {
+					final ListGridRecord[] selectedRecords = getSelectedRecords();
+					final JavaScriptObject selectedRecordsJSA = JavaScriptObject.createArray();
+					for (int i = 0; i < selectedRecords.length; i++) {
+						JSOHelper.setArrayValue(selectedRecordsJSA, i, selectedRecords[i].getJsObj());
+					}
+
+					VListGrid.this.client.updateVariable(pid, "selectedRecords", JavaScriptHelper.stringify(selectedRecordsJSA), false);
+				}
+			});
 		}
 
 		propertyUpdater.updateFromUIDL(uidl, client);
@@ -86,20 +99,31 @@ public class VListGrid extends ListGrid implements Paintable {
 				@Override
 				public void onSelectionChanged(SelectionEvent event) {
 					final JavaScriptObject eventJSO = JavaScriptObject.createObject();
-					final JavaScriptObject selectionJSA = JavaScriptObject.createArray();
-					JSOHelper.setAttribute(eventJSO, "record", event.getRecord().getJsObj());
-					JSOHelper.setAttribute(eventJSO, "state", event.getState());
-					JSOHelper.setAttribute(eventJSO, "selection", selectionJSA);
-					JSOHelper.setAttribute(eventJSO, "selectedRecord", event.getSelectedRecord().getJsObj());
 
+					if (event.getRecord() == null) {
+						JSOHelper.setNullAttribute(eventJSO, "record");
+					} else {
+						JSOHelper.setAttribute(eventJSO, "record", event.getRecord().getJsObj());
+					}
+
+					JSOHelper.setAttribute(eventJSO, "state", event.getState());
+
+					final JavaScriptObject selectionJSA = JavaScriptObject.createArray();
+					JSOHelper.setAttribute(eventJSO, "selection", selectionJSA);
 					for (int i = 0; event.getSelection().length < i; i++) {
 						JSOHelper.setArrayValue(selectionJSA, i, event.getSelection()[i].getJsObj());
+					}
+
+					if (event.getSelectedRecord() == null) {
+						JSOHelper.setNullAttribute(eventJSO, "selectedRecord");
+					} else {
+						JSOHelper.setAttribute(eventJSO, "selectedRecord", event.getSelectedRecord().getJsObj());
 					}
 
 					VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JavaScriptHelper.stringify(eventJSO), true);
 				}
 			});
-		} else if (!uidl.hasAttribute("hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
+		} else if (!uidl.hasAttribute("*hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
 			selectionChangedRegistration.removeHandler();
 			selectionChangedRegistration = null;
 		}
