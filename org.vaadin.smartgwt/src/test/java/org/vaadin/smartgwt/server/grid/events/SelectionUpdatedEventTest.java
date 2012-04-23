@@ -13,10 +13,16 @@ public class SelectionUpdatedEventTest {
 	}
 
 	private SelectionUpdatedEvent event;
+	private Object source;
 
 	@Before
 	public void before() {
-		event = new SelectionUpdatedEvent();
+		event = new SelectionUpdatedEvent(source = new Object());
+	}
+
+	@Test
+	public void test_sourceProperty() {
+		assertEquals(source, event.getSource());
 	}
 
 	@Test
@@ -32,12 +38,12 @@ public class SelectionUpdatedEventTest {
 	}
 
 	@Test
-	public void test_equalityOnInstanceOf() {
-		assertEquals(new SelectionUpdatedEvent(), event);
+	public void test_equality() {
+		assertEquals(new SelectionUpdatedEvent(source), event);
 	}
 
 	@Test
 	public void test_hashCodeEquality() {
-		assertEquals(new SelectionUpdatedEvent().hashCode(), event.hashCode());
+		assertEquals(new SelectionUpdatedEvent(source).hashCode(), event.hashCode());
 	}
 }

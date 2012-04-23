@@ -15,6 +15,7 @@
  */
 package org.vaadin.smartgwt.server.grid.events;
 
+import com.google.common.base.Objects;
 import com.google.web.bindery.event.shared.Event;
 
 public class SelectionUpdatedEvent extends Event<SelectionUpdatedHandler> {
@@ -22,6 +23,10 @@ public class SelectionUpdatedEvent extends Event<SelectionUpdatedHandler> {
 
 	public static Type<SelectionUpdatedHandler> getType() {
 		return TYPE == null ? TYPE = new Type<SelectionUpdatedHandler>() : TYPE;
+	}
+
+	public SelectionUpdatedEvent(Object source) {
+		setSource(source);
 	}
 
 	@Override
@@ -36,11 +41,16 @@ public class SelectionUpdatedEvent extends Event<SelectionUpdatedHandler> {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj instanceof SelectionUpdatedEvent;
+		if (obj instanceof SelectionUpdatedEvent) {
+			final SelectionUpdatedEvent selectionUpdatedEvent = (SelectionUpdatedEvent) obj;
+			return Objects.equal(selectionUpdatedEvent.getSource(), getSource());
+		}
+
+		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return 1;
+		return Objects.hashCode(getSource());
 	}
 }
