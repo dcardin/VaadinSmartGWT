@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.vaadin.rpc.server.ServerSideHandler;
-import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.client.ui.grid.VListGrid;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
@@ -79,7 +77,6 @@ import com.vaadin.terminal.PaintTarget;
 public class ListGrid extends Canvas implements HasSelectionChangedHandlers, HasSelectionUpdatedHandlers {
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
-	private final ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
 	private final Set<SelectionChangedHandler> selectionChangedHandlers = Sets.newHashSet();
 	private final Set<SelectionUpdatedHandler> selectionUpdatedHandlers = Sets.newHashSet();
 	private DataSource dataSource;
@@ -7918,7 +7915,6 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 		}
 
 		super.paintContent(target);
-		client.paintContent(target);
 	}
 
 	@Override
@@ -7945,23 +7941,5 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 		}
 
 		super.changeVariables(source, variables);
-		client.changeVariables(source, variables);
-	}
-
-	private class ServerSideHandlerImpl implements ServerSideHandler {
-		@Override
-		public Object[] initRequestFromClient() {
-			return new Object[0];
-		}
-
-		@Override
-		public void callFromClient(String method, Object[] params) {
-
-		}
-
-		@Override
-		public void requestRepaint() {
-			ListGrid.this.requestRepaint();
-		}
 	}
 }

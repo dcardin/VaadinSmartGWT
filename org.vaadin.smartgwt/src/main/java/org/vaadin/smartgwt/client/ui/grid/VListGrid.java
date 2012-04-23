@@ -1,7 +1,5 @@
 package org.vaadin.smartgwt.client.ui.grid;
 
-import org.vaadin.rpc.client.ClientSideHandler;
-import org.vaadin.rpc.client.ClientSideProxy;
 import org.vaadin.smartgwt.client.core.JavaScriptHelper;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
@@ -28,7 +26,6 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VListGrid extends ListGrid implements Paintable {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final Element element = DOM.createDiv();
-	private final ClientSideProxy rpc = new ClientSideProxy("VListGrid", new ClientSideHandlerImpl());
 	private HandlerRegistration selectionChangedRegistration;
 	private HandlerRegistration selectionUpdatedRegistration;
 	private String pid;
@@ -87,7 +84,6 @@ public class VListGrid extends ListGrid implements Paintable {
 		}
 
 		propertyUpdater.updateFromUIDL(uidl, client);
-		rpc.update(this, uidl, client);
 
 		if (uidl.hasAttribute("dataSource")) {
 			final Paintable paintable = uidl.getPaintableAttribute("dataSource", client);
@@ -141,17 +137,5 @@ public class VListGrid extends ListGrid implements Paintable {
 		}
 
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
-	}
-
-	private class ClientSideHandlerImpl implements ClientSideHandler {
-		@Override
-		public boolean initWidget(Object[] params) {
-			return false;
-		}
-
-		@Override
-		public void handleCallFromServer(String method, Object[] params) {
-
-		}
 	}
 }
