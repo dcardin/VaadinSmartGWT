@@ -26,6 +26,10 @@ import org.vaadin.smartgwt.server.form.fields.events.FormItemIconClickEvent;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
+import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
+import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
+import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedHandler;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.HSplitLayout;
@@ -246,6 +250,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		countryGrid.setCellHeight(22);
 		// use server-side dataSource so edits are retained across page transitions
 		countryGrid.setDataSource(CountryXmlDS.getInstance());
+		countryGrid.setUseAllDataSourceFields(false);
 
 		ListGridField countryCodeField = new ListGridField("countryCode", "Flag", 40);
 		countryCodeField.setAlign(Alignment.CENTER);
@@ -264,13 +269,27 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		countryGrid.setFields(countryCodeField, nameField, continentField, memberG8Field, populationField, independenceField);
 
 		countryGrid.setAutoFetchData(true);
-		countryGrid.setCanEdit(true);
-		countryGrid.setEditEvent(ListGridEditEvent.CLICK);
-		countryGrid.setEditByCell(true);
+		countryGrid.setCanEdit(false);
 
 		layout.addMember(countryGrid);
 		surrounding.addMember(toolStrip);
 		surrounding.addMember(layout);
+
+		countryGrid.addSelectionChangedHandler(new SelectionChangedHandler() {
+			@Override
+			public void onSelectionChanged(SelectionEvent event) {
+				return;
+			}
+		});
+
+		countryGrid.addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+			@Override
+			public void onSelectionUpdated(SelectionUpdatedEvent event) {
+				if (countryGrid.getSelectedRecords().length > 0) {
+					System.out.println(countryGrid.getSelectedRecords()[0].getAttribute("countryName"));
+				}
+			}
+		});
 
 		return surrounding;
 	}
