@@ -10,11 +10,11 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.smartgwt.client.core.DataClass;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
@@ -26,8 +26,6 @@ import com.vaadin.terminal.gwt.client.UIDL;
 public class VListGrid extends ListGrid implements Paintable {
 	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final Element element = DOM.createDiv();
-	private HandlerRegistration selectionChangedRegistration;
-	private HandlerRegistration selectionUpdatedRegistration;
 	private String pid;
 	private ApplicationConnection client;
 
@@ -69,18 +67,43 @@ public class VListGrid extends ListGrid implements Paintable {
 		if (this.pid == null) {
 			this.pid = uidl.getId();
 			this.client = client;
+
 			addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
 				@Override
 				public void onSelectionUpdated(SelectionUpdatedEvent event) {
-					final ListGridRecord[] selectedRecords = getSelectedRecords();
-					final JavaScriptObject selectedRecordsJSA = JavaScriptObject.createArray();
-					for (int i = 0; i < selectedRecords.length; i++) {
-						JSOHelper.setArrayValue(selectedRecordsJSA, i, selectedRecords[i].getJsObj());
-					}
-
+					final JavaScriptObject selectedRecordsJSA = toJSOArray(getSelectedRecords());
 					VListGrid.this.client.updateVariable(pid, "selectedRecords", JavaScriptHelper.stringify(selectedRecordsJSA), false);
 				}
 			});
+
+			new ServerSideEventRegistration("*hasSelectionChangedHandlers") {
+				@Override
+				protected HandlerRegistration registerHandler() {
+					return addSelectionChangedHandler(new SelectionChangedHandler() {
+						@Override
+						public void onSelectionChanged(SelectionEvent event) {
+							final JavaScriptObject eventJSO = JavaScriptObject.createObject();
+							JSOHelper.setAttribute(eventJSO, "record", toJSO(event.getRecord()));
+							JSOHelper.setAttribute(eventJSO, "state", event.getState());
+							JSOHelper.setAttribute(eventJSO, "selection", toJSOArray(event.getSelection()));
+							JSOHelper.setAttribute(eventJSO, "selectedRecord", toJSO(event.getSelectedRecord()));
+							VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JavaScriptHelper.stringify(eventJSO), true);
+						}
+					});
+				}
+			};
+
+			new ServerSideEventRegistration("*hasSelectionUpdatedHandlers") {
+				@Override
+				protected HandlerRegistration registerHandler() {
+					return addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+						@Override
+						public void onSelectionUpdated(SelectionUpdatedEvent event) {
+							VListGrid.this.client.updateVariable(pid, "onSelectionUpdated.event", true, true);
+						}
+					});
+				}
+			};
 		}
 
 		propertyUpdater.updateFromUIDL(uidl, client);
@@ -90,52 +113,38 @@ public class VListGrid extends ListGrid implements Paintable {
 			setDataSource(((VJSObject<DataSource>) paintable).getJSObject());
 		}
 
-		if (uidl.hasAttribute("*hasSelectionChangedHandlers") && selectionChangedRegistration == null) {
-			selectionChangedRegistration = addSelectionChangedHandler(new SelectionChangedHandler() {
-				@Override
-				public void onSelectionChanged(SelectionEvent event) {
-					final JavaScriptObject eventJSO = JavaScriptObject.createObject();
-
-					if (event.getRecord() == null) {
-						JSOHelper.setNullAttribute(eventJSO, "record");
-					} else {
-						JSOHelper.setAttribute(eventJSO, "record", event.getRecord().getJsObj());
-					}
-
-					JSOHelper.setAttribute(eventJSO, "state", event.getState());
-
-					final JavaScriptObject selectionJSA = JavaScriptObject.createArray();
-					JSOHelper.setAttribute(eventJSO, "selection", selectionJSA);
-					for (int i = 0; event.getSelection().length < i; i++) {
-						JSOHelper.setArrayValue(selectionJSA, i, event.getSelection()[i].getJsObj());
-					}
-
-					if (event.getSelectedRecord() == null) {
-						JSOHelper.setNullAttribute(eventJSO, "selectedRecord");
-					} else {
-						JSOHelper.setAttribute(eventJSO, "selectedRecord", event.getSelectedRecord().getJsObj());
-					}
-
-					VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JavaScriptHelper.stringify(eventJSO), true);
-				}
-			});
-		} else if (!uidl.hasAttribute("*hasSelectionChangedHandlers") && selectionChangedRegistration != null) {
-			selectionChangedRegistration.removeHandler();
-			selectionChangedRegistration = null;
-		}
-
-		if (uidl.hasAttribute("*hasSelectionUpdatedHandlers") && selectionUpdatedRegistration == null) {
-			selectionUpdatedRegistration = addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
-				@Override
-				public void onSelectionUpdated(SelectionUpdatedEvent event) {
-					VListGrid.this.client.updateVariable(pid, "onSelectionUpdated.event", true, true);
-				}
-			});
-		} else if (!uidl.hasAttribute("*hasSelectionUpdatedHandlers") && selectionUpdatedRegistration != null) {
-			selectionUpdatedRegistration.removeHandler();
-			selectionUpdatedRegistration = null;
-		}
-
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
+	}
+
+	private static JavaScriptObject toJSOArray(DataClass[] array) {
+		final JavaScriptObject arrayJSO = JavaScriptObject.createArray();
+		for (int i = 0; i < array.length; i++) {
+			JSOHelper.setArrayValue(arrayJSO, i, array[i].getJsObj());
+		}
+		return arrayJSO;
+	}
+
+	private static JavaScriptObject toJSO(DataClass dataClass) {
+		return dataClass == null ? null : dataClass.getJsObj();
+	}
+
+	private static abstract class ServerSideEventRegistration {
+		private final String uidlAttribute;
+		private HandlerRegistration registration;
+
+		public ServerSideEventRegistration(String uidlAttribute) {
+			this.uidlAttribute = uidlAttribute;
+		}
+
+		public void updateFromUIDL(UIDL uidl) {
+			if (uidl.hasAttribute(uidlAttribute) && registration == null) {
+				registration = registerHandler();
+			} else if (!uidl.hasAttribute(uidlAttribute) && registration != null) {
+				registration.removeHandler();
+				registration = null;
+			}
+		}
+
+		protected abstract HandlerRegistration registerHandler();
 	}
 }
