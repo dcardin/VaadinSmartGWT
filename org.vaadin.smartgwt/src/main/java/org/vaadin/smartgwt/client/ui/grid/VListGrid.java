@@ -1,6 +1,6 @@
 package org.vaadin.smartgwt.client.ui.grid;
 
-import org.vaadin.smartgwt.client.core.JavaScriptHelper;
+import org.vaadin.smartgwt.client.core.JSON;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
 import org.vaadin.smartgwt.client.core.VJSObject;
@@ -72,7 +72,7 @@ public class VListGrid extends ListGrid implements Paintable {
 				@Override
 				public void onSelectionUpdated(SelectionUpdatedEvent event) {
 					final JavaScriptObject selectedRecordsJSA = toJSOArray(getSelectedRecords());
-					VListGrid.this.client.updateVariable(pid, "selectedRecords", JavaScriptHelper.stringify(selectedRecordsJSA), false);
+					VListGrid.this.client.updateVariable(pid, "selectedRecords", JSON.stringify(selectedRecordsJSA), false);
 				}
 			});
 
@@ -87,7 +87,7 @@ public class VListGrid extends ListGrid implements Paintable {
 							JSOHelper.setAttribute(eventJSO, "state", event.getState());
 							JSOHelper.setAttribute(eventJSO, "selection", toJSOArray(event.getSelection()));
 							JSOHelper.setAttribute(eventJSO, "selectedRecord", toJSO(event.getSelectedRecord()));
-							VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JavaScriptHelper.stringify(eventJSO), true);
+							VListGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JSON.stringify(eventJSO), true);
 						}
 					});
 				}
