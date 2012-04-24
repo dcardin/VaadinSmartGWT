@@ -9,7 +9,7 @@ public class JSON {
 	/**
 	 * converts a javascript object to it's json representation.
 	 * 
-	 * @param object the javascript object to stringify.
+	 * @param object to be stringified.
 	 * @return the generated json.
 	 * @throws UnsupportedOperationException if the browser doesn't have native support.
 	 */

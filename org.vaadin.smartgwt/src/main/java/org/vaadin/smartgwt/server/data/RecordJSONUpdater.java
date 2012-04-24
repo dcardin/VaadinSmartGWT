@@ -5,7 +5,16 @@ import java.util.Map.Entry;
 import argo.jdom.JsonNode;
 import argo.jdom.JsonStringNode;
 
+/**
+ * Updates a Record with JSON information. 
+ */
 public class RecordJSONUpdater {
+	/**
+	 * updates the Record with information from the JsonNode. 
+	 * 
+	 * @param record to be updated.
+	 * @param node containing update information.
+	 */
 	public void update(Record record, JsonNode node) {
 		for (Entry<JsonStringNode, JsonNode> entry : node.getFields().entrySet()) {
 			final String name = entry.getKey().getText();

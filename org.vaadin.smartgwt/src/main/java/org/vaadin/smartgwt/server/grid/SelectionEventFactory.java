@@ -8,6 +8,9 @@ import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
 
 import argo.jdom.JsonNode;
 
+/**
+ * builds SelectionEvent instances.
+ */
 public class SelectionEventFactory {
 	private final RecordFactory recordFactory;
 	private final ListGridRecordFactory listGridRecordFactory;
@@ -18,6 +21,12 @@ public class SelectionEventFactory {
 		this.listGridRecordFactory = listGridRecordFactory;
 	}
 
+	/**
+	 * builds a new SelectionEvent from the JsonNode attributes.
+	 * 
+	 * @param node containing the SelectionEvent information.
+	 * @return a new SelectionEvent built from the JsonNode attributes.
+	 */
 	public SelectionEvent newSelectionEvent(JsonNode node) {
 		final Record record = recordFactory.newRecord(node.getNode("record"));
 		final boolean state = node.getBooleanValue("state");

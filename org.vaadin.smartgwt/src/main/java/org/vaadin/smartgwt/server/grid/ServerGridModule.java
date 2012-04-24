@@ -4,6 +4,9 @@ import org.vaadin.smartgwt.server.data.ServerDataModule;
 
 import com.google.inject.AbstractModule;
 
+/**
+ * contains default binding for the 'org.vaadin.smartgwt.server.data' package. 
+ */
 public class ServerGridModule extends AbstractModule {
 	@Override
 	protected void configure() {
