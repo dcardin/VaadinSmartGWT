@@ -28,6 +28,8 @@ public class VListGrid extends ListGrid implements Paintable {
 	private final Element element = DOM.createDiv();
 	private String pid;
 	private ApplicationConnection client;
+	private ServerSideEventRegistration selectedChangedEventRegistration;
+	private ServerSideEventRegistration selectionUpdatedEventRegistration;
 
 	public VListGrid() {
 		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
@@ -76,7 +78,7 @@ public class VListGrid extends ListGrid implements Paintable {
 				}
 			});
 
-			new ServerSideEventRegistration("*hasSelectionChangedHandlers") {
+			selectedChangedEventRegistration = new ServerSideEventRegistration("*hasSelectionChangedHandlers") {
 				@Override
 				protected HandlerRegistration registerHandler() {
 					return addSelectionChangedHandler(new SelectionChangedHandler() {
@@ -93,7 +95,7 @@ public class VListGrid extends ListGrid implements Paintable {
 				}
 			};
 
-			new ServerSideEventRegistration("*hasSelectionUpdatedHandlers") {
+			selectionUpdatedEventRegistration = new ServerSideEventRegistration("*hasSelectionUpdatedHandlers") {
 				@Override
 				protected HandlerRegistration registerHandler() {
 					return addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
@@ -106,6 +108,8 @@ public class VListGrid extends ListGrid implements Paintable {
 			};
 		}
 
+		selectedChangedEventRegistration.updateFromUIDL(uidl);
+		selectionUpdatedEventRegistration.updateFromUIDL(uidl);
 		propertyUpdater.updateFromUIDL(uidl, client);
 
 		if (uidl.hasAttribute("dataSource")) {
