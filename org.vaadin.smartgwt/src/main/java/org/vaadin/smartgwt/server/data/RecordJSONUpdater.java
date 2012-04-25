@@ -24,6 +24,8 @@ public class RecordJSONUpdater {
 				record.setAttribute(name, Integer.parseInt(entry.getValue().getNumberValue()));
 			} else if (entry.getValue().isStringValue()) {
 				record.setAttribute(name, entry.getValue().getStringValue());
+			} else if (entry.getValue().isNullNode()) {
+				record.setAttribute(name, (Object) null);
 			} else {
 				throw new RuntimeException("unhandled node type " + entry.getValue());
 			}

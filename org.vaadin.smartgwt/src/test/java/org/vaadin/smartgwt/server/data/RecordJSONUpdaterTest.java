@@ -40,6 +40,14 @@ public class RecordJSONUpdaterTest {
 		assertEquals("value", record.getAttributeAsString("attribute"));
 	}
 
+	@Test
+	public void test_updatesNullAttribute() throws Exception {
+		final JsonRootNode node = new JdomParser().parse("{ \"attribute\": null }");
+		final Record record = new Record();
+		updater.update(record, node);
+		assertNull(record.getAttributeAsObject("attribute"));
+	}
+
 	@Test(expected = RuntimeException.class)
 	public void test_throwsExceptionWhenUnhandledAttributeType() throws Exception {
 		final JsonRootNode node = new JdomParser().parse("{ \"attribute\":[] }");
