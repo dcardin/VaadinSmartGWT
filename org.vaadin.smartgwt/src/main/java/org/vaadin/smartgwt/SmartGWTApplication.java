@@ -26,6 +26,8 @@ import org.vaadin.smartgwt.server.form.fields.events.FormItemIconClickEvent;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 import org.vaadin.smartgwt.server.grid.ListGridRecord;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickEvent;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
@@ -289,6 +291,13 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				if (countryGrid.getSelectedRecords().length > 0) {
 					System.out.println(countryGrid.getSelectedRecords()[0].getAttribute("countryName"));
 				}
+			}
+		});
+
+		countryGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+			@Override
+			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+				masterContainer.getSC().say(event.getRecord().getAttribute("countryName") + " double clicked!");
 			}
 		});
 
