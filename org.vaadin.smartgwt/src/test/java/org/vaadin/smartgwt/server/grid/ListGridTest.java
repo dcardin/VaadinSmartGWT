@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickEvent;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
@@ -23,11 +25,46 @@ import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 public class ListGridTest {
 	private ListGrid listGrid;
 	private SelectionEventFactory selectionEventFactory;
+	private JsonPaintTarget paintTarget;
 
 	@Before
 	public void before() {
+		paintTarget = mock(JsonPaintTarget.class);
 		listGrid = new ListGrid();
 		listGrid.setSelectionEventFactory(selectionEventFactory = mock(SelectionEventFactory.class));
+	}
+
+	@Test
+	public void test_addRecordDoubleClickHandler() {
+		final RecordDoubleClickHandler handler = mock(RecordDoubleClickHandler.class);
+		final RecordDoubleClickEvent event = newRecordDoubleClickEvent();
+		listGrid.addRecordDoubleClickHandler(handler);
+		listGrid.fireEvent(event);
+		verify(handler).onRecordDoubleClick(event);
+	}
+
+	@Test
+	public void test_removeRecordDoubleClickHandlerWithRegistration() {
+		final RecordDoubleClickEvent event = newRecordDoubleClickEvent();
+		final RecordDoubleClickHandler handler = mock(RecordDoubleClickHandler.class);
+		final HandlerRegistration registration = listGrid.addRecordDoubleClickHandler(handler);
+
+		registration.removeHandler();
+		listGrid.fireEvent(event);
+		verify(handler, never()).onRecordDoubleClick(event);
+	}
+
+	@Test
+	public void test_doNotPaintRecordDoubleClickHandlerFlagWhenNoHandlersRegistered() throws PaintException {
+		listGrid.paint(paintTarget);
+		verify(paintTarget, never()).addAttribute("*hasRecordDoubleClickHandlers", true);
+	}
+
+	@Test
+	public void test_paintRecordDoubleClickHandlerFlagWhenHandlersAreRegistered() throws PaintException {
+		listGrid.addRecordDoubleClickHandler(mock(RecordDoubleClickHandler.class));
+		listGrid.paint(paintTarget);
+		verify(paintTarget).addAttribute("*hasRecordDoubleClickHandlers", true);
 	}
 
 	@Test
@@ -154,6 +191,10 @@ public class ListGridTest {
 
 		listGrid.changeVariables(null, variables);
 		assertArrayEquals(records, handler.getSelectedRecords());
+	}
+
+	private static RecordDoubleClickEvent newRecordDoubleClickEvent() {
+		return new RecordDoubleClickEvent(null, null, null, -1, null, -1);
 	}
 
 	private static class CaptureSelectedRecords implements SelectionUpdatedHandler {

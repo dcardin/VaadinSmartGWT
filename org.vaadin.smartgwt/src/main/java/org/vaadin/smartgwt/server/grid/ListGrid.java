@@ -28,8 +28,11 @@ import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.grid.events.HasRecordDoubleClickHandlers;
 import org.vaadin.smartgwt.server.grid.events.HasSelectionChangedHandlers;
 import org.vaadin.smartgwt.server.grid.events.HasSelectionUpdatedHandlers;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickEvent;
+import org.vaadin.smartgwt.server.grid.events.RecordDoubleClickHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;
 import org.vaadin.smartgwt.server.grid.events.SelectionEvent;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
@@ -74,16 +77,16 @@ import com.vaadin.terminal.PaintTarget;
  * each row represents one object and each cell in the row represents one property.
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
-public class ListGrid extends Canvas implements HasSelectionChangedHandlers, HasSelectionUpdatedHandlers {
+public class ListGrid extends Canvas implements HasSelectionChangedHandlers, HasSelectionUpdatedHandlers, HasRecordDoubleClickHandlers {
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
 	private final Set<SelectionChangedHandler> selectionChangedHandlers = Sets.newHashSet();
 	private final Set<SelectionUpdatedHandler> selectionUpdatedHandlers = Sets.newHashSet();
+	private final Set<RecordDoubleClickHandler> recordDoubleClickHandlers = Sets.newHashSet();
 	private DataSource dataSource;
 	private ListGridRecord[] selectedRecords;
 	private SelectionEventFactory selectionEventFactory;
 	private ListGridRecordFactory listGridRecordFactory;
-
 
 	public ListGrid() {
 		setModalEditing(true);
@@ -7367,6 +7370,33 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 		return getAttributeAsBoolean("wrapCells");
 	}
 
+	/**
+	 * Add a recordDoubleClick handler.
+	 * <p>
+	 * Executed when the listGrid receives a 'doubleClick' event on an enabled, non-separator record. The default
+	 * implementation does nothing -- override to perform some action when any record or field is double clicked.<br> A record
+	 * event handler can be specified either as a function to execute, or as a string of script to evaluate. If the handler is
+	 * defined as a string of script, all the parameters below will be available as variables for use in the script.<br> To do
+	 * something specific if a particular field is double clicked, add a recordDoubleClick method or string of script to that
+	 * field (same parameters) when you're setting up the list.<br> <b>Notes:</b><ul> <li>This will not be called if the click
+	 * is below the last item of the list.</li> <li>This method is called from the default implementation of {@link
+	 * com.smartgwt.client.widgets.grid.ListGrid#rowDoubleClick ListGrid.rowDoubleClick}, so if that method is overridden this
+	 * method may not be fired.</li></ul>
+	 *
+	 * @param handler the recordDoubleClick handler
+	 * @return {@link HandlerRegistration} used to remove this handler
+	 */
+	@Override
+	public HandlerRegistration addRecordDoubleClickHandler(final RecordDoubleClickHandler handler) {
+		recordDoubleClickHandlers.add(handler);
+		return new HandlerRegistration() {
+			@Override
+			public void removeHandler() {
+				recordDoubleClickHandlers.remove(handler);
+			}
+		};
+	}
+
 	public Set<SelectionChangedHandler> getSelectionChangedHandlers() {
 		return Sets.newHashSet(selectionChangedHandlers);
 	}
@@ -7931,6 +7961,10 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 			target.addAttribute("*hasSelectionUpdatedHandlers", true);
 		}
 
+		if (!recordDoubleClickHandlers.isEmpty()) {
+			target.addAttribute("*hasRecordDoubleClickHandlers", true);
+		}
+
 		super.paintContent(target);
 	}
 
@@ -7960,12 +7994,20 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 
 		if (variables.containsKey("onSelectionUpdated.event")) {
 			final SelectionUpdatedEvent event = new SelectionUpdatedEvent(this);
-			
+
 			for (SelectionUpdatedHandler handler : selectionUpdatedHandlers) {
 				handler.onSelectionUpdated(event);
 			}
 		}
 
 		super.changeVariables(source, variables);
+	}
+	
+	protected void fireEvent(com.google.web.bindery.event.shared.Event<?> event) {
+		if (event instanceof RecordDoubleClickEvent) {
+			for (RecordDoubleClickHandler handler : recordDoubleClickHandlers) {
+				handler.onRecordDoubleClick((RecordDoubleClickEvent) event);
+			}
+		}
 	}
 }
