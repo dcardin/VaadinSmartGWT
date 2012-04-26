@@ -28,6 +28,7 @@ import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.data.RecordFactory;
 import org.vaadin.smartgwt.server.grid.events.HasRecordDoubleClickHandlers;
 import org.vaadin.smartgwt.server.grid.events.HasSelectionChangedHandlers;
 import org.vaadin.smartgwt.server.grid.events.HasSelectionUpdatedHandlers;
@@ -86,6 +87,7 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 	private DataSource dataSource;
 	private ListGridRecord[] selectedRecords;
 	private SelectionEventFactory selectionEventFactory;
+	private RecordFactory recordFactory;
 	private ListGridRecordFactory listGridRecordFactory;
 
 	public ListGrid() {
@@ -7933,6 +7935,18 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 		this.selectionEventFactory = selectionEventFactory;
 	}
 
+	public RecordFactory getRecordFactory() {
+		if (recordFactory == null) {
+			return recordFactory = InjectorSingleton.get().getInstance(RecordFactory.class);
+		} else {
+			return recordFactory;
+		}
+	}
+
+	public void setRecordFactory(RecordFactory recordFactory) {
+		this.recordFactory = recordFactory;
+	}
+
 	public ListGridRecordFactory getListGridRecordFactory() {
 		if (listGridRecordFactory == null) {
 			return listGridRecordFactory = InjectorSingleton.get().getInstance(ListGridRecordFactory.class);
@@ -8000,9 +8014,26 @@ public class ListGrid extends Canvas implements HasSelectionChangedHandlers, Has
 			}
 		}
 
+		if (variables.containsKey("onRecordDoubleClick")) {
+			try {
+				final JsonRootNode root = new JdomParser().parse((String) variables.get("onRecordDoubleClick.event.record"));
+				final Record record = getRecordFactory().newRecord(root);
+				final int recordNum = (Integer) variables.get("onRecordDoubleClick.event.recordNum");
+				final ListGridField field = (ListGridField) variables.get("onRecordDoubleClick.event.field");
+				final int fieldNum = (Integer) variables.get("onRecordDoubleClick.event.fieldNum");
+				final RecordDoubleClickEvent event = new RecordDoubleClickEvent(this, this, record, recordNum, field, fieldNum);
+
+				for (RecordDoubleClickHandler handler : recordDoubleClickHandlers) {
+					handler.onRecordDoubleClick(event);
+				}
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+		}
+
 		super.changeVariables(source, variables);
 	}
-	
+
 	protected void fireEvent(com.google.web.bindery.event.shared.Event<?> event) {
 		if (event instanceof RecordDoubleClickEvent) {
 			for (RecordDoubleClickHandler handler : recordDoubleClickHandlers) {
