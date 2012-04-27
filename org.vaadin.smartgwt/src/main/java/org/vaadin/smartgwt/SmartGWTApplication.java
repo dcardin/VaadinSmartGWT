@@ -553,6 +553,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
 		tabs.add(newTab("postCreationModification", newPostCreationModifiedLayout()));
 		tabs.add(newTab("confirmDialogs", newConfirmDialogsLayout()));
+		tabs.add(newTab("windowClose", newWindowCloseHandlingLayout()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 	}
@@ -652,7 +653,28 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				});
 			}
 		});
+		return mainLayout;
+	}
 
+	private Canvas newWindowCloseHandlingLayout() {
+		final VLayout mainLayout = new VLayout();
+		final Button windowButton = new Button("Open window") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				final org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
+				final Button closeWindowButton = new Button("Close window") {
+					@Override
+					public void changeVariables(Object source, Map<String, Object> variables) {
+						window.dispose();
+					}
+				};
+
+				window.addItem(closeWindowButton);
+				window.show();
+			}
+		};
+
+		mainLayout.addComponent(windowButton);
 		return mainLayout;
 	}
 
@@ -693,14 +715,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tiEvent.setWidth("100%");
 
 		final PickerIcon icon = new PickerIcon(PickerIcon.CLEAR);
-		icon.addFormItemClickHandler(new FormItemClickHandler()
-			{
-				@Override
-				public void onFormItemClick(FormItemIconClickEvent event)
-				{
-					tiEvent.setValue("");
-				}
-			});
+		icon.addFormItemClickHandler(new FormItemClickHandler() {
+			@Override
+			public void onFormItemClick(FormItemIconClickEvent event) {
+				tiEvent.setValue("");
+			}
+		});
 
 		tiEvent.setIcons(icon);
 		form.addField(tiEvent);
