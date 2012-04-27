@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
+import org.vaadin.smartgwt.server.core.RegistrationEntry;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
@@ -28,6 +29,7 @@ public class Window extends Layout {
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<Canvas> items = propertyPainter.addComponentList("items");
 	private final MasterContainer container;
+	private RegistrationEntry registrationEntry;
 
 	public Window(MasterContainer container) {
 		this.container = container;
@@ -1210,7 +1212,16 @@ public class Window extends Layout {
     }
 
 	public void show() {
-		container.showWindow(this);
+		if (registrationEntry == null) {
+			registrationEntry = container.register(this);
+		}
+	}
+
+	public void dispose() {
+		if (registrationEntry != null && registrationEntry.isRegistered()) {
+			registrationEntry.unregister();
+			registrationEntry = null;
+		}
 	}
 
 	public void addItem(Canvas component) {
@@ -1221,5 +1232,13 @@ public class Window extends Layout {
 	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
 		super.paintContent(target);
+	}
+
+	@Override
+	public void changeVariables(Object source, Map<String, Object> variables) {
+		super.changeVariables(source, variables);
+		if (variables.containsKey("destroyed")) {
+			dispose();
+		}
 	}
 }
