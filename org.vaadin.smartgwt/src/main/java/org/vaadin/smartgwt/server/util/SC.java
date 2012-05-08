@@ -72,33 +72,33 @@ public class SC extends Canvas {
 		client.call("sayWithCallback", title, message);
 		callBacks.push(bcb);
 	}
-	
+
 	/**
-     * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
-     * <p>
-     * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
-     *
-     * @param message message to display
-     * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
-     */
+	 * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
+	 * <p>
+	 * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
+	 *
+	 * @param message message to display
+	 * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
+	 */
 	public void confirm(String message, BooleanCallback callback) {
 		confirm(null, message, callback);
-    }
+	}
 
-    /**
-     * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
-     * <p>
-     * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
-     *
-     * @param title the title of the dialog
-     * @param message message to display
-     * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
-     */
+	/**
+	 * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
+	 * <p>
+	 * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
+	 *
+	 * @param title the title of the dialog
+	 * @param message message to display
+	 * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
+	 */
 	public void confirm(String title, String message, BooleanCallback callback) {
 		final int key = incrementor.increment();
 		client.call("confirm", key, message, title);
 		callbacks.put(key, callback);
-    }
+	}
 
 	@Override
 	public void changeVariables(final Object source, final Map variables) {
@@ -110,7 +110,7 @@ public class SC extends Canvas {
 
 		if (variables.containsKey("callbackKey")) {
 			final BooleanCallback callback = callbacks.get(variables.get("callbackKey"));
-			callback.execute((Boolean) variables.get("callback"));
+			callback.execute("null".equals(variables.get("callback")) ? null : (Boolean) variables.get("callback"));
 		}
 	}
 

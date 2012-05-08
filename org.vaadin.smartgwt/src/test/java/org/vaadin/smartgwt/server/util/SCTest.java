@@ -62,6 +62,23 @@ public class SCTest {
 	}
 
 	@Test
+	public void test_confirmationRequestsCallsCallbackOnVariablesChangeWithNullResult() {
+		final BooleanCallback callback = mock(BooleanCallback.class);
+		final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
+		final HashMap<String, Object> variables = Maps.newHashMap();
+		final Boolean clientResult = null;
+
+		sc.confirm(null, callback);
+		verify(serverSideProxy, atLeastOnce()).call(anyString(), keyCaptor.capture(), anyString(), anyString());
+
+		variables.put("callbackKey", keyCaptor.getValue());
+		variables.put("callback", clientResult);
+
+		sc.changeVariables(null, variables);
+		verify(callback).execute(clientResult);
+	}
+
+	@Test
 	public void test_callsCallbackOnConfirmationRequestWithPendingRequests() {
 		final BooleanCallback callback = mock(BooleanCallback.class);
 		final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
