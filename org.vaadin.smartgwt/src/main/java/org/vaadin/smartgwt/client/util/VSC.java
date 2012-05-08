@@ -50,6 +50,32 @@ public class VSC extends Widget implements Paintable {
 				}
 			}
 		});
+
+		rpc.register("confirm", new Method() {
+			@Override
+			public void invoke(String methodName, Object[] params) {
+				final int key = (Integer) params[0];
+				final String message = (String) params[1];
+				final BooleanCallback callback = new BooleanCallback() {
+					@Override
+					public void execute(Boolean value) {
+						client.updateVariable(paintableId, "callbackKey", key, false);
+
+						if (value == null) {
+							client.updateVariable(paintableId, "callback", "null", true);
+						} else {
+							client.updateVariable(paintableId, "callback", value, true);
+						}
+					}
+				};
+
+				if (params.length < 2) {
+					SC.confirm(message, callback);
+				} else {
+					SC.confirm((String) params[2], message, callback);
+				}
+			}
+		});
 	}
 
 	@Override
