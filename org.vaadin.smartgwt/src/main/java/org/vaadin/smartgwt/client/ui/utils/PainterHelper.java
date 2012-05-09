@@ -1,5 +1,8 @@
 package org.vaadin.smartgwt.client.ui.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VDataClass;
 
@@ -17,6 +20,23 @@ import com.vaadin.terminal.gwt.client.UIDL;
 
 public class PainterHelper
 {
+	private static final Set<String> abstractComponentAttributes = new HashSet<String>();
+
+	static {
+		//		abstractComponentAttributes.add("height");
+		//		abstractComponentAttributes.add("width");
+		abstractComponentAttributes.add("style");
+		abstractComponentAttributes.add("readonly");
+		abstractComponentAttributes.add("immediate");
+		abstractComponentAttributes.add("disabled");
+		abstractComponentAttributes.add("caption");
+		abstractComponentAttributes.add("icon");
+		abstractComponentAttributes.add("description");
+		abstractComponentAttributes.add("eventListeners");
+		abstractComponentAttributes.add("invisible");
+		abstractComponentAttributes.add("cached");
+	}
+
 	/**
 	 * Provides automatic processing of a Widget's property, coming from properties in uidl
 	 * 
@@ -33,35 +53,34 @@ public class PainterHelper
 		{
 			System.out.println("Updating value: " + att);
 
-			if (!att.startsWith("*") && !att.equals("id") && !att.startsWith("_"))
+			if (!att.startsWith("*") && !att.equals("id") && !att.startsWith("_") && !abstractComponentAttributes.contains(att))
 			{
 				if (component instanceof BaseWidget)
 				{
 					BaseWidget widget = (BaseWidget) component;
 
-					if (att.equals("disabled"))
-					{
-						String sValue = uidl.getStringAttribute(att).substring(1);
+					if (att.length() >= 2 && att.charAt(1) == '$') {
+						final String attribute = att.substring(2);
 
-						boolean disabled = Boolean.valueOf(sValue);
-						if (disabled)
-						{
-							if (component instanceof Canvas)
-							{
-								((Canvas) component).disable();
+						switch (att.charAt(0)) {
+						case 'b':
+							if ("disabled".equals(attribute) && widget instanceof Canvas) {
+								if (uidl.getBooleanAttribute(att)) {
+									((Canvas) widget).disable();
+								} else {
+									((Canvas) widget).enable();
+								}
+							} else {
+								widget.setProperty(attribute, uidl.getBooleanAttribute(att));
 							}
-							else
-							{
-								((Canvas) component).enable();
-							}
+							break;
 						}
 
-						continue;
+						break;
 					}
 
 					// Names starting with the character '#' indicate a reference to a Paintable
-					if (att.startsWith("#"))
-					{
+					if (att.startsWith("#")) {
 						final Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
 
 						if (paintable instanceof BaseWidget)

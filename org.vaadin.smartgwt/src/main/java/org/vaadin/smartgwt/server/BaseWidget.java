@@ -1146,6 +1146,16 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 			Object value = entry.getValue();
 			String name = entry.getKey();
 
+			if (name.length() >= 2 && name.charAt(1) == '$') {
+				switch (name.charAt(0)) {
+				case 'b':
+					target.addAttribute(name, (Boolean) value);
+					break;
+				}
+
+				break;
+			}
+
 			if (value == null)
 			{
 				logPaintContentAttribute(name, null);
