@@ -48,6 +48,7 @@ import org.vaadin.smartgwt.server.types.DragDataAction;
 import org.vaadin.smartgwt.server.types.ListGridEditEvent;
 import org.vaadin.smartgwt.server.types.ListGridFieldType;
 import org.vaadin.smartgwt.server.types.SelectionType;
+import org.vaadin.smartgwt.server.util.BooleanCallback;
 
 import argo.format.CompactJsonFormatter;
 import argo.format.JsonFormatter;
@@ -551,6 +552,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabs.add(newTab("sections", getStackView()));
 		tabs.add(newTab("splitLayout", newSplitLayoutPane()));
 		tabs.add(newTab("postCreationModification", newPostCreationModifiedLayout()));
+		tabs.add(newTab("confirmDialogs", newConfirmDialogsLayout()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 	}
@@ -621,6 +623,37 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		});
 		layout.addMember(yellow);
 		return layout;
+	}
+
+	private Canvas newConfirmDialogsLayout() {
+		final VLayout mainLayout = new VLayout();
+		mainLayout.addMember(new Button("without title") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				masterContainer.getSC().confirm("message", new BooleanCallback() {
+					@Override
+					public void execute(Boolean value) {
+						masterContainer.getSC().say(value + " choosen.");
+					}
+				});
+			}
+		});
+
+		mainLayout.addMember(new Button("with title") {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+				masterContainer.getSC().confirm("this is a title", "message", new BooleanCallback() {
+					@Override
+					public void execute(Boolean value) {
+						masterContainer.getSC().say(value + " choosen.");
+					}
+				});
+			}
+		});
+
+		return mainLayout;
 	}
 
 	public VLayout getSpecial() {

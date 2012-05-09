@@ -22,13 +22,38 @@ import org.vaadin.rpc.server.ServerSideHandler;
 import org.vaadin.rpc.server.ServerSideProxy;
 import org.vaadin.smartgwt.server.Canvas;
 
+import com.google.common.collect.Maps;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.util.VSC.class)
 public class SC extends Canvas {
-	private ServerSideProxy client = new ServerSideProxy(new ServerSideHandlerImpl());
+	static class ServerSideProxyFactory {
+		public ServerSideProxy newServerSideProxy(ServerSideHandler handler) {
+			return new ServerSideProxy(handler);
+		}
+	}
+
+	private static class ConcurrentIncrementor {
+		private int next = 0;
+
+		public synchronized int increment() {
+			return next = next + 1;
+		}
+	}
+
+	private final ServerSideProxy client;
+	private final ConcurrentIncrementor incrementor = new ConcurrentIncrementor();
+	private final Map<Integer, BooleanCallback> callbacks = Maps.newHashMap();
 	private Stack callBacks = new Stack();
+
+	public SC() {
+		this(new ServerSideProxyFactory());
+	}
+
+	SC(ServerSideProxyFactory serverSideProxyFactory) {
+		client = serverSideProxyFactory.newServerSideProxy(new ServerSideHandlerImpl());
+	}
 
 	public void say(String message) {
 		client.call("sayNoCallback", message);
@@ -48,13 +73,44 @@ public class SC extends Canvas {
 		callBacks.push(bcb);
 	}
 
+	/**
+	 * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
+	 * <p>
+	 * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
+	 *
+	 * @param message message to display
+	 * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
+	 */
+	public void confirm(String message, BooleanCallback callback) {
+		confirm(null, message, callback);
+	}
+
+	/**
+	 * Show a modal dialog with a message, icon, and "OK" and "Cancel" buttons.
+	 * <p>
+	 * The callback will receive boolean true for an OK button click, or null for a Cancel click or if the Dialog is dismissed via the close button.
+	 *
+	 * @param title the title of the dialog
+	 * @param message message to display
+	 * @param callback Callback to fire when the user clicks a button to dismiss the dialog.
+	 */
+	public void confirm(String title, String message, BooleanCallback callback) {
+		final int key = incrementor.increment();
+		client.call("confirm", key, message, title);
+		callbacks.put(key, callback);
+	}
+
 	@Override
 	public void changeVariables(final Object source, final Map variables) {
 		client.changeVariables(source, variables);
-
 		if (callBacks.size() > 0) {
 			BooleanCallback bcp = (BooleanCallback) callBacks.pop();
 			bcp.execute((Boolean) variables.get("callback"));
+		}
+
+		if (variables.containsKey("callbackKey")) {
+			final BooleanCallback callback = callbacks.get(variables.get("callbackKey"));
+			callback.execute("null".equals(variables.get("callback")) ? null : (Boolean) variables.get("callback"));
 		}
 	}
 
