@@ -25,15 +25,15 @@ public class PainterHelper
 	static {
 		//		abstractComponentAttributes.add("height");
 		//		abstractComponentAttributes.add("width");
-		abstractComponentAttributes.add("style");
-		abstractComponentAttributes.add("readonly");
-		abstractComponentAttributes.add("immediate");
+		//		abstractComponentAttributes.add("style");
+		//		abstractComponentAttributes.add("readonly");
+		//		abstractComponentAttributes.add("immediate");
 		abstractComponentAttributes.add("disabled");
-		abstractComponentAttributes.add("caption");
-		abstractComponentAttributes.add("icon");
-		abstractComponentAttributes.add("description");
-		abstractComponentAttributes.add("eventListeners");
-		abstractComponentAttributes.add("invisible");
+		//		abstractComponentAttributes.add("caption");
+		//		abstractComponentAttributes.add("icon");
+		//		abstractComponentAttributes.add("description");
+		//		abstractComponentAttributes.add("eventListeners");
+		//		abstractComponentAttributes.add("invisible");
 		abstractComponentAttributes.add("cached");
 	}
 
