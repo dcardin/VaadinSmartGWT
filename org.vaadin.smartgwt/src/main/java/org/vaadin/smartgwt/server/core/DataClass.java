@@ -61,7 +61,7 @@ public class DataClass extends AbstractComponent {
 	}
 
 	public void setAttribute(String property, long value) {
-		attributes.put(property, value);
+		attributes.put(property, new Double(value));
 	}
 
 	public Integer getAttributeAsInt(String property) {
