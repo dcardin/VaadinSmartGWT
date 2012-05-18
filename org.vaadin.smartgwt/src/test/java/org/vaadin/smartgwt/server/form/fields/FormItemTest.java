@@ -6,13 +6,16 @@ import static org.mockito.Mockito.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.ComponentArray;
+import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 
+import com.google.common.collect.Maps;
+import com.smartgwt.client.types.FormItemType;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.terminal.gwt.server.JsonPaintTarget;
@@ -72,6 +75,26 @@ public class FormItemTest {
 		formItem.setIcons(icon);
 		formItem.paint(target);
 		verify(icon).paint(target);
+	}
+
+	@Test
+	public void test_paintsBooleanValue() throws Exception {
+		final JsonPaintTarget paintTarget = mock(JsonPaintTarget.class);
+
+		formItem.setType(FormItemType.BOOLEAN.getValue());
+		formItem.setValue(Boolean.TRUE);
+		formItem.paintContent(paintTarget);
+		verify(paintTarget, atLeastOnce()).addAttribute("value", "b" + Boolean.TRUE.toString());
+	}
+
+	@Test
+	public void test_updatesBooleanValueVariable() {
+		final HashMap<String, Object> variables = Maps.<String, Object> newHashMap();
+
+		variables.put("value", "true");
+		formItem.setType(FormItemType.BOOLEAN.getValue());
+		formItem.changeVariables(null, variables);
+		assertEquals(Boolean.TRUE, formItem.getValue());
 	}
 
 	private static void assertPropertyChangeEvent(PropertyChangeEvent event, Object source, String propertyName, Object oldValue, Object newValue) {
