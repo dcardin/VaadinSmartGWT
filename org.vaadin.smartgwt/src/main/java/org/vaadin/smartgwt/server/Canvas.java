@@ -6534,7 +6534,10 @@ public class Canvas extends BaseWidget { // implements com.smartgwt.client.widge
      * @param disabled new disabled state of this object - pass <code>true</code> to disable the widget. Default value is false
      */
     public void setDisabled(boolean disabled) {
-        setAttribute("disabled", disabled, true);
+		setAttribute("b$disabled", disabled);
+		if (isCreated()) {
+			requestRepaint();
+		}
     }
 
     /**
@@ -6547,9 +6550,19 @@ public class Canvas extends BaseWidget { // implements com.smartgwt.client.widge
      * of its ancestors are marked disabled.
      */
     public boolean getDisabled()  {
-        Boolean disabled =  getAttributeAsBoolean("disabled");
+		Boolean disabled = getAttributeAsBoolean("b$disabled");
         return disabled == null ? false : disabled; 
     }
+
+	@Override
+	public boolean isEnabled() {
+		return !getDisabled();
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		setDisabled(!enabled);
+	}
 
     /**
     * A different widget that should be actually dragged when dragging initiates on this&#010      widget. One example of this is to have a child widget that drags its parent, as with a&#010      drag box. Because the parent automatically repositions its children, setting the drag&#010      target of the child to the parent and then dragging the child will result in both&#010      widgets being moved.<br>&#010      Valid dragTarget values are:<br>&#010      - <code>null</code> (default) [this widget is its own drag target]<br>&#010      - Pointer to another widget, or widget ID<br>&#010      - <code>"parent"</code> drag target is this widget's &#010         {@link com.smartgwt.client.widgets.Canvas#getParentElement parentElement}<br>&#010      - <code>"top"</code> drag target is this widget's &#010         {@link com.smartgwt.client.widgets.Canvas#getTopElement topElement}<br>

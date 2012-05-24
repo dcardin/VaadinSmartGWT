@@ -563,6 +563,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabs.add(newTab("postCreationModification", newPostCreationModifiedLayout()));
 		tabs.add(newTab("confirmDialogs", newConfirmDialogsLayout()));
 		tabs.add(newTab("windowClose", newWindowCloseHandlingLayout()));
+		tabs.add(newTab("buttonDisabling", newButtonDisabingLayout()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 	}
@@ -664,7 +665,6 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		});
 		return mainLayout;
 	}
-
 	private Canvas newWindowCloseHandlingLayout() {
 		final VLayout mainLayout = new VLayout();
 		final Button windowButton = new Button("Open window") {
@@ -684,6 +684,20 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		};
 
 		mainLayout.addComponent(windowButton);
+		return mainLayout;
+	}
+
+	private Canvas newButtonDisabingLayout() {
+		final VLayout mainLayout = new VLayout();
+		final Button button2 = new Button();
+
+		mainLayout.addMember(new Button("Click Me") {
+			public void changeVariables(Object source, java.util.Map<String, Object> variables) {
+				button2.setEnabled(!button2.isEnabled());
+			}
+		});
+
+		mainLayout.addMember(button2);
 		return mainLayout;
 	}
 
