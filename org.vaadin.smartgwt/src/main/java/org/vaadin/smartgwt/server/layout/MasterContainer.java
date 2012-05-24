@@ -9,6 +9,7 @@ import org.vaadin.smartgwt.server.Window;
 import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.ComponentReference;
+import org.vaadin.smartgwt.server.core.RegistrationEntry;
 import org.vaadin.smartgwt.server.data.DataSource;
 import org.vaadin.smartgwt.server.util.SC;
 
@@ -27,7 +28,7 @@ public class MasterContainer extends BaseWidget implements ComponentContainer {
 	private final ComponentReference<SC> sc = paintablePropertyPainter.addProperty("sc");
 	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
 	private final ComponentReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
-	private final ComponentReference<Window> window = paintablePropertyPainter.addProperty("window");
+	private final ComponentList<Window> window = paintablePropertyPainter.addComponentList("window");
 
 	public MasterContainer() {
 		sc.set(new SC());
@@ -51,15 +52,27 @@ public class MasterContainer extends BaseWidget implements ComponentContainer {
 		return sc.get();
 	}
 
-	public void showWindow(Window window) {
-		this.window.set(window);
+	public RegistrationEntry register(final Window window) {
+		this.window.add(window);
 		requestRepaint();
+
+		return new RegistrationEntry() {
+			@Override
+			public void unregister() {
+				MasterContainer.this.window.remove(window);
+				requestRepaint();
+			}
+
+			@Override
+			public boolean isRegistered() {
+				return MasterContainer.this.window.contains(window);
+			}
+		};
 	}
 
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException {
 		paintablePropertyPainter.paintContent(target);
-		window.set(null);
 		super.paintContent(target);
 	}
 
