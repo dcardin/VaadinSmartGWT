@@ -3,6 +3,7 @@ package org.vaadin.smartgwt.client.ui.grid;
 import org.vaadin.smartgwt.client.core.JSON;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -15,6 +16,8 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.util.JSOHelper;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
@@ -30,6 +33,7 @@ public class VListGrid extends ListGrid implements Paintable {
 	private ApplicationConnection client;
 	private ServerSideEventRegistration selectedChangedEventRegistration;
 	private ServerSideEventRegistration selectionUpdatedEventRegistration;
+	private ServerSideEventRegistration recordDoubleClickedEventRegistration;
 
 	public VListGrid() {
 		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
@@ -106,10 +110,28 @@ public class VListGrid extends ListGrid implements Paintable {
 					});
 				}
 			};
+
+			recordDoubleClickedEventRegistration = new ServerSideEventRegistration("*hasRecordDoubleClickHandlers") {
+				@Override
+				protected HandlerRegistration registerHandler() {
+					return addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+						@Override
+						public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+							final ApplicationConnection client = VListGrid.this.client;
+							client.updateVariable(pid, "onRecordDoubleClick", true, false);
+							client.updateVariable(pid, "onRecordDoubleClick.event.record", JSON.stringify(toJSO(event.getRecord())), false);
+							client.updateVariable(pid, "onRecordDoubleClick.event.recordNum", event.getRecordNum(), false);
+							client.updateVariable(pid, "onRecordDoubleClick.event.field", VDataClass.getVDataClass(client, event.getField()), false);
+							client.updateVariable(pid, "onRecordDoubleClick.event.fieldNum", event.getFieldNum(), true);
+						}
+					});
+				}
+			};
 		}
 
 		selectedChangedEventRegistration.updateFromUIDL(uidl);
 		selectionUpdatedEventRegistration.updateFromUIDL(uidl);
+		recordDoubleClickedEventRegistration.updateFromUIDL(uidl);
 		propertyUpdater.updateFromUIDL(uidl, client);
 
 		if (uidl.hasAttribute("dataSource")) {
