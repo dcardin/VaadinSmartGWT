@@ -1,5 +1,8 @@
 package org.vaadin.smartgwt.server.tree;
 
+import org.vaadin.smartgwt.client.ui.grid.VListGrid;
+import org.vaadin.smartgwt.client.ui.tree.VTreeGrid;
+import org.vaadin.smartgwt.server.core.ComponentReference;
 import org.vaadin.smartgwt.server.grid.ListGrid;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.types.DisplayNodeType;
@@ -43,8 +46,11 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
  * com.smartgwt.client.widgets.tree.TreeNode}, respectively.
  */
 // @formatter:off
+@com.vaadin.ui.ClientWidget(VTreeGrid.class)
 public class TreeGrid extends ListGrid {  // implements com.smartgwt.client.widgets.tree.events.HasFolderDropHandlers, com.smartgwt.client.widgets.tree.events.HasDataArrivedHandlers, com.smartgwt.client.widgets.tree.events.HasFolderOpenedHandlers, com.smartgwt.client.widgets.tree.events.HasFolderClosedHandlers, com.smartgwt.client.widgets.tree.events.HasFolderClickHandlers, com.smartgwt.client.widgets.tree.events.HasLeafClickHandlers, com.smartgwt.client.widgets.tree.events.HasNodeClickHandlers, com.smartgwt.client.widgets.tree.events.HasFolderContextClickHandlers, com.smartgwt.client.widgets.tree.events.HasLeafContextClickHandlers, com.smartgwt.client.widgets.tree.events.HasNodeContextClickHandlers {
 
+	private ComponentReference<Tree> data = propertyPainter.addProperty("data");
+	
 //    public static TreeGrid getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
 //        BaseWidget obj = BaseWidget.getRef(jsObj);
@@ -650,8 +656,7 @@ public class TreeGrid extends ListGrid {  // implements com.smartgwt.client.widg
      * @param data Tree to show. Default value is null
      */
     public void setData(Tree data) {
-        //setAttribute("data", data == null ? null : data.getOrCreateJsObj(), true);
-        setAttribute("data", data, true);
+    	this.data.set(data);
     }
 
     /**
@@ -2108,7 +2113,7 @@ public class TreeGrid extends ListGrid {  // implements com.smartgwt.client.widg
      * @param fields fields Default value is null
      */
     public void setFields(TreeGridField... fields) {
-        setAttribute("fields", fields, true);
+        super.setFields(fields);
     }
 
     /**

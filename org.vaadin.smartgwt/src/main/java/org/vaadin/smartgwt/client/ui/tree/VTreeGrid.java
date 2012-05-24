@@ -3,6 +3,8 @@ package org.vaadin.smartgwt.client.ui.tree;
 import org.vaadin.smartgwt.client.core.JSON;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.PaintableReferenceListener;
+import org.vaadin.smartgwt.client.core.VBaseClass;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
@@ -17,6 +19,7 @@ import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.grid.events.SelectionUpdatedEvent;
 import com.smartgwt.client.widgets.grid.events.SelectionUpdatedHandler;
+import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
@@ -24,14 +27,21 @@ import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
 
 public class VTreeGrid extends TreeGrid implements Paintable {
-	private final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
+	protected final PaintablePropertyUpdater propertyUpdater = new PaintablePropertyUpdater();
 	private final Element element = DOM.createDiv();
-	private String pid;
-	private ApplicationConnection client;
-	private ServerSideEventRegistration selectedChangedEventRegistration;
-	private ServerSideEventRegistration selectionUpdatedEventRegistration;
+	protected String pid;
+	protected ApplicationConnection client;
+	protected ServerSideEventRegistration selectedChangedEventRegistration;
+	protected ServerSideEventRegistration selectionUpdatedEventRegistration;
 
 	public VTreeGrid() {
+		propertyUpdater.addPaintableReferenceListener("data", new PaintableReferenceListener() {
+			@Override
+			public void onChange(Paintable paintable) {
+				setData(((VBaseClass<Tree>) paintable).getJSObject());
+			}
+		});
+		
 		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
 			@Override
 			public void onAdd(Paintable[] source, Integer index, Paintable element) {
@@ -74,10 +84,10 @@ public class VTreeGrid extends TreeGrid implements Paintable {
 				@Override
 				public void onSelectionUpdated(SelectionUpdatedEvent event) {
 					final JavaScriptObject selectedRecordsJSA = toJSOArray(getSelectedRecords());
-					VTreeGrid.this.client.updateVariable(pid, "selectedRecords", JSON.stringify(selectedRecordsJSA), false);
+					VTreeGrid.this.client.updateVariable(pid, "selectedRecords", JSON.stringify(selectedRecordsJSA, JSON.newExclusionReplacer(new String[] {"children", "_parent_isc_Tree_0"})), false);
 				}
 			});
-
+			
 			selectedChangedEventRegistration = new ServerSideEventRegistration("*hasSelectionChangedHandlers") {
 				@Override
 				protected HandlerRegistration registerHandler() {
@@ -89,7 +99,7 @@ public class VTreeGrid extends TreeGrid implements Paintable {
 							JSOHelper.setAttribute(eventJSO, "state", event.getState());
 							JSOHelper.setAttribute(eventJSO, "selection", toJSOArray(event.getSelection()));
 							JSOHelper.setAttribute(eventJSO, "selectedRecord", toJSO(event.getSelectedRecord()));
-							VTreeGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JSON.stringify(eventJSO), true);
+							VTreeGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JSON.stringify(eventJSO, JSON.newExclusionReplacer(new String[] {"children", "_parent_isc_Tree_0"})), true);
 						}
 					});
 				}

@@ -1,6 +1,8 @@
 package org.vaadin.smartgwt.server.tree;
 
-import org.vaadin.smartgwt.server.BaseWidget;
+import org.vaadin.smartgwt.client.ui.grid.VListGrid;
+import org.vaadin.smartgwt.client.ui.tree.VTree;
+import org.vaadin.smartgwt.server.core.BaseClass;
 import org.vaadin.smartgwt.server.types.TreeModelType;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
@@ -32,7 +34,8 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
  * information on DataBinding Trees, see {@link com.smartgwt.client.docs.TreeDataBinding}.
  */
 // @formatter:off
-public class Tree extends BaseWidget  { // BaseClass implements com.smartgwt.client.widgets.tree.HasDataChangedHandlers {
+@com.vaadin.ui.ClientWidget(VTree.class)
+public class Tree extends BaseClass  { //  implements com.smartgwt.client.widgets.tree.HasDataChangedHandlers {
 
 //    public static Tree getOrCreateRef(JavaScriptObject jsObj) {
 //        if(jsObj == null) return null;
