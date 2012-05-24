@@ -5,29 +5,82 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * wraps javascript native JSON library.
  */
-public class JSON {
+public class JSON
+{
 	/**
 	 * converts a javascript object to it's json representation.
 	 * 
-	 * @param object to be stringified.
+	 * @param object
+	 *            to be stringified.
 	 * @return the generated json.
-	 * @throws UnsupportedOperationException if the browser doesn't have native support.
+	 * @throws UnsupportedOperationException
+	 *             if the browser doesn't have native support.
 	 */
-	public static String stringify(JavaScriptObject object) {
-		if (nHasJsonStringify()) {
+	public static String stringify(JavaScriptObject object)
+	{
+		if (nHasJsonStringify())
+		{
 			return nStringify(object);
-		} else {
+		}
+		else
+		{
 			throw new UnsupportedOperationException("JSON.stringify is not supported in this browser.");
 		}
 	}
 
-	//@formatter:off
-	private static native String nStringify(JavaScriptObject object) /*-{
-		return JSON.stringify(object);
+	/**
+	 * converts a javascript object to it's json representation.
+	 * 
+	 * @param object
+	 *            to be stringified.
+	 * @param replacer
+	 *            function.
+	 * @return the generated json.
+	 * @throws UnsupportedOperationException
+	 *             if the browser doesn't have native support.
+	 */
+	public static String stringify(JavaScriptObject object, JavaScriptObject replacer)
+	{
+		if (nHasJsonStringify())
+		{
+			return nStringify(object, replacer);
+		}
+		else
+		{
+			throw new UnsupportedOperationException("JSON.stringify is not supported in this browser.");
+		}
+	}
+
+	/**
+	 * creates a replacer function that will exclude keys in the exclusion list.
+	 * 
+	 * @param excludedKeys
+	 *            to be excluded at stringification.
+	 * @return the exclusion function.
+	 */
+	// @formatter:off
+	public static native JavaScriptObject newExclusionReplacer(String[] excludedKeys) /*-{ 
+		var excludedKeysJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(excludedKeys);
+		
+		return function(key, value) { 
+			if (excludedKeysJS.indexOf(key) > -1)
+				return undefined; 
+			else 
+				return value; 
+		};
 	}-*/;
+	
+	private static native String nStringify(JavaScriptObject object) /*-{
+																		return JSON.stringify(object);
+																		}-*/;
+
+	// @formatter:off
+	private static native String nStringify(JavaScriptObject object, JavaScriptObject replacer) /*-{
+																								return JSON.stringify(object, replacer);
+																								}-*/;
 
 	private static native boolean nHasJsonStringify() /*-{
-      return typeof JSON == "object" && typeof JSON.stringify == "function";
-    }-*/;
-	//@formatter:on
+														return typeof JSON == "object" && typeof JSON.stringify == "function";
+														}-*/;
+	// @formatter:on
 }
