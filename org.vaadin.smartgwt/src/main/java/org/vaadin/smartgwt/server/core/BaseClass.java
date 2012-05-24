@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.util.JSONHelper;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
@@ -639,7 +642,7 @@ public abstract class BaseClass extends AbstractComponent {
 		else
 			return (String[]) value;
 	}
-	
+
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException
 	{
@@ -675,6 +678,20 @@ public abstract class BaseClass extends AbstractComponent {
 			{
 				target.addAttribute(name, "s" + String.valueOf(value));
 			}
+			else if (value instanceof Record[])
+			{
+				try
+				{
+					String json = JSONHelper.getJsonString((Record[]) value);
+					target.addAttribute(name, "j" + json);
+
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+
 		}
 
 		// Since the paint is finished, set the created attribute
