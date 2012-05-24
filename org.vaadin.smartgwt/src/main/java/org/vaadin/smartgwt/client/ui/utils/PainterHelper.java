@@ -190,6 +190,17 @@ public class PainterHelper
 					data.setProperty(att, value);
 			}
 				break;
+			
+			case 'j':
+			{
+					JavaScriptObject value = JSON.decode(sValue.substring(1));
+
+					if (!data.isCreated())
+						JSOHelper.setAttribute(data.getConfig(), att, value);
+					else
+						data.setProperty(att, value);
+			}
+			break;
 		}
 	}
 
@@ -329,6 +340,7 @@ public class PainterHelper
 				String sValue = uidl.getStringAttribute(att);
 				setBaseClassProperty(dataObject, att, sValue);
 			}
+			
 		}
 	}
 
