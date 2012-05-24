@@ -1,5 +1,7 @@
 package org.vaadin.smartgwt.server.tree;
 
+import org.vaadin.smartgwt.client.ui.grid.VListGridField;
+import org.vaadin.smartgwt.client.ui.tree.VTreeGridField;
 import org.vaadin.smartgwt.server.grid.ListGridField;
 /*
  * Smart GWT (GWT for SmartClient)
@@ -16,6 +18,8 @@ import org.vaadin.smartgwt.server.grid.ListGridField;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  */
+
+import com.vaadin.ui.ClientWidget;
  
 /**
  * An object literal with a particular set of properties used to configure the display of and interaction with the columns
@@ -31,6 +35,7 @@ import org.vaadin.smartgwt.server.grid.ListGridField;
  * @see com.smartgwt.client.widgets.grid.ListGrid#setFields
  */
 // @formatter:off
+@ClientWidget(value=VTreeGridField.class)
 public class TreeGridField extends ListGridField {
 
 //    public static TreeGridField getOrCreateRef(JavaScriptObject jsObj) {

@@ -79,7 +79,7 @@ import com.vaadin.terminal.PaintTarget;
  */
 @com.vaadin.ui.ClientWidget(VListGrid.class)
 public class ListGrid extends Canvas implements HasSelectionChangedHandlers, HasSelectionUpdatedHandlers, HasRecordDoubleClickHandlers {
-	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
+	protected final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<ListGridField> fields = propertyPainter.addComponentList("fields");
 	private final Set<SelectionChangedHandler> selectionChangedHandlers = Sets.newHashSet();
 	private final Set<SelectionUpdatedHandler> selectionUpdatedHandlers = Sets.newHashSet();
