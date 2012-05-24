@@ -36,7 +36,7 @@
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
 						<Export-Package>org.vaadin.smartgwt.server.*</Export-Package>
-						<Import-Package>!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
+						<Import-Package>com.netappsid.erp.configurator,com.franciaflex.configurator,!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
 						<Vaadin-Package-Version>1</Vaadin-Package-Version>
 						<Vaadin-Widgetsets>org.vaadin.smartgwt.SmartGWTWidgetset</Vaadin-Widgetsets>
 						<Implementation-Title>${pom.name}</Implementation-Title>
@@ -91,6 +91,7 @@
 					<scanIntervalSeconds>0</scanIntervalSeconds>
 					<webAppConfig>
 						<contextPath>/org.vaadin.smartgwt</contextPath>
+						<extraClasspath>${basedir}../../ERPConfigurator/com.netappsid.erp.configurator/bin</extraClasspath>
 						<baseResource implementation="org.mortbay.resource.ResourceCollection">
 							<!-- Workaround for Maven/Jetty issue http://jira.codehaus.org/browse/JETTY-680 -->
 							<!-- <resources>src/main/webapp,${project.build.directory}/${project.build.finalName}</resources> -->
@@ -252,6 +253,34 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jidesoft</groupId>
+			<artifactId>com.jidesoft</artifactId>
+			<version>3.2.0</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>com.netappsid</groupId>
+			<artifactId>com.netappsid.common</artifactId>
+			<version>2.15.7</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>com.netappsid</groupId>
+			<artifactId>com.netappsid.configurator</artifactId>
+			<version>2.4.3-SNAPSHOT</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xerces</groupId>
+			<artifactId>com.springsource.org.apache.xerces</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jscience</groupId>
+			<artifactId>org.jscience</artifactId>
+			<version>3.2.0</version>
 		</dependency>
 	</dependencies>
 
