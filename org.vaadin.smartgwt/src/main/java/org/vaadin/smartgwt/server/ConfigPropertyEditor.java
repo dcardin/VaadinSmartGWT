@@ -25,7 +25,7 @@ public class ConfigPropertyEditor extends PropertyGrid
 {
 	private static NAIDClassLoader classLoader;
 
-	private static NAIDClassLoader getClassLoader()
+	public static NAIDClassLoader getConfiguratorClassLoader()
 	{
 		if (classLoader == null)
 		{
@@ -50,7 +50,7 @@ public class ConfigPropertyEditor extends PropertyGrid
 	{
 		try
 		{
-			interpreter.setClassLoader(getClassLoader());
+			interpreter.setClassLoader(getConfiguratorClassLoader());
 			interpreter.source("/home/ebelanger/Desktop/webapp/WEB-INF/lib/ConfigPropertyEditor.bsh");
 			interpreter.set("configPropertyEditor", this);
 		}
