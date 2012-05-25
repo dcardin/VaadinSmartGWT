@@ -1,4 +1,4 @@
-package org.vaadin.smartgwt;
+package org.vaadin.smartgwt.server;
 
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.grid.events.SelectionChangedHandler;

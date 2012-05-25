@@ -13,6 +13,7 @@ import java.util.Random;
 import org.vaadin.smartgwt.server.BaseWidget;
 import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
+import org.vaadin.smartgwt.server.Configurator;
 import org.vaadin.smartgwt.server.Label;
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.events.ClickEvent;
