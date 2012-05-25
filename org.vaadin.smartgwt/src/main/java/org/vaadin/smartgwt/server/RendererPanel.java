@@ -1,7 +1,6 @@
-package org.vaadin.smartgwt;
+package org.vaadin.smartgwt.server;
 
 import org.vaadin.smartgwt.client.VRendererPanel;
-import org.vaadin.smartgwt.server.Canvas;
 
 import com.vaadin.ui.ClientWidget;
 

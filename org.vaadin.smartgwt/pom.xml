@@ -36,7 +36,8 @@
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
 						<Export-Package>org.vaadin.smartgwt.server.*</Export-Package>
-						<Import-Package>com.netappsid.erp.configurator,com.franciaflex.configurator,!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
+						<Import-Package>!com.google.gwt.i18n.client.*,com.netappsid.erp.configurator,com.franciaflex.configurator,!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
+						<DynamicImport-Package>*</DynamicImport-Package>
 						<Vaadin-Package-Version>1</Vaadin-Package-Version>
 						<Vaadin-Widgetsets>org.vaadin.smartgwt.SmartGWTWidgetset</Vaadin-Widgetsets>
 						<Implementation-Title>${pom.name}</Implementation-Title>
@@ -282,8 +283,19 @@
 			<artifactId>org.jscience</artifactId>
 			<version>3.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.beanshell</groupId>
+			<artifactId>com.springsource.bsh</artifactId>
+			<version>2.0.0.b4</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>a</groupId>
+			<artifactId>b</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>/home/ebelanger/Desktop/webapp/WEB-INF/lib/com.netappsid.erp.configurator_3.2.4.jar</systemPath>
+		</dependency> -->
 	</dependencies>
-
 	<distributionManagement>
 		<repository>
 			<id>snapshots</id>
@@ -291,5 +303,4 @@
 			<url>http://nexus.netappsid.com:8081/nexus/content/repositories/snapshots</url>
 		</repository>
 	</distributionManagement>
-
 </project>
