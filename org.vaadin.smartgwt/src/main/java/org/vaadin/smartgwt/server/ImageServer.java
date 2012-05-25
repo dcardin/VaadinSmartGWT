@@ -30,7 +30,7 @@ public class ImageServer extends HttpServlet
 		try
 		{
 			interpreter.setClassLoader(ConfigPropertyEditor.getConfiguratorClassLoader());
-			interpreter.source("/home/ebelanger/Desktop/webapp/WEB-INF/lib/ImageServer.bsh");
+			interpreter.source(System.getProperty("bshPath") + "ImageServer.bsh");
 		}
 		catch (Exception e)
 		{

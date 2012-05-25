@@ -31,8 +31,8 @@ public class ConfigPropertyEditor extends PropertyGrid
 		{
 			try
 			{
-				final URL configuratorURL = new File("/home/ebelanger/Desktop/webapp/WEB-INF/lib/com.netappsid.erp.configurator_3.2.4.jar").toURI().toURL();
-				final URL configurationURL = new File("/home/ebelanger/Desktop/webapp/WEB-INF/lib/FranciaflexConfigurator_1.0.2.jar").toURI().toURL();
+				final URL configuratorURL = new File(System.getProperty("configuratorPath")).toURI().toURL();
+				final URL configurationURL = new File(System.getProperty("configurationPath")).toURI().toURL();
 				return classLoader = new NAIDClassLoader(new URL[] { configuratorURL, configurationURL }, ConfigPropertyEditor.class.getClassLoader());
 			}
 			catch (Exception e)
@@ -51,7 +51,7 @@ public class ConfigPropertyEditor extends PropertyGrid
 		try
 		{
 			interpreter.setClassLoader(getConfiguratorClassLoader());
-			interpreter.source("/home/ebelanger/Desktop/webapp/WEB-INF/lib/ConfigPropertyEditor.bsh");
+			interpreter.source(System.getProperty("bshPath") + "ConfigPropertyEditor.bsh");
 			interpreter.set("configPropertyEditor", this);
 		}
 		catch (Exception e)
