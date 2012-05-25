@@ -3,7 +3,6 @@ package org.vaadin.smartgwt.server;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,12 +16,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.netappsid.erp.configurator.ConfiguratorImpl;
-import com.netappsid.erp.configurator.gui.views.ViewNumber;
+import bsh.Interpreter;
+
+import com.google.common.base.Throwables;
 import com.netappsid.utils.StreamUtils;
 
 public class ImageServer extends HttpServlet
 {
+	private final Interpreter interpreter = new Interpreter();
+
+	public ImageServer()
+	{
+		try
+		{
+			interpreter.setClassLoader(ConfigPropertyEditor.getConfiguratorClassLoader());
+			interpreter.source("/home/ebelanger/Desktop/webapp/WEB-INF/lib/ImageServer.bsh");
+		}
+		catch (Exception e)
+		{
+			Throwables.propagate(e);
+		}
+	}
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
@@ -55,8 +70,6 @@ public class ImageServer extends HttpServlet
 			}
 			resp.setHeader("Vary", "Accept-Encoding");
 
-			ConfiguratorImpl configurator = (ConfiguratorImpl) req.getSession().getAttribute("configurator");
-
 			if (req.getParameter("type").equals("ressource"))
 			{
 				InputStream imageStream = null;
@@ -64,10 +77,7 @@ public class ImageServer extends HttpServlet
 				String resName = req.getParameter("name");
 				resp.setContentType("image/jpg");
 
-				if (configurator != null && configurator.getDefaultConfigurable() != null)
-				{
-					imageStream = configurator.getDefaultConfigurable().getObject().getClass().getClassLoader().getResourceAsStream(resName);
-				}
+				imageStream = getConfiguratorImageStream(req, imageStream, resName);
 
 				if (imageStream == null)
 				{
@@ -108,28 +118,7 @@ public class ImageServer extends HttpServlet
 				ImageIO.write(image, "jpg", out);
 			}
 
-			if (configurator != null)
-			{
-				BufferedImage image = null;
-
-				if (req.getParameter("type").equalsIgnoreCase("main"))
-				{
-					image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-					image = (BufferedImage) configurator.paintDefaultViewImage(image);
-				}
-				else
-				{
-					image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-					image = (BufferedImage) configurator.paintViewImage(configurator.getDefaultConfigurable(), ViewNumber.TOP, image);
-				}
-
-				if (image != null)
-				{
-					resp.setContentType("image/jpg");
-					ImageIO.write(image, "jpg", out);
-					ImageIO.write(image, "png", new File("/home/daniel/pic.png"));
-				}
-			}
+			writeImage(req, resp, out, width, height);
 		}
 		catch (Exception e)
 		{
@@ -143,4 +132,27 @@ public class ImageServer extends HttpServlet
 
 	}
 
+	private InputStream getConfiguratorImageStream(HttpServletRequest req, InputStream imageStream, String resName)
+	{
+		try
+		{
+			return (InputStream) interpreter.getNameSpace().invokeMethod("getConfiguratorImageStream", new Object[] { req, imageStream, resName }, interpreter);
+		}
+		catch (Exception e)
+		{
+			throw Throwables.propagate(e);
+		}
+	}
+
+	private void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height)
+	{
+		try
+		{
+			interpreter.getNameSpace().invokeMethod("writeImage", new Object[] { req, resp, out, width, height }, interpreter);
+		}
+		catch (Exception e)
+		{
+			throw Throwables.propagate(e);
+		}
+	}
 }
