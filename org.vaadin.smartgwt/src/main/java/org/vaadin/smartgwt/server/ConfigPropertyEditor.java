@@ -20,6 +20,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 
 import com.google.common.base.Throwables;
+import com.netappsid.configurator.IConfigurator;
 import com.netappsid.utils.NAIDClassLoader;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 
@@ -95,6 +96,26 @@ public class ConfigPropertyEditor extends PropertyGrid
 		fetch();
 	}
 
+	public void init(byte[] configurationBytes)
+	{
+		try
+		{
+			final IConfigurator configurator = getCi();
+			final WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
+			final HttpSession session = context.getHttpSession();
+
+			configurator.deserialize(configurationBytes);
+			session.setAttribute("configurator", configurator);
+			session.setAttribute("initialized", true);
+		}
+		catch (Exception e)
+		{
+			Throwables.propagate(e);
+		}
+
+		fetch();
+	}
+
 	public void fetch()
 	{
 		try
@@ -139,9 +160,9 @@ public class ConfigPropertyEditor extends PropertyGrid
 		return tree;
 	}
 
-	private Object getCi() throws EvalError
+	private IConfigurator getCi() throws EvalError
 	{
-		return interpreter.get("configurator");
+		return (IConfigurator) interpreter.get("configurator");
 	}
 
 	private List<TreeNode> fetchTreeNodes() throws EvalError
