@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
@@ -29,8 +30,9 @@ public class ImageServer extends HttpServlet
 	{
 		try
 		{
+			final InputStream scriptStream = getClass().getClassLoader().getResourceAsStream("/org/vaadin/smartgwt/ImageServer.bsh");
 			interpreter.setClassLoader(ConfigPropertyEditor.getConfiguratorClassLoader());
-			interpreter.source(System.getProperty("bshPath") + "ImageServer.bsh");
+			interpreter.eval(new InputStreamReader(scriptStream));
 		}
 		catch (Exception e)
 		{
