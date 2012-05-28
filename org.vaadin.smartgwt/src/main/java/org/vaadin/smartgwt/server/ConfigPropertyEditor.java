@@ -1,6 +1,8 @@
 package org.vaadin.smartgwt.server;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +52,9 @@ public class ConfigPropertyEditor extends PropertyGrid
 	{
 		try
 		{
+			final InputStream scriptStream = getClass().getClassLoader().getResourceAsStream("/org/vaadin/smartgwt/ConfigPropertyEditor.bsh");
 			interpreter.setClassLoader(getConfiguratorClassLoader());
-			interpreter.source(System.getProperty("bshPath") + "ConfigPropertyEditor.bsh");
+			interpreter.eval(new InputStreamReader(scriptStream));
 			interpreter.set("configPropertyEditor", this);
 		}
 		catch (Exception e)
