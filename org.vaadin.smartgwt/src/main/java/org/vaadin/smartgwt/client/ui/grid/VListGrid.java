@@ -3,6 +3,7 @@ package org.vaadin.smartgwt.client.ui.grid;
 import org.vaadin.smartgwt.client.core.JSON;
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.ServerSideEventRegistration;
 import org.vaadin.smartgwt.client.core.VDataClass;
 import org.vaadin.smartgwt.client.core.VJSObject;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
@@ -152,25 +153,5 @@ public class VListGrid extends ListGrid implements Paintable {
 
 	private static JavaScriptObject toJSO(DataClass dataClass) {
 		return dataClass == null ? null : dataClass.getJsObj();
-	}
-
-	private static abstract class ServerSideEventRegistration {
-		private final String uidlAttribute;
-		private HandlerRegistration registration;
-
-		public ServerSideEventRegistration(String uidlAttribute) {
-			this.uidlAttribute = uidlAttribute;
-		}
-
-		public void updateFromUIDL(UIDL uidl) {
-			if (uidl.hasAttribute(uidlAttribute) && registration == null) {
-				registration = registerHandler();
-			} else if (!uidl.hasAttribute(uidlAttribute) && registration != null) {
-				registration.removeHandler();
-				registration = null;
-			}
-		}
-
-		protected abstract HandlerRegistration registerHandler();
 	}
 }

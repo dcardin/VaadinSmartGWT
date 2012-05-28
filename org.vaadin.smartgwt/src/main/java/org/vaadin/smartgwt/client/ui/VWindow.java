@@ -2,8 +2,10 @@ package org.vaadin.smartgwt.client.ui;
 
 import org.vaadin.smartgwt.client.core.PaintableListListener;
 import org.vaadin.smartgwt.client.core.PaintablePropertyUpdater;
+import org.vaadin.smartgwt.client.core.ServerSideEventRegistration;
 import org.vaadin.smartgwt.client.ui.utils.PainterHelper;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
@@ -19,6 +21,7 @@ public class VWindow extends Window implements Paintable {
 	private final Element element = DOM.createDiv();
 	private String pid;
 	private ApplicationConnection client;
+	private ServerSideEventRegistration closeClickEventServerRegistration;
 
 	public VWindow() {
 		propertyUpdater.addPaintableListListener("members", new PaintableListListener() {
@@ -68,8 +71,21 @@ public class VWindow extends Window implements Paintable {
 					VWindow.this.client.updateVariable(pid, "destroyed", true, true);
 				}
 			});
+			
+			closeClickEventServerRegistration = new ServerSideEventRegistration("*hasCloseClickHandlers") {
+				@Override
+				protected HandlerRegistration registerHandler() {
+					return addCloseClickHandler(new CloseClickHandler() {
+						@Override
+						public void onCloseClick(CloseClientEvent event) {
+							VWindow.this.client.updateVariable(pid, "onCloseClick", true, true);
+						}
+					});
+				}
+			};
 		}
 
+		closeClickEventServerRegistration.updateFromUIDL(uidl);
 		propertyUpdater.updateFromUIDL(uidl, client);
 		PainterHelper.updateSmartGWTComponent(client, this, uidl);
 	}

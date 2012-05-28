@@ -2,15 +2,21 @@ package org.vaadin.smartgwt.server;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.RegistrationEntry;
+import org.vaadin.smartgwt.server.events.CloseClickHandler;
+import org.vaadin.smartgwt.server.events.CloseClientEvent;
+import org.vaadin.smartgwt.server.events.HasCloseClickHandlers;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
+import com.google.common.collect.Sets;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
@@ -25,10 +31,11 @@ import com.vaadin.terminal.PaintTarget;
  * com.smartgwt.client.util.isc#warn shortcuts} for common application dialogs.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.VWindow.class)
-public class Window extends Layout {
+public class Window extends Layout implements HasCloseClickHandlers {
 	private final ComponentPropertyPainter propertyPainter = new ComponentPropertyPainter(this);
 	private final ComponentList<Canvas> items = propertyPainter.addComponentList("items");
 	private final MasterContainer container;
+	private final Set<CloseClickHandler> closeClickHandlers = Sets.newHashSet();
 	private RegistrationEntry registrationEntry;
 
 	public Window(MasterContainer container) {
@@ -1224,6 +1231,26 @@ public class Window extends Layout {
 		}
 	}
 
+	/**
+	* Add a closeClick handler.
+	* <p>
+	* Handles a click on the close button of this window. The default implementation hides the window and returns false to
+	* cancel bubbling.  Override this method if you want other actions to be taken.
+	*
+	* @param handler the closeClick handler
+	* @return {@link HandlerRegistration} used to remove this handler
+	*/
+	@Override
+	public HandlerRegistration addCloseClickHandler(final CloseClickHandler handler) {
+		closeClickHandlers.add(handler);
+		return new com.google.web.bindery.event.shared.HandlerRegistration() {
+			@Override
+			public void removeHandler() {
+				closeClickHandlers.remove(handler);
+			}
+		};
+	}
+
 	public void addItem(Canvas component) {
 		items.add(component);
 	}
@@ -1231,6 +1258,11 @@ public class Window extends Layout {
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException {
 		propertyPainter.paintContent(target);
+
+		if (!closeClickHandlers.isEmpty()) {
+			target.addAttribute("*hasCloseClickHandlers", true);
+		}
+
 		super.paintContent(target);
 	}
 
@@ -1239,6 +1271,14 @@ public class Window extends Layout {
 		super.changeVariables(source, variables);
 		if (variables.containsKey("destroyed")) {
 			dispose();
+		}
+
+		if (variables.containsKey("onCloseClick")) {
+			final CloseClientEvent event = new CloseClientEvent();
+
+			for (CloseClickHandler handler : closeClickHandlers) {
+				handler.onCloseClick(event);
+			}
 		}
 	}
 }
