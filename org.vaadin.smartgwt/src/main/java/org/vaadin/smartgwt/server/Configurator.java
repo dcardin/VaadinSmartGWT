@@ -53,6 +53,11 @@ public class Configurator extends Window
 		super.show();
 	}
 
+	public void show(byte[] configurationBytes)
+	{
+		cpe.init(configurationBytes);
+	}
+
 	private ToolStrip createStrip()
 	{
 		ToolStrip strip = new ToolStrip();
@@ -83,5 +88,4 @@ public class Configurator extends Window
 		grid.setHeight("100");
 		return grid;
 	}
-
 }

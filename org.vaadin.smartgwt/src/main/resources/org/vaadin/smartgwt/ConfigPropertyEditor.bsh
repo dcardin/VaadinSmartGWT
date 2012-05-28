@@ -293,6 +293,11 @@ private void updateID(String id, Object value)
 void initConfigurator(String prd)
 {
 	configurator.build(prd);
+	initConfigurator();
+}
+
+void initConfigurator()
+{
 	configurator.getProductMatrix().updateState(false, false);
 	cps.clear();
 	currentSelection = configurator.getProductMatrix().getConfigurables().get(0);
