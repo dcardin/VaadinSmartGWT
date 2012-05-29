@@ -25,5 +25,5 @@ public interface CloseClickHandler extends EventHandler {
 	 *
 	 * @param event the event
 	 */
-	void onCloseClick(CloseClientEvent event);
+	void onCloseClick(CloseClickEvent event);
 }

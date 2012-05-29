@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.vaadin.smartgwt.server.core.RegistrationEntry;
 import org.vaadin.smartgwt.server.events.CloseClickHandler;
-import org.vaadin.smartgwt.server.events.CloseClientEvent;
+import org.vaadin.smartgwt.server.events.CloseClickEvent;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 
 import com.google.common.collect.Maps;
@@ -84,7 +84,7 @@ public class WindowTest {
 		variables.put("onCloseClick", true);
 		window.addCloseClickHandler(handler);
 		window.changeVariables(null, variables);
-		verify(handler).onCloseClick(isA(CloseClientEvent.class));
+		verify(handler).onCloseClick(isA(CloseClickEvent.class));
 	}
 
 	@Test
@@ -95,6 +95,6 @@ public class WindowTest {
 		variables.put("onCloseClick", true);
 		window.addCloseClickHandler(handler).removeHandler();
 		window.changeVariables(null, variables);
-		verify(handler, never()).onCloseClick(isA(CloseClientEvent.class));
+		verify(handler, never()).onCloseClick(isA(CloseClickEvent.class));
 	}
 }

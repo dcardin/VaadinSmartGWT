@@ -8,7 +8,7 @@ import org.vaadin.smartgwt.server.core.ComponentList;
 import org.vaadin.smartgwt.server.core.ComponentPropertyPainter;
 import org.vaadin.smartgwt.server.core.RegistrationEntry;
 import org.vaadin.smartgwt.server.events.CloseClickHandler;
-import org.vaadin.smartgwt.server.events.CloseClientEvent;
+import org.vaadin.smartgwt.server.events.CloseClickEvent;
 import org.vaadin.smartgwt.server.events.HasCloseClickHandlers;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
@@ -1274,7 +1274,7 @@ public class Window extends Layout implements HasCloseClickHandlers {
 		}
 
 		if (variables.containsKey("onCloseClick")) {
-			final CloseClientEvent event = new CloseClientEvent();
+			final CloseClickEvent event = new CloseClickEvent();
 
 			for (CloseClickHandler handler : closeClickHandlers) {
 				handler.onCloseClick(event);

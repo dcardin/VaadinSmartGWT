@@ -9,19 +9,19 @@ import org.junit.Test;
 public class CloseClientEventTest {
 	@Test
 	public void test_returnsSameInstanceForType() {
-		assertSame(CloseClientEvent.getType(), CloseClientEvent.getType());
+		assertSame(CloseClickEvent.getType(), CloseClickEvent.getType());
 	}
 
-	private CloseClientEvent event;
+	private CloseClickEvent event;
 
 	@Before
 	public void before() {
-		event = new CloseClientEvent();
+		event = new CloseClickEvent();
 	}
 
 	@Test
 	public void test_associatedTypeIsSameAsType() {
-		assertSame(CloseClientEvent.getType(), event.getAssociatedType());
+		assertSame(CloseClickEvent.getType(), event.getAssociatedType());
 	}
 
 	@Test

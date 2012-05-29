@@ -10,8 +10,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.events.CloseClientEvent;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -66,7 +66,7 @@ public class VWindow extends Window implements Paintable {
 
 			addCloseClickHandler(new CloseClickHandler() {
 				@Override
-				public void onCloseClick(CloseClientEvent event) {
+				public void onCloseClick(CloseClickEvent event) {
 					markForDestroy();
 					VWindow.this.client.updateVariable(pid, "destroyed", true, true);
 				}
@@ -77,7 +77,7 @@ public class VWindow extends Window implements Paintable {
 				protected HandlerRegistration registerHandler() {
 					return addCloseClickHandler(new CloseClickHandler() {
 						@Override
-						public void onCloseClick(CloseClientEvent event) {
+						public void onCloseClick(CloseClickEvent event) {
 							VWindow.this.client.updateVariable(pid, "onCloseClick", true, true);
 						}
 					});

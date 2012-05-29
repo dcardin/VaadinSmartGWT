@@ -18,7 +18,7 @@ package org.vaadin.smartgwt.server.events;
 
 import com.google.web.bindery.event.shared.Event;
 
-public class CloseClientEvent extends Event<CloseClickHandler> {
+public class CloseClickEvent extends Event<CloseClickHandler> {
 	private static Event.Type<CloseClickHandler> TYPE;
 
 	/**
