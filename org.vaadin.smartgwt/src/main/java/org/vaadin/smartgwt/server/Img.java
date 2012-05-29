@@ -1,7 +1,10 @@
 package org.vaadin.smartgwt.server;
 
+import org.vaadin.smartgwt.client.ui.VImg;
 import org.vaadin.smartgwt.server.types.ImageStyle;
 import org.vaadin.smartgwt.server.util.EnumUtil;
+
+import com.vaadin.ui.ClientWidget;
 
 /*
  * Smart GWT (GWT for SmartClient)
@@ -22,6 +25,7 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 /**
  * The Img widget class implements a simple widget that displays a single image.
  */
+@ClientWidget(VImg.class)
 public class Img extends StatefulCanvas {
 
 //    public static Img getOrCreateRef(JavaScriptObject jsObj) {
