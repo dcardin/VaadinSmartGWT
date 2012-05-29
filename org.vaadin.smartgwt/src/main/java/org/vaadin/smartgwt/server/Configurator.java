@@ -8,6 +8,8 @@ import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
 import org.vaadin.smartgwt.server.tree.TreeGrid;
 
+import com.netappsid.configurator.IConfigurator;
+
 public class Configurator extends Window {
 	private ConfigPropertyEditor cpe = null;
 
@@ -51,6 +53,10 @@ public class Configurator extends Window {
 
 	public void show(byte[] configurationBytes) {
 		cpe.init(configurationBytes);
+	}
+
+	public IConfigurator getConfigurator() {
+		return cpe.getConfigurator();
 	}
 
 	private ToolStrip createStrip() {

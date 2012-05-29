@@ -69,7 +69,7 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		try {
 			WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			HttpSession session = context.getHttpSession();
-			session.setAttribute("configurator", getConfigurator());
+			session.setAttribute("configurator", getBSHConfigurator());
 			session.setAttribute("initialized", true);
 			initConfigurator(prd);
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class ConfigPropertyEditor extends PropertyGrid {
 
 	public void init(byte[] configurationBytes) {
 		try {
-			final IConfigurator configurator = getConfigurator();
+			final IConfigurator configurator = getBSHConfigurator();
 			final WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			final HttpSession session = context.getHttpSession();
 
@@ -93,6 +93,14 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		}
 
 		fetch();
+	}
+
+	public IConfigurator getConfigurator() {
+		try {
+			return getBSHConfigurator();
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
 	}
 
 	public void fetch() {
@@ -131,7 +139,7 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		return tree;
 	}
 
-	private IConfigurator getConfigurator() throws EvalError {
+	private IConfigurator getBSHConfigurator() throws EvalError {
 		return (IConfigurator) interpreter.get("configurator");
 	}
 
