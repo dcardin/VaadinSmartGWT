@@ -53,6 +53,7 @@ public class Configurator extends Window {
 
 	public void show(byte[] configurationBytes) {
 		cpe.init(configurationBytes);
+		super.show();
 	}
 
 	public IConfigurator getConfigurator() {
