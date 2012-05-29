@@ -97,7 +97,9 @@ public class ConfigPropertyEditor extends PropertyGrid {
 
 	public IConfigurator getConfigurator() {
 		try {
-			return getBSHConfigurator();
+			final IConfigurator configurator = getBSHConfigurator();
+			configurator.setClassLoader(getConfiguratorClassLoader());
+			return configurator;
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
