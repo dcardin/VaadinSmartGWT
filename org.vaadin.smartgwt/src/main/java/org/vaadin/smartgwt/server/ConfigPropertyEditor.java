@@ -24,22 +24,16 @@ import com.netappsid.configurator.IConfigurator;
 import com.netappsid.utils.NAIDClassLoader;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 
-public class ConfigPropertyEditor extends PropertyGrid
-{
+public class ConfigPropertyEditor extends PropertyGrid {
 	private static NAIDClassLoader classLoader;
 
-	public static NAIDClassLoader getConfiguratorClassLoader()
-	{
-		if (classLoader == null)
-		{
-			try
-			{
+	public static NAIDClassLoader getConfiguratorClassLoader() {
+		if (classLoader == null) {
+			try {
 				final URL configuratorURL = new File(System.getProperty("configuratorPath")).toURI().toURL();
 				final URL configurationURL = new File(System.getProperty("configurationPath")).toURI().toURL();
 				return classLoader = new NAIDClassLoader(new URL[] { configuratorURL, configurationURL }, ConfigPropertyEditor.class.getClassLoader());
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				throw Throwables.propagate(e);
 			}
 		}
@@ -49,107 +43,84 @@ public class ConfigPropertyEditor extends PropertyGrid
 
 	private final Interpreter interpreter = new Interpreter();
 
-	public ConfigPropertyEditor()
-	{
-		try
-		{
+	public ConfigPropertyEditor() {
+		try {
 			final InputStream scriptStream = getClass().getClassLoader().getResourceAsStream("/org/vaadin/smartgwt/ConfigPropertyEditor.bsh");
 			interpreter.setClassLoader(getConfiguratorClassLoader());
 			interpreter.eval(new InputStreamReader(scriptStream));
 			interpreter.set("configPropertyEditor", this);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
 
-		addSelectionUpdatedHandler(new SelectionUpdatedHandler()
-			{
-				@Override
-				public void onSelectionUpdated(SelectionUpdatedEvent event)
-				{
-					System.out.println("la selection a change sur le client: " + getSelectedRecords()[0].getAttribute("binding"));
-				}
-			});
+		addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
+			@Override
+			public void onSelectionUpdated(SelectionUpdatedEvent event) {
+				System.out.println("la selection a change sur le client: " + getSelectedRecords()[0].getAttribute("binding"));
+			}
+		});
 	}
 
-	public void init(String prd)
-	{ // , String variant, String locale) {
-		if (prd == null)
-		{
+	public void init(String prd) { // , String variant, String locale) {
+		if (prd == null) {
 			throw new IllegalArgumentException("Product cannot be null");
 		}
 
-		try
-		{
+		try {
 			WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			HttpSession session = context.getHttpSession();
-			session.setAttribute("configurator", getCi());
+			session.setAttribute("configurator", getConfigurator());
 			session.setAttribute("initialized", true);
 			initConfigurator(prd);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		fetch();
 	}
 
-	public void init(byte[] configurationBytes)
-	{
-		try
-		{
-			final IConfigurator configurator = getCi();
+	public void init(byte[] configurationBytes) {
+		try {
+			final IConfigurator configurator = getConfigurator();
 			final WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			final HttpSession session = context.getHttpSession();
 
 			configurator.deserialize(configurationBytes);
 			session.setAttribute("configurator", configurator);
 			session.setAttribute("initialized", true);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
 
 		fetch();
 	}
 
-	public void fetch()
-	{
-		try
-		{
+	public void fetch() {
+		try {
 			List<TreeNode> properties = fetchTreeNodes();
 
 			setData(makeTree(properties.toArray(new TreeNode[0])));
 
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
 	}
 
 	@Override
-	public void changeVariables(Object source, Map<String, Object> variables)
-	{
+	public void changeVariables(Object source, Map<String, Object> variables) {
 		super.changeVariables(source, variables);
 
-		if (variables.containsKey("id"))
-		{
+		if (variables.containsKey("id")) {
 			String id = variables.get("id").toString();
 			Object value = variables.get("value");
 
-			if (id != null && value != null)
-			{
+			if (id != null && value != null) {
 				updateID(id, value);
 			}
 		}
 	}
 
-	private Tree makeTree(TreeNode[] list)
-	{
+	private Tree makeTree(TreeNode[] list) {
 		Tree tree = new Tree();
 		tree.setModelType(TreeModelType.PARENT);
 		tree.setNameProperty("name");
@@ -160,29 +131,22 @@ public class ConfigPropertyEditor extends PropertyGrid
 		return tree;
 	}
 
-	private IConfigurator getCi() throws EvalError
-	{
+	private IConfigurator getConfigurator() throws EvalError {
 		return (IConfigurator) interpreter.get("configurator");
 	}
 
-	private List<TreeNode> fetchTreeNodes() throws EvalError
-	{
+	private List<TreeNode> fetchTreeNodes() throws EvalError {
 		return (List<TreeNode>) interpreter.eval("fetchTreeNodes()");
 	}
 
-	private void initConfigurator(String prd) throws EvalError
-	{
+	private void initConfigurator(String prd) throws EvalError {
 		interpreter.getNameSpace().invokeMethod("initConfigurator", new Object[] { prd }, interpreter);
 	}
 
-	private void updateID(String id, Object value)
-	{
-		try
-		{
+	private void updateID(String id, Object value) {
+		try {
 			interpreter.getNameSpace().invokeMethod("updateID", new Object[] { id, value }, interpreter);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
 	}

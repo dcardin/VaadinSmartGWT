@@ -8,12 +8,10 @@ import org.vaadin.smartgwt.server.layout.VLayout;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
 import org.vaadin.smartgwt.server.tree.TreeGrid;
 
-public class Configurator extends Window
-{
+public class Configurator extends Window {
 	private ConfigPropertyEditor cpe = null;
 
-	public Configurator(MasterContainer container)
-	{
+	public Configurator(MasterContainer container) {
 		super(container);
 		setSizeFull();
 		setIsModal(true);
@@ -32,8 +30,7 @@ public class Configurator extends Window
 		addItem(main);
 	}
 
-	private VLayout createPropertyPanel()
-	{
+	private VLayout createPropertyPanel() {
 		VLayout panel = new VLayout();
 		panel.setHeight100();
 
@@ -47,31 +44,26 @@ public class Configurator extends Window
 		return panel;
 	}
 
-	public void show(String prd)
-	{
+	public void show(String prd) {
 		cpe.init(prd);
 		super.show();
 	}
 
-	public void show(byte[] configurationBytes)
-	{
+	public void show(byte[] configurationBytes) {
 		cpe.init(configurationBytes);
 	}
 
-	private ToolStrip createStrip()
-	{
+	private ToolStrip createStrip() {
 		ToolStrip strip = new ToolStrip();
 		strip.setMargin(2);
 		strip.setWidth100();
 
-		IButton reset = new IButton()
-			{
-				@Override
-				public void changeVariables(Object source, Map<String, Object> variables)
-				{
-					super.changeVariables(source, variables);
-				}
-			};
+		IButton reset = new IButton() {
+			@Override
+			public void changeVariables(Object source, Map<String, Object> variables) {
+				super.changeVariables(source, variables);
+			}
+		};
 
 		reset.setIconSize(16);
 		reset.setShowRollOver(false);
@@ -82,8 +74,7 @@ public class Configurator extends Window
 		return strip;
 	}
 
-	private TreeGrid createOverviewGrid()
-	{
+	private TreeGrid createOverviewGrid() {
 		TreeGrid grid = new OverviewTreeGrid();
 		grid.setHeight("100");
 		return grid;
