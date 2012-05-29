@@ -85,7 +85,8 @@ public class ConfigPropertyEditor extends PropertyGrid {
 			final WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			final HttpSession session = context.getHttpSession();
 
-			configurator.deserialize(configurationBytes);
+			configurator.setClassLoader(getConfiguratorClassLoader());
+			configurator.build(configurator.deserialize(configurationBytes));
 			session.setAttribute("configurator", configurator);
 			session.setAttribute("initialized", true);
 		} catch (Exception e) {
