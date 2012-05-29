@@ -47,14 +47,14 @@ public class FormItemIconTest {
 		formItemIcon.addFormItemClickHandler(mock(FormItemClickHandler.class));
 		final PaintTarget paintTarget = mock(JsonPaintTarget.class);
 		formItemIcon.paintContent(paintTarget);
-		verify(paintTarget).addAttribute("hasFormItemClickHandlers", true);
+		verify(paintTarget).addAttribute("*hasFormItemClickHandlers", true);
 	}
 
 	@Test
 	public void test_dontPaintHasFormItemClickHandlersAttributeWhenNoHandlerRegistered() throws PaintException {
 		final PaintTarget paintTarget = mock(JsonPaintTarget.class);
 		formItemIcon.paintContent(paintTarget);
-		verify(paintTarget, never()).addAttribute(eq("hasFormItemClickHandlers"), anyBoolean());
+		verify(paintTarget, never()).addAttribute(eq("*hasFormItemClickHandlers"), anyBoolean());
 	}
 
 	@Test
