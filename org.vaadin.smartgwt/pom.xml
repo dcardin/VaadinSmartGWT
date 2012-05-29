@@ -35,7 +35,7 @@
 				<configuration>
 					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
-						<Export-Package>org.vaadin.smartgwt.server.*</Export-Package>
+						<Export-Package>org.vaadin.smartgwt.*,org.vaadin.smartgwt.server.*</Export-Package>
 						<Import-Package>!com.google.gwt.i18n.client.*,com.netappsid.erp.configurator,com.franciaflex.configurator,!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 						<Vaadin-Package-Version>1</Vaadin-Package-Version>
