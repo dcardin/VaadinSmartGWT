@@ -1,5 +1,11 @@
 package org.vaadin.smartgwt.server;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.vaadin.smartgwt.server.events.ClickEvent;
+import org.vaadin.smartgwt.server.events.ClickHandler;
+import org.vaadin.smartgwt.server.events.HasClickHandlers;
 import org.vaadin.smartgwt.server.menu.Menu;
 import org.vaadin.smartgwt.server.types.Alignment;
 import org.vaadin.smartgwt.server.types.AnimationAcceleration;
@@ -18,7 +24,14 @@ import org.vaadin.smartgwt.server.types.VerticalAlignment;
 import org.vaadin.smartgwt.server.types.Visibility;
 import org.vaadin.smartgwt.server.util.EnumUtil;
 
-public class Canvas extends BaseWidget {
+import com.google.common.collect.Sets;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.vaadin.terminal.PaintException;
+import com.vaadin.terminal.PaintTarget;
+
+public class Canvas extends BaseWidget implements HasClickHandlers {
+	private final Set<ClickHandler> clickHandlers = Sets.newHashSet();
+
 	public Canvas() {
 		scClassName = "Canvas";
 	}
@@ -3562,6 +3575,17 @@ public class Canvas extends BaseWidget {
 		setVisibility(visible ? Visibility.INHERIT : Visibility.HIDDEN);
 	}
 
+	@Override
+	public HandlerRegistration addClickHandler(final ClickHandler handler) {
+		clickHandlers.add(handler);
+		return new HandlerRegistration() {
+			@Override
+			public void removeHandler() {
+				clickHandlers.remove(handler);
+			}
+		};
+	}
+
 	/**
 	 * Size for this component's vertical dimension. <P> Can be a number of pixels, or a percentage like "50%". See
 	 * documentation for {@link com.smartgwt.client.widgets.Canvas#getWidth width} for details on who percentage values
@@ -4056,5 +4080,27 @@ public class Canvas extends BaseWidget {
 
 	public Boolean isDrawn() {
 		return isCreated();
+	}
+
+	@Override
+	public void paintContent(PaintTarget target) throws PaintException {
+		super.paintContent(target);
+
+		if (!clickHandlers.isEmpty()) {
+			target.addAttribute("*hasClickHandlers", true);
+		}
+	}
+
+	@Override
+	public void changeVariables(Object source, Map<String, Object> variables) {
+		super.changeVariables(source, variables);
+
+		if (variables.containsKey("clickEvent")) {
+			final ClickEvent event = new ClickEvent();
+
+			for (ClickHandler handler : clickHandlers) {
+				handler.onClick(event);
+			}
+		}
 	}
 }
