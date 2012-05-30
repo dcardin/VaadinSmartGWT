@@ -15,6 +15,8 @@ import org.vaadin.smartgwt.server.Button;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.Label;
 import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.events.ClickEvent;
+import org.vaadin.smartgwt.server.events.ClickHandler;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
@@ -473,20 +475,17 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tab2.setPane(getEditableListGrid());
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
-		vl.addMember(new Button("Press me 1!") {
-			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
 
+		vl.addMember(newButton("Press me 1!", new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
 				tabset.selectTab(1);
 			}
-		});
+		}));
 
-		vl.addMember(new Button("Press me 2!") {
+		vl.addMember(newButton("Press me 2!", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
-
+			public void onClick(ClickEvent event) {
 				org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
 				window.setTitle("Modal Window");
 				window.setWidth(900);
@@ -501,41 +500,37 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				window.addItem(getMainPanel());
 				window.show();
 			}
-		});
+		}));
 
-		vl.addMember(new Button("Press me 3!") {
+		vl.addMember(newButton("Press me 3!", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				tabset.removeTab(tab3);
 			}
-		});
+		}));
 
 		vl.addMember(new Button("Press me 4!"));
 
-		vl.addMember(new Button("Add Tab") {
+		vl.addMember(newButton("Add Tab", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				tabset.addTab(newTab("Title", newLabel("LABEL", "blue")));
 			}
-		});
+		}));
 
-		vl.addMember(new Button("Add Tab Index 0") {
+		vl.addMember(newButton("Add Tab Index 0", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				tabset.addTab(newTab("Title", newLabel("INDEXED", "red")), 0);
 			}
-		});
+		}));
 
-		vl.addMember(new Button("Remove Tab") {
+		vl.addMember(newButton("Remove Tab", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				tabset.removeTab(tabset.getTabs()[tabset.getTabs().length - 1]);
 			}
-		});
+		}));
 
 		Label filler = new Label("");
 		filler.setHeight("*");
@@ -574,21 +569,18 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		layout.setHeight100();
 
 		for (int i = 1; i <= 10; i++) {
-			final Button button = new Button("Button " + i) {
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
+			final Button button = new Button("Button " + i);
+			button.addClickHandler(new ClickHandler() {
 				@Override
-				public void changeVariables(Object source, Map<String, Object> variables) {
+				public void onClick(ClickEvent event) {
 					if (new Random().nextBoolean() == true) {
-						layout.removeMember(this); // layout.getMembers()[0]);
+						layout.removeMember(button);
 					} else {
-						layout.replaceMember(this, new Button("unclickable button"));
+						layout.replaceMember(button, new Button("unclickable button"));
 					}
 				}
-			};
+			});
+			
 			layout.addMember(button);
 		}
 
@@ -620,10 +612,9 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private Canvas newPostCreationModifiedLayout() {
 		final VLayout layout = new VLayout();
 		final Label yellow = newLabel("YELLOW", "yellow");
-		layout.addMember(new Button("Load Layout") {
+		layout.addMember(newButton("Load Layout", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				layout.removeMember(yellow);
 				//				final Label blue = newLabel("BLUE", "blue");
 				//				layout.addMember(newLabel("GREEN", "green"));
@@ -631,17 +622,16 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 				//				layout.addMember(newLabel("RED", "red"));
 				//				layout.removeMember(blue);
 			}
-		});
+		}));
 		layout.addMember(yellow);
 		return layout;
 	}
 
 	private Canvas newConfirmDialogsLayout() {
 		final VLayout mainLayout = new VLayout();
-		mainLayout.addMember(new Button("without title") {
+		mainLayout.addMember(newButton("without title", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				masterContainer.getSC().confirm("message", new BooleanCallback() {
 					@Override
 					public void execute(Boolean value) {
@@ -649,12 +639,11 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					}
 				});
 			}
-		});
+		}));
 
-		mainLayout.addMember(new Button("with title") {
+		mainLayout.addMember(newButton("with title", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
-				super.changeVariables(source, variables);
+			public void onClick(ClickEvent event) {
 				masterContainer.getSC().confirm("this is a title", "message", new BooleanCallback() {
 					@Override
 					public void execute(Boolean value) {
@@ -662,28 +651,27 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					}
 				});
 			}
-		});
+		}));
 		return mainLayout;
 	}
+
 	private Canvas newWindowCloseHandlingLayout() {
 		final VLayout mainLayout = new VLayout();
-		final Button windowButton = new Button("Open window") {
+		mainLayout.addComponent(newButton("Open window", new ClickHandler() {
 			@Override
-			public void changeVariables(Object source, Map<String, Object> variables) {
+			public void onClick(ClickEvent event) {
 				final org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
-				final Button closeWindowButton = new Button("Close window") {
+				window.addItem(newButton("Close window", new ClickHandler() {
 					@Override
-					public void changeVariables(Object source, Map<String, Object> variables) {
+					public void onClick(ClickEvent event) {
 						window.dispose();
 					}
-				};
+				}));
 
-				window.addItem(closeWindowButton);
 				window.show();
 			}
-		};
+		}));
 
-		mainLayout.addComponent(windowButton);
 		return mainLayout;
 	}
 
@@ -691,11 +679,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		final VLayout mainLayout = new VLayout();
 		final Button button2 = new Button();
 
-		mainLayout.addMember(new Button("Click Me") {
-			public void changeVariables(Object source, java.util.Map<String, Object> variables) {
+		mainLayout.addMember(newButton("Click Me",  new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
 				button2.setEnabled(!button2.isEnabled());
 			}
-		});
+		}));
 
 		mainLayout.addMember(button2);
 		return mainLayout;
@@ -835,6 +824,12 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		form.addField(ti);
 
 		return form;
+	}
+
+	private static Button newButton(String title, ClickHandler handler) {
+		final Button button = new Button(title);
+		button.addClickHandler(handler);
+		return button;
 	}
 
 	public static <T> Iterable<T> iterate(final Enumeration<T> en) {

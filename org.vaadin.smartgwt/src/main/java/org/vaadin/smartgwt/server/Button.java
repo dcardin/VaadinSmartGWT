@@ -1,7 +1,6 @@
 package org.vaadin.smartgwt.server;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -42,20 +41,4 @@ public class Button extends StatefulCanvas
 		super();
 		setTitle(title);
 	}
-
-	/**
-	 * Receive and handle events and other variable changes from the client.
-	 * 
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void changeVariables(Object source, Map<String, Object> variables)
-	{
-		System.out.println("change vars called");
-		super.changeVariables(source, variables);
-		setTitle("weird");
-		requestRepaint();
-	}
-	
-
 }
