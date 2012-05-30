@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.measure.units.NonSI;
+import javax.measure.units.SI;
+import javax.measure.units.Unit;
 import javax.servlet.http.HttpSession;
 
 import org.jscience.physics.measures.Measure;
@@ -43,15 +45,18 @@ List fetchTreeNodes() throws EvalError
 	cps.clear();
 	List properties = new ArrayList();
 
-	if (currentSelection == null)
-	{
-		properties.addAll(getPropertyList(configurator.getProductMatrix().getAssembly(), "assembly", false));
-	}
-	else
-	{
-		properties.addAll(getPropertyList(currentSelection, "configurable", false));
-	}
-
+	// temporairement on ne prend que le configurable et non l'assemblage
+	// if (currentSelection == null)
+	// {
+	//	properties.addAll(getPropertyList(configurator.getProductMatrix().getAssembly(), "assembly", false));
+	// }
+	// else
+	// {
+	//	properties.addAll(getPropertyList(currentSelection, "configurable", false));
+	//} 
+	
+	properties.addAll(getPropertyList(configurator.getProductMatrix().getDefaultConfigurable(), "configurable", false));
+	
 	return properties;
 }
 
@@ -107,6 +112,21 @@ List getPropertyList(TreeNode parent, ConfigProperty configProperty, String pref
 	return properties;
 }
 
+
+String getImagePath(ConfigProperty cp)
+{
+	EnumConverter converter = (EnumConverter) cp.getConverter(true);
+	
+	Object value = converter.fromString(cp.getValue().toString(), cp.getConverterContext());
+
+	if (value instanceof DynamicEnumSingle)
+	{
+		DynamicEnumSingle des = (DynamicEnumSingle) value;
+		return des.getImage();
+	}
+	
+	return null;
+}
 /**
  * Convert a ConfigProperty to a Property, sent to the GWT client
  * 
@@ -123,17 +143,10 @@ TreeNode fromConfigProperty(ConfigProperty configProperty, String prefix)
 
 		if (configProperty.getValue() != null)
 		{
-			Field imageField = ReflectionUtils.getDeclaredField("image", configProperty.getValue().getClass(), false);
-
-			if (imageField != null)
-			{
-				try
-				{
-					property.setAttribute("imagePath", imageField.get(configProperty.getValue()).toString());
-				}
-				catch (Exception e)
-				{}
-			}
+			String imagePath = getImagePath(configProperty);
+			
+			if (imagePath != null)
+				property.setAttribute("imagePath", imagePath);
 		}
 
 		property.setAttribute("selections", getSelections(configProperty));
@@ -226,7 +239,12 @@ String getStringRepresentation(Object value, ConfigProperty property)
 
 	if (converter != null)
 	{
-		return converter.toString(value, null);
+		String sValue = converter.toString(value, null);
+		
+		if (sValue == null && value != null)
+			sValue = value.toString();
+		
+		return sValue;
 	}
 
 	if (value != null)
@@ -287,6 +305,36 @@ private void updateID(String id, Object value)
 	if (cp != null)
 	{
 		update(cp, value);
+	}
+}
+
+private ConfigProperty getConfigProperty(String id)
+{
+	return cps.get(Integer.valueOf(id));
+}
+
+public void resetOverride(String id)
+{
+	ConfigProperty cp = getConfigProperty(id);
+
+	if (cp != null)
+	{
+		cp.resetOverride();
+	}
+	updateState();
+	configPropertyEditor.fetch();
+}
+
+public Boolean isOverriden(String id)
+{
+	ConfigProperty cp = getConfigProperty(id);
+	if (cp != null)
+	{
+		return cp.isOverriden();
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -359,7 +407,10 @@ void update(ConfigProperty cp, Object value)
 
 	if (cp.getType().getSimpleName().equalsIgnoreCase("Measure"))
 	{
-		value = measureConverter.getLengthMeasure(sValue, NonSI.INCH);
+		if (sValue.endsWith("mm") == false)
+			sValue += " mm";
+			
+		value = measureConverter.getLengthMeasure(sValue, SI.MILLI(SI.METER));
 	}
 
 	else if (cp.getType().getSimpleName().equalsIgnoreCase("boolean"))
@@ -378,6 +429,7 @@ void update(ConfigProperty cp, Object value)
 		if (value instanceof DynamicEnumSingle)
 		{
 			DynamicEnumSingle des = (DynamicEnumSingle) value;
+			value = des.getObject();
 		}
 	}
 
