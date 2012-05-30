@@ -70,6 +70,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private TabSet tabset;
 	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
 	private final MasterContainer masterContainer = new MasterContainer();
+	private Configurator configurator = new Configurator(masterContainer);
 
 	@Override
 	public MasterContainer getMasterContainer() {
@@ -477,6 +478,14 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		VLayout vl = new VLayout();
 		vl.setMembersMargin(4);
 
+		vl.addMember(newButton("Show configurator", new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Configurator cfg = new Configurator(masterContainer);
+				cfg.show("PGM");
+			}
+		}));
+		
 		vl.addMember(newButton("Press me 1!", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -485,7 +494,6 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}));
 
 		vl.addMember(newButton("Press me 2!", new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
 				window.setTitle("Modal Window");
@@ -581,7 +589,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					}
 				}
 			});
-			
+
 			layout.addMember(button);
 		}
 
@@ -680,7 +688,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		final VLayout mainLayout = new VLayout();
 		final Button button2 = new Button();
 
-		mainLayout.addMember(newButton("Click Me",  new ClickHandler() {
+		mainLayout.addMember(newButton("Click Me", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				button2.setEnabled(!button2.isEnabled());

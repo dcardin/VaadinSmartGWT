@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -20,86 +18,58 @@ import javax.servlet.http.HttpServletResponse;
 import bsh.Interpreter;
 
 import com.google.common.base.Throwables;
+import com.netappsid.configurator.IConfigurator;
 import com.netappsid.utils.StreamUtils;
 
-public class ImageServer extends HttpServlet
-{
+public class ImageServer extends HttpServlet {
 	private final Interpreter interpreter = new Interpreter();
 
-	public ImageServer()
-	{
-		try
-		{
+	public ImageServer() {
+		try {
 			final InputStream scriptStream = getClass().getClassLoader().getResourceAsStream("/org/vaadin/smartgwt/ImageServer.bsh");
 			interpreter.setClassLoader(ConfigPropertyEditor.getConfiguratorClassLoader());
 			interpreter.eval(new InputStreamReader(scriptStream));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-	{
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		OutputStream out = null;
 
-		try
-		{
-			// Select the appropriate content encoding based on the
-			// client's Accept-Encoding header. Choose GZIP if the header
-			// includes "gzip". Choose ZIP if the header includes "compress".
-			// Choose no compression otherwise.
-			String encodings = req.getHeader("Accept-Encoding");
-			if (encodings != null && encodings.indexOf("gzip") != -1)
-			{
-				// Go with GZIP
-				resp.setHeader("Content-Encoding", "gzip");
-				out = new GZIPOutputStream(resp.getOutputStream());
-			}
-			else if (encodings != null && encodings.indexOf("compress") != -1)
-			{
-				// Go with ZIP
-				resp.setHeader("Content-Encoding", "x-compress");
-				out = new ZipOutputStream(resp.getOutputStream());
-				((ZipOutputStream) out).putNextEntry(new ZipEntry("dummy name"));
-			}
-			else
-			{
-				// No compression
-				out = resp.getOutputStream();
-			}
+		try {
+			out = resp.getOutputStream();
 			resp.setHeader("Vary", "Accept-Encoding");
 
-			if (req.getParameter("type").equals("ressource"))
-			{
+			if (req.getParameter("type").equals("ressource")) {
 				InputStream imageStream = null;
 
 				String resName = req.getParameter("name");
-				resp.setContentType("image/jpg");
+				if (resName.contains(".jpg"))
+					resp.setContentType("image/jpg");
+				else
+					resp.setContentType("image/png");
 
-				imageStream = getConfiguratorImageStream(req, imageStream, resName);
+				long cacheAge = 60*60;
+				long expiry = new Date().getTime() + cacheAge * 1000;
 
-				if (imageStream == null)
-				{
+				resp.setDateHeader("Expires", expiry);
+				resp.setHeader("Cache-Control", "max-age=" + cacheAge);
+
+				IConfigurator configurator = (IConfigurator) req.getSession().getAttribute("configurator");
+				imageStream = configurator.getConfigurables().get(0).getClass().getResourceAsStream(resName);
+
+				if (imageStream == null) {
 					imageStream = getClass().getClassLoader().getResourceAsStream(resName);
 				}
 
-//				if (imageStream == null)
-//				{
-//					imageStream = configurator.getDefaultConfigurable().getObject().getClass().getClassLoader().getResourceAsStream(resName));
-//				}
-
-				if (imageStream != null)
-				{
+				if (imageStream != null) {
 					StreamUtils.copyInputStream(imageStream, out);
 					imageStream.close();
-				}
-				else
-				{
+				} else {
 					log("Cannot find: " + resName);
-					resp.sendError(404);
+					resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 				}
 
 				return;
@@ -110,8 +80,7 @@ public class ImageServer extends HttpServlet
 
 			Boolean initialized = (Boolean) req.getSession().getAttribute("initialized");
 
-			if (initialized == null | initialized == false)
-			{
+			if (initialized == null | initialized == false) {
 				BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 				Graphics2D g2d = (Graphics2D) image.getGraphics();
 				g2d.setColor(Color.WHITE);
@@ -121,39 +90,27 @@ public class ImageServer extends HttpServlet
 			}
 
 			writeImage(req, resp, out, width, height);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			log("Unexpected error", e);
-		}
-		finally
-		{
+		} finally {
 			if (out != null)
 				out.close();
 		}
 
 	}
 
-	private InputStream getConfiguratorImageStream(HttpServletRequest req, InputStream imageStream, String resName)
-	{
-		try
-		{
-			return (InputStream) interpreter.getNameSpace().invokeMethod("getConfiguratorImageStream", new Object[] { req, imageStream, resName }, interpreter);
-		}
-		catch (Exception e)
-		{
+	private InputStream getConfiguratorImageStream(HttpServletRequest req, InputStream imageStream, String resName) {
+		try {
+			return (InputStream) interpreter.getNameSpace().invokeMethod("getConfiguratorImageStream", new Object[] { req, resName }, interpreter);
+		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
 	}
 
-	private void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height)
-	{
-		try
-		{
+	private void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height) {
+		try {
 			interpreter.getNameSpace().invokeMethod("writeImage", new Object[] { req, resp, out, width, height }, interpreter);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
 	}

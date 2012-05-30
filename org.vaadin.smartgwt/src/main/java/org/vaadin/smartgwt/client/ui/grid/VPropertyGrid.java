@@ -131,7 +131,14 @@ public class VPropertyGrid extends VTreeGrid
 				if (event.getState() && !record.equals(lastEditorChangedRecord))
 				{
 					lastEditorChangedRecord = record;
-					getField(1).setEditorType(getSpecificEditor(record));
+					
+					FormItem editor = getSpecificEditor(record);
+					
+					if (editor != null)
+					{
+						getField(1).setEditorType(editor);
+					}
+
 					if (selectItem != null)
 					{
 						selectItem.showPicker();
@@ -193,7 +200,7 @@ public class VPropertyGrid extends VTreeGrid
 						{
 							if (record.getAttribute("imagePath") != null && record.getAttribute("imagePath").length() > 0)
 							{
-								return "<img height=16 width=24 src=\"" + GWT.getHostPageBaseURL() + "imageFetcher?type=ressource&name="
+								return "<img height=16 align=top width=24 src=\"" + GWT.getHostPageBaseURL() + "imageFetcher?type=ressource&name="
 										+ record.getAttribute("imagePath") + "\"/> " + value;
 							}
 						}
@@ -205,9 +212,9 @@ public class VPropertyGrid extends VTreeGrid
 							severity = 0;
 
 						if (severity == 2)
-							return "<img src=\"" + path + "img/showerr_tsk.gif\" align=\"middle\"/> " + (value == null ? "" : value);
+							return "<img src=\"" + path + "img/showerr_tsk.gif\" align=\"top\"/> " + (value == null ? "" : value);
 						else if (severity == 1)
-							return "<img src=\"" + path + "img/showwarn_tsk.gif\" align=\"middle\"/> " + (value == null ? "" : value);
+							return "<img src=\"" + path + "img/showwarn_tsk.gif\" align=\"top\"/> " + (value == null ? "" : value);
 					}
 
 					return value == null ? "" : value.toString();
@@ -275,7 +282,7 @@ public class VPropertyGrid extends VTreeGrid
 		Tree tree = getTree();
 		TreeNode node = tree.getAllNodes()[rowNum];
 		TreeNode parent = tree.getParent(node);
-
+		
 		String css = "";
 		try
 		{
@@ -288,9 +295,14 @@ public class VPropertyGrid extends VTreeGrid
 			{
 				css += "font-weight:bold; background-color:#C0C0C0; ";
 			}
-			else if (record.getAttributeAsBoolean("readOnly"))
-				css += "color:#C0C0C0";
+			else
+			{
+				if (record.getAttributeAsBoolean("readOnly"))
+					css += "color:#C0C0C0; ";
 
+				css += "border-bottom:1px solid #F0F0F0; border-right:1px solid #F0F0F0; ";
+			}
+			
 			if (css.length() > 0)
 				return css;
 			else
@@ -302,12 +314,6 @@ public class VPropertyGrid extends VTreeGrid
 			GWT.log("exception", e);
 		}
 		return super.getCellCSSText(record, rowNum, colNum);
-	}
-
-	public void resetValue()
-	{
-		Integer id = selectedRecord.getAttributeAsInt("id");
-		// ds.resetValue(id);
 	}
 
 	private void openFolders(TreeNode path)

@@ -26,7 +26,13 @@ import com.vaadin.terminal.gwt.server.WebApplicationContext;
 
 public class ConfigPropertyEditor extends PropertyGrid {
 	private static NAIDClassLoader classLoader;
-
+	private RendererPanel renderer;
+	
+	public ConfigPropertyEditor(RendererPanel renderer)
+	{
+		this();
+		this.renderer = renderer;
+	}
 	public static NAIDClassLoader getConfiguratorClassLoader() {
 		if (classLoader == null) {
 			try {
@@ -111,6 +117,7 @@ public class ConfigPropertyEditor extends PropertyGrid {
 			List<TreeNode> properties = fetchTreeNodes();
 
 			setData(makeTree(properties.toArray(new TreeNode[0])));
+			renderer.refresh();
 
 		} catch (Exception e) {
 			Throwables.propagate(e);
@@ -157,6 +164,23 @@ public class ConfigPropertyEditor extends PropertyGrid {
 	private void updateID(String id, Object value) {
 		try {
 			interpreter.getNameSpace().invokeMethod("updateID", new Object[] { id, value }, interpreter);
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
+	}
+
+	public void resetOverride(String id) {
+		try {
+			interpreter.getNameSpace().invokeMethod("resetOverride", new Object[] { id }, interpreter);
+		} catch (Exception e) {
+			throw Throwables.propagate(e);
+		}
+	}
+	
+
+	public Boolean isOverriden(String id) {
+		try {
+			return (Boolean) interpreter.getNameSpace().invokeMethod("isOverriden", new Object[] { id }, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}

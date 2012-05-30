@@ -15,22 +15,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bsh.Interpreter;
-
 import com.google.common.base.Throwables;
 import com.netappsid.erp.configurator.ConfiguratorImpl;
 import com.netappsid.erp.configurator.gui.views.ViewNumber;
 import com.netappsid.utils.StreamUtils;
 
-InputStream getConfiguratorImageStream(HttpServletRequest req, InputStream imageStream, String resName)
+InputStream getConfiguratorImageStream(HttpServletRequest req, String resName)
 {
 	ConfiguratorImpl configurator = (ConfiguratorImpl) req.getSession().getAttribute("configurator");
 
 	if (configurator != null && configurator.getDefaultConfigurable() != null)
 	{
-		imageStream = configurator.getDefaultConfigurable().getObject().getClass().getClassLoader().getResourceAsStream(resName);
+		return configurator.getDefaultConfigurable().getObject().getClass().getClassLoader().getResourceAsStream(resName);
 	}
-	return imageStream;
+	
+	return null;
 }
 
 void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height) throws IOException
