@@ -51,8 +51,6 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			System.out.println("Updating value: " + att);
-
 			if (!att.startsWith("*") && !att.equals("id") && !att.startsWith("_") && !abstractComponentAttributes.contains(att))
 			{
 				if (component instanceof BaseWidget)
@@ -351,8 +349,6 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			System.out.println("Updating: " + att);
-
 			if (att.startsWith("#"))
 			{
 				final Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));

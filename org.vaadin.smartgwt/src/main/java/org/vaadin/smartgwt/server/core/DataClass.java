@@ -255,7 +255,6 @@ public class DataClass extends AbstractComponent {
 			} else if (value instanceof Record[]) {
 				try {
 					String json = JSONHelper.getJsonString((Record[]) value);
-					System.out.println(json);
 					target.addAttribute(name, "j" + json);
 
 				} catch (Exception e) {
