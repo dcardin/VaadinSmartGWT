@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bsh.Interpreter;
 
@@ -78,7 +79,7 @@ public class ImageServer extends HttpServlet {
 			int width = Integer.parseInt(req.getParameter("width"));
 			int height = Integer.parseInt(req.getParameter("height"));
 
-			Boolean initialized = (Boolean) req.getSession().getAttribute("initialized");
+			Boolean initialized = isInitialized(req.getSession());
 
 			if (initialized == null | initialized == false) {
 				BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -104,19 +105,31 @@ public class ImageServer extends HttpServlet {
 
 	}
 
-	private InputStream getConfiguratorImageStream(HttpServletRequest req, InputStream imageStream, String resName) {
-		try {
-			return (InputStream) interpreter.getNameSpace().invokeMethod("getConfiguratorImageStream", new Object[] { req, resName }, interpreter);
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
-		}
-	}
-
 	private void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height) {
 		try {
 			interpreter.getNameSpace().invokeMethod("writeImage", new Object[] { req, resp, out, width, height }, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
+	}
+
+	private static Boolean isInitialized(HttpSession session) {
+		int i = 0;
+
+		while (i <= 5) {
+			try {
+				if (session.getAttribute("initialized") == null || !(Boolean) session.getAttribute("initialized")) {
+					Thread.sleep(500);
+				} else {
+					return (Boolean) session.getAttribute("initialized");
+				}
+			} catch (InterruptedException e) {
+
+			} finally {
+				i++;
+			}
+		}
+
+		return false;
 	}
 }

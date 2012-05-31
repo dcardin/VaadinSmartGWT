@@ -62,7 +62,7 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
 			@Override
 			public void onSelectionUpdated(SelectionUpdatedEvent event) {
-				System.out.println("la selection a change sur le client: " + getSelectedRecords()[0].getAttribute("binding"));
+				getSelectedRecords()[0].getAttribute("binding");
 			}
 		});
 	}
@@ -76,13 +76,12 @@ public class ConfigPropertyEditor extends PropertyGrid {
 			WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
 			HttpSession session = context.getHttpSession();
 			session.setAttribute("configurator", getBSHConfigurator());
-			session.setAttribute("initialized", true);
+			session.setAttribute("initialized", false);
 			initConfigurator(prd);
+			fetch();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Throwables.propagate(e);
 		}
-
-		fetch();
 	}
 
 	public void init(byte[] configurationBytes) {
@@ -92,14 +91,14 @@ public class ConfigPropertyEditor extends PropertyGrid {
 			final HttpSession session = context.getHttpSession();
 
 			configurator.setClassLoader(getConfiguratorClassLoader());
-			configurator.build(configurator.deserialize(configurationBytes));
+			configurator.deserialize(configurationBytes);
 			session.setAttribute("configurator", configurator);
-			session.setAttribute("initialized", true);
+			session.setAttribute("initialized", false);
+			initConfigurator();
+			fetch();
 		} catch (Exception e) {
 			Throwables.propagate(e);
 		}
-
-		fetch();
 	}
 
 	public IConfigurator getConfigurator() {
@@ -114,9 +113,13 @@ public class ConfigPropertyEditor extends PropertyGrid {
 
 	public void fetch() {
 		try {
+			final WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
+			final HttpSession session = context.getHttpSession();
+
 			List<TreeNode> properties = fetchTreeNodes();
 
 			setData(makeTree(properties.toArray(new TreeNode[0])));
+			session.setAttribute("initialized", true);
 			renderer.refresh();
 
 		} catch (Exception e) {
@@ -159,6 +162,10 @@ public class ConfigPropertyEditor extends PropertyGrid {
 
 	private void initConfigurator(String prd) throws EvalError {
 		interpreter.getNameSpace().invokeMethod("initConfigurator", new Object[] { prd }, interpreter);
+	}
+
+	private void initConfigurator() throws EvalError {
+		interpreter.getNameSpace().invokeMethod("initConfigurator", new Object[] {}, interpreter);
 	}
 
 	private void updateID(String id, Object value) {
