@@ -14,17 +14,28 @@ import org.vaadin.smartgwt.server.tree.TreeGrid;
 import org.vaadin.smartgwt.server.types.Overflow;
 import org.vaadin.smartgwt.server.types.SelectionType;
 
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.netappsid.configurator.IConfigurator;
 
 public class Configurator extends Window {
 	private ConfigPropertyEditor cpe = null;
 	private ToolStripButton reset = new ToolStripButton();
 	private RendererPanel renderer = new RendererPanel();
+	private ToolStripButton okButton;
+	private ToolStripButton cancelButton;
 
 	public Configurator(MasterContainer container) {
 		super(container);
+		init();
 	}
 	
+	public HandlerRegistration addOKClickHandler(ClickHandler handler) {
+		return okButton.addClickHandler(handler);
+	}
+
+	public HandlerRegistration addCancelClickHandler(ClickHandler handler) {
+		return cancelButton.addClickHandler(handler);
+	}
 
 	private static ToolStripButton newButton(String title, String prompt, ClickHandler handler) {
 		final ToolStripButton button = new ToolStripButton(title);
@@ -37,14 +48,14 @@ public class Configurator extends Window {
 		ToolStrip strip = new ToolStrip();
 
 		strip.addFill();
-		strip.addButton(newButton("Save", "Save the item", new ClickHandler() {
+		strip.addButton(okButton = newButton("Save", "Save the item", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				dispose();
 			}
 		}));
 
-		strip.addButton(newButton("Cancel", "Ignore all changes", new ClickHandler() {
+		strip.addButton(cancelButton = newButton("Cancel", "Ignore all changes", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				dispose();
@@ -126,7 +137,6 @@ public class Configurator extends Window {
 	}
 
 	public void show(String prd) {
-		init();
 		cpe.init(prd);
 		super.show();
 	}
