@@ -1205,7 +1205,6 @@ public abstract class BaseWidget extends AbstractComponent implements PropertyAc
 				try
 				{
 					String json = JSONHelper.getJsonString((Record[]) value);
-					System.out.println(json);
 					target.addAttribute(name, "j" + json);
 
 				}
