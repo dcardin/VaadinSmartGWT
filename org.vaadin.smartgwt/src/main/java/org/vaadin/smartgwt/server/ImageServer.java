@@ -88,7 +88,12 @@ public class ImageServer extends HttpServlet {
 				resp.setContentType("image/jpg");
 				ImageIO.write(image, "jpg", out);
 			}
+			long cacheAge = 60*60;
+			
+			long expiry = new Date().getTime() + cacheAge * 1000;
 
+			resp.setDateHeader("Expires", expiry);
+			resp.setHeader("Cache-Control", "max-age=" + cacheAge);
 			writeImage(req, resp, out, width, height);
 		} catch (Exception e) {
 			log("Unexpected error", e);
