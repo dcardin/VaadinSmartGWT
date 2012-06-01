@@ -353,7 +353,7 @@ void initConfigurator()
 
 void updateState()
 {
-	configurator.getProductMatrix().updateState(false, false);
+	configurator.getProductMatrix().updateState(false, false);	
 }
 
 TreeNode[] getSelections(ConfigProperty cp)

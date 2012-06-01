@@ -38,6 +38,7 @@
 						<Export-Package>org.vaadin.smartgwt.*,org.vaadin.smartgwt.server.*</Export-Package>
 						<Import-Package>!com.google.gwt.event.dom.client.*;!com.google.gwt.i18n.client.*;!com.google.gwt.core.*,!com.google.gwt.user.*,!com.smartgwt.client.*,!org.vaadin.rpc.client,*</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
+						<Include-Resource>img = img</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
