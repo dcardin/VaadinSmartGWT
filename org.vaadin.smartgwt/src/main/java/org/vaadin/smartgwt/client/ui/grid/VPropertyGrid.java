@@ -188,13 +188,11 @@ public class VPropertyGrid extends VTreeGrid
 					{
 						if (record.getAttribute("type").equalsIgnoreCase("boolean"))
 						{
-							String path = GWT.getModuleBaseURL();
-
 							value = Boolean.parseBoolean((String) value);
 							if ((Boolean) value == true)
-								return "<img src=\"" + path + "/sc/skins/Enterprise/images/DynamicForm/checked.png\" />";
+							return "<img src=\"" + GWT.getHostPageBaseURL() + "img/checked.png\" />";
 							else
-								return "<img src=\"" + path + "/sc/skins/Enterprise/images/DynamicForm/unchecked.png\" />";
+							return "<img src=\"" + GWT.getHostPageBaseURL() + "img/unchecked.png\" />";
 						}
 						else if (record.getAttribute("type").equalsIgnoreCase("enum"))
 						{
