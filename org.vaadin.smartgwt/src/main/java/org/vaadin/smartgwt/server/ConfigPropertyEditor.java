@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedHandler;
 import org.vaadin.smartgwt.server.tree.PropertyGrid;
@@ -25,14 +26,15 @@ import com.netappsid.utils.NAIDClassLoader;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 
 public class ConfigPropertyEditor extends PropertyGrid {
+	private static final Logger LOGGER = Logger.getLogger(ConfigPropertyEditor.class);
 	private static NAIDClassLoader classLoader;
 	private RendererPanel renderer;
-	
-	public ConfigPropertyEditor(RendererPanel renderer)
-	{
+
+	public ConfigPropertyEditor(RendererPanel renderer) {
 		this();
 		this.renderer = renderer;
 	}
+
 	public static NAIDClassLoader getConfiguratorClassLoader() {
 		if (classLoader == null) {
 			try {
@@ -62,7 +64,10 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
 			@Override
 			public void onSelectionUpdated(SelectionUpdatedEvent event) {
-				getSelectedRecords()[0].getAttribute("binding");
+				if (LOGGER.isDebugEnabled()) {
+					final String sessionID = ((WebApplicationContext) getApplication().getContext()).getHttpSession().getId();
+					LOGGER.debug(sessionID + " | " + getSelectedRecords()[0].getAttribute("binding"));
+				}
 			}
 		});
 	}
@@ -170,6 +175,11 @@ public class ConfigPropertyEditor extends PropertyGrid {
 
 	private void updateID(String id, Object value) {
 		try {
+			if (LOGGER.isDebugEnabled()) {
+				final String sessionID = ((WebApplicationContext) getApplication().getContext()).getHttpSession().getId();
+				LOGGER.debug(sessionID + " | " + "updateID(id='" + id + "', value='" + value + "');");
+			}
+
 			interpreter.getNameSpace().invokeMethod("updateID", new Object[] { id, value }, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
@@ -183,7 +193,6 @@ public class ConfigPropertyEditor extends PropertyGrid {
 			throw Throwables.propagate(e);
 		}
 	}
-	
 
 	public Boolean isOverriden(String id) {
 		try {
