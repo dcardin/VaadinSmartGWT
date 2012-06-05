@@ -149,6 +149,7 @@ public class HTMLFlow extends Canvas {
 	 * URL when it is first drawn. <p> This feature relies on the XMLHttpRequest object which can be disabled by end-users in 
 	 * some supported browsers.  See {@link com.smartgwt.client.docs.PlatformDependencies} for more information.
 	 */
+	@VaadinIntegration
 	public void setContentsResource(Resource contentsResource) {
 		this.contentsResource = contentsResource;
 	}
@@ -158,6 +159,7 @@ public class HTMLFlow extends Canvas {
 	 * URL when it is first drawn. <p> This feature relies on the XMLHttpRequest object which can be disabled by end-users in 
 	 * some supported browsers.  See {@link com.smartgwt.client.docs.PlatformDependencies} for more information.
 	 */
+	@VaadinIntegration
 	public Resource getContentsResource() {
 		return contentsResource;
 	}
@@ -405,6 +407,7 @@ public class HTMLFlow extends Canvas {
 	}
 
 	@Override
+	@VaadinIntegration
 	public void paintContent(PaintTarget target) throws PaintException {
 		super.paintContent(target);
 		if (contentsResource != null) {

@@ -51,6 +51,7 @@ public class HTMLPane extends HTMLFlow {
 	/**
 	 * The Vaadin resource used as content for the IFrame. 
 	 */
+	@VaadinIntegration
 	public void setIFrameResource(Resource resource) {
 		setContentsResource(resource);
 		if (!isDrawn()) {
