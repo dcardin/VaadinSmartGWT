@@ -12,48 +12,31 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.http.HttpService;
 
-public class ImageServerResourcesServlet extends HttpServlet
-{
-	private static final String ALIAS = "/img";
-	private final HttpService httpService;
+public class ImageServerResourcesServlet extends HttpServlet {
 	private Bundle applicationBundle;
 
-	public ImageServerResourcesServlet(HttpService httpService, BundleContext context)
-	{
-		for (Bundle bundle : context.getBundles())
-		{
-			if ("org.vaadin.org.vaadin.smartgwt".equals(bundle.getSymbolicName()))
-			{
+	public void activate(BundleContext context) {
+		for (Bundle bundle : context.getBundles()) {
+			if ("org.vaadin.org.vaadin.smartgwt".equals(bundle.getSymbolicName())) {
 				this.applicationBundle = bundle;
 				break;
 			}
 		}
-
-		this.httpService = httpService;
 	}
 
-	public void start() throws Exception
-	{
-		httpService.registerServlet(ALIAS, this, null, null);
-	}
-
-	public void stop()
-	{
-		httpService.unregister(ALIAS);
+	public void deactivate(BundleContext context) {
+		applicationBundle = null;
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-	{
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = req.getPathInfo();
-		String resourcePath = ALIAS + path;
+		String resourcePath = "/img" + path;
 
 		URL u = applicationBundle.getResource(resourcePath);
 
-		if (null == u)
-		{
+		if (null == u) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
@@ -63,8 +46,7 @@ public class ImageServerResourcesServlet extends HttpServlet
 		final byte[] buffer = new byte[1024];
 		int read = 0;
 
-		while (-1 != (read = in.read(buffer)))
-		{
+		while (-1 != (read = in.read(buffer))) {
 			out.write(buffer, 0, read);
 		}
 	}
