@@ -1179,9 +1179,13 @@ public class TabSet extends Canvas {
 
 	@Override
 	@VaadinIntegration
-	public void changeVariables(final Object source, final Map variables) {
+	public void changeVariables(Object source, Map<String, Object> variables) {
 		super.changeVariables(source, variables);
 		client.changeVariables(source, variables);
+
+		if (variables.containsKey("TabCloseClickEvent.tab")) {
+			removeTab((Tab) variables.get("TabCloseClickEvent.tab"));
+		}
 	}
 
 	private class ServerSideHandlerImpl implements ServerSideHandler {
