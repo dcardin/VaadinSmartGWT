@@ -2,6 +2,6 @@ This project is the attempt to provide a complete Vaadin integration to SmartGWT
 
 The versions used are :
 
-Vaadin : 6.7.1
-SmartGWT : 3.0 
+Vaadin : 6.7.0
+SmartGWT : 2.5
 

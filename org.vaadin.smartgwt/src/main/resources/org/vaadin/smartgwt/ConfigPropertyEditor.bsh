@@ -166,7 +166,7 @@ TreeNode fromConfigProperty(ConfigProperty configProperty, String prefix)
 
 	if (configProperty.getLabel().length() == 0)
 	{
-		property.setAttribute("name", configProperty.getName());
+		property.setAttribute("name", "undefined"); //configProperty.getName());
 	}
 	else
 	{
