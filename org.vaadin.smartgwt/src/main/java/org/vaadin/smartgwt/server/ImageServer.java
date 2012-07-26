@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.google.common.base.Throwables;
 import com.netappsid.configurator.IConfigurator;
 import com.netappsid.utils.StreamUtils;
 
+@Singleton
 public class ImageServer extends HttpServlet {
 	private final Interpreter interpreter = new Interpreter();
 
@@ -106,10 +108,15 @@ public class ImageServer extends HttpServlet {
 	}
 
 	private void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height) {
+		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
 		try {
+			Thread.currentThread().setContextClassLoader(ConfigPropertyEditor.getConfiguratorClassLoader());
 			interpreter.getNameSpace().invokeMethod("writeImage", new Object[] { req, resp, out, width, height }, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
+		} finally {
+			Thread.currentThread().setContextClassLoader(classLoader);
 		}
 	}
 

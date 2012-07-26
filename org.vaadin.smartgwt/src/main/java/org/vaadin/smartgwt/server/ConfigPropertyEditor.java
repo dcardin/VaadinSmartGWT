@@ -162,43 +162,44 @@ public class ConfigPropertyEditor extends PropertyGrid {
 	}
 
 	private List<TreeNode> fetchTreeNodes() throws EvalError {
-		return (List<TreeNode>) interpreter.eval("fetchTreeNodes()");
+		return invokeMethod("fetchTreeNodes");
 	}
 
 	private void initConfigurator(String prd) throws EvalError {
-		interpreter.getNameSpace().invokeMethod("initConfigurator", new Object[] { prd }, interpreter);
+		invokeMethod("initConfigurator", prd);
 	}
 
 	private void initConfigurator() throws EvalError {
-		interpreter.getNameSpace().invokeMethod("initConfigurator", new Object[] {}, interpreter);
+		invokeMethod("initConfigurator");
 	}
 
 	private void updateID(String id, Object value) {
-		try {
-			if (LOGGER.isDebugEnabled()) {
-				final String sessionID = ((WebApplicationContext) getApplication().getContext()).getHttpSession().getId();
-				LOGGER.debug(sessionID + " | " + "updateID(id='" + id + "', value='" + value + "');");
-			}
-
-			interpreter.getNameSpace().invokeMethod("updateID", new Object[] { id, value }, interpreter);
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
+		if (LOGGER.isDebugEnabled()) {
+			final String sessionID = ((WebApplicationContext) getApplication().getContext()).getHttpSession().getId();
+			LOGGER.debug(sessionID + " | " + "updateID(id='" + id + "', value='" + value + "');");
 		}
+
+		invokeMethod("updateID", id, value);
 	}
 
 	public void resetOverride(String id) {
-		try {
-			interpreter.getNameSpace().invokeMethod("resetOverride", new Object[] { id }, interpreter);
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
-		}
+		invokeMethod("resetOverride", id);
 	}
 
 	public Boolean isOverriden(String id) {
+		return invokeMethod("isOverriden", id);
+	}
+
+	private <T> T invokeMethod(String name, Object... params) {
+		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
 		try {
-			return (Boolean) interpreter.getNameSpace().invokeMethod("isOverriden", new Object[] { id }, interpreter);
+			Thread.currentThread().setContextClassLoader(getConfiguratorClassLoader());
+			return (T) interpreter.getNameSpace().invokeMethod(name, params, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
+		} finally {
+			Thread.currentThread().setContextClassLoader(classLoader);
 		}
 	}
 }
