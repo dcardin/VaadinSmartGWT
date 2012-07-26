@@ -23,9 +23,11 @@ public class Configurator extends Window {
 	private RendererPanel renderer = new RendererPanel();
 	private ToolStripButton okButton;
 	private ToolStripButton cancelButton;
+	private final String servletContextPath;
 
-	public Configurator(MasterContainer container) {
+	public Configurator(MasterContainer container, String servletContextPath) {
 		super(container);
+		this.servletContextPath = servletContextPath;
 		init();
 	}
 	
@@ -170,7 +172,7 @@ public class Configurator extends Window {
 		});
 
 		reset.setIconSize(16);
-		reset.setIcon("/img/last_edit_pos.gif");
+		reset.setIcon(servletContextPath + "/img/last_edit_pos.gif");
 		reset.setActionType(SelectionType.BUTTON);
 		strip.setWidth100();
 		strip.addMember(reset);

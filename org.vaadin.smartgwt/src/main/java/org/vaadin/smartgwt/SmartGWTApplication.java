@@ -70,7 +70,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private TabSet tabset;
 	private static final JsonFormatter JSON_FORMATTER = new CompactJsonFormatter();
 	private final MasterContainer masterContainer = new MasterContainer();
-	private Configurator configurator = new Configurator(masterContainer);
+	private Configurator configurator = new Configurator(masterContainer, null);
 
 	@Override
 	public MasterContainer getMasterContainer() {
@@ -481,7 +481,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		vl.addMember(newButton("Show configurator", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Configurator cfg = new Configurator(masterContainer);
+				Configurator cfg = new Configurator(masterContainer, null);
 				cfg.show("PGM");
 			}
 		}));
