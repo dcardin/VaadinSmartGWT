@@ -25,6 +25,7 @@ import com.vaadin.ui.ComponentContainer;
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.layout.VMasterContainer.class)
 public class MasterContainer extends BaseWidget implements ComponentContainer {
 	private final ComponentPropertyPainter paintablePropertyPainter = new ComponentPropertyPainter(this);
+	private final ComponentList<NonUIComponent> nonUIComponents = paintablePropertyPainter.addComponentList("nonUIComponents");
 	private final ComponentReference<SC> sc = paintablePropertyPainter.addProperty("sc");
 	private final ComponentList<DataSource> dataSources = paintablePropertyPainter.addComponentList("dataSources");
 	private final ComponentReference<Canvas> pane = paintablePropertyPainter.addProperty("pane");
@@ -32,6 +33,28 @@ public class MasterContainer extends BaseWidget implements ComponentContainer {
 
 	public MasterContainer() {
 		sc.set(new SC());
+	}
+
+	public Iterator<NonUIComponent> getNonUIComponentIterator() {
+		return nonUIComponents.iterator();
+	}
+
+	/**
+	 * Add a non-visual component to the container.
+	 * 
+	 * @param component to be added.
+	 */
+	public void addNonUIComponent(NonUIComponent component) {
+		nonUIComponents.add(component);
+	}
+
+	/**
+	 * Removes a non-visual component from the container.
+	 * 
+	 * @param component to be removed.
+	 */
+	public void removeNonUIComponent(NonUIComponent component) {
+		nonUIComponents.remove(component);
 	}
 
 	public void addDataSource(DataSource dataSource) {
