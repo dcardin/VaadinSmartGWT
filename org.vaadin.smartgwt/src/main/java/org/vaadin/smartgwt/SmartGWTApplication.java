@@ -77,6 +77,8 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 
 	@Override
 	public void init() {
+		setTheme("smartvaadin");
+
 		final Window mainWindow = new Window("BorderLayout Test 2");
 		setMainWindow(mainWindow);
 		mainWindow.setStyleName(null);
