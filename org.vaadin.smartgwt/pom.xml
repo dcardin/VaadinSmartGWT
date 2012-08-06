@@ -2,19 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.vaadin</groupId>
+	<parent>
+		<groupId>org.vaadin</groupId>
+		<artifactId>smartgwt-parent</artifactId>
+		<version>0.6-SNAPSHOT</version>
+	</parent>
 	<artifactId>org.vaadin.smartgwt</artifactId>
-	<version>0.6-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 	<name>Vaadin SmartGWT Integration</name>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>6.7.1</vaadin.version>
-		<gwt.version>2.4.0</gwt.version>
-		<gwt.plugin.version>2.4.0</gwt.plugin.version>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -175,6 +170,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.vaadin</groupId>
+			<artifactId>org.vaadin.smartgwt.theme</artifactId>
+			<version>0.6-SNAPSHOT</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin</artifactId>
 			<version>${vaadin.version}</version>
@@ -262,5 +263,4 @@
 			<url>http://nexus.netappsid.com:8081/nexus/content/repositories/snapshots</url>
 		</repository>
 	</distributionManagement>
-
 </project>

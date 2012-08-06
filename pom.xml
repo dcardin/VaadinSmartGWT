@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.vaadin</groupId>
+	<artifactId>smartgwt-parent</artifactId>
+	<version>0.6-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<vaadin.version>6.7.1</vaadin.version>
+		<gwt.version>2.4.0</gwt.version>
+		<gwt.plugin.version>2.4.0</gwt.plugin.version>
+	</properties>
+	<modules>
+		<module>org.vaadin.smartgwt.theme</module>
+		<module>org.vaadin.smartgwt</module>		
+	</modules>
+</project>
