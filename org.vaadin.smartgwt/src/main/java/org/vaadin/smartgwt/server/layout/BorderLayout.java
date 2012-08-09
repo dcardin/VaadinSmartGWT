@@ -1,218 +1,129 @@
 package org.vaadin.smartgwt.server.layout;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import static org.vaadin.smartgwt.server.builder.HLayoutBuilder.*;
 
 import org.vaadin.smartgwt.server.Canvas;
-import org.vaadin.smartgwt.server.Label;
+import org.vaadin.smartgwt.server.types.Alignment;
 
-import com.vaadin.ui.Component;
+public class BorderLayout extends VLayout {
+	private HLayout north;
+	private HLayout west;
+	private HLayout center;
+	private HLayout east;
+	private HLayout south;
 
-public class BorderLayout extends VLayout
-{
-	private final HLayout centerLayout = new HLayout();
-	private Canvas center = new NullMember();
-	private Canvas north = new NullMember();
-	private Canvas south = new NullMember();
-	private Canvas west = new NullMember();
-	private Canvas east = new NullMember();
-
-	public BorderLayout()
-	{
-		centerLayout.setHeight("*");
-		centerLayout.addMember(west);
-		centerLayout.addMember(center);
-		centerLayout.addMember(east);
-		super.addMember(north);
-		super.addMember(centerLayout);
-		super.addMember(south);
+	public BorderLayout() {
+		//@formatter:off
+		setMembers(
+			north = buildHLayout()
+				.setHeight(0)
+				.setWidth("100%")
+				.build(),
+			buildHLayout()
+				.setHeight("*")
+				.setMembers(
+					west = buildHLayout()
+						.setWidth(0)
+						.setHeight("100%")
+						.build(),
+					buildHLayout()
+						.setWidth("*")
+						.setAlign(Alignment.RIGHT)
+						.setMembers(
+							center = buildHLayout()
+								.setWidth(0)
+								.setHeight(0)
+								.build(),
+							east = buildHLayout()
+								.setWidth(0)
+								.build()
+						)
+						.build()
+				)
+				.build(),
+			south = buildHLayout()
+				.setHeight(0)
+				.setWidth("100%")
+				.build()
+		);
+		//@formatter:on
 	}
 
-	public Canvas getCenterMember()
-	{
-		return center instanceof NullMember ? null : center;
+	public Canvas getCenterMember() {
+		return center.getMembers().length > 0 ? center.getMembers()[0] : null;
 	}
 
-	public void setCenterMember(Canvas member)
-	{
-		centerLayout.replaceMember(this.center, this.center = configureCenterMember(member));
-	}
-
-	public Canvas getNorthMember()
-	{
-		return north instanceof NullMember ? null : north;
-	}
-
-	public void setNorthMember(Canvas member)
-	{
-		super.replaceMember(this.north, this.north = configureVerticalMember(member));
-	}
-
-	public Canvas getSouthMember()
-	{
-		return south instanceof NullMember ? null : south;
-	}
-
-	public void setSouthMember(Canvas member)
-	{
-		super.replaceMember(this.south, this.south = configureVerticalMember(member));
-	}
-
-	public Canvas getWestMember()
-	{
-		return west instanceof NullMember ? null : west;
-	}
-
-	public void setWestMember(Canvas member)
-	{
-		centerLayout.replaceMember(this.west, this.west = configureHorizontalMember(member));
-	}
-
-	public Canvas getEastMember()
-	{
-		return east instanceof NullMember ? null : east;
-	}
-
-	public void setEastMember(Canvas member)
-	{
-		centerLayout.replaceMember(this.east, this.east = configureHorizontalMember(member));
-	}
-
-	@Override
-	public Boolean hasMember(Canvas member)
-	{
-		return super.hasMember(member) || centerLayout.hasMember(member);
-	}
-
-	@Override
-	public Canvas[] getMembers()
-	{
-		return newMembersSet().toArray(new Canvas[0]);
-	}
-
-	@Override
-	public Iterator<Component> getComponentIterator()
-	{
-		return newMembersSet().iterator();
-	}
-
-	@Override
-	public void addMember(Canvas component)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void addMember(Canvas component, int position)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void removeMember(Canvas member)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void setMembers(Canvas... newMembers)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void setMembers(List<Canvas> members)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void removeMemberAt(int pos)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	@Override
-	public void replaceMember(Canvas oldComponent, Canvas newComponent)
-	{
-		throw newUnsupportedOperationException();
-	}
-
-	private Canvas configureCenterMember(Canvas member)
-	{
-		if (member == null)
-		{
-			return new NullMember();
-		}
-		else
-		{
+	public void setCenterMember(Canvas member) {
+		if (member == null) {
+			center.setWidth(0);
+			center.setHeight(0);
+			center.setMembers();
+		} else {
 			member.setHeight("100%");
 			member.setWidth("100%");
-			return member;
+			center.setHeight(1);
+			center.setWidth(1);
+			center.setMembers(member);
 		}
 	}
 
-	private Canvas configureVerticalMember(Canvas member)
-	{
-		if (member == null)
-		{
-			return new NullMember();
-		}
-		else
-		{
-			if (member.getHeightAsString() == null)
-			{
-				member.setAutoHeight();
-			}
+	public Canvas getNorthMember() {
+		return north.getMembers().length > 0 ? north.getMembers()[0] : null;
+	}
 
+	public void setNorthMember(Canvas member) {
+		if (member == null) {
+			north.setHeight(0);
+			north.setMembers();
+		} else {
 			member.setWidth("100%");
-			return member;
+			north.setHeight(1);
+			north.setMembers(member);
 		}
 	}
 
-	private Canvas configureHorizontalMember(Canvas member)
-	{
-		if (member == null)
-		{
-			return new NullMember();
-		}
-		else
-		{
-			if (member.getWidthAsString() == null)
-			{
-				member.setAutoWidth();
-			}
+	public Canvas getSouthMember() {
+		return south.getMembers().length > 0 ? south.getMembers()[0] : null;
+	}
 
+	public void setSouthMember(Canvas member) {
+		if (member == null) {
+			south.setHeight(0);
+			south.setMembers();
+		} else {
+			member.setWidth("100%");
+			south.setHeight(1);
+			south.setMembers(member);
+		}
+	}
+
+	public Canvas getWestMember() {
+		return west.getMembers().length > 0 ? west.getMembers()[0] : null;
+	}
+
+	public void setWestMember(Canvas member) {
+		if (member == null) {
+			west.setWidth(0);
+			west.setMembers();
+		} else {
 			member.setHeight("100%");
-			return member;
+			west.setWidth(1);
+			west.setMembers(member);
 		}
 	}
 
-	private Set<Component> newMembersSet()
-	{
-		final Set<Component> members = new HashSet<Component>();
-		members.add(getNorthMember());
-		members.add(getSouthMember());
-		members.add(getWestMember());
-		members.add(getEastMember());
-		members.add(getCenterMember());
-		members.remove(null);
-		return members;
+	public Canvas getEastMember() {
+		return east.getMembers().length > 0 ? east.getMembers()[0] : null;
 	}
 
-	private UnsupportedOperationException newUnsupportedOperationException()
-	{
-		return new UnsupportedOperationException("Member operation not supported in BorderLayout.  Use constrainted member getters and setters instead.");
-	}
-
-	private static class NullMember extends Label
-	{
-		public NullMember()
-		{
-			super("");
-			setVisible(false);
+	public void setEastMember(Canvas member) {
+		if (member == null) {
+			east.setWidth(0);
+			east.setMembers();
+		} else {
+			member.setHeight("100%");
+			east.setWidth(1);
+			east.setMembers(member);
 		}
 	}
 }
