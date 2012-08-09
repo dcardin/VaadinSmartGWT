@@ -116,6 +116,12 @@ public class HSplitLayoutTest {
 	}
 
 	@Test
+	public void test_setsResizeBarVisibility() {
+		hSplitLayout.setResizeBarVisible(false);
+		assertFalse(hSplitLayout.isResizeBarVisible());
+	}
+
+	@Test
 	public void test_settingResizeBarVisibilitySetsLeftHolderResizeBar() {
 		hSplitLayout.setResizeBarVisible(false);
 		assertFalse(hSplitLayout.getMember(0).getShowResizeBar());

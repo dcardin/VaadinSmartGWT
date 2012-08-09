@@ -73,6 +73,10 @@ public class HSplitLayout extends HLayout {
 		left.setShowResizeBar(visible);
 	}
 
+	public boolean isResizeBarVisible() {
+		return left.getShowResizeBar();
+	}
+
 	public Canvas getLeftMember() {
 		return left.getMembers().length > 0 ? left.getMembers()[0] : null;
 	}

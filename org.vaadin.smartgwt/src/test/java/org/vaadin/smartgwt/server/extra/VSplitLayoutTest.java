@@ -115,6 +115,12 @@ public class VSplitLayoutTest {
 	}
 
 	@Test
+	public void test_setResizeBarVisibility() {
+		vSplitLayout.setResizeBarVisible(false);
+		assertFalse(vSplitLayout.isResizeBarVisible());
+	}
+
+	@Test
 	public void test_settingResizeBarVisibilitySetsTopHolderResizeBar() {
 		vSplitLayout.setResizeBarVisible(false);
 		assertFalse(vSplitLayout.getMember(0).getShowResizeBar());

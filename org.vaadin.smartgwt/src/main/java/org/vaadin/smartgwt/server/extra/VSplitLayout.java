@@ -69,6 +69,10 @@ public class VSplitLayout extends VLayout {
 		top.setHeight(((int) (proportion * 100)) + "%");
 	}
 
+	public boolean isResizeBarVisible() {
+		return top.getShowResizeBar();
+	}
+
 	public void setResizeBarVisible(boolean showResizeBar) {
 		top.setShowResizeBar(showResizeBar);
 	}
