@@ -4811,7 +4811,11 @@ public class FormItem extends RefDataClass { // implements com.smartgwt.client.w
 		super.changeVariables(source, variables);
 
 		if (variables.containsKey(ATTRIBUTE_VALUE)) {
-			setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, variables.get(ATTRIBUTE_VALUE));
+			if (FormItemType.BOOLEAN.getValue().equals(getType())) {
+				setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, Boolean.valueOf((String) variables.get(ATTRIBUTE_VALUE)));
+			} else {
+				setPropertyAttribute(ATTRIBUTE_VALUE, PROPERTYNAME_VALUE, variables.get(ATTRIBUTE_VALUE));
+			}
 		}
 	}
 
