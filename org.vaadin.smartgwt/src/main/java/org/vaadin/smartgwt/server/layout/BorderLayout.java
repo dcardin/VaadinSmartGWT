@@ -32,7 +32,6 @@ public class BorderLayout extends VLayout {
 						.setMembers(
 							center = buildHLayout()
 								.setWidth(0)
-								.setHeight(0)
 								.build(),
 							east = buildHLayout()
 								.setWidth(0)
@@ -61,8 +60,7 @@ public class BorderLayout extends VLayout {
 		} else {
 			member.setHeight("100%");
 			member.setWidth("100%");
-			center.setHeight(1);
-			center.setWidth(1);
+			center.setWidth("100%");
 			center.setMembers(member);
 		}
 	}

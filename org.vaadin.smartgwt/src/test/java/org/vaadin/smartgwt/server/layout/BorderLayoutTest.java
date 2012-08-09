@@ -84,8 +84,7 @@ public class BorderLayoutTest {
 	@Test
 	public void test_resizesCenterHolderToAutoFit() {
 		borderLayout.setCenterMember(new Canvas());
-		assertEquals(Integer.valueOf(1), getCenterHolder().getAttributeAsInt("width"));
-		assertEquals(Integer.valueOf(1), getCenterHolder().getAttributeAsInt("height"));
+		assertEquals("100%", getCenterHolder().getWidthAsString());
 	}
 
 	@Test
