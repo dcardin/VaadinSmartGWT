@@ -17,6 +17,8 @@ import org.vaadin.smartgwt.server.Label;
 import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.events.ClickEvent;
 import org.vaadin.smartgwt.server.events.ClickHandler;
+import org.vaadin.smartgwt.server.extra.HSplitLayout;
+import org.vaadin.smartgwt.server.extra.VSplitLayout;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
 import org.vaadin.smartgwt.server.form.fields.FormItem;
@@ -36,13 +38,11 @@ import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedEvent;
 import org.vaadin.smartgwt.server.grid.events.SelectionUpdatedHandler;
 import org.vaadin.smartgwt.server.layout.BorderLayout;
 import org.vaadin.smartgwt.server.layout.HLayout;
-import org.vaadin.smartgwt.server.layout.HSplitLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.MasterContainer;
 import org.vaadin.smartgwt.server.layout.SectionStack;
 import org.vaadin.smartgwt.server.layout.SectionStackSection;
 import org.vaadin.smartgwt.server.layout.VLayout;
-import org.vaadin.smartgwt.server.layout.VSplitLayout;
 import org.vaadin.smartgwt.server.tab.Tab;
 import org.vaadin.smartgwt.server.tab.TabSet;
 import org.vaadin.smartgwt.server.toolbar.ToolStrip;
@@ -93,15 +93,15 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	}
 
 	public Canvas getSplitTest() {
-		VSplitLayout split = new VSplitLayout(true, true);
+		VSplitLayout split = new VSplitLayout();
 		split.setWidth100();
 		split.setAutoHeight();
 
 		Label label2 = new Label("right");
 		label2.setBackgroundColor("yellow");
 
-		split.setTopCanvas(getListGrid());
-		split.setBottomCanvas(label2);
+		split.setTopMember(getListGrid());
+		split.setBottomMember(label2);
 
 		return split;
 	}
@@ -598,10 +598,10 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private Canvas newSplitLayoutPane() {
 		final VSplitLayout vLayout = new VSplitLayout();
 		final HSplitLayout hLayout = new HSplitLayout();
-		hLayout.setLeftCanvas(newLabel("LEFT", "blue"));
-		hLayout.setRightCanvas(newLabel("RIGHT", "green"));
-		vLayout.setTopCanvas(newLabel("TOP", "red"));
-		vLayout.setBottomCanvas(hLayout);
+		hLayout.setLeftMember(newLabel("LEFT", "blue"));
+		hLayout.setRightMember(newLabel("RIGHT", "green"));
+		vLayout.setTopMember(newLabel("TOP", "red"));
+		vLayout.setBottomMember(hLayout);
 		return vLayout;
 	}
 

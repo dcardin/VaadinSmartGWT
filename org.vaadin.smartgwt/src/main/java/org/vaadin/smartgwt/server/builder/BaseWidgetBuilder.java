@@ -8,7 +8,7 @@ import org.vaadin.smartgwt.server.BaseWidget;
  * @param <T> the BaseWidget derivated class that this builder creates.
  * @param <B> the BaseWidgetBuilder derivated class of this builder.
  */
-abstract class BaseWidgetBuilder<T extends BaseWidget, B extends BaseWidgetBuilder<T, B>> {
+public abstract class BaseWidgetBuilder<T extends BaseWidget, B extends BaseWidgetBuilder<T, B>> {
 	private final T instance;
 
 	/**

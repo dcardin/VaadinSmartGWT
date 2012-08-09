@@ -9,7 +9,7 @@ import org.vaadin.smartgwt.server.layout.Layout;
  * @param <T> the Layout derivated class that this builder creates.
  * @param <B> the LayoutBuilder derivated class of this builder.
  */
-abstract class LayoutBuilder<T extends Layout, B extends LayoutBuilder<T, B>> extends CanvasBuilder<T, B> {
+public abstract class LayoutBuilder<T extends Layout, B extends LayoutBuilder<T, B>> extends CanvasBuilder<T, B> {
 	protected LayoutBuilder(T instance) {
 		super(instance);
 	}
@@ -19,6 +19,14 @@ abstract class LayoutBuilder<T extends Layout, B extends LayoutBuilder<T, B>> ex
 	 */
 	public B setMembers(Canvas... members) {
 		instance().setMembers(members);
+		return me();
+	}
+	
+	/**
+	 * see {@link Layout#setMembersMargin(int)} 
+	 */
+	public B setMembersMargin(int membersMargin) {
+		instance().setMembersMargin(membersMargin);
 		return me();
 	}
 }
