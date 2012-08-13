@@ -9,7 +9,6 @@ import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.extra.HSplitLayout.Builder;
 import org.vaadin.smartgwt.server.layout.HLayout;
 import org.vaadin.smartgwt.server.layout.Layout;
-import org.vaadin.smartgwt.server.types.Overflow;
 
 public class HSplitLayoutTest {
 	public static class BuilderTest {
@@ -31,12 +30,6 @@ public class HSplitLayoutTest {
 		@Test
 		public void test_returnsBuilderWhenSettingProportions() {
 			assertEquals(builder, builder.setProportions(0.5d));
-		}
-
-		@Test
-		public void test_setsResizeBarVisible() {
-			builder.setResizeBarVisible(true);
-			verify(hSplitLayout).setResizeBarVisible(true);
 		}
 
 		@Test
@@ -94,37 +87,21 @@ public class HSplitLayoutTest {
 	@Test
 	public void test_createsLeftHolder() {
 		final HLayout leftHolder = (HLayout) hSplitLayout.getMember(0);
-		assertEquals("100%", leftHolder.getHeightAsString());
 		assertEquals("50%", leftHolder.getWidthAsString());
-		assertEquals(Overflow.AUTO, leftHolder.getOverflow());
-		assertTrue(leftHolder.getShowResizeBar());
-		assertEquals("next", leftHolder.getResizeBarTarget());
+		assertEquals(Integer.valueOf(1), leftHolder.getAttributeAsInt("height"));
 	}
 
 	@Test
 	public void test_createsRightHolder() {
 		final HLayout rightHolder = (HLayout) hSplitLayout.getMember(1);
-		assertEquals("100%", rightHolder.getHeightAsString());
 		assertEquals("*", rightHolder.getWidthAsString());
-		assertEquals(Overflow.AUTO, rightHolder.getOverflow());
+		assertEquals(Integer.valueOf(1), rightHolder.getAttributeAsInt("height"));
 	}
 
 	@Test
 	public void test_settingProportionsSetsLeftHolderWidth() {
 		hSplitLayout.setProportions(0.3d);
 		assertEquals("30%", hSplitLayout.getMember(0).getWidthAsString());
-	}
-
-	@Test
-	public void test_setsResizeBarVisibility() {
-		hSplitLayout.setResizeBarVisible(false);
-		assertFalse(hSplitLayout.isResizeBarVisible());
-	}
-
-	@Test
-	public void test_settingResizeBarVisibilitySetsLeftHolderResizeBar() {
-		hSplitLayout.setResizeBarVisible(false);
-		assertFalse(hSplitLayout.getMember(0).getShowResizeBar());
 	}
 
 	@Test
@@ -151,7 +128,6 @@ public class HSplitLayoutTest {
 		final Canvas member = new Canvas();
 		hSplitLayout.setLeftMember(member);
 		assertEquals("100%", member.getWidthAsString());
-		assertEquals("100%", member.getHeightAsString());
 	}
 
 	@Test
@@ -178,6 +154,5 @@ public class HSplitLayoutTest {
 		final Canvas member = new Canvas();
 		hSplitLayout.setRightMember(member);
 		assertEquals("100%", member.getWidthAsString());
-		assertEquals("100%", member.getHeightAsString());
 	}
 }

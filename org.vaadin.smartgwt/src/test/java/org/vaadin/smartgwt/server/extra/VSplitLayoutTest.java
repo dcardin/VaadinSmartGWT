@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.layout.Layout;
 import org.vaadin.smartgwt.server.layout.VLayout;
-import org.vaadin.smartgwt.server.types.Overflow;
 
 public class VSplitLayoutTest {
 	public static class BuilderTest {
@@ -30,12 +29,6 @@ public class VSplitLayoutTest {
 		@Test
 		public void test_returnsBuilderWhenSettingProportions() {
 			assertEquals(builder, builder.setProportions(0.5d));
-		}
-
-		@Test
-		public void test_setsResizeBarVisible() {
-			builder.setResizeBarVisible(true);
-			verify(vSplitLayout).setResizeBarVisible(true);
 		}
 
 		@Test
@@ -94,36 +87,20 @@ public class VSplitLayoutTest {
 	public void test_createsTopHolder() {
 		final VLayout topHolder = (VLayout) vSplitLayout.getMember(0);
 		assertEquals("50%", topHolder.getHeightAsString());
-		assertEquals("100%", topHolder.getWidthAsString());
-		assertEquals(Overflow.AUTO, topHolder.getOverflow());
-		assertTrue(topHolder.getShowResizeBar());
-		assertEquals("next", topHolder.getResizeBarTarget());
+		assertEquals(Integer.valueOf(1), topHolder.getAttributeAsInt("width"));
 	}
 
 	@Test
 	public void test_createsBottomHolder() {
 		final VLayout bottomHolder = (VLayout) vSplitLayout.getMember(1);
 		assertEquals("*", bottomHolder.getHeightAsString());
-		assertEquals("100%", bottomHolder.getWidthAsString());
-		assertEquals(Overflow.AUTO, bottomHolder.getOverflow());
+		assertEquals(Integer.valueOf(1), bottomHolder.getAttributeAsInt("width"));
 	}
 
 	@Test
 	public void test_settingProportionsSetsTopHolderHeight() {
 		vSplitLayout.setProportions(0.3d);
 		assertEquals("30%", vSplitLayout.getMember(0).getHeightAsString());
-	}
-
-	@Test
-	public void test_setResizeBarVisibility() {
-		vSplitLayout.setResizeBarVisible(false);
-		assertFalse(vSplitLayout.isResizeBarVisible());
-	}
-
-	@Test
-	public void test_settingResizeBarVisibilitySetsTopHolderResizeBar() {
-		vSplitLayout.setResizeBarVisible(false);
-		assertFalse(vSplitLayout.getMember(0).getShowResizeBar());
 	}
 
 	@Test
@@ -146,10 +123,10 @@ public class VSplitLayoutTest {
 	}
 
 	@Test
-	public void test_setsTopMemberToFullSize() {
+	public void test_setsTopMemberToFullSize()
+	{
 		final Canvas member = new Canvas();
 		vSplitLayout.setTopMember(member);
-		assertEquals("100%", member.getWidthAsString());
 		assertEquals("100%", member.getHeightAsString());
 	}
 
@@ -176,7 +153,6 @@ public class VSplitLayoutTest {
 	public void test_setsBottomMemberToFullSize() {
 		final Canvas member = new Canvas();
 		vSplitLayout.setBottomMember(member);
-		assertEquals("100%", member.getWidthAsString());
 		assertEquals("100%", member.getHeightAsString());
 	}
 }

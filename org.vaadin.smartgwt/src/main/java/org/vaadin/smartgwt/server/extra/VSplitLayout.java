@@ -5,7 +5,6 @@ import static org.vaadin.smartgwt.server.builder.VLayoutBuilder.*;
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.builder.CanvasBuilder;
 import org.vaadin.smartgwt.server.layout.VLayout;
-import org.vaadin.smartgwt.server.types.Overflow;
 
 public class VSplitLayout extends VLayout {
 	public static class Builder extends CanvasBuilder<VSplitLayout, Builder> {
@@ -15,11 +14,6 @@ public class VSplitLayout extends VLayout {
 
 		public Builder setProportions(double proportion) {
 			instance().setProportions(proportion);
-			return me();
-		}
-
-		public Builder setResizeBarVisible(boolean showResizeBar) {
-			instance().setResizeBarVisible(showResizeBar);
 			return me();
 		}
 
@@ -50,16 +44,12 @@ public class VSplitLayout extends VLayout {
 		//@formatter:off
 		setMembers(
 			top = buildVLayout()
-				.setWidth("100%")
 				.setHeight("50%")
-				.setOverflow(Overflow.AUTO)
-				.setResizeBarVisible(true)
-				.setResizeBarTarget("next")
+				.setWidth(1)
 				.build(),
 			bottom = buildVLayout()
-				.setWidth("100%")
 				.setHeight("*")
-				.setOverflow(Overflow.AUTO)
+				.setWidth(1)
 				.build()
 		);
 		//@formatter:on	
@@ -69,21 +59,12 @@ public class VSplitLayout extends VLayout {
 		top.setHeight(((int) (proportion * 100)) + "%");
 	}
 
-	public boolean isResizeBarVisible() {
-		return top.getShowResizeBar();
-	}
-
-	public void setResizeBarVisible(boolean showResizeBar) {
-		top.setShowResizeBar(showResizeBar);
-	}
-
 	public Canvas getTopMember() {
 		return top.getMembers().length > 0 ? top.getMembers()[0] : null;
 	}
 
 	public void setTopMember(Canvas member) {
 		if (member != null) {
-			member.setWidth("100%");
 			member.setHeight("100%");
 			top.setMembers(member);
 		} else {
@@ -97,7 +78,6 @@ public class VSplitLayout extends VLayout {
 
 	public void setBottomMember(Canvas member) {
 		if (member != null) {
-			member.setWidth("100%");
 			member.setHeight("100%");
 			bottom.setMembers(member);
 		} else {
