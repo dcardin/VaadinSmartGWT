@@ -6,9 +6,6 @@ import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.builder.CanvasBuilder;
 import org.vaadin.smartgwt.server.layout.VLayout;
 
-import com.vaadin.ui.ClientWidget;
-
-@ClientWidget(org.vaadin.smartgwt.client.extra.VVSplitLayout.class)
 public class VSplitLayout extends VLayout {
 	public static class Builder extends CanvasBuilder<VSplitLayout, Builder> {
 		Builder(VSplitLayout instance) {
