@@ -50,6 +50,15 @@ public class ComponentList<E extends Component> implements ComponentProperty, It
 		}
 	}
 
+	/**
+	 * Removes element that was removed on the client-side.
+	 * 
+	 * @param element that was removed from the client.
+	 */
+	public void clientRemoved(E element) {
+		components.remove(element);
+	}
+
 	public E get(int index) {
 		return components.get(index);
 	}

@@ -1184,7 +1184,7 @@ public class TabSet extends Canvas {
 		client.changeVariables(source, variables);
 
 		if (variables.containsKey("TabCloseClickEvent.tab")) {
-			removeTab((Tab) variables.get("TabCloseClickEvent.tab"));
+			paintableTabs.clientRemoved((Tab) variables.get("TabCloseClickEvent.tab"));
 		}
 	}
 
