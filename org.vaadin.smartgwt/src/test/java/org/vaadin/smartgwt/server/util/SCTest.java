@@ -95,4 +95,73 @@ public class SCTest {
 		sc.changeVariables(null, variables);
 		verify(callback).execute(clientResult);
 	}
+
+	@Test
+	public void test_ask_sendsAskRequest() {
+		final String message = "message";
+
+		sc.ask(message, null);
+		verify(serverSideProxy).call(eq("ask"), anyInt(), eq(message), anyString());
+	}
+
+	@Test
+	public void test_ask_sendsAskRequestWithTitle() {
+		final String title = "title";
+		final String message = "message";
+
+		sc.ask(title, message, null);
+		verify(serverSideProxy).call(eq("ask"), anyInt(), eq(message), eq(title));
+	}
+
+	@Test
+	public void test_ask_AskRequestCallsCallbackOnVariablesChange() {
+		final BooleanCallback callback = mock(BooleanCallback.class);
+		final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
+		final HashMap<String, Object> variables = Maps.newHashMap();
+		final Boolean clientResult = true;
+
+		sc.ask(null, callback);
+		verify(serverSideProxy, atLeastOnce()).call(anyString(), keyCaptor.capture(), anyString(), anyString());
+
+		variables.put("callbackKey", keyCaptor.getValue());
+		variables.put("callback", clientResult);
+
+		sc.changeVariables(null, variables);
+		verify(callback).execute(clientResult);
+	}
+
+	@Test
+	public void test_ask_AskRequestsCallsCallbackOnVariablesChangeWithNullResult() {
+		final BooleanCallback callback = mock(BooleanCallback.class);
+		final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
+		final HashMap<String, Object> variables = Maps.newHashMap();
+		final Boolean clientResult = null;
+
+		sc.ask(null, callback);
+		verify(serverSideProxy, atLeastOnce()).call(anyString(), keyCaptor.capture(), anyString(), anyString());
+
+		variables.put("callbackKey", keyCaptor.getValue());
+		variables.put("callback", clientResult);
+
+		sc.changeVariables(null, variables);
+		verify(callback).execute(clientResult);
+	}
+
+	@Test
+	public void test_ask_callsCallbackOnAskRequestWithPendingRequests() {
+		final BooleanCallback callback = mock(BooleanCallback.class);
+		final ArgumentCaptor<Integer> keyCaptor = ArgumentCaptor.forClass(Integer.class);
+		final HashMap<String, Object> variables = Maps.newHashMap();
+		final Boolean clientResult = true;
+
+		sc.ask(null, mock(BooleanCallback.class));
+		sc.ask(null, callback);
+		verify(serverSideProxy, atLeastOnce()).call(anyString(), keyCaptor.capture(), anyString(), anyString());
+		sc.ask(null, mock(BooleanCallback.class));
+
+		variables.put("callbackKey", keyCaptor.getValue());
+		variables.put("callback", clientResult);
+		sc.changeVariables(null, variables);
+		verify(callback).execute(clientResult);
+	}
 }
