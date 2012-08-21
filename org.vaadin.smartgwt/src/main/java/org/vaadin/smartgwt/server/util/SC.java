@@ -100,6 +100,31 @@ public class SC extends Canvas {
 		callbacks.put(key, callback);
 	}
 
+	/**
+	* Show a modal dialog with a message, icon, and "Yes" and "No" buttons. The callback will receive boolean true for an OK
+	* button click, boolean false for a No button click, or null if the Dialog is dismissed via the close button.
+	* 
+	* @param message the message
+	* @param callback the callback to fire when the user dismisses the dialog.
+	*/
+	public void ask(String message, BooleanCallback callback) {
+		ask(null, message, callback);
+	}
+
+	/**
+	 * Show a modal dialog with a message, icon, and "Yes" and "No" buttons. The callback will receive boolean true for an OK
+	 * button click, boolean false for a No button click, or null if the Dialog is dismissed via the close button.
+	 *
+	 * @param title the title of the message box
+	 * @param message the message
+	 * @param callback the callback to fire when the user dismisses the dialog.
+	 */
+	public void ask(String title, String message, BooleanCallback callback) {
+		final int key = incrementor.increment();
+		client.call("ask", key, message, title);
+		callbacks.put(key, callback);
+	}
+
 	@Override
 	public void changeVariables(final Object source, final Map variables) {
 		client.changeVariables(source, variables);

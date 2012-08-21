@@ -33,7 +33,6 @@ public class VSC extends Widget implements Paintable {
 		rpc.register("sayWithCallback", new Method() {
 			public void invoke(final String methodName, final Object[] data) {
 				if (data.length == 1) {
-					// simple message
 					SC.say((String) data[0], new BooleanCallback() {
 						@Override
 						public void execute(Boolean value) {
@@ -74,6 +73,23 @@ public class VSC extends Widget implements Paintable {
 				} else {
 					SC.confirm((String) params[2], message, callback);
 				}
+			}
+		});
+
+		rpc.register("ask", new Method() {
+			public void invoke(final String methodName, final Object[] data) {
+				SC.ask((String) data[1], (String) data[2], new BooleanCallback() {
+					@Override
+					public void execute(Boolean value) {
+						client.updateVariable(paintableId, "callbackKey", (Integer) data[0], false);
+
+						if (value == null) {
+							client.updateVariable(paintableId, "callback", "null", true);
+						} else {
+							client.updateVariable(paintableId, "callback", value, true);
+						}
+					}
+				});
 			}
 		});
 	}
