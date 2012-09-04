@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+package org.vaadin.smartgwt.server;
+
+import org.vaadin.smartgwt.client.ui.VImg;
+import org.vaadin.smartgwt.server.types.ImageStyle;
+import org.vaadin.smartgwt.server.util.EnumUtil;
+
+import com.vaadin.ui.ClientWidget;
+
+>>>>>>> remotes/ebelanger/demo
 /*
  * Smart GWT (GWT for SmartClient)
  * Copyright 2008 and beyond, Isomorphic Software, Inc.
@@ -22,7 +33,11 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 /**
  * The Img widget class implements a simple widget that displays a single image.
  */
+<<<<<<< HEAD
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.VImg.class)
+=======
+@ClientWidget(VImg.class)
+>>>>>>> remotes/ebelanger/demo
 public class Img extends StatefulCanvas {
 
 	public Img() {

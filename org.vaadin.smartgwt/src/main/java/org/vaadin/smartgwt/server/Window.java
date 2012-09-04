@@ -40,6 +40,7 @@ public class Window extends Layout implements HasCloseClickHandlers {
 
 	public Window(MasterContainer container) {
 		this.container = container;
+		setParent(container);
 	}
 
     /**

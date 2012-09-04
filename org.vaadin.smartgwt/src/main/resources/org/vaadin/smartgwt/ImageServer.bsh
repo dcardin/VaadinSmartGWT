@@ -1,0 +1,58 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.common.base.Throwables;
+import com.netappsid.erp.configurator.ConfiguratorImpl;
+import com.netappsid.erp.configurator.gui.views.ViewNumber;
+import com.netappsid.utils.StreamUtils;
+
+InputStream getConfiguratorImageStream(HttpServletRequest req, String resName)
+{
+	ConfiguratorImpl configurator = (ConfiguratorImpl) req.getSession().getAttribute("configurator");
+
+	if (configurator != null && configurator.getDefaultConfigurable() != null)
+	{
+		return configurator.getDefaultConfigurable().getObject().getClass().getClassLoader().getResourceAsStream(resName);
+	}
+	
+	return null;
+}
+
+void writeImage(HttpServletRequest req, HttpServletResponse resp, OutputStream out, int width, int height) throws IOException
+{
+	ConfiguratorImpl configurator = (ConfiguratorImpl) req.getSession().getAttribute("configurator");
+
+	if (configurator != null)
+	{
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+		if (req.getParameter("type").equalsIgnoreCase("main"))
+		{
+			image = (BufferedImage) configurator.paintDefaultViewImage(image);
+		}
+		else
+		{
+			image = (BufferedImage) configurator.paintViewImage(configurator.getDefaultConfigurable(), ViewNumber.TOP, image);
+		}
+
+		if (image != null)
+		{
+			resp.setContentType("image/jpg");
+			ImageIO.write(image, "jpg", out);
+		}
+	}
+}

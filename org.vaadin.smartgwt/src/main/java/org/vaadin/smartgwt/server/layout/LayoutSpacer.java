@@ -15,12 +15,16 @@ package org.vaadin.smartgwt.server.layout;
  * Lesser General Public License for more details.
  */
  
+import org.vaadin.smartgwt.client.ui.layout.VLayoutSpacer;
 import org.vaadin.smartgwt.server.Canvas;
+
+import com.vaadin.ui.ClientWidget;
 
 /**
  * Add a LayoutSpacer to a Layout to take up space just like a normal member, without actually drawing anything. 
  * Semantically equivalent to using an empty canvas, but higher performance for this particular use case.
  */
+@ClientWidget(VLayoutSpacer.class)
 public class LayoutSpacer extends Canvas {
 
 //    public static LayoutSpacer getOrCreateRef(JavaScriptObject jsObj) {
@@ -28,7 +32,7 @@ public class LayoutSpacer extends Canvas {
 //        BaseWidget obj = BaseWidget.getRef(jsObj);
 //        if(obj != null) {
 //            return (LayoutSpacer) obj;
-//        } else {
+//        } else {LayoutSpacer
 //            return new LayoutSpacer(jsObj);
 //        }
 //    }
