@@ -52,15 +52,22 @@ public class ConfigPropertyEditor extends PropertyGrid {
 	private final Interpreter interpreter = new Interpreter();
 
 	public ConfigPropertyEditor() {
+		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
+
 			final InputStream scriptStream = getClass().getClassLoader().getResourceAsStream("/org/vaadin/smartgwt/ConfigPropertyEditor.bsh");
-			interpreter.setClassLoader(getConfiguratorClassLoader());
+			NAIDClassLoader configuratorClassLoader = getConfiguratorClassLoader();
+
+			configuratorClassLoader.loadClass("org.apache.derby.jdbc.AutoloadedDriver").getClassLoader();
+			getClass().getClassLoader().loadClass("org.apache.derby.jdbc.AutoloadedDriver").getClassLoader();
+			interpreter.setClassLoader(configuratorClassLoader);
 			interpreter.eval(new InputStreamReader(scriptStream));
 			interpreter.set("configPropertyEditor", this);
 		} catch (Exception e) {
 			Throwables.propagate(e);
+		} finally {
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
-
 		addSelectionUpdatedHandler(new SelectionUpdatedHandler() {
 			@Override
 			public void onSelectionUpdated(SelectionUpdatedEvent event) {
@@ -194,7 +201,8 @@ public class ConfigPropertyEditor extends PropertyGrid {
 		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
 		try {
-			Thread.currentThread().setContextClassLoader(getConfiguratorClassLoader());
+			NAIDClassLoader configuratorClassLoader = getConfiguratorClassLoader();
+			Thread.currentThread().setContextClassLoader(configuratorClassLoader);
 			return (T) interpreter.getNameSpace().invokeMethod(name, params, interpreter);
 		} catch (Exception e) {
 			throw Throwables.propagate(e);

@@ -41,7 +41,7 @@ public class VTreeGrid extends TreeGrid implements Paintable {
 				setData(((VBaseClass<Tree>) paintable).getJSObject());
 			}
 		});
-		
+
 		propertyUpdater.addPaintableListListener("fields", new PaintableListListener() {
 			@Override
 			public void onAdd(Paintable[] source, Integer index, Paintable element) {
@@ -84,10 +84,12 @@ public class VTreeGrid extends TreeGrid implements Paintable {
 				@Override
 				public void onSelectionUpdated(SelectionUpdatedEvent event) {
 					final JavaScriptObject selectedRecordsJSA = toJSOArray(getSelectedRecords());
-					VTreeGrid.this.client.updateVariable(pid, "selectedRecords", JSON.stringify(selectedRecordsJSA, JSON.newExclusionReplacer(new String[] {"children", "_parent_isc_Tree_0"})), false);
+					JavaScriptObject newExclusionReplacer = JSON.newExclusionReplacer(new String[] { "children", "^_parent_isc_Tree_[0-9]+", "selections",
+							"messages" });
+					VTreeGrid.this.client.updateVariable(pid, "selectedRecords", JSON.stringify(selectedRecordsJSA, newExclusionReplacer), false);
 				}
 			});
-			
+
 			selectedChangedEventRegistration = new ServerSideEventRegistration("*hasSelectionChangedHandlers") {
 				@Override
 				protected HandlerRegistration registerHandler() {
@@ -99,7 +101,12 @@ public class VTreeGrid extends TreeGrid implements Paintable {
 							JSOHelper.setAttribute(eventJSO, "state", event.getState());
 							JSOHelper.setAttribute(eventJSO, "selection", toJSOArray(event.getSelection()));
 							JSOHelper.setAttribute(eventJSO, "selectedRecord", toJSO(event.getSelectedRecord()));
-							VTreeGrid.this.client.updateVariable(pid, "onSelectionChanged.event", JSON.stringify(eventJSO, JSON.newExclusionReplacer(new String[] {"children", "_parent_isc_Tree_0"})), true);
+							VTreeGrid.this.client
+									.updateVariable(
+											pid,
+											"onSelectionChanged.event",
+											JSON.stringify(eventJSO, JSON.newExclusionReplacer(new String[] { "children", "^_parent_isc_Tree_[0-9]+",
+													"selections", "messages" })), true);
 						}
 					});
 				}

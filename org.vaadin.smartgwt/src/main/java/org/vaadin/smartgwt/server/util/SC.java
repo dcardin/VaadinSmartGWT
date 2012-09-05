@@ -121,7 +121,7 @@ public class SC extends Canvas {
 	 */
 	public void ask(String title, String message, BooleanCallback callback) {
 		final int key = incrementor.increment();
-		client.call("ask", key, message, title);
+		client.call("ask", key, title, message);
 		callbacks.put(key, callback);
 	}
 

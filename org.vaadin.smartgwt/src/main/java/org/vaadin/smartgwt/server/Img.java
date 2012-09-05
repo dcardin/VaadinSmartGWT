@@ -1,30 +1,3 @@
-<<<<<<< HEAD
-=======
-package org.vaadin.smartgwt.server;
-
-import org.vaadin.smartgwt.client.ui.VImg;
-import org.vaadin.smartgwt.server.types.ImageStyle;
-import org.vaadin.smartgwt.server.util.EnumUtil;
-
-import com.vaadin.ui.ClientWidget;
-
->>>>>>> remotes/ebelanger/demo
-/*
- * Smart GWT (GWT for SmartClient)
- * Copyright 2008 and beyond, Isomorphic Software, Inc.
- *
- * Smart GWT is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License version 3
- * as published by the Free Software Foundation.  Smart GWT is also
- * available under typical commercial license terms - see
- * http://smartclient.com/license
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- */
-
 package org.vaadin.smartgwt.server;
 
 import org.vaadin.smartgwt.server.types.ImageStyle;
@@ -33,11 +6,7 @@ import org.vaadin.smartgwt.server.util.EnumUtil;
 /**
  * The Img widget class implements a simple widget that displays a single image.
  */
-<<<<<<< HEAD
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.VImg.class)
-=======
-@ClientWidget(VImg.class)
->>>>>>> remotes/ebelanger/demo
 public class Img extends StatefulCanvas {
 
 	public Img() {

@@ -5,8 +5,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 /**
  * wraps javascript native JSON library.
  */
-public class JSON
-{
+public class JSON {
 	/**
 	 * converts a javascript object to it's json representation.
 	 * 
@@ -16,14 +15,10 @@ public class JSON
 	 * @throws UnsupportedOperationException
 	 *             if the browser doesn't have native support.
 	 */
-	public static String stringify(JavaScriptObject object)
-	{
-		if (nHasJsonStringify())
-		{
+	public static String stringify(JavaScriptObject object) {
+		if (nHasJsonStringify()) {
 			return nStringify(object);
-		}
-		else
-		{
+		} else {
 			throw new UnsupportedOperationException("JSON.stringify is not supported in this browser.");
 		}
 	}
@@ -39,14 +34,10 @@ public class JSON
 	 * @throws UnsupportedOperationException
 	 *             if the browser doesn't have native support.
 	 */
-	public static String stringify(JavaScriptObject object, JavaScriptObject replacer)
-	{
-		if (nHasJsonStringify())
-		{
+	public static String stringify(JavaScriptObject object, JavaScriptObject replacer) {
+		if (nHasJsonStringify()) {
 			return nStringify(object, replacer);
-		}
-		else
-		{
+		} else {
 			throw new UnsupportedOperationException("JSON.stringify is not supported in this browser.");
 		}
 	}
@@ -61,12 +52,17 @@ public class JSON
 	// @formatter:off
 	public static native JavaScriptObject newExclusionReplacer(String[] excludedKeys) /*-{ 
 		var excludedKeysJS = @com.smartgwt.client.util.JSOHelper::convertToJavaScriptArray([Ljava/lang/Object;)(excludedKeys);
-		
+
 		return function(key, value) { 
-			if (excludedKeysJS.indexOf(key) > -1)
-				return undefined; 
-			else 
-				return value; 
+			for(var i = 0; i < excludedKeysJS.length; i++)
+			{
+				var pattern = new RegExp(excludedKeysJS[i]);
+				if(pattern.exec(key)!=null)
+				{
+				return undefined;
+				}
+			}
+			return value;
 		};
 	}-*/;
 	
