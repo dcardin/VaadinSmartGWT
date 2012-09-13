@@ -101,7 +101,7 @@ public class SCTest {
 		final String message = "message";
 
 		sc.ask(message, null);
-		verify(serverSideProxy).call(eq("ask"), anyInt(), eq(message), anyString());
+		verify(serverSideProxy).call(eq("ask"), anyInt(), anyString(), eq(message));
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class SCTest {
 		final String message = "message";
 
 		sc.ask(title, message, null);
-		verify(serverSideProxy).call(eq("ask"), anyInt(), eq(message), eq(title));
+		verify(serverSideProxy).call(eq("ask"), anyInt(), eq(title), eq(message));
 	}
 
 	@Test
