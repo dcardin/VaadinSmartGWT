@@ -10,11 +10,9 @@ public class VTree extends VBaseClass<Tree> {
 	public VTree() {
 		super(new Tree());
 	}
-	
+
 	@Override
-	protected void preAttributeUpdateFromUIDL(UIDL uidl,
-			ApplicationConnection client) {
-		// TODO Auto-generated method stub
+	protected void preAttributeUpdateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		super.preAttributeUpdateFromUIDL(uidl, client);
 	}
 }
