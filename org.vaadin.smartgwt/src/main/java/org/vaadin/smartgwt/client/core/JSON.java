@@ -67,16 +67,16 @@ public class JSON {
 	}-*/;
 	
 	private static native String nStringify(JavaScriptObject object) /*-{
-																		return JSON.stringify(object);
-																		}-*/;
+		return JSON.stringify(object);
+	}-*/;
 
 	// @formatter:off
 	private static native String nStringify(JavaScriptObject object, JavaScriptObject replacer) /*-{
-																								return JSON.stringify(object, replacer);
-																								}-*/;
+		return JSON.stringify(object, replacer);
+	}-*/;
 
 	private static native boolean nHasJsonStringify() /*-{
-														return typeof JSON == "object" && typeof JSON.stringify == "function";
-														}-*/;
+		return typeof JSON == "object" && typeof JSON.stringify == "function";
+	}-*/;
 	// @formatter:on
 }
