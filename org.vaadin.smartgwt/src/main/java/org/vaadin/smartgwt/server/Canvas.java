@@ -3878,12 +3878,8 @@ public class Canvas extends BaseWidget implements HasClickHandlers {
 	 * @param disabled new disabled state of this object - pass <code>true</code> to disable the widget. Default value is false
 	 */
 	public void setDisabled(boolean disabled) {
-		if (isCreated()) {
-			setAttribute("b$disabled", disabled);
-			requestRepaint();
-		} else {
-			setAttribute("disabled", disabled);
-		}
+		setAttribute("b$disabled", disabled);
+		requestRepaint();
 	}
 
 	/**

@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.vaadin.smartgwt.server.data.Record;
+import org.vaadin.smartgwt.server.util.JSONHelper;
+
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractComponent;
@@ -28,482 +32,481 @@ import com.vaadin.ui.AbstractComponent;
 
 public abstract class BaseClass extends AbstractComponent {
 
-    protected String id;
-//    protected JavaScriptObject config; //= JSOHelper.createObject();
-    protected String scClassName;
+	private static final Logger LOGGER = Logger.getLogger(BaseClass.class);
+	protected String id;
+	//    protected JavaScriptObject config; //= JSOHelper.createObject();
+	protected String scClassName;
 
-//    public BaseClass() {
-//        String id = SC.generateID(getClass().getName());
-//        setID(id);`
-//    }
+	//    public BaseClass() {
+	//        String id = SC.generateID(getClass().getName());
+	//        setID(id);`
+	//    }
 
-//    protected BaseClass(JavaScriptObject jsObj) {
-//        String nativeID = JSOHelper.getAttribute(jsObj, "ID");
-//        this.id = nativeID;
-//    }
+	//    protected BaseClass(JavaScriptObject jsObj) {
+	//        String nativeID = JSOHelper.getAttribute(jsObj, "ID");
+	//        this.id = nativeID;
+	//    }
 
-    /**
-     * Return the ID
-     *
-     * @return the ID
-     */
-    public String getID() {
-        return id;
-    }
+	/**
+	 * Return the ID
+	 *
+	 * @return the ID
+	 */
+	public String getID() {
+		return id;
+	}
 
-    public void setID(String id) {
-        
-//        if (this.id != null) {
-//            IDManager.unregisterID(this.id);
-//        }
-        
-//        IDManager.registerID(id);
-        setAttribute("ID", id, false);
-        this.id = id;
-    }
+	public void setID(String id) {
 
-    /**
-     * Get the name of the underlying SmartClient class
-     *
-     * @return the SmartClient class name
-     */
-    public String getScClassName() {
-        return scClassName;
-    }
+		//        if (this.id != null) {
+		//            IDManager.unregisterID(this.id);
+		//        }
 
-    /**
-     * Set the name of the underlying SmartClient class. This is an advanced setting.
-     *
-     * @param scClassName the SmartClient class
-     */
-    public void setScClassName(String scClassName) {
-        this.scClassName = scClassName;
-    }
+		//        IDManager.registerID(id);
+		setAttribute("ID", id, false);
+		this.id = id;
+	}
 
-//    public JavaScriptObject getConfig() {
-//        return config;
-//    }
+	/**
+	 * Get the name of the underlying SmartClient class
+	 *
+	 * @return the SmartClient class name
+	 */
+	public String getScClassName() {
+		return scClassName;
+	}
 
-//    public native boolean isCreated()/*-{
-//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
-//        var obj = $wnd.window[id];
-//        // && $wnd.isc.isA.Canvas(obj) === true
-//        return id != null && obj != null && obj !== undefined;
-//    }-*/;
-//
-//    public native JavaScriptObject getJsObj()/*-{
-//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
-//        if($wnd.window[id] != null && $wnd.window[id]!== undefined) {
-//            return $wnd.window[id];
-//        } else {
-//            return null;
-//        }
-//    }-*/;
-//
-//    public JavaScriptObject getOrCreateJsObj() {
-//        if (!isCreated()) {
-//            JavaScriptObject jsObj = create();
-//            JSOHelper.setAttribute(jsObj, SC.REF, this);
-//            onInit();            
-//            return jsObj;
-//        } else {
-//            return getJsObj();            
-//        }
-//    }
+	/**
+	 * Set the name of the underlying SmartClient class. This is an advanced setting.
+	 *
+	 * @param scClassName the SmartClient class
+	 */
+	public void setScClassName(String scClassName) {
+		this.scClassName = scClassName;
+	}
 
-//    public static BaseClass getRef(JavaScriptObject jsObj) {
-//        return jsObj == null ? null : (BaseClass) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
-//    }
-//	
-//	/**
-//	 * Destroy this object.
-//	 */
-//    public native void destroy()/*-{
-//		var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//		var ID = this.@com.smartgwt.client.core.BaseClass::getID()();
-//		if (self != null && self.destroy) self.destroy();
-//		if (ID != null) {
-//		    @com.smartgwt.client.util.IDManager::unregisterID(Ljava/lang/String;)(ID);
-//		}
-//	}-*/;	
+	//    public JavaScriptObject getConfig() {
+	//        return config;
+	//    }
 
-    protected void error(String attribute, String value, boolean allowPostCreate) throws IllegalStateException {
-        if (allowPostCreate) {
-            error("Cannot change configuration property '" + attribute + "' to " + value + " after the component has been rendered.");
-        } else {
-            error("Cannot change configuration property '" + attribute + "' to " + value + " after the component has been created.");
-        }
-    }
+	//    public native boolean isCreated()/*-{
+	//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
+	//        var obj = $wnd.window[id];
+	//        // && $wnd.isc.isA.Canvas(obj) === true
+	//        return id != null && obj != null && obj !== undefined;
+	//    }-*/;
+	//
+	//    public native JavaScriptObject getJsObj()/*-{
+	//        var id = this.@com.smartgwt.client.core.BaseClass::getID()();
+	//        if($wnd.window[id] != null && $wnd.window[id]!== undefined) {
+	//            return $wnd.window[id];
+	//        } else {
+	//            return null;
+	//        }
+	//    }-*/;
+	//
+	//    public JavaScriptObject getOrCreateJsObj() {
+	//        if (!isCreated()) {
+	//            JavaScriptObject jsObj = create();
+	//            JSOHelper.setAttribute(jsObj, SC.REF, this);
+	//            onInit();            
+	//            return jsObj;
+	//        } else {
+	//            return getJsObj();            
+	//        }
+	//    }
 
-    protected void errorIfNotCreated(String property) throws IllegalStateException {
-        if (!isCreated()) {
-            throw new IllegalStateException("Cannot access property " + property + " before the component has been created.");
-        }
-    }
+	//    public static BaseClass getRef(JavaScriptObject jsObj) {
+	//        return jsObj == null ? null : (BaseClass) JSOHelper.getAttributeAsObject(jsObj, SC.REF);
+	//    }
+	//	
+	//	/**
+	//	 * Destroy this object.
+	//	 */
+	//    public native void destroy()/*-{
+	//		var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//		var ID = this.@com.smartgwt.client.core.BaseClass::getID()();
+	//		if (self != null && self.destroy) self.destroy();
+	//		if (ID != null) {
+	//		    @com.smartgwt.client.util.IDManager::unregisterID(Ljava/lang/String;)(ID);
+	//		}
+	//	}-*/;	
 
-    protected void error(String message) throws IllegalStateException {
-//        if (!GWT.isScript()) {
-//            Window.alert("Error :" + message);
-            throw new IllegalStateException(message);
-//        }
-    }
+	protected void error(String attribute, String value, boolean allowPostCreate) throws IllegalStateException {
+		if (allowPostCreate) {
+			error("Cannot change configuration property '" + attribute + "' to " + value + " after the component has been rendered.");
+		} else {
+			error("Cannot change configuration property '" + attribute + "' to " + value + " after the component has been created.");
+		}
+	}
 
-//    protected abstract JavaScriptObject create();
+	protected void errorIfNotCreated(String property) throws IllegalStateException {
+		if (!isCreated()) {
+			throw new IllegalStateException("Cannot access property " + property + " before the component has been created.");
+		}
+	}
 
-//    protected void onInit() {}
+	protected void error(String message) throws IllegalStateException {
+		//        if (!GWT.isScript()) {
+		//            Window.alert("Error :" + message);
+		throw new IllegalStateException(message);
+		//        }
+	}
 
+	//    protected abstract JavaScriptObject create();
 
- 
-//    public String getAttribute(String attribute) {
-//        return getAttributeAsString(attribute);
-//    }
-    
-//    public native String getAttributeAsString(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret === undefined ? null : ret;
-//    }-*/;
-//
-//    public native Date getAttributeAsDate(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//    *    return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toDate(D)(ret.getTime());
-//    }-*/;
-//
-//    public native Integer getAttributeAsInt(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toInteger(I)(ret);
-//    }-*/;
-//
-//    public native Double getAttributeAsDouble(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toDouble(D)(ret);
-//    }-*/;
-//
-//    public native Element getAttributeAsElement(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret === undefined ? null : ret;
-//    }-*/;
-//
-//    public native JavaScriptObject getAttributeAsJavaScriptObject(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret === undefined ? null : ret;
-//    }-*/;
-//
-//    public native Float getAttributeAsFloat(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toFloat(F)(ret);
-//    }-*/;
-//
-//    public native Boolean getAttributeAsBoolean(String property)/*-{
-//        var ret;
-//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
-//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//            ret = widget.getProperty(property);
-//        } else {
-//            var config = this.@com.smartgwt.client.core.BaseClass::config;
-//            if(config[property] != undefined) {
-//                ret = config[property];
-//            } else {
-//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
-//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
-//            }
-//        }
-//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(ret);
-//    }-*/;
-//
-//    public Map getAttributeAsMap(String property) {
-//        return JSOHelper.getAttributeAsMap(getOrCreateJsObj(), property);
-//    }
-//
-//
-//    public void setAttribute(String attribute, String value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, value, allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, Boolean value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, value.toString(), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, Map value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertMapToJavascriptObject(value));
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertMapToJavascriptObject(value));
-//        } else {
-//            error(attribute, value.toString(), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, int[] value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else {
-//            error(attribute, value.toString(), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, BaseClass[] value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else {
-//            error(attribute, value.toString(), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, DataClass[] value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else {
-//            error(attribute, value.toString(), allowPostCreate);
-//        }
-//    }
-//
-//
-//    public void setAttribute(String attribute, double value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, int value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, Date value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptDate(value));
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, ValueEnum[] value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, DataClass value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value.getJsObj());
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value.getJsObj());
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, JavaScriptObject value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, String[] value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    protected void setAttribute(String attribute, boolean value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public void setAttribute(String attribute, Element value, boolean allowPostCreate) {
-//        if (!isCreated()) {
-//            JSOHelper.setAttribute(config, attribute, value);
-//        } else if (allowPostCreate) {
-//            setProperty(attribute, value);
-//        } else {
-//            error(attribute, String.valueOf(value), allowPostCreate);
-//        }
-//    }
-//
-//    public native void setProperty(String property, String value)/*-{
-//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//        self.setProperty(property, value);
-//    }-*/;
-//
-//    public native void setProperty(String property, boolean value)/*-{
-//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//        self.setProperty(property, value);
-//    }-*/;
-//
-//    public native void setProperty(String property, double value)/*-{
-//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//        self.setProperty(property, value);
-//    }-*/;
-//
-//    public native void setProperty(String property, JavaScriptObject value)/*-{
-//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
-//        self.setProperty(property, value);
-//    }-*/;
-//
-//    //event handling ode
-//    private HandlerManager manager = null;
-//
-//    public void fireEvent(GwtEvent<?> event) {
-//        if (manager != null) {
-//            manager.fireEvent(event);
-//        }
-//    }
-//
-//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
-//           final H handler, GwtEvent.Type<H> type) {
-//        return ensureHandlers().addHandler(type, handler);
-//    }
-//
-//    /**
-//     * Ensures the existence of the handler manager.
-//     *
-//     * @return the handler manager
-//     **/
-//    HandlerManager ensureHandlers() {
-//        return manager == null ? manager = new HandlerManager(this)
-//        : manager;
-//    }
-//
-//    HandlerManager getManager() {
-//        return manager;
-//    }
-//
-//    public int getHandlerCount(GwtEvent.Type<?> type) {
-//        return manager == null? 0 : manager.getHandlerCount(type);
-//    }
+	//    protected void onInit() {}
 
-    // ------------ Vaadin integration methods
-    
+	//    public String getAttribute(String attribute) {
+	//        return getAttributeAsString(attribute);
+	//    }
+
+	//    public native String getAttributeAsString(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret === undefined ? null : ret;
+	//    }-*/;
+	//
+	//    public native Date getAttributeAsDate(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//    *    return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toDate(D)(ret.getTime());
+	//    }-*/;
+	//
+	//    public native Integer getAttributeAsInt(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toInteger(I)(ret);
+	//    }-*/;
+	//
+	//    public native Double getAttributeAsDouble(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toDouble(D)(ret);
+	//    }-*/;
+	//
+	//    public native Element getAttributeAsElement(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret === undefined ? null : ret;
+	//    }-*/;
+	//
+	//    public native JavaScriptObject getAttributeAsJavaScriptObject(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret === undefined ? null : ret;
+	//    }-*/;
+	//
+	//    public native Float getAttributeAsFloat(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toFloat(F)(ret);
+	//    }-*/;
+	//
+	//    public native Boolean getAttributeAsBoolean(String property)/*-{
+	//        var ret;
+	//        if(this.@com.smartgwt.client.core.BaseClass::isCreated()()) {
+	//            var widget = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//            ret = widget.getProperty(property);
+	//        } else {
+	//            var config = this.@com.smartgwt.client.core.BaseClass::config;
+	//            if(config[property] != undefined) {
+	//                ret = config[property];
+	//            } else {
+	//               var scClassName = this.@com.smartgwt.client.core.BaseClass::scClassName;
+	//               ret = eval("($wnd.isc." + scClassName + ".getInstanceProperty('" + property + "'))")
+	//            }
+	//        }
+	//        return ret == null || ret === undefined ? null : @com.smartgwt.client.util.JSOHelper::toBoolean(Z)(ret);
+	//    }-*/;
+	//
+	//    public Map getAttributeAsMap(String property) {
+	//        return JSOHelper.getAttributeAsMap(getOrCreateJsObj(), property);
+	//    }
+	//
+	//
+	//    public void setAttribute(String attribute, String value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, value, allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, Boolean value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, value.toString(), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, Map value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertMapToJavascriptObject(value));
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertMapToJavascriptObject(value));
+	//        } else {
+	//            error(attribute, value.toString(), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, int[] value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else {
+	//            error(attribute, value.toString(), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, BaseClass[] value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else {
+	//            error(attribute, value.toString(), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, DataClass[] value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else {
+	//            error(attribute, value.toString(), allowPostCreate);
+	//        }
+	//    }
+	//
+	//
+	//    public void setAttribute(String attribute, double value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, int value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, Date value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptDate(value));
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, ValueEnum[] value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, DataClass value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value.getJsObj());
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value.getJsObj());
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, JavaScriptObject value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, String[] value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, JSOHelper.convertToJavaScriptArray(value));
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    protected void setAttribute(String attribute, boolean value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public void setAttribute(String attribute, Element value, boolean allowPostCreate) {
+	//        if (!isCreated()) {
+	//            JSOHelper.setAttribute(config, attribute, value);
+	//        } else if (allowPostCreate) {
+	//            setProperty(attribute, value);
+	//        } else {
+	//            error(attribute, String.valueOf(value), allowPostCreate);
+	//        }
+	//    }
+	//
+	//    public native void setProperty(String property, String value)/*-{
+	//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//        self.setProperty(property, value);
+	//    }-*/;
+	//
+	//    public native void setProperty(String property, boolean value)/*-{
+	//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//        self.setProperty(property, value);
+	//    }-*/;
+	//
+	//    public native void setProperty(String property, double value)/*-{
+	//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//        self.setProperty(property, value);
+	//    }-*/;
+	//
+	//    public native void setProperty(String property, JavaScriptObject value)/*-{
+	//        var self = this.@com.smartgwt.client.core.BaseClass::getJsObj()();
+	//        self.setProperty(property, value);
+	//    }-*/;
+	//
+	//    //event handling ode
+	//    private HandlerManager manager = null;
+	//
+	//    public void fireEvent(GwtEvent<?> event) {
+	//        if (manager != null) {
+	//            manager.fireEvent(event);
+	//        }
+	//    }
+	//
+	//    protected final <H extends EventHandler> HandlerRegistration doAddHandler(
+	//           final H handler, GwtEvent.Type<H> type) {
+	//        return ensureHandlers().addHandler(type, handler);
+	//    }
+	//
+	//    /**
+	//     * Ensures the existence of the handler manager.
+	//     *
+	//     * @return the handler manager
+	//     **/
+	//    HandlerManager ensureHandlers() {
+	//        return manager == null ? manager = new HandlerManager(this)
+	//        : manager;
+	//    }
+	//
+	//    HandlerManager getManager() {
+	//        return manager;
+	//    }
+	//
+	//    public int getHandlerCount(GwtEvent.Type<?> type) {
+	//        return manager == null? 0 : manager.getHandlerCount(type);
+	//    }
+
+	// ------------ Vaadin integration methods
+
 	private static final long serialVersionUID = 1L;
 	protected Map<String, Object> attributes = new HashMap<String, Object>();
 	private boolean isCreated = false;
@@ -511,29 +514,24 @@ public abstract class BaseClass extends AbstractComponent {
 	public Object getOrCreateJsObj() {
 		return this;
 	}
-		
-	protected boolean isCreated()
-	{
+
+	protected boolean isCreated() {
 		return isCreated;
 	}
 
-	public void setAttribute(String attribute, Object value, boolean allowPostCreate)
-	{
-		if (isCreated() && !allowPostCreate)
-		{
+	public void setAttribute(String attribute, Object value, boolean allowPostCreate) {
+		if (isCreated() && !allowPostCreate) {
 			throw new IllegalArgumentException("Cannot modify property " + attribute + " once created");
 		}
 
 		attributes.put(attribute, value);
 	}
 
-	public void setAttribute(String attribute, Object value)
-	{
+	public void setAttribute(String attribute, Object value) {
 		setAttribute(attribute, value, true);
 	}
 
-	public String getAttributeAsString(String attribute)
-	{
+	public String getAttributeAsString(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -542,13 +540,11 @@ public abstract class BaseClass extends AbstractComponent {
 			return value.toString();
 	}
 
-	public String getAttribute(String attribute)
-	{
+	public String getAttribute(String attribute) {
 		return getAttributeAsString(attribute);
 	}
 
-	public Integer getAttributeAsInt(String attribute)
-	{
+	public Integer getAttributeAsInt(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -557,8 +553,7 @@ public abstract class BaseClass extends AbstractComponent {
 			return Integer.valueOf(value.toString());
 	}
 
-	public Boolean getAttributeAsBoolean(String attribute)
-	{
+	public Boolean getAttributeAsBoolean(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -567,8 +562,7 @@ public abstract class BaseClass extends AbstractComponent {
 			return Boolean.valueOf(value.toString());
 	}
 
-	public Double getAttributeAsDouble(String attribute)
-	{
+	public Double getAttributeAsDouble(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -577,8 +571,7 @@ public abstract class BaseClass extends AbstractComponent {
 			return Double.valueOf(value.toString());
 	}
 
-	public Float getAttributeAsFloat(String attribute)
-	{
+	public Float getAttributeAsFloat(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -587,41 +580,33 @@ public abstract class BaseClass extends AbstractComponent {
 			return Float.valueOf(value.toString());
 	}
 
-	
-	public Map<?,?> getAttributeAsMap(String attribute)
-	{
+	public Map<?, ?> getAttributeAsMap(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
 			return null;
 		else
-			return (Map<?,?>) value;
+			return (Map<?, ?>) value;
 	}
 
-	public Date getAttributeAsDate(String attribute)
-	{
+	public Date getAttributeAsDate(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
 			return null;
-		else
-		{
+		else {
 			DateFormat df = new SimpleDateFormat();
-			try
-			{
+			try {
 				Date d = df.parse(value.toString());
 				return d;
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
 
-	public String[] getAttributeAsStringArray(String attribute)
-	{
+	public String[] getAttributeAsStringArray(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -630,8 +615,7 @@ public abstract class BaseClass extends AbstractComponent {
 			return (String[]) value;
 	}
 
-	public String[] getAttributeAsJava(String attribute)
-	{
+	public String[] getAttributeAsJava(String attribute) {
 		Object value = attributes.get(attribute);
 
 		if (value == null)
@@ -639,46 +623,41 @@ public abstract class BaseClass extends AbstractComponent {
 		else
 			return (String[]) value;
 	}
-	
+
 	@Override
-	public void paintContent(PaintTarget target) throws PaintException
-	{
-		for (Map.Entry<String, Object> entry : attributes.entrySet())
-		{
+	public void paintContent(PaintTarget target) throws PaintException {
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			Object value = entry.getValue();
 			String name = entry.getKey();
 
 			if (value == null)
 				target.addAttribute(name, "null");
 
-			else if (value instanceof Boolean)
-			{
+			else if (value instanceof Boolean) {
 				target.addAttribute(name, "b" + String.valueOf(value));
-			}
-			else if (value instanceof Integer)
-			{
+			} else if (value instanceof Integer) {
 				target.addAttribute(name, "i" + String.valueOf(value));
-			}
-			else if (value instanceof Float)
-			{
+			} else if (value instanceof Float) {
 				target.addAttribute(name, "f" + String.valueOf(value));
-			}
-			else if (value instanceof Long)
-			{
+			} else if (value instanceof Long) {
 				target.addAttribute(name, "l" + String.valueOf(value));
-			}
-			else if (value instanceof Double)
-			{
+			} else if (value instanceof Double) {
 				target.addAttribute(name, "d" + String.valueOf(value));
-			}
-			else if (value instanceof String)
-			{
+			} else if (value instanceof String) {
 				target.addAttribute(name, "s" + String.valueOf(value));
+			} else if (value instanceof Record[]) {
+				try {
+					String json = JSONHelper.getJsonString((Record[]) value);
+					target.addAttribute(name, "j" + json);
+
+				} catch (Exception e) {
+					LOGGER.error(e.getMessage());
+				}
 			}
+
 		}
 
 		// Since the paint is finished, set the created attribute
 		isCreated = true;
 	}
 }
-

@@ -486,7 +486,6 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}));
 
 		vl.addMember(newButton("Press me 2!", new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
 				window.setTitle("Modal Window");
@@ -582,7 +581,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 					}
 				}
 			});
-			
+
 			layout.addMember(button);
 		}
 
@@ -681,7 +680,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		final VLayout mainLayout = new VLayout();
 		final Button button2 = new Button();
 
-		mainLayout.addMember(newButton("Click Me",  new ClickHandler() {
+		mainLayout.addMember(newButton("Click Me", new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				button2.setEnabled(!button2.isEnabled());

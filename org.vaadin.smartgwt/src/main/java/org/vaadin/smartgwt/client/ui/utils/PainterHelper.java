@@ -51,8 +51,6 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			System.out.println("Updating value: " + att);
-
 			if (!att.startsWith("*") && !att.equals("id") && !att.startsWith("_") && !abstractComponentAttributes.contains(att))
 			{
 				if (component instanceof BaseWidget)
@@ -190,6 +188,17 @@ public class PainterHelper
 					data.setProperty(att, value);
 			}
 				break;
+			
+			case 'j':
+			{
+					JavaScriptObject value = JSON.decode(sValue.substring(1));
+
+					if (!data.isCreated())
+						JSOHelper.setAttribute(data.getConfig(), att, value);
+					else
+						data.setProperty(att, value);
+			}
+			break;
 		}
 	}
 
@@ -329,6 +338,7 @@ public class PainterHelper
 				String sValue = uidl.getStringAttribute(att);
 				setBaseClassProperty(dataObject, att, sValue);
 			}
+			
 		}
 	}
 
@@ -339,8 +349,6 @@ public class PainterHelper
 
 		for (String att : uidl.getAttributeNames())
 		{
-			System.out.println("Updating: " + att);
-
 			if (att.startsWith("#"))
 			{
 				final Paintable paintable = client.getPaintable(uidl.getStringAttribute(att));
