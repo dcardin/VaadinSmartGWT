@@ -18,6 +18,8 @@ import org.vaadin.smartgwt.server.data.Record;
 import org.vaadin.smartgwt.server.events.ClickEvent;
 import org.vaadin.smartgwt.server.events.ClickHandler;
 import org.vaadin.smartgwt.server.extra.HSplitLayout;
+import org.vaadin.smartgwt.server.extra.RefreshListener;
+import org.vaadin.smartgwt.server.extra.Refresher;
 import org.vaadin.smartgwt.server.extra.VSplitLayout;
 import org.vaadin.smartgwt.server.form.DynamicForm;
 import org.vaadin.smartgwt.server.form.fields.DateItem;
@@ -60,6 +62,7 @@ import argo.jdom.JsonArrayNodeBuilder;
 import argo.jdom.JsonObjectNodeBuilder;
 import argo.jdom.JsonRootNode;
 
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
@@ -560,6 +563,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		tabs.add(newTab("confirmDialogs", newConfirmDialogsLayout()));
 		tabs.add(newTab("windowClose", newWindowCloseHandlingLayout()));
 		tabs.add(newTab("buttonDisabling", newButtonDisabingLayout()));
+		tabs.add(newTab("refresh demo", newRefreshDemoLayout()));
 		tabset.setTabs(tabs.toArray(new Tab[0]));
 		return tabset;
 	}
@@ -688,6 +692,42 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 		}));
 
 		mainLayout.addMember(button2);
+		return mainLayout;
+	}
+
+	private Canvas newRefreshDemoLayout() {
+		final Refresher refresher = new Refresher();
+		refresher.setInterval(3000);
+		masterContainer.addNonUIComponent(refresher);
+
+		final VLayout mainLayout = new VLayout();
+		mainLayout.addComponent(newButton("Open window", new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				final org.vaadin.smartgwt.server.Window window = new org.vaadin.smartgwt.server.Window(masterContainer);
+
+				class RefreshHandler extends RefreshListener {
+					private HandlerRegistration registration;
+
+					@Override
+					public void refresh(Refresher source) {
+						registration.removeHandler();
+						window.dispose();
+					}
+
+					public void setRegistration(HandlerRegistration registration) {
+						this.registration = registration;
+					}
+				}
+
+				final RefreshHandler listener = new RefreshHandler();
+				listener.setRegistration(refresher.addListener(listener));
+
+				window.addItem(new Label("Hello World!"));
+				window.show();
+			}
+		}));
+
 		return mainLayout;
 	}
 

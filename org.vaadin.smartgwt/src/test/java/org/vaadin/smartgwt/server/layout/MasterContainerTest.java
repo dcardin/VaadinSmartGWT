@@ -6,11 +6,15 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.vaadin.smartgwt.server.Window;
 import org.vaadin.smartgwt.server.core.RegistrationEntry;
 
+import com.google.common.collect.ImmutableList;
+import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.Paintable.RepaintRequestEvent;
 import com.vaadin.terminal.Paintable.RepaintRequestListener;
+import com.vaadin.terminal.gwt.server.JsonPaintTarget;
 
 public class MasterContainerTest {
 	private MasterContainer container;
@@ -54,5 +58,36 @@ public class MasterContainerTest {
 		container.addListener(listener);
 		registration.unregister();
 		verify(listener).repaintRequested(isA(RepaintRequestEvent.class));
+	}
+
+	@Test
+	public void test_addNonUIComponent() {
+		final NonUIComponent nonUIComponent = mock(NonUIComponent.class);
+
+		container.addNonUIComponent(nonUIComponent);
+		assertTrue(ImmutableList.copyOf(container.getNonUIComponentIterator()).contains(nonUIComponent));
+	}
+
+	@Test
+	public void test_removeNonUIComponent() {
+		final NonUIComponent nonUIComponent = mock(NonUIComponent.class);
+		container.addNonUIComponent(nonUIComponent);
+
+		container.removeNonUIComponent(nonUIComponent);
+		assertFalse(ImmutableList.copyOf(container.getNonUIComponentIterator()).contains(nonUIComponent));
+	}
+
+	@Test
+	public void test_paintsNonUIComponent() throws PaintException {
+		final JsonPaintTarget paintTarget = mock(JsonPaintTarget.class);
+		final NonUIComponent nonUIComponent = mock(NonUIComponent.class);
+		
+		container.addNonUIComponent(nonUIComponent);
+		container.paintContent(paintTarget);
+		
+		final InOrder inOrder = inOrder(paintTarget, nonUIComponent);
+		inOrder.verify(paintTarget).startTag("$nonUIComponents");
+		inOrder.verify(nonUIComponent).paint(paintTarget);
+		inOrder.verify(paintTarget).endTag("$nonUIComponents");
 	}
 }
