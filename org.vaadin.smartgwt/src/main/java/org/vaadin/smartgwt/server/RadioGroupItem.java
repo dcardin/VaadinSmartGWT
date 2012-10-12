@@ -9,7 +9,7 @@ import org.vaadin.smartgwt.client.ui.VRadioGroupItem;
  *
  */
 @com.vaadin.ui.ClientWidget(VRadioGroupItem.class)
-public class RadioGroupItem extends StretchImgButton {
+public class RadioGroupItem extends ImgButton {
 
 	public RadioGroupItem() {
 		scClassName = "RadioGroupItem";
