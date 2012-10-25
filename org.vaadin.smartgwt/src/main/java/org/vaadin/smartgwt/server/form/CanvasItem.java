@@ -8,6 +8,7 @@ import org.vaadin.smartgwt.server.form.fields.FormItem;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 
+//@formatter:off
 @com.vaadin.ui.ClientWidget(org.vaadin.smartgwt.client.ui.form.fields.VCanvasItem.class)
 public class CanvasItem extends FormItem {
 
@@ -58,22 +59,23 @@ public class CanvasItem extends FormItem {
 		return this.canvas.get();
 	}
 
-	protected native void setupCanvasConstructor() /*-{
-													var self = this.@com.smartgwt.client.widgets.form.fields.CanvasItem::getJsObj()();
-													if(self == null) return null;
-													self.createCanvas = $debox($entry(function() {
-													
-													//in cases where a SGWT FormItem instance is used for a setEditorType(..) call, there will
-													//not be a SGWT object ref associated with the JS object. In this case, simply return
-													// Note the check for 'getCanavsItemRef' rather than just getRef ensures the Java Object
-													// is actually a CanvasItem (rather than a generic "FormItem" instance)
-													var jObj = @com.smartgwt.client.widgets.form.fields.CanvasItem::getCanvasItemRef(Lcom/google/gwt/core/client/JavaScriptObject;)(this);
-													
-													if(jObj == null) return this.canvas;
-													var jCanvas = jObj.@com.smartgwt.client.widgets.form.fields.CanvasItem::createCanvas()();
-													if (jCanvas != null) return jCanvas.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
-													return this.canvas;
-													}));
-													}-*/;
+	
+    protected native void setupCanvasConstructor() /*-{
+	    var self = this.@com.smartgwt.client.widgets.form.fields.CanvasItem::getJsObj()();
+	    if(self == null) return null;
+	    self.createCanvas = $debox($entry(function() {
+	        
+	        //in cases where a SGWT FormItem instance is used for a setEditorType(..) call, there will
+	        //not be a SGWT object ref associated with the JS object. In this case, simply return
+	        // Note the check for 'getCanavsItemRef' rather than just getRef ensures the Java Object
+	        // is actually a CanvasItem (rather than a generic "FormItem" instance)
+	        var jObj = @com.smartgwt.client.widgets.form.fields.CanvasItem::getCanvasItemRef(Lcom/google/gwt/core/client/JavaScriptObject;)(this);
+	        
+	        if(jObj == null) return this.canvas;
+	        var jCanvas = jObj.@com.smartgwt.client.widgets.form.fields.CanvasItem::createCanvas()();
+	        if (jCanvas != null) return jCanvas.@com.smartgwt.client.widgets.Canvas::getOrCreateJsObj()();
+	        return this.canvas;
+	    }));
+	}-*/;  
 
 }
