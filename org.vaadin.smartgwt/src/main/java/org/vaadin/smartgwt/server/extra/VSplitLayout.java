@@ -1,6 +1,6 @@
 package org.vaadin.smartgwt.server.extra;
 
-import static org.vaadin.smartgwt.server.builder.VLayoutBuilder.*;
+import static org.vaadin.smartgwt.server.builder.LabelBuilder.*;
 
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.builder.CanvasBuilder;
@@ -37,22 +37,22 @@ public class VSplitLayout extends VLayout {
 		return new Builder(new VSplitLayout());
 	}
 
-	private VLayout top;
-	private VLayout bottom;
+	private Canvas top = null;
+	private Canvas bottom = null;
 
 	public VSplitLayout() {
 		//@formatter:off
 		setMembers(
-			top = buildVLayout()
+			top = buildLabel("")
 				.setHeight("50%")
-				.setWidth(1)
+				.setWidth("100%")
 				.build(),
-			bottom = buildVLayout()
+			bottom = buildLabel("")
 				.setHeight("*")
-				.setWidth(1)
+				.setWidth("100%")
 				.build()
 		);
-		//@formatter:on	
+		// @formatter:on	
 	}
 
 	public void setProportions(double proportion) {
@@ -60,28 +60,43 @@ public class VSplitLayout extends VLayout {
 	}
 
 	public Canvas getTopMember() {
-		return top.getMembers().length > 0 ? top.getMembers()[0] : null;
+		return top;
 	}
 
 	public void setTopMember(Canvas member) {
-		if (member != null) {
-			member.setHeight("100%");
-			top.setMembers(member);
-		} else {
-			top.setMembers();
+		String height = top.getHeightAsString();
+		
+		if (member == null) {
+			top = buildLabel("")
+					.setHeight("50%")
+					.setWidth("100%")
+					.build();
 		}
+		else {
+			top = member;
+			top.setHeight(height);
+		}
+		setMembers(top,bottom);
 	}
 
 	public Canvas getBottomMember() {
-		return bottom.getMembers().length > 0 ? bottom.getMembers()[0] : null;
+		return bottom;
 	}
 
 	public void setBottomMember(Canvas member) {
-		if (member != null) {
-			member.setHeight("100%");
-			bottom.setMembers(member);
-		} else {
-			bottom.setMembers();
+		String height = bottom.getHeightAsString();
+		
+		if (member == null) {
+			bottom = buildLabel("")
+					.setHeight("*")
+					.setWidth("100%")
+					.build();
 		}
+		else {
+			bottom = member;
+			bottom.setHeight(height);
+		}
+		
+		setMembers(top,bottom);
 	}
 }

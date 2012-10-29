@@ -601,9 +601,14 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private Canvas newSplitLayoutPane() {
 		final VSplitLayout vLayout = new VSplitLayout();
 		final HSplitLayout hLayout = new HSplitLayout();
+		
+		vLayout.setWidth(500);
 		hLayout.setLeftMember(newLabel("LEFT", "blue"));
+		hLayout.getLeftMember().setShowResizeBar(true);
 		hLayout.setRightMember(newLabel("RIGHT", "green"));
+
 		vLayout.setTopMember(newLabel("TOP", "red"));
+		vLayout.getTopMember().setShowResizeBar(true);
 		vLayout.setBottomMember(hLayout);
 		return vLayout;
 	}
@@ -611,6 +616,7 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 	private Label newLabel(String content, String bgColor) {
 		final Label label = new Label(content);
 		label.setBackgroundColor(bgColor);
+		label.setAlign(Alignment.CENTER);
 		return label;
 	}
 
@@ -621,11 +627,11 @@ public class SmartGWTApplication extends Application implements MasterContainerH
 			@Override
 			public void onClick(ClickEvent event) {
 				layout.removeMember(yellow);
-				//				final Label blue = newLabel("BLUE", "blue");
-				//				layout.addMember(newLabel("GREEN", "green"));
-				//				layout.addMember(blue);
-				//				layout.addMember(newLabel("RED", "red"));
-				//				layout.removeMember(blue);
+				final Label blue = newLabel("BLUE", "blue");
+				layout.addMember(newLabel("GREEN", "green"));
+				layout.addMember(blue);
+				layout.addMember(newLabel("RED", "red"));
+				layout.removeMember(blue);
 			}
 		}));
 		layout.addMember(yellow);

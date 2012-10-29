@@ -1,6 +1,6 @@
 package org.vaadin.smartgwt.server.extra;
 
-import static org.vaadin.smartgwt.server.builder.HLayoutBuilder.*;
+import static org.vaadin.smartgwt.server.builder.LabelBuilder.*;
 
 import org.vaadin.smartgwt.server.Canvas;
 import org.vaadin.smartgwt.server.builder.CanvasBuilder;
@@ -37,51 +37,66 @@ public class HSplitLayout extends HLayout {
 		return new Builder(new HSplitLayout());
 	}
 
-	private HLayout left;
-	private HLayout right;
+	private Canvas left = null;
+	private Canvas right = null;
 
 	public HSplitLayout() {
 		//@formatter:off
 		setMembers(
-			left = buildHLayout()
+			left = buildLabel("")
 				.setWidth("50%")
-				.setHeight(1)
+				.setHeight("100%")
 				.build(),
-			right = buildHLayout()
+			right = buildLabel("")
 				.setWidth("*")
-				.setHeight(1)
+				.setHeight("100%")
 				.build()
 		);
-		//@formatter:on	
+		// @formatter:on	
 	}
 
 	public void setProportions(double proportion) {
-		left.setWidth(((int) (proportion * 100)) + "%");
+		left.setHeight(((int) (proportion * 100)) + "%");
 	}
 
 	public Canvas getLeftMember() {
-		return left.getMembers().length > 0 ? left.getMembers()[0] : null;
+		return left;
 	}
 
 	public void setLeftMember(Canvas member) {
-		if (member != null) {
-			member.setWidth("100%");
-			left.setMembers(member);
-		} else {
-			left.setMembers();
+		String width = left.getWidthAsString();
+		
+		if (member == null) {
+			left = buildLabel("")
+					.setWidth("50%")
+					.setHeight("100%")
+					.build();
 		}
+		else {
+			left = member;
+			left.setWidth(width);
+		}
+		setMembers(left,right);
 	}
 
 	public Canvas getRightMember() {
-		return right.getMembers().length > 0 ? right.getMembers()[0] : null;
+		return right;
 	}
 
 	public void setRightMember(Canvas member) {
-		if (member != null) {
-			member.setWidth("100%");
-			right.setMembers(member);
-		} else {
-			right.setMembers();
+		String width = right.getWidthAsString();
+
+		if (member == null) {
+			right = buildLabel("")
+					.setWidth("*")
+					.setHeight("100%")
+					.build();
 		}
+		else {
+			right = member;
+			right.setWidth(width);
+		}
+		
+		setMembers(left,right);
 	}
 }
